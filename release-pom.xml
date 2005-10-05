@@ -90,21 +90,59 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/tags/maven-jxr-1.0-beta-1</connection>
-    <developerConnection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/tags/maven-jxr-1.0-beta-1</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/components/tags/maven-jxr-1.0-beta-1</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/trunk</connection>
+    <developerConnection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/trunk</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/maven/components/trunk</url>
   </scm>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://www.apache.org/</url>
   </organization>
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <outputDirectory>target/classes</outputDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
+    <directory>target</directory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.0-beta-2</version>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Maven Repository Switchboard</name>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Maven Plugin Repository</name>
+      <url>http://repo1.maven.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
@@ -112,21 +150,33 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>oro</groupId>
-      <artifactId>oro</artifactId>
-      <version>2.0.7</version>
-    </dependency>
-    <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>1.0.3</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.7</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>velocity</groupId>
       <artifactId>velocity</artifactId>
       <version>1.4</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
+  <reporting>
+    <outputDirectory>target/site</outputDirectory>
+  </reporting>
   <distributionManagement>
     <repository>
       <id>repo1</id>
