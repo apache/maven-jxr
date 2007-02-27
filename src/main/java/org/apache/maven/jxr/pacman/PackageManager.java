@@ -50,6 +50,16 @@ public class PackageManager
 
     private FileManager fileManager;
 
+    /**
+     * The list of exclude patterns to use.
+     */
+    private String[] excludes = null;
+
+    /**
+     * The list of include patterns to use.
+     */
+    private String[] includes = {"**/*.java"};
+
     public PackageManager( Log log, FileManager fileManager )
     {
         this.log = log;
@@ -99,7 +109,7 @@ public class PackageManager
         DirectoryScanner directoryScanner = new DirectoryScanner();
         File baseDir = new File( directory );
         directoryScanner.setBasedir( baseDir );
-        String[] includes = {"**/*.java"};
+        directoryScanner.setExcludes( excludes );
         directoryScanner.setIncludes( includes );
         directoryScanner.scan();
         String[] files = directoryScanner.getIncludedFiles();
@@ -200,6 +210,17 @@ public class PackageManager
     public FileManager getFileManager()
     {
         return fileManager;
+    }
+
+    public void setExcludes( String[] excludes )
+    {
+        this.excludes = excludes;
+    }
+
+
+    public void setIncludes( String[] includes )
+    {
+        this.includes = includes;
     }
 }
 

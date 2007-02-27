@@ -52,6 +52,11 @@ public class JXR
         "<a href=\"http://maven.apache.org/\">Maven</a>";
 
     /**
+     * The default list of include patterns to use.
+     */
+    private static final String[] DEFAULT_INCLUDES = {"**/*.java"};
+
+    /**
      * Path to destination.
      */
     private String dest = "";
@@ -79,6 +84,16 @@ public class JXR
     private String revision;
 
     /**
+     * The list of exclude patterns to use.
+     */
+    private String[] excludes = null;
+
+    /**
+     * The list of include patterns to use.
+     */
+    private String[] includes = DEFAULT_INCLUDES;
+
+    /**
      * Now that we have instantiated everything. Process this JXR task.
      *
      * @param packageManager
@@ -91,6 +106,10 @@ public class JXR
         this.transformer = new JavaCodeTransform( packageManager );
 
         DirectoryScanner ds = new DirectoryScanner();
+        // I'm not sure why we don't use the directoryScanner in packageManager,
+        // but since we don't we need to set includes/excludes here as well
+        ds.setExcludes( excludes );
+        ds.setIncludes( includes );
         ds.addDefaultExcludes();
 
         File dir = new File( source );
@@ -238,6 +257,8 @@ public class JXR
         fileManager.setEncoding( inputEncoding );
 
         PackageManager pkgmgr = new PackageManager( log, fileManager );
+        pkgmgr.setExcludes( excludes );
+        pkgmgr.setIncludes( includes );
 
         // go through each source directory and xref the java files
         for ( Iterator i = sourceDirs.iterator(); i.hasNext(); )
@@ -382,5 +403,24 @@ public class JXR
         }
 
         return fromLink.append( toLink.toString() ).toString();
+    }
+
+    public void setExcludes( String[] excludes )
+    {
+        this.excludes = excludes;
+    }
+
+
+    public void setIncludes( String[] includes )
+    {
+        if ( includes == null )
+        {
+            // We should not include non-java files, so we use a sensible default pattern
+            this.includes = DEFAULT_INCLUDES;
+        }
+        else
+        {
+            this.includes = includes;
+        }
     }
 }
