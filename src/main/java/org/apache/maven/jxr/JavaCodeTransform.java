@@ -289,9 +289,10 @@ public class JavaCodeTransform
         try
         {
             JavaFile javaFile = fileManager.getFile( this.getCurrentFilename() );
-            if ( javaFile.getClassType() != null )
+            // Use the name of the file instead of the class to handle inner classes properly
+            if ( javaFile.getClassType() != null && javaFile.getClassType().getFilename() != null )
             {
-                buffer.append( javaFile.getClassType().getName() );
+                buffer.append( javaFile.getClassType().getFilename() );
             }
             else
             {
@@ -1101,9 +1102,10 @@ public class JavaCodeTransform
 
                 javadocURI.append( StringUtils.replace( jf.getPackageType().getName(), ".", "/" ) );
                 javadocURI.append( "/" );
-                if ( jf.getClassType() != null )
+                // Use the name of the file instead of the class to handle inner classes properly
+                if ( jf.getClassType() != null && jf.getClassType().getFilename() != null )
                 {
-                    javadocURI.append( jf.getClassType().getName() );
+                    javadocURI.append( jf.getClassType().getFilename() );
                 }
                 else
                 {
@@ -1293,11 +1295,11 @@ public class JavaCodeTransform
 
         href.append( dest );
 
-        //now append the classname.html file
+        // Now append filename.html
         if ( jc != null )
         {
             href.append( "/" );
-            href.append( jc.getName() );
+            href.append( jc.getFilename() );
             href.append( ".html" );
         }
 

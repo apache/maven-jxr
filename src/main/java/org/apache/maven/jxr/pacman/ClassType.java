@@ -20,15 +20,22 @@ package org.apache.maven.jxr.pacman;
  */
 
 /**
- * Represents a Java class or interface
+ * Represents a Java class or interface.
  */
 public class ClassType
     extends BaseType
 {
+    /**
+     * The name of the file that this class resides in, without path or
+     * extension. It might be different from the name of the class when dealing
+     * with inner classes.
+     */
+    private String filename = null;
 
     /**
-     * Create a new ClassType
+     * Create a new ClassType without a filename.
      *
+     * @deprecated Please use {@link #ClassType( String, String )} instead
      * @param name
      */
     public ClassType( String name )
@@ -36,4 +43,26 @@ public class ClassType
         this.setName( name );
     }
 
+    /**
+     * Create a new ClassType.
+     *
+     * @param name
+     * @param filename
+     */
+    public ClassType( String name , String filename)
+    {
+        this.setName( name );
+        this.setFilename( filename );
+    }
+
+
+    public String getFilename()
+    {
+        return filename;
+    }
+
+    public void setFilename( String filename )
+    {
+        this.filename = filename;
+    }
 }

@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 
 /**
@@ -134,10 +135,13 @@ public class PackageManager
                     jp = jfi.getPackageType();
                 }
 
-                //add the current class to this global package.
-                if ( jfi.getClassType() != null && jfi.getClassType().getName() != null )
+                // Add the current file's class(es) to this global package.
+                if ( jfi.getClassTypes() != null && !jfi.getClassTypes().isEmpty() )
                 {
-                    jp.addClassType( jfi.getClassType() );
+                    for ( Iterator iterator = jfi.getClassTypes().iterator(); iterator.hasNext(); )
+                    {
+                        jp.addClassType( (ClassType) iterator.next() );
+                    }
                 }
 
             }

@@ -32,7 +32,7 @@ under the License.
 		<ul>
 			#foreach ($classInfo in $info.allClasses.values())
 			<li>
-				<a href="${classInfo.dir}/${classInfo.name}.html" target="classFrame">$classInfo.name</a>
+				<a href="${classInfo.dir}/${classInfo.filename}.html" target="classFrame">$classInfo.name</a>
 			</li>
 			#end
       </ul>

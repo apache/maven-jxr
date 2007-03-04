@@ -365,6 +365,13 @@ public class DirectoryIndexer
 
                 String className = clazz.getName();
                 Map classInfo = new HashMap();
+                if( clazz.getFilename() != null )
+                {
+                    classInfo.put( "filename", clazz.getFilename() );
+                }
+                else {
+                    classInfo.put( "filename", "" );
+                }
                 classInfo.put( "name", className );
                 classInfo.put( "dir", pkgDir );
 

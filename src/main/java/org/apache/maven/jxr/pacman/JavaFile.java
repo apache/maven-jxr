@@ -19,6 +19,8 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -32,7 +34,7 @@ public abstract class JavaFile
 
     private Vector imports = new Vector();
 
-    private ClassType classType = null;
+    private ArrayList classTypes = new ArrayList();
 
     private PackageType packageType = new PackageType();
 
@@ -56,7 +58,23 @@ public abstract class JavaFile
      */
     public ClassType getClassType()
     {
-        return this.classType;
+        if ( classTypes.isEmpty() )
+        {
+            return null;
+        }
+        else
+        {
+            // To retain backward compatibility, return the first class
+            return (ClassType) this.classTypes.get( 0 );
+        }
+    }
+
+    /**
+     * Get the names of the classes in this file.
+     */
+    public List getClassTypes()
+    {
+        return this.classTypes;
     }
 
     /**
@@ -69,7 +87,15 @@ public abstract class JavaFile
 
 
     /**
-     * Add an ImportType to the current imports
+     * Add a ClassType to the current list of class types.
+     */
+    public void addClassType( ClassType classType )
+    {
+        this.classTypes.add( classType );
+    }
+
+    /**
+     * Add an ImportType to the current imports.
      */
     public void addImportType( ImportType importType )
     {
@@ -81,7 +107,9 @@ public abstract class JavaFile
      */
     public void setClassType( ClassType classType )
     {
-        this.classType = classType;
+        // To retain backward compatibility, make sure the list contains only the supplied classType
+        this.classTypes.clear();
+        this.classTypes.add( classType );
     }
 
     /**

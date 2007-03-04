@@ -19,6 +19,8 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
+import org.codehaus.plexus.util.StringUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -111,14 +113,13 @@ public class JavaFileImpl
                     this.addImportType( new ImportType( name ) );
                 }
 
-                //set the Class... if the class is found no more information is
-                //valid so just break out of the while loop at this point.
-                //set the imports
+                // Add the class or classes. There can be several classes in one file so
+                // continue with the while loop to get them all.
                 if ( stok.sval.equals( "class" ) || stok.sval.equals( "interface" ) || stok.sval.equals( "enum" ) )
                 {
                     stok.nextToken();
-                    this.setClassType( new ClassType( stok.sval ) );
-                    break;
+                    this.addClassType( new ClassType( stok.sval,
+                                                      getFilenameWithoutPathOrExtension( this.getFilename()) ) );
                 }
 
             }
@@ -130,6 +131,36 @@ public class JavaFileImpl
             {
                 this.reader.close();
             }
+        }
+    }
+
+    /**
+     * Remove the path and the ".java" extension from a filename.
+     */
+    private static String getFilenameWithoutPathOrExtension( String filename )
+    {
+        String newFilename;
+        // Remove the ".java" extension from the filename, if it exists
+        int extensionIndex = filename.lastIndexOf( ".java" );
+        if ( extensionIndex == -1 )
+        {
+            newFilename = filename;
+        }
+        else
+        {
+            newFilename = filename.substring( 0, extensionIndex );
+        }
+
+        // Remove the path, after unifying path separators
+        newFilename = StringUtils.replace( newFilename, "\\", "/" );
+        int pathIndex = newFilename.lastIndexOf( "/" );
+        if ( pathIndex == -1 )
+        {
+            return newFilename;
+        }
+        else
+        {
+            return newFilename.substring( pathIndex + 1 );
         }
     }
 
