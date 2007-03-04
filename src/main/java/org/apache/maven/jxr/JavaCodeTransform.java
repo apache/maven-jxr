@@ -100,7 +100,7 @@ public class JavaCodeTransform
     /**
      * start comment delimeter
      */
-    public static final String COMMENT_START = "<em id=\"jxr_comment\">";
+    public static final String COMMENT_START = "<em class=\"jxr_comment\">";
 
     /**
      * end comment delimeter
@@ -110,7 +110,7 @@ public class JavaCodeTransform
     /**
      * start javadoc comment delimeter
      */
-    public static final String JAVADOC_COMMENT_START = "<em id=\"jxr_javadoccomment\">";
+    public static final String JAVADOC_COMMENT_START = "<em class=\"jxr_javadoccomment\">";
 
     /**
      * end javadoc comment delimeter
@@ -120,7 +120,7 @@ public class JavaCodeTransform
     /**
      * start String delimeter
      */
-    public static final String STRING_START = "<span id=\"jxr_string\">";
+    public static final String STRING_START = "<span class=\"jxr_string\">";
 
     /**
      * end String delimeter
@@ -130,7 +130,7 @@ public class JavaCodeTransform
     /**
      * start reserved word delimeter
      */
-    public static final String RESERVED_WORD_START = "<strong id=\"jxr_keyword\">";
+    public static final String RESERVED_WORD_START = "<strong class=\"jxr_keyword\">";
 
     /**
      * end reserved word delimeter
@@ -904,6 +904,8 @@ public class JavaCodeTransform
      */
     private final String keywordFilter( String line )
     {
+        final String CLASS_KEYWORD = "class";
+
         if ( line == null || line.equals( "" ) )
         {
             return "";
@@ -927,10 +929,20 @@ public class JavaCodeTransform
                 }
             }
             String tempString = temp.toString();
-            if ( reservedWords.containsKey( tempString ) && !usedReservedWords.containsKey( tempString ) )
+
+            // Special handling of css style class definitions
+            if(CLASS_KEYWORD.equals(tempString) && ch == '=')
             {
-                usedReservedWords.put( tempString, tempString );
-                line = replace( line, tempString, ( RESERVED_WORD_START + tempString + RESERVED_WORD_END ) );
+                i++;
+            }
+            else if ( reservedWords.containsKey( tempString ) )
+            {
+                StringBuffer newLine = new StringBuffer( line.substring( 0, i - tempString.length() ) );
+                newLine.append( RESERVED_WORD_START );
+                newLine.append( tempString );
+                newLine.append( RESERVED_WORD_END );
+                newLine.append( line.substring( i ) );
+                line = newLine.toString();
                 i += ( RESERVED_WORD_START.length() + RESERVED_WORD_END.length() );
             }
             else
