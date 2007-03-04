@@ -1053,6 +1053,7 @@ public class JavaCodeTransform
         reservedWords.put( "import", "import" );
         reservedWords.put( "protected", "protected" );
         reservedWords.put( "try", "try" );
+        reservedWords.put( "throws", "throws" );
     }
 
     /**
