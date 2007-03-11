@@ -47,7 +47,7 @@ jxr.xref( Collections.singletonList( "/src/main/java/" ), "templateDir",
 +------+
 
  <<Note>>: the <templateDir> is a directory with several {{{http://velocity.apache.org/}Velocity}} templates.
- Maven JXR uses its own {{{https://svn.apache.org/repos/asf/maven/jxr/trunk/src/main/resources/templates}templates}}.
+ Maven JXR uses its own {{{https://svn.apache.org/repos/asf/maven/jxr/trunk/maven-jxr/src/main/resources/templates}templates}}.
 
  The generated JXR structure should be like the following:
 
