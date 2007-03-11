@@ -21,37 +21,17 @@ under the License.
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.maven</groupId>
-    <artifactId>maven-parent</artifactId>
-    <version>4</version>
-    <relativePath>../pom/maven/pom.xml</relativePath>
+    <groupId>org.apache.maven.jxr</groupId>
+    <artifactId>jxr</artifactId>
+    <version>2.1-SNAPSHOT</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven</groupId>
   <artifactId>maven-jxr</artifactId>
   <name>Maven JXR</name>
-  <version>1.1-SNAPSHOT</version>
   <description>Source cross reference library</description>
   <url>http://maven.apache.org/jxr/</url>
-
-  <issueManagement>
-    <system>jira</system>
-    <url>http://jira.codehaus.org/browse/JXR</url>
-  </issueManagement>
-
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/jxr/trunk</developerConnection>
-    <url>http://svn.apache.org/viewvc/maven/jxr/trunk/</url>
-  </scm>
-
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://minotaur.apache.org/www/maven.apache.org/jxr/</url>
-    </site>
-  </distributionManagement>
 
   <contributors>
     <contributor>
@@ -150,4 +130,11 @@ under the License.
       </plugin>
     </plugins>
   </build>
+
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>scp://people.apache.org/www/maven.apache.org/jxr/</url>
+    </site>
+  </distributionManagement>
 </project>
