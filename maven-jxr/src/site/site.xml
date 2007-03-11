@@ -79,6 +79,6 @@ under the License.
     <menu name="Examples">
       <item name="Using Maven JXR in Java" href="/examples/java.html"/>
     </menu>
-    ${reports}
+    <menu ref="reports"/>
   </body>
 </project>
