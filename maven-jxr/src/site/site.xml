@@ -19,11 +19,11 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project name="JXR">
+<project>
   <bannerLeft>
-    <name>JXR</name>
+    <name>${project.name}</name>
     <src>http://maven.apache.org/images/apache-maven-project-2.png</src>
-    <href>http://maven.apache.org/jxr</href>
+    <href>http://maven.apache.org/jxr/</href>
   </bannerLeft>
   <bannerRight>
     <src>http://maven.apache.org/images/maven-logo-2.gif</src>
