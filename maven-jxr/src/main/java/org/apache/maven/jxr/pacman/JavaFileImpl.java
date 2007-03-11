@@ -85,14 +85,14 @@ public class JavaFileImpl
                 }
 
                 //set the package
-                if ( stok.sval.equals( "package" ) )
+                if ( "package".equals( stok.sval ) && stok.ttype != '\"' )
                 {
                     stok.nextToken();
                     this.setPackageType( new PackageType( stok.sval ) );
                 }
 
                 //set the imports
-                if ( stok.sval.equals( "import" ) )
+                if ( "import".equals( stok.sval )  && stok.ttype != '\"' )
                 {
                     stok.nextToken();
 
@@ -115,7 +115,8 @@ public class JavaFileImpl
 
                 // Add the class or classes. There can be several classes in one file so
                 // continue with the while loop to get them all.
-                if ( stok.sval.equals( "class" ) || stok.sval.equals( "interface" ) || stok.sval.equals( "enum" ) )
+                if ( ( "class".equals( stok.sval ) || "interface".equals( stok.sval ) || "enum".equals( stok.sval ) )
+                    &&  stok.ttype != '\"' )
                 {
                     stok.nextToken();
                     this.addClassType( new ClassType( stok.sval,
