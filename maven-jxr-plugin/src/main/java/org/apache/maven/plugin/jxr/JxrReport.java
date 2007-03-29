@@ -23,6 +23,7 @@ import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +46,14 @@ public class JxrReport
      * @readonly
      */
     private List sourceDirs;
+    
+    /**
+     * Specifies the source path where the java files are located.
+     * The paths are separated by '<code>;</code>'.
+     *
+     * @parameter expression="${sourcePath}"
+     */
+    private String sourcePath;
 
     /**
      * Folder where the Xref files will be copied to.
@@ -81,7 +90,13 @@ public class JxrReport
      */
     protected List getSourceRoots()
     {
-        return this.sourceDirs;
+        if (sourcePath != null) {
+            String[] sourcePathArray = sourcePath.split(";");
+            if (sourcePathArray.length > 0) {
+                return Arrays.asList(sourcePathArray);
+            }
+        }
+        return sourceDirs;
     }
 
     /**
