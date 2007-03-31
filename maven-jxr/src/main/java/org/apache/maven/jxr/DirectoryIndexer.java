@@ -66,7 +66,7 @@ public class DirectoryIndexer
      * JavaCodeTransform uses this to cross-reference package references
      * with that package's main summary page.
      */
-    final static String INDEX = "package-summary.html";
+    static final String INDEX = "package-summary.html";
 
     /*
      * Path to the root output directory.
@@ -365,11 +365,12 @@ public class DirectoryIndexer
 
                 String className = clazz.getName();
                 Map classInfo = new HashMap();
-                if( clazz.getFilename() != null )
+                if ( clazz.getFilename() != null )
                 {
                     classInfo.put( "filename", clazz.getFilename() );
                 }
-                else {
+                else
+                {
                     classInfo.put( "filename", "" );
                 }
                 classInfo.put( "name", className );

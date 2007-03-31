@@ -258,7 +258,8 @@ public abstract class AbstractJxrReport
             jxr.setIncludes( (String[]) includes.toArray( new String[0] ) );
         }
 
-        jxr.xref( sourceDirs, templateDir, windowTitle, docTitle, getBottomText( project.getInceptionYear(), project.getOrganization() ) );
+        jxr.xref( sourceDirs, templateDir, windowTitle, docTitle,
+                  getBottomText( project.getInceptionYear(), project.getOrganization() ) );
 
         // and finally copy the stylesheet
         copyRequiredResources( destinationDirectory );

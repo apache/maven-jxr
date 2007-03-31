@@ -90,10 +90,12 @@ public class JxrReport
      */
     protected List getSourceRoots()
     {
-        if (sourcePath != null) {
-            String[] sourcePathArray = sourcePath.split(";");
-            if (sourcePathArray.length > 0) {
-                return Arrays.asList(sourcePathArray);
+        if ( sourcePath != null )
+        {
+            String[] sourcePathArray = sourcePath.split( ";" );
+            if ( sourcePathArray.length > 0 )
+            {
+                return Arrays.asList( sourcePathArray );
             }
         }
         return sourceDirs;

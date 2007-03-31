@@ -49,7 +49,7 @@ public class ClassType
      * @param name
      * @param filename
      */
-    public ClassType( String name , String filename)
+    public ClassType( String name, String filename )
     {
         this.setName( name );
         this.setFilename( filename );

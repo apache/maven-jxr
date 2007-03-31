@@ -372,8 +372,8 @@ public class JavaCodeTransform
         {
             if ( LINE_NUMBERS )
             {
-                out.print( "<a name=\"" + linenumber + "\" " + "href=\"#" + linenumber + "\">" + linenumber +
-                    "</a>" + getLineWidth( linenumber ) );
+                out.print( "<a name=\"" + linenumber + "\" " + "href=\"#" + linenumber + "\">" + linenumber
+                    + "</a>" + getLineWidth( linenumber ) );
             }
 
             out.println( this.syntaxHighlight( line ) );
@@ -931,7 +931,7 @@ public class JavaCodeTransform
             String tempString = temp.toString();
 
             // Special handling of css style class definitions
-            if(CLASS_KEYWORD.equals(tempString) && ch == '=')
+            if ( CLASS_KEYWORD.equals( tempString ) && ch == '=' )
             {
                 i++;
             }
@@ -1270,8 +1270,8 @@ public class JavaCodeTransform
                         }
                     }
 
-                    if ( fqpn_package.equals( currentImport.getName() ) &&
-                        currentImport.getClassType( fqpn_class ) != null )
+                    if ( fqpn_package.equals( currentImport.getName() )
+                        && currentImport.getClassType( fqpn_class ) != null )
                     {
                         //then the package we are currently in is the one specified in the string
                         //and the import class is correct.
@@ -1444,13 +1444,13 @@ public class JavaCodeTransform
                 //Create an HREF for explicit classname imports
                 if ( classname != null )
                 {
-                    line = StringUtils.replace( line, classname, "<a href=\"" + pkgHREF + "/" + classname + ".html" +
-                        "\">" + classname + "</a>" );
+                    line = StringUtils.replace( line, classname, "<a href=\"" + pkgHREF + "/" + classname + ".html"
+                        + "\">" + classname + "</a>" );
                 }
 
                 //now replace the given package with a href
-                line = StringUtils.replace( line, pkg, "<a href=\"" + pkgHREF + "/" + DirectoryIndexer.INDEX + "\">" +
-                    pkg + "</a>" );
+                line = StringUtils.replace( line, pkg, "<a href=\"" + pkgHREF + "/" + DirectoryIndexer.INDEX + "\">"
+                    + pkg + "</a>" );
             }
 
         }
