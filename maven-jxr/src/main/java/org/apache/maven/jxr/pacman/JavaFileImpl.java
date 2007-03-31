@@ -120,7 +120,7 @@ public class JavaFileImpl
                 {
                     stok.nextToken();
                     this.addClassType( new ClassType( stok.sval,
-                                                      getFilenameWithoutPathOrExtension( this.getFilename()) ) );
+                                                      getFilenameWithoutPathOrExtension( this.getFilename() ) ) );
                 }
 
             }

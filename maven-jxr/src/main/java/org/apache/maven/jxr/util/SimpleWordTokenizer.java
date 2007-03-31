@@ -34,7 +34,7 @@ public class SimpleWordTokenizer
     /**
      * Description of the Field
      */
-    public final static char[] BREAKERS = {'(', ')', '[', ' ', '{', '}'};
+    public static final char[] BREAKERS = {'(', ')', '[', ' ', '{', '}'};
 
     /**
      * Break the given line into multiple StringUtils
