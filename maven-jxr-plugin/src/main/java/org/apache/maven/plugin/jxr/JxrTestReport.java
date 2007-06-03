@@ -54,6 +54,13 @@ public class JxrTestReport
     private String destDir;
 
     /**
+     * Folder where Test Javadoc is generated for this project.
+     *
+     * @parameter expression="${project.reporting.outputDirectory}/testapidocs"
+     */
+    private File testJavadocDir;
+
+    /**
      * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getSourceRoots()
      */
     protected List getSourceRoots()
@@ -85,7 +92,7 @@ public class JxrTestReport
 
         if ( !"pom".equals( project.getPackaging().toLowerCase() ) )
         {
-            l.addAll( project.getExecutionProject().getCompileSourceRoots() );
+            l.addAll( project.getExecutionProject().getTestCompileSourceRoots() );
         }
 
         if ( project.getExecutionProject() != null )
@@ -138,12 +145,11 @@ public class JxrTestReport
     }
 
     /**
-     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getJavadocLocation()
+     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getJavadocDir()
      */
-    protected String getJavadocLocation()
+    protected File getJavadocDir()
     {
-        // Don't link Javadoc
-        return null;
+        return testJavadocDir;
     }
 
     /**
