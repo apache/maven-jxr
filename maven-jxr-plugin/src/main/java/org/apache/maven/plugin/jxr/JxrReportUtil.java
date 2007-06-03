@@ -46,7 +46,7 @@ import org.xml.sax.SAXException;
  * Utility class for the jxr report.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id $
+ * @version $Id$
  */
 public class JxrReportUtil
 {
@@ -150,7 +150,8 @@ public class JxrReportUtil
      * Generates the site structure using the project hiearchy (project and its modules) or using the
      * distributionManagement elements from the pom.xml.
      *
-     * @todo come from javadoc plugin!
+     * @todo come from site plugin!
+     * @see org.apache.maven.plugins.site.SiteStageMojo#getStructure( MavenProject project, boolean ignoreMissingSiteUrl )
      *
      * @param project
      * @param ignoreMissingSiteUrl
