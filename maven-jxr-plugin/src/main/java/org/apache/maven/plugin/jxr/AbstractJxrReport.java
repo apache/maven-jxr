@@ -19,17 +19,6 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
-import org.apache.maven.doxia.siterenderer.Renderer;
-import org.apache.maven.jxr.JXR;
-import org.apache.maven.jxr.JxrException;
-import org.apache.maven.model.Organization;
-import org.apache.maven.model.ReportPlugin;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.reporting.AbstractMavenReport;
-import org.apache.maven.reporting.MavenReportException;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.StringUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -40,6 +29,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.jxr.JXR;
+import org.apache.maven.jxr.JxrException;
+import org.apache.maven.model.Organization;
+import org.apache.maven.model.ReportPlugin;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.reporting.AbstractMavenReport;
+import org.apache.maven.reporting.MavenReportException;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Base class for the JXR reports.
@@ -166,7 +166,7 @@ public abstract class AbstractJxrReport
     /**
      * Compiles the list of directories which contain source files that will be included in the JXR report generation.
      *
-     * @param sourceDirs    the List of the source directories
+     * @param sourceDirs the List of the source directories
      * @return a List of the directories that will be included in the JXR report generation
      */
     protected List pruneSourceDirs( List sourceDirs )
@@ -268,8 +268,8 @@ public abstract class AbstractJxrReport
             jxr.setIncludes( (String[]) includes.toArray( new String[0] ) );
         }
 
-        jxr.xref( sourceDirs, templateDir, windowTitle, docTitle,
-                  getBottomText( project.getInceptionYear(), project.getOrganization() ) );
+        jxr.xref( sourceDirs, templateDir, windowTitle, docTitle, getBottomText( project.getInceptionYear(), project
+            .getOrganization() ) );
 
         // and finally copy the stylesheet
         copyRequiredResources( destinationDirectory );
@@ -374,7 +374,7 @@ public abstract class AbstractJxrReport
     /**
      * Returns the correct resource bundle according to the locale
      *
-     * @param locale: the locale of the user
+     * @param locale the locale of the user
      * @return the bundle correponding to the locale
      */
     protected ResourceBundle getBundle( Locale locale )
@@ -469,9 +469,9 @@ public abstract class AbstractJxrReport
      * @return a String that contains the loaction of the javadocs
      */
     private String getJavadocLocation()
+        throws IOException
     {
         String location = null;
-
         if ( linkJavadoc )
         {
             // We don't need to do the whole translation thing like normal, because JXR does it internally.
@@ -484,15 +484,53 @@ public abstract class AbstractJxrReport
             else
             {
                 // Not yet generated - check if the report is on its way
-                for ( Iterator reports = getProject().getReportPlugins().iterator(); reports.hasNext(); )
-                {
-                    ReportPlugin report = (ReportPlugin) reports.next();
 
-                    String artifactId = report.getArtifactId();
-                    if ( "maven-javadoc-plugin".equals( artifactId ) )
+                // Special case: using the site:stage goal
+                String stagingDirectory = System.getProperty( "stagingDirectory" );
+
+                if ( StringUtils.isNotEmpty( stagingDirectory ) )
+                {
+                    String javadocDestDir = getJavadocDir().getName();
+                    boolean javadocAggregate = Boolean
+                        .valueOf( JxrReportUtil.getMavenJavadocPluginBasicOption( project, "aggregate", "false" ) )
+                        .booleanValue();
+
+                    String structureProject = JxrReportUtil.getStructure( project, false );
+
+                    if ( aggregate && javadocAggregate )
                     {
-                        location = getJavadocDir().getAbsolutePath();
+                        File outputDirectory = new File( stagingDirectory, structureProject );
+                        location = outputDirectory + "/" + javadocDestDir;
                     }
+                    if ( !aggregate && javadocAggregate )
+                    {
+                        location = stagingDirectory + "/" + javadocDestDir;
+
+                        String hierarchy = project.getName();
+
+                        MavenProject parent = project.getParent();
+                        while ( parent != null )
+                        {
+                            hierarchy = parent.getName();
+                            parent = parent.getParent();
+                        }
+                        File outputDirectory = new File( stagingDirectory, hierarchy );
+                        location = outputDirectory + "/" + javadocDestDir;
+                    }
+                    if ( aggregate && !javadocAggregate )
+                    {
+                        getLog().warn(
+                                       "The JXR plugin is configured to build an aggregated report at the root, "
+                                           + "not the Javadoc plugin." );
+                    }
+                    if ( !aggregate && !javadocAggregate )
+                    {
+                        location = stagingDirectory + "/" + structureProject + "/" + javadocDestDir;
+                    }
+                }
+                else
+                {
+                    location = getJavadocDir().getAbsolutePath();
                 }
             }
 
