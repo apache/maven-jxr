@@ -47,6 +47,7 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
+ * @version $Id$
  */
 public abstract class AbstractJxrReport
     extends AbstractMavenReport
@@ -347,8 +348,6 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Cf. overriden method documentation.
-     *
      * @see org.apache.maven.reporting.AbstractMavenReport#getSiteRenderer()
      */
     protected Renderer getSiteRenderer()
@@ -357,8 +356,6 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Cf. overriden method documentation.
-     *
      * @see org.apache.maven.reporting.AbstractMavenReport#getOutputDirectory()
      */
     protected String getOutputDirectory()
@@ -367,8 +364,6 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Cf. overriden method documentation.
-     *
      * @see org.apache.maven.reporting.AbstractMavenReport#getProject()
      */
     public MavenProject getProject()
@@ -379,8 +374,7 @@ public abstract class AbstractJxrReport
     /**
      * Returns the correct resource bundle according to the locale
      *
-     * @param locale :
-     *               the locale of the user
+     * @param locale: the locale of the user
      * @return the bundle correponding to the locale
      */
     protected ResourceBundle getBundle( Locale locale )
@@ -388,6 +382,10 @@ public abstract class AbstractJxrReport
         return ResourceBundle.getBundle( "jxr-report", locale, this.getClass().getClassLoader() );
     }
 
+    /**
+     * @param sourceDirs
+     * @return true if the report could be generated
+     */
     protected boolean canGenerateReport( List sourceDirs )
     {
         boolean canGenerate = !sourceDirs.isEmpty();
@@ -400,8 +398,6 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Cf. overriden method documentation.
-     *
      * @see org.apache.maven.reporting.AbstractMavenReport#executeReport(java.util.Locale)
      */
     protected void executeReport( Locale locale )
@@ -454,8 +450,6 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Cf. overriden method documentation.
-     *
      * @see org.apache.maven.reporting.AbstractMavenReport#canGenerateReport()
      */
     public boolean canGenerateReport()
@@ -464,8 +458,6 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Cf. overriden method documentation.
-     *
      * @see org.apache.maven.reporting.AbstractMavenReport#isExternalReport()
      */
     public boolean isExternalReport()

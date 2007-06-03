@@ -32,6 +32,7 @@ import java.util.Locale;
  * for a project.
  *
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
+ * @version $Id$
  * @goal jxr
  */
 public class JxrReport
@@ -132,8 +133,6 @@ public class JxrReport
     }
 
     /**
-     * Cf. overriden method documentation.
-     *
      * @see org.apache.maven.reporting.MavenReport#getDescription(java.util.Locale)
      */
     public String getDescription( Locale locale )
@@ -142,8 +141,6 @@ public class JxrReport
     }
 
     /**
-     * Cf. overriden method documentation.
-     *
      * @see org.apache.maven.reporting.MavenReport#getName(java.util.Locale)
      */
     public String getName( Locale locale )
@@ -152,8 +149,6 @@ public class JxrReport
     }
 
     /**
-     * Cf. overriden method documentation.
-     *
      * @see org.apache.maven.reporting.MavenReport#getOutputName()
      */
     public String getOutputName()

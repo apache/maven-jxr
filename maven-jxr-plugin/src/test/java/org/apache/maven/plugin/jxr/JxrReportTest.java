@@ -34,7 +34,6 @@ import java.io.IOException;
 public class JxrReportTest
     extends AbstractMojoTestCase
 {
-
     /**
      * @see org.apache.maven.plugin.testing.AbstractMojoTestCase#setUp()
      */
