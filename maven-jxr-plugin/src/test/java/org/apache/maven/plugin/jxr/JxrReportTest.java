@@ -35,10 +35,22 @@ public class JxrReportTest
     extends AbstractMojoTestCase
 {
 
+    /**
+     * @see org.apache.maven.plugin.testing.AbstractMojoTestCase#setUp()
+     */
     protected void setUp()
         throws Exception
     {
         super.setUp();
+    }
+
+    /**
+     * @see org.codehaus.plexus.PlexusTestCase#tearDown()
+     */
+    protected void tearDown()
+        throws Exception
+    {
+        // nop
     }
 
     /**
@@ -323,10 +335,20 @@ public class JxrReportTest
         }
     }
 
-    protected void tearDown()
+    /**
+     * Test the jxr for a POM project.
+     *
+     * @throws Exception
+     */
+    public void testPom()
         throws Exception
     {
+        File testPom = new File( getBasedir(),
+                                 "src/test/resources/unit/pom-test/pom-test-plugin-config.xml" );
+        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
+        mojo.execute();
 
+        assertFalse( new File( getBasedir(), "target/test/unit/pom-test" ).exists() );
     }
 
     /**
@@ -336,7 +358,7 @@ public class JxrReportTest
      * @param destDir
      * @throws IOException
      */
-    private void copyFilesFromDirectory( File srcDir, File destDir )
+    private static void copyFilesFromDirectory( File srcDir, File destDir )
         throws IOException
     {
         FileUtils.copyDirectoryStructure( srcDir, destDir );
@@ -349,7 +371,7 @@ public class JxrReportTest
      * @return a String object that contains the contents of the file
      * @throws IOException
      */
-    private String readFile( File file )
+    private static String readFile( File file )
         throws IOException
     {
         String str = "", strTmp = "";
@@ -363,5 +385,4 @@ public class JxrReportTest
 
         return str;
     }
-
 }

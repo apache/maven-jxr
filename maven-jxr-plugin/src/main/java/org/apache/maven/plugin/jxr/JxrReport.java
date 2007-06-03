@@ -23,6 +23,7 @@ import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -46,7 +47,7 @@ public class JxrReport
      * @readonly
      */
     private List sourceDirs;
-    
+
     /**
      * Specifies the source path where the java files are located.
      * The paths are separated by '<code>;</code>'.
@@ -98,7 +99,23 @@ public class JxrReport
                 return Arrays.asList( sourcePathArray );
             }
         }
-        return sourceDirs;
+
+        List l = new ArrayList();
+
+        if ( !"pom".equals( getProject().getPackaging().toLowerCase() ) )
+        {
+            l.addAll( sourceDirs );
+        }
+
+        if ( getProject().getExecutionProject() != null )
+        {
+            if ( !"pom".equals( getProject().getExecutionProject().getPackaging().toLowerCase() ) )
+            {
+                l.addAll( getProject().getExecutionProject().getCompileSourceRoots() );
+            }
+        }
+
+        return l;
     }
 
     /**
@@ -106,7 +123,22 @@ public class JxrReport
      */
     protected List getSourceRoots( MavenProject project )
     {
-        return project.getCompileSourceRoots();
+        List l = new ArrayList();
+
+        if ( !"pom".equals( project.getPackaging().toLowerCase() ) )
+        {
+            l.addAll( project.getCompileSourceRoots() );
+        }
+
+        if ( project.getExecutionProject() != null )
+        {
+            if ( !"pom".equals( project.getExecutionProject().getPackaging().toLowerCase() ) )
+            {
+                l.addAll( project.getExecutionProject().getCompileSourceRoots() );
+            }
+        }
+
+        return l;
     }
 
     /**

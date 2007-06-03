@@ -22,6 +22,7 @@ package org.apache.maven.plugin.jxr;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,7 +58,22 @@ public class JxrTestReport
      */
     protected List getSourceRoots()
     {
-        return this.sourceDirs;
+        List l = new ArrayList();
+
+        if ( !"pom".equals( getProject().getPackaging().toLowerCase() ) )
+        {
+            l.addAll( sourceDirs );
+        }
+
+        if ( getProject().getExecutionProject() != null )
+        {
+            if ( !"pom".equals( getProject().getExecutionProject().getPackaging().toLowerCase() ) )
+            {
+                l.addAll( getProject().getExecutionProject().getTestCompileSourceRoots() );
+            }
+        }
+
+        return l;
     }
 
     /**
@@ -65,7 +81,22 @@ public class JxrTestReport
      */
     protected List getSourceRoots( MavenProject project )
     {
-        return project.getTestCompileSourceRoots();
+        List l = new ArrayList();
+
+        if ( !"pom".equals( project.getPackaging().toLowerCase() ) )
+        {
+            l.addAll( project.getExecutionProject().getCompileSourceRoots() );
+        }
+
+        if ( project.getExecutionProject() != null )
+        {
+            if ( !"pom".equals( project.getExecutionProject().getPackaging().toLowerCase() ) )
+            {
+                l.addAll( project.getExecutionProject().getTestCompileSourceRoots() );
+            }
+        }
+
+        return l;
     }
 
     /**
