@@ -103,7 +103,7 @@ public abstract class AbstractJxrReport
     /**
      * String uses at the bottom of the Xref HTML files.
      *
-     * @parameter expression="${bottom}" default-value="Copyright &copy; {inceptionYear}-{currentYear} {projectOrganizationName}. All Rights Reserved."
+     * @parameter expression="${bottom}" default-value="Copyright &#169; {inceptionYear}-{currentYear} {projectOrganizationName}. All Rights Reserved."
      */
     private String bottom;
 
