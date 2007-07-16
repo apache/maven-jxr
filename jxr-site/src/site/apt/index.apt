@@ -30,17 +30,31 @@
 
 Maven JXR
 
- JXR is a source cross reference generator. It analyzes a set of Java source files and produces HTML files
- that shows annotated source code.
+ Maven JXR project (formally Java Cross Reference) is a library to analyze a set of Java 
+ source files and produces documentation in HTML format <à la Javadoc>.
 
- Take a look at the {{{xref/index.html}JXR report}} to see the results.
+ Take a look at this {{{xref/index.html}JXR report}} to see an example.
 
- The orignal JXR code was merged in 2004 with the Javasrc project from the
+* Main Features
+
+ * Support JDK 1.4+
+
+ * Complementary tool for Javadoc
+ 
+ * Easy configuration for color, style or template
+
+ * Fully integrated with Maven: plugins available for {{{http://maven.apache.org/maven-1.x/plugins/jxr/}Maven 1}}
+ and for {{{http://maven.apache.org/plugins/maven-jxr-plugin/}Maven 2}}
+ 
+* Brief History
+
+ The orignal JXR code was merged in 2004 with the Javasrc project from the defunct
  {{{http://jakarta.apache.org/alexandria}Jakarta Alexandria}} project.
+ The code was first maintained within the Maven 1 JXR plugin. In September 2005, it 
+ was voted to fork the base and create a separate library. 
 
 * Examples
 
    The following example shows how to use Maven JXR in more advanced usecases:
 
    * {{{examples/java.html}Using Maven JXR in Java}}
-

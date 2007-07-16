@@ -29,5 +29,13 @@ under the License.
         </p>
       </answer>
     </faq>
+    <faq id="Is an Ant task available">
+      <question>Is an Ant task available?</question>
+      <answer>
+        <p>
+          Not yet. Patches are always welcome!
+        </p>
+      </answer>
+    </faq>
   </part>
 </faqs>
