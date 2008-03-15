@@ -28,7 +28,7 @@ import java.util.Collections;
  * Test include/exclude patterns.
  *
  * @author <a href="mailto:dennisl@apache.org">Dennis Lundberg</a>
- * @version $Id: IncludeExcludeTest.java 497825 2007-01-19 14:22:06Z dennisl $
+ * @version $Id$
  */
 public class IncludeExcludeTest extends TestCase
 {
