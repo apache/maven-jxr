@@ -65,12 +65,14 @@ public abstract class AbstractJxrReport
     private Renderer siteRenderer;
 
     /**
-     * Output folder where the main page of the report will be generated.
+     * Output folder where the main page of the report will be generated. Note that this parameter is only relevant if
+     * the goal is run directly from the command line or from the default lifecycle. If the goal is run indirectly as
+     * part of a site generation, the output directory configured in the Maven Site Plugin will be used instead.
      *
      * @parameter expression="${project.reporting.outputDirectory}"
      * @required
      */
-    private String outputDirectory;
+    private File outputDirectory;
 
     /**
      * File input encoding.
@@ -360,7 +362,7 @@ public abstract class AbstractJxrReport
      */
     protected String getOutputDirectory()
     {
-        return outputDirectory;
+        return outputDirectory.getAbsolutePath();
     }
 
     /**
