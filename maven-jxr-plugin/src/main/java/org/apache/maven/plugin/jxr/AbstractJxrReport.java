@@ -39,6 +39,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -77,7 +78,7 @@ public abstract class AbstractJxrReport
     /**
      * File input encoding.
      *
-     * @parameter default-value="ISO-8859-1"
+     * @parameter expression="${encoding}" default-value="${project.build.sourceEncoding}"
      */
     private String inputEncoding;
 
@@ -239,6 +240,16 @@ public abstract class AbstractJxrReport
     }
 
     /**
+     * Gets the source file encoding.
+     *
+     * @return The source file encoding, never <code>null</code>.
+     */
+    protected String getInputEncoding()
+    {
+        return ( inputEncoding == null ) ? ReaderFactory.ISO_8859_1 : inputEncoding;
+    }
+
+    /**
      * Creates the Xref for the Java files found in the given source directory and puts
      * them in the given destination directory.
      *
@@ -254,7 +265,7 @@ public abstract class AbstractJxrReport
     {
         JXR jxr = new JXR();
         jxr.setDest( destinationDirectory );
-        jxr.setInputEncoding( inputEncoding );
+        jxr.setInputEncoding( getInputEncoding() );
         jxr.setLocale( locale );
         jxr.setLog( new PluginLogAdapter( getLog() ) );
         jxr.setOutputEncoding( outputEncoding );
