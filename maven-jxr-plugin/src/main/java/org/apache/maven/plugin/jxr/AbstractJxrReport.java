@@ -254,6 +254,12 @@ public abstract class AbstractJxrReport
     {
         JXR jxr = new JXR();
         jxr.setDest( destinationDirectory );
+        if ( StringUtils.isEmpty( inputEncoding ) )
+        {
+            String platformEncoding = System.getProperty( "file.encoding" );
+            getLog().warn( "File encoding has not been set, using platform encoding " + platformEncoding
+                           + ", i.e. build is platform dependent!" );
+        }
         jxr.setInputEncoding( inputEncoding );
         jxr.setLocale( locale );
         jxr.setLog( new PluginLogAdapter( getLog() ) );
