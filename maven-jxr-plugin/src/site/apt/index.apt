@@ -24,7 +24,7 @@
  ~~ under the License.
 
 
-Maven 2 JXR Plugin
+Maven JXR Plugin
 
  The JXR plugin produces a cross-reference of the project's sources. The generated reports make it easier for the user
  to reference or find specific lines of code. It is also handy when used with the PMD plugin for referencing errors found
