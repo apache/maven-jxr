@@ -147,7 +147,7 @@ public class JxrReportUtil
     }
 
     /**
-     * Generates the site structure using the project hiearchy (project and its modules) or using the
+     * Generates the site structure using the project hierarchy (project and its modules) or using the
      * distributionManagement elements from the pom.xml.
      *
      * @todo come from site plugin!

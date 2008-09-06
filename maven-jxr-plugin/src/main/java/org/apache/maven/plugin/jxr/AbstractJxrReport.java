@@ -112,7 +112,7 @@ public abstract class AbstractJxrReport
     /**
      * Directory where Velocity templates can be found to generate overviews,
      * frames and summaries.
-     * Should not be used. If used, should be an absolute path, like "${basedir}/myTemplates".
+     * Should not be used. If used, should be an absolute path, like <code>"${basedir}/myTemplates"</code>.
      *
      * @parameter default-value="templates"
      */
@@ -120,7 +120,7 @@ public abstract class AbstractJxrReport
 
     /**
      * Style sheet used for the Xref HTML files.
-     * Should not be used. If used, should be an absolute path, like "${basedir}/myStyles.css".
+     * Should not be used. If used, should be an absolute path, like <code>"${basedir}/myStyles.css"</code>.
      *
      * @parameter default-value="stylesheet.css"
      */
@@ -210,7 +210,7 @@ public abstract class AbstractJxrReport
      * Checks whether the given directory contains Java files.
      *
      * @param dir the source directory
-     * @return true if the folder or one of its subfolders coantins at least 1 Java file
+     * @return true if the folder or one of its subfolders contains at least 1 Java file
      */
     private boolean hasSources( File dir )
     {
@@ -383,7 +383,7 @@ public abstract class AbstractJxrReport
      * Returns the correct resource bundle according to the locale
      *
      * @param locale the locale of the user
-     * @return the bundle correponding to the locale
+     * @return the bundle corresponding to the locale
      */
     protected ResourceBundle getBundle( Locale locale )
     {
@@ -474,7 +474,7 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * @return a String that contains the loaction of the javadocs
+     * @return a String that contains the location of the javadocs
      */
     private String getJavadocLocation()
         throws IOException
