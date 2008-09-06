@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * Interface for objects which wish to provide metainfo about a JavaFile.
+ * Interface for objects which wish to provide meta-info about a JavaFile.
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  * @version $Id$

@@ -98,42 +98,42 @@ public class JavaCodeTransform
     public static final boolean LINE_NUMBERS = true;
 
     /**
-     * start comment delimeter
+     * start comment delimiter
      */
     public static final String COMMENT_START = "<em class=\"jxr_comment\">";
 
     /**
-     * end comment delimeter
+     * end comment delimiter
      */
     public static final String COMMENT_END = "</em>";
 
     /**
-     * start javadoc comment delimeter
+     * start javadoc comment delimiter
      */
     public static final String JAVADOC_COMMENT_START = "<em class=\"jxr_javadoccomment\">";
 
     /**
-     * end javadoc comment delimeter
+     * end javadoc comment delimiter
      */
     public static final String JAVADOC_COMMENT_END = "</em>";
 
     /**
-     * start String delimeter
+     * start String delimiter
      */
     public static final String STRING_START = "<span class=\"jxr_string\">";
 
     /**
-     * end String delimeter
+     * end String delimiter
      */
     public static final String STRING_END = "</span>";
 
     /**
-     * start reserved word delimeter
+     * start reserved word delimiter
      */
     public static final String RESERVED_WORD_START = "<strong class=\"jxr_keyword\">";
 
     /**
-     * end reserved word delimeter
+     * end reserved word delimiter
      */
     public static final String RESERVED_WORD_END = "</strong>";
 
@@ -164,7 +164,7 @@ public class JavaCodeTransform
     private Hashtable reservedWords = new Hashtable();
 
     /**
-     * flag set to true when a multi line comment is started
+     * flag set to true when a multi-line comment is started
      */
     private boolean inMultiLineComment = false;
 
@@ -179,7 +179,7 @@ public class JavaCodeTransform
     private String currentFilename = null;
 
     /**
-     * The current CVS revision of the currently transformed documnt
+     * The current CVS revision of the currently transformed document
      */
     private String revision = null;
 
@@ -189,12 +189,12 @@ public class JavaCodeTransform
     private String sourcefile = null;
 
     /**
-     * The currently being written destfile
+     * The currently being written destination file
      */
     private String destfile = null;
 
     /**
-     * The virtual source directory that is being read from: src/java
+     * The virtual source directory that is being read from: <code>src/java</code>
      */
     private String sourcedir = null;
 
@@ -597,7 +597,7 @@ public class JavaCodeTransform
     }
 
     /**
-     * The current dest file being written
+     * The current destination file being written
      *
      * @return destination file name
      */
@@ -817,7 +817,7 @@ public class JavaCodeTransform
     /**
      * Filter inline comments from a line and formats them properly. One problem
      * we'll have to solve here: comments contained in a string should be
-     * ignored... this is also true of the multiline comments. So, we could
+     * ignored... this is also true of the multi-line comments. So, we could
      * either ignore the problem, or implement a function called something like
      * isInsideString(line, index) where index points to some point in the line
      * that we need to check... started doing this function below.
@@ -911,7 +911,6 @@ public class JavaCodeTransform
             return "";
         }
         StringBuffer buf = new StringBuffer();
-        Hashtable usedReservedWords = new Hashtable();
         int i = 0;
         char ch;
         StringBuffer temp = new StringBuffer();
@@ -956,7 +955,7 @@ public class JavaCodeTransform
     }
 
     /**
-     * Replace... I made it use a stringBuffer... hope it still works :)
+     * Replace... I made it use a <code>StringBuffer</code>... hope it still works :)
      *
      * @param line String
      * @param oldString String
@@ -985,7 +984,7 @@ public class JavaCodeTransform
      */
     private final boolean isInsideString( String line, int position )
     {
-        if ( line.indexOf( "\"" ) < 0 )
+        if ( line.indexOf( '"' ) < 0 )
         {
             return false;
         }
@@ -994,12 +993,12 @@ public class JavaCodeTransform
         String right = line.substring( position );
         int leftCount = 0;
         int rightCount = 0;
-        while ( ( index = left.indexOf( "\"" ) ) > -1 )
+        while ( ( index = left.indexOf( '"' ) ) > -1 )
         {
             leftCount++;
             left = left.substring( index + 1 );
         }
-        while ( ( index = right.indexOf( "\"" ) ) > -1 )
+        while ( ( index = right.indexOf( '"' ) ) > -1 )
         {
             rightCount++;
             right = right.substring( index + 1 );
@@ -1218,13 +1217,13 @@ public class JavaCodeTransform
 
             for ( int j = 0; j < packages.length; ++j )
             {
-                //get the package from teh PackageManager because this will hold
+                //get the package from the PackageManager because this will hold
                 //the version with the classes also.
 
                 PackageType currentImport = packageManager.getPackageType( packages[j] );
 
                 //the package here might in fact be null because it wasn't parsed out
-                //this might be something that is either not included or os part
+                //this might be something that is either not included or is part
                 //of another package and wasn't parsed out.
 
                 if ( currentImport == null )
@@ -1333,7 +1332,7 @@ public class JavaCodeTransform
     /**
      * <p>Given the name of a package... get the number of
      * subdirectories/subpackages there would be. </p>
-     * <p>EX: org.apache.maven == 3 </p>
+     * <p>EX: <code>org.apache.maven == 3</code> </p>
      *
      * @param packageName String
      * @return int
@@ -1350,7 +1349,7 @@ public class JavaCodeTransform
 
         while ( true )
         {
-            index = packageName.indexOf( ".", index );
+            index = packageName.indexOf( '.', index );
 
             if ( index == -1 )
             {
@@ -1361,7 +1360,7 @@ public class JavaCodeTransform
         }
 
         //need to increment this by one
-        count = ++count;
+        ++count;
 
         return count;
     }

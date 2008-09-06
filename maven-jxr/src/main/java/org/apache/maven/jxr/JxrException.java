@@ -20,7 +20,7 @@ package org.apache.maven.jxr;
  */
 
 /**
- * Exception occuring in JXR.
+ * Exception occurring in JXR.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @version $Id$

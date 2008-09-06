@@ -40,20 +40,22 @@ import java.util.TreeMap;
 
 /**
  * This class creates the navigational pages for jxr's cross-referenced source
- * files.  The navigation is inspired by javadoc, so it should have a familiar feel.
+ * files. The navigation is inspired by javadoc, so it should have a familiar feel.
  *
  * Creates the following files:
  * <ul>
- * <li>index.html            main index containing the frameset</li>
- * <li>overview-frame.html   list of the project's packages              (top left)</li>
- * <li>allclasses-frame.html list of all classes in the project          (bottom left)</li>
- * <li>overview-summary.html top-level listing of the project's packages (main frame)</li>
+ * <li><code>index.html</code>            main index containing the frameset</li>
+ * <li><code>overview-frame.html</code>   list of the project's packages              (top left)</li>
+ * <li><code>allclasses-frame.html</code> list of all classes in the project          (bottom left)</li>
+ * <li><code>overview-summary.html</code> top-level listing of the project's packages (main frame)</li>
  *
- * <ul>
+ * <li>
  * Package specific:
- * <li>package-summary.html listing of all classes in this package    (main frame)</li>
- * <li>package-frame.html   listing of all classes in this package    (bottom left)</li>
+ * <ul>
+ * <li><code>package-summary.html</code> listing of all classes in this package    (main frame)</li>
+ * <li><code>package-frame.html</code>   listing of all classes in this package    (bottom left)</li>
  * </ul>
+ * </li>
  * </ul>
  *
  * @author <a href="mailto:bellingard@gmail.com">Fabrice Bellingard </a>
@@ -258,7 +260,7 @@ public class DirectoryIndexer
         File templateDirFile = new File( getTemplateDir() );
         if ( templateDirFile.isAbsolute() )
         {
-            // the property has been overriden: need to use a FileResourceLoader
+            // the property has been overridden: need to use a FileResourceLoader
             engine.setProperty( "resource.loader", "file" );
             engine.setProperty( "file.resource.loader.class",
                                 "org.apache.velocity.runtime.resource.loader.FileResourceLoader" );

@@ -322,7 +322,7 @@ public class JXR
      * Given a source file transform it into HTML and write it to the
      * destination (dest) file.
      *
-     * @param source The jave source file
+     * @param source The java source file
      * @param dest The directory to put the HTML into
      * @throws IOException Thrown if the transform can't happen for some reason.
      */
@@ -340,14 +340,14 @@ public class JXR
      * Creates a relative link from one directory to another.
      *
      * Example:
-     * given /foo/bar/baz/oink
-     * and /foo/bar/schmoo
+     * given <code>/foo/bar/baz/oink</code>
+     * and <code>/foo/bar/schmoo</code>
      *
-     * this method will return a string of "../../schmoo/"
+     * this method will return a string of <code>"../../schmoo/"</code>
      *
      * @param fromDir The directory from which the link is relative.
      * @param toDir The directory into which the link points.
-     * @return a string of format "../../schmoo/"
+     * @return a String of format <code>"../../schmoo/"</code>
      * @throws java.io.IOException If a problem is encountered while navigating through the directories.
      */
     private static String getRelativeLink( String fromDir, String toDir )
