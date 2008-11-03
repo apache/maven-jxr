@@ -52,50 +52,24 @@ public class JxrTestReportTest
         JxrTestReport mojo = (JxrTestReport) lookupMojo( "test-jxr", testPom );
         mojo.execute();
 
+    	File xrefTestDir = new File( getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test" );
+
         //check if the jxr docs were generated
-        File generatedFile = new File( getBasedir(),
-                                       "target/test/unit/testsourcedir-test/target/site/xref-test/testsourcedir/test/AppSampleTest.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/testsourcedir-test/target/site/xref-test/testsourcedir/test/AppTest.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/testsourcedir-test/target/site/xref-test/testsourcedir/test/package-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/testsourcedir-test/target/site/xref-test/testsourcedir/test/package-summary.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test/allclasses-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test/index.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test/overview-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test/overview-summary.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test/stylesheet.css" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+        assertTrue( new File( xrefTestDir, "testsourcedir/test/AppSampleTest.html" ).exists() );
+        assertTrue( new File( xrefTestDir, "testsourcedir/test/AppTest.html" ).exists() );
+        assertTrue( new File( xrefTestDir, "testsourcedir/test/package-frame.html" ).exists() );
+        assertTrue( new File( xrefTestDir, "testsourcedir/test/package-summary.html" ).exists() );
+        assertTrue( new File( xrefTestDir, "allclasses-frame.html" ).exists() );
+        assertTrue( new File( xrefTestDir, "index.html" ).exists() );
+        assertTrue( new File( xrefTestDir, "overview-frame.html" ).exists() );
+        assertTrue( new File( xrefTestDir, "overview-summary.html" ).exists() );
+        assertTrue( new File( xrefTestDir, "stylesheet.css" ).exists() );
 
         //check if there's a link to the javadoc files
-        String str = readFile( new File( getBasedir(),
-                                         "target/test/unit/testsourcedir-test/target/site/xref-test/testsourcedir/test/AppSampleTest.html" ) );
+        String str = readFile( new File( xrefTestDir, "testsourcedir/test/AppSampleTest.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/testsourcedir/test/AppSample.html\"".toLowerCase() ) == -1 );
 
-        str = readFile( new File( getBasedir(),
-                                  "target/test/unit/testsourcedir-test/target/site/xref-test/testsourcedir/test/AppTest.html" ) );
+        str = readFile( new File( xrefTestDir, "testsourcedir/test/AppTest.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/testsourcedir/test/App.html\"".toLowerCase() ) == -1 );
 
     }

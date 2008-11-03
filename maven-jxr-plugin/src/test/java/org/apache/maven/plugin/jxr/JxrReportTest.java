@@ -60,57 +60,33 @@ public class JxrReportTest
     public void testDefaultConfiguration()
         throws Exception
     {
-        copyFilesFromDirectory( new File( getBasedir(), "src/test/resources/unit/default-configuration/javadoc-files" ),
-                                new File( getBasedir(), "target/test/unit/default-configuration/target/site" ) );
+    	File resourcesDir = new File( getBasedir(), "src/test/resources/unit/default-configuration" );
 
-        File testPom = new File( getBasedir(),
-                                 "src/test/resources/unit/default-configuration/default-configuration-plugin-config.xml" );
+    	File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site" );
+    	File xrefDir = new File( outputDir, "xref" );
+
+    	copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+
+        File testPom = new File( resourcesDir, "default-configuration-plugin-config.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
         //check if xref files were generated
-        File generatedFile =
-            new File( getBasedir(), "target/test/unit/default-configuration/target/site/xref/allclasses-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(), "target/test/unit/default-configuration/target/site/xref/index.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/default-configuration/target/site/xref/overview-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/default-configuration/target/site/xref/overview-summary.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/default-configuration/target/site/xref/stylesheet.css" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/default-configuration/target/site/xref/def/configuration/App.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/default-configuration/target/site/xref/def/configuration/AppSample.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/default-configuration/target/site/xref/def/configuration/package-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/default-configuration/target/site/xref/def/configuration/package-summary.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+        assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "index.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "stylesheet.css" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/App.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/AppSample.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
 
         //check if there's a link to the javadoc files
-        String str = readFile( new File( getBasedir(),
-                                         "target/test/unit/default-configuration/target/site/xref/def/configuration/AppSample.html" ) );
+        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
 
-        str = readFile( new File( getBasedir(),
-                                  "target/test/unit/default-configuration/target/site/xref/def/configuration/App.html" ) );
+        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
 
         // check if encoding is UTF-8, the default value
@@ -130,68 +106,32 @@ public class JxrReportTest
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
-        //check if xref files were generated
-        File generatedFile = new File( getBasedir(),
-                                       "target/test/unit/nojavadoclink-configuration/target/site/xref/allclasses-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+    	File xrefDir = new File( getBasedir(), "target/test/unit/nojavadoclink-configuration/target/site/xref" );
 
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/nojavadoclink-configuration/target/site/xref/index.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/overview-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/overview-summary.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile =
-            new File( getBasedir(), "target/test/unit/nojavadoclink-configuration/target/site/xref/stylesheet.css" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/App.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/AppSample.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/package-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/package-summary.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/sample/package-summary.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/sample/package-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/sample/Sample.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+    	//check if xref files were generated
+        assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "index.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "stylesheet.css" ).exists() );
+        assertTrue( new File( xrefDir, "nojavadoclink/configuration/App.html" ).exists() );
+        assertTrue( new File( xrefDir, "nojavadoclink/configuration/AppSample.html" ).exists() );
+        assertTrue( new File( xrefDir, "nojavadoclink/configuration/package-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "nojavadoclink/configuration/package-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "nojavadoclink/configuration/sample/package-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "nojavadoclink/configuration/sample/package-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "nojavadoclink/configuration/sample/Sample.html" ).exists() );
 
         //check if there's a link to the javadoc files
-        String str = readFile( new File( getBasedir(),
-                                         "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/AppSample.html" ) );
+        String str = readFile( new File( xrefDir, "nojavadoclink/configuration/AppSample.html" ) );
         assertTrue(
             str.toLowerCase().indexOf( "/apidocs/nojavadoclink/configuration/AppSample.html\"".toLowerCase() ) == -1 );
 
-        str = readFile( new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/App.html" ) );
+        str = readFile( new File( xrefDir, "nojavadoclink/configuration/App.html" ) );
         assertTrue(
             str.toLowerCase().indexOf( "/apidocs/nojavadoclink/configuration/app.html\"".toLowerCase() ) == -1 );
 
-        str = readFile( new File( getBasedir(),
-                                  "target/test/unit/nojavadoclink-configuration/target/site/xref/nojavadoclink/configuration/sample/Sample.html" ) );
+        str = readFile( new File( xrefDir, "nojavadoclink/configuration/sample/Sample.html" ) );
         assertTrue( str.toLowerCase().indexOf(
             "/apidocs/nojavadoclink/configuration/sample/sample.html\"".toLowerCase() ) == -1 );
 
@@ -212,39 +152,19 @@ public class JxrReportTest
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
+    	File xrefDir = new File( getBasedir(), "target/test/unit/aggregate-test/target/site/xref" );
+
         //check if xref files were generated for submodule1
-        File generatedFile = new File( getBasedir(),
-                                       "target/test/unit/aggregate-test/target/site/xref/aggregate/test/submodule1/package-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/aggregate-test/target/site/xref/aggregate/test/submodule1/package-summary.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/aggregate-test/target/site/xref/aggregate/test/submodule1/Submodule1App.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/aggregate-test/target/site/xref/aggregate/test/submodule1/Submodule1AppSample.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+        assertTrue( new File( xrefDir, "aggregate/test/submodule1/package-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "aggregate/test/submodule1/package-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "aggregate/test/submodule1/Submodule1App.html" ).exists() );
+        assertTrue( new File( xrefDir, "aggregate/test/submodule1/Submodule1AppSample.html" ).exists() );
 
         //check if xref files were generated for submodule2
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/aggregate-test/target/site/xref/aggregate/test/submodule2/package-frame.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/aggregate-test/target/site/xref/aggregate/test/submodule2/package-summary.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/aggregate-test/target/site/xref/aggregate/test/submodule2/Submodule2App.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
-
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/aggregate-test/target/site/xref/aggregate/test/submodule2/Submodule2AppSample.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+        assertTrue( new File( xrefDir, "aggregate/test/submodule2/package-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "aggregate/test/submodule2/package-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "aggregate/test/submodule2/Submodule2App.html" ).exists() );
+        assertTrue( new File( xrefDir, "aggregate/test/submodule2/Submodule2AppSample.html" ).exists() );
 
     }
 
@@ -261,13 +181,13 @@ public class JxrReportTest
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
-        //check if there's a link to the javadoc files
-        String str = readFile( new File( getBasedir(),
-                                         "target/test/unit/nojavadocdir-test/target/site/xref/nojavadocdir/test/AppSample.html" ) );
+    	File xrefDir = new File( getBasedir(), "target/test/unit/nojavadocdir-test/target/site/xref" );
+
+    	//check if there's a link to the javadoc files
+        String str = readFile( new File( xrefDir, "nojavadocdir/test/AppSample.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/nojavadocdir/test/AppSample.html".toLowerCase() ) != -1 );
 
-        str = readFile( new File( getBasedir(),
-                                  "target/test/unit/nojavadocdir-test/target/site/xref/nojavadocdir/test/App.html" ) );
+        str = readFile( new File( xrefDir, "nojavadocdir/test/App.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/nojavadocdir/test/app.html".toLowerCase() ) != -1 );
 
     }
@@ -285,14 +205,14 @@ public class JxrReportTest
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
-        // check that the non-excluded xref files were generated
-        File generatedFile = new File( getBasedir(),
-                                       "target/test/unit/exclude-configuration/target/site/xref/exclude/configuration/App.html" );
+    	File xrefDir = new File( getBasedir(), "target/test/unit/exclude-configuration/target/site/xref" );
+
+    	// check that the non-excluded xref files were generated
+        File generatedFile = new File( xrefDir, "exclude/configuration/App.html" );
         assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
 
         // check that the excluded xref files were not generated
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/exclude-configuration/target/site/xref/exclude/configuration/AppSample.html" );
+        generatedFile = new File( xrefDir, "exclude/configuration/AppSample.html" );
         assertFalse( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
     }
 
@@ -309,14 +229,14 @@ public class JxrReportTest
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
+    	File xrefDir = new File( getBasedir(), "target/test/unit/include-configuration/target/site/xref" );
+
         // check that the included xref files were generated
-        File generatedFile = new File( getBasedir(),
-                                       "target/test/unit/include-configuration/target/site/xref/include/configuration/App.html" );
+        File generatedFile = new File( xrefDir, "include/configuration/App.html" );
         assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
 
         // check that the non-included xref files were not generated
-        generatedFile = new File( getBasedir(),
-                                  "target/test/unit/include-configuration/target/site/xref/include/configuration/AppSample.html" );
+        generatedFile = new File( xrefDir, "include/configuration/AppSample.html" );
         assertFalse( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
     }
 
