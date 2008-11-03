@@ -39,6 +39,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -84,7 +85,7 @@ public abstract class AbstractJxrReport
     /**
      * File output encoding.
      *
-     * @parameter default-value="ISO-8859-1"
+     * @parameter expression="${outputEncoding}" default-value="${project.reporting.outputEncoding}"
      */
     private String outputEncoding;
 
@@ -164,6 +165,17 @@ public abstract class AbstractJxrReport
      * @parameter expression="${linkJavadoc}" default-value="true"
      */
     private boolean linkJavadoc;
+
+    /**
+     * Gets the effective reporting output files encoding.
+     *
+     * @return The effective reporting output file encoding, never <code>null</code>: defaults to
+     * <code>UTF-8</code> instead.
+     */
+    protected String getOutputEncoding()
+    {
+        return ( outputEncoding == null ) ? ReaderFactory.UTF_8 : outputEncoding;
+    }
 
     /**
      * Compiles the list of directories which contain source files that will be included in the JXR report generation.
@@ -263,7 +275,7 @@ public abstract class AbstractJxrReport
         jxr.setInputEncoding( inputEncoding );
         jxr.setLocale( locale );
         jxr.setLog( new PluginLogAdapter( getLog() ) );
-        jxr.setOutputEncoding( outputEncoding );
+        jxr.setOutputEncoding( getOutputEncoding() );
         jxr.setRevision( "HEAD" );
         jxr.setJavadocLinkDir( getJavadocLocation() );
         // Set include/exclude patterns on the jxr instance

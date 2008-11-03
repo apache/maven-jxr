@@ -113,6 +113,8 @@ public class JxrReportTest
                                   "target/test/unit/default-configuration/target/site/xref/def/configuration/App.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
 
+        // check if encoding is UTF-8, the default value
+        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
     }
 
     /**
@@ -193,6 +195,8 @@ public class JxrReportTest
         assertTrue( str.toLowerCase().indexOf(
             "/apidocs/nojavadoclink/configuration/sample/sample.html\"".toLowerCase() ) == -1 );
 
+        // check if encoding is ISO-8859-1, like specified in the plugin configuration
+        assertTrue( str.indexOf( "text/html; charset=ISO-8859-1" ) != -1 );
     }
 
     /**

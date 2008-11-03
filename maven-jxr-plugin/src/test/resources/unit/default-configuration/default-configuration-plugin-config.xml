@@ -36,7 +36,6 @@ under the License.
           <outputDirectory>${basedir}/target/test/unit/default-configuration/target/site</outputDirectory>
           <docTitle>Maven Jxr Plugin Default Configuration Test 1.0-SNAPSHOT Reference</docTitle>
           <inputEncoding>ISO-8859-1</inputEncoding>
-          <outputEncoding>ISO-8859-1</outputEncoding>
           <sourceDirs>
             <value>${basedir}/src/test/resources/unit/default-configuration</value>
           </sourceDirs>
