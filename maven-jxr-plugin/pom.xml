@@ -20,20 +20,21 @@ under the License.
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.apache.maven.jxr</groupId>
     <artifactId>jxr</artifactId>
     <version>2.2-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
+
   <groupId>org.apache.maven.plugins</groupId>
   <artifactId>maven-jxr-plugin</artifactId>
   <packaging>maven-plugin</packaging>
+
   <name>Maven JXR Plugin</name>
   <inceptionYear>2005</inceptionYear>
-  <prerequisites>
-    <maven>2.0.6</maven>
-  </prerequisites>
+
   <developers>
     <developer>
       <name>Fabrice Bellingard</name>
@@ -44,6 +45,18 @@ under the License.
       <timezone>+1</timezone>
     </developer>
   </developers>
+
+  <prerequisites>
+    <maven>2.0.6</maven>
+  </prerequisites>
+
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>scp://people.apache.org/www/maven.apache.org/plugins/maven-jxr-plugin/</url>
+    </site>
+  </distributionManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -114,6 +127,7 @@ under the License.
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <reporting>
     <plugins>
       <plugin>
@@ -122,10 +136,4 @@ under the License.
       </plugin>
     </plugins>
   </reporting>
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/maven.apache.org/plugins/maven-jxr-plugin/</url>
-    </site>
-  </distributionManagement>
 </project>

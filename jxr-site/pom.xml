@@ -22,39 +22,22 @@
  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>5</version>
+    <version>10</version>
     <relativePath>../pom/maven/pom.xml</relativePath>
   </parent>
 
-  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.jxr</groupId>
   <artifactId>jxr-site</artifactId>
   <packaging>pom</packaging>
+
   <name>JXR Site</name>
   <description>Site of Maven JXR (formely Java Cross Reference)</description>
   <url>http://maven.apache.org/jxr</url>
-
-  <issueManagement>
-    <system>jira</system>
-    <url>http://jira.codehaus.org/browse/JXR</url>
-  </issueManagement>
-
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/jxr-site/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/jxr/jxr-site/</developerConnection>
-    <url>http://svn.apache.org/viewvc/maven/jxr/jxr-site/</url>
-  </scm>
-
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/maven.apache.org/jxr/</url>
-    </site>
-  </distributionManagement>
 
   <mailingLists>
     <!-- No specific dev/user list, using Maven ones -->
@@ -107,12 +90,19 @@
     </mailingList>
   </mailingLists>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>2.0-beta-5</version>
-      </plugin>
-    </plugins>
-  </build>
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/jxr-site/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/jxr/jxr-site/</developerConnection>
+    <url>http://svn.apache.org/viewvc/maven/jxr/jxr-site/</url>
+  </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/JXR</url>
+  </issueManagement>
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>scp://people.apache.org/www/maven.apache.org/jxr/</url>
+    </site>
+  </distributionManagement>
 </project>

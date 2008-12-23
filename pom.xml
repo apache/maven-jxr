@@ -20,31 +20,37 @@ under the License.
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>5</version>
+    <version>10</version>
     <relativePath>../pom/maven/pom.xml</relativePath>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
+
   <groupId>org.apache.maven.jxr</groupId>
   <artifactId>jxr</artifactId>
   <version>2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
+
   <name>Maven JXR Parent</name>
-  <issueManagement>
-    <system>jira</system>
-    <url>http://jira.codehaus.org/browse/JXR</url>
-  </issueManagement>
-  <modules>
-    <module>maven-jxr</module>
-    <module>maven-jxr-plugin</module>
-  </modules>
+
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/trunk/</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/jxr/trunk/</developerConnection>
     <url>http://svn.apache.org/viewvc/maven/jxr/trunk/</url>
   </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/JXR</url>
+  </issueManagement>
+
+  <modules>
+    <module>maven-jxr</module>
+    <module>maven-jxr-plugin</module>
+  </modules>
+
   <build>
     <pluginManagement>
       <plugins>

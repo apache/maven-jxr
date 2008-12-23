@@ -20,14 +20,17 @@ under the License.
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.apache.maven.jxr</groupId>
     <artifactId>jxr</artifactId>
     <version>2.2-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
+
   <groupId>org.apache.maven</groupId>
   <artifactId>maven-jxr</artifactId>
+
   <name>Maven JXR</name>
   <description>Source cross reference library</description>
   <url>http://maven.apache.org/jxr/</url>
@@ -91,6 +94,13 @@ under the License.
     </mailingList>
   </mailingLists>
 
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>scp://people.apache.org/www/maven.apache.org/jxr/</url>
+    </site>
+  </distributionManagement>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -120,20 +130,4 @@ under the License.
       <version>1.4</version>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>2.0-beta-5</version>
-      </plugin>
-    </plugins>
-  </build>
-
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/maven.apache.org/jxr/</url>
-    </site>
-  </distributionManagement>
 </project>
