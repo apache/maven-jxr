@@ -1,9 +1,11 @@
  ------
- Linking JXR Files to Javadocs
+ Usage
  ------
+ Fabrice Bellingard
+ <bellingard.NO-SPAM@gmail.com>
  Maria Odea Ching
  ------
- 6 July 2006
+ 5 July 2006
  ------
 
  ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -24,37 +26,51 @@
  ~~ under the License.
 
 
-Linking JXR Files to Javadocs
+Usage
 
- To link the generated JXR files to the javadocs, you need to set the following JXR plugin configuration in your pom.xml:
+ The JXR plugin generates a cross-reference of the project's sources. Below are the different goals and configuration
+ for the plugin.
+
+* Generate JXR as Part of Project Reports
+
+ To include the JXR report in the site generation process, insert the following in the \<reporting\> section of your
+ pom.xml:
 
 +-----+
 <project>
   ...
+  <build>
+    ...
+  </build>
   <reporting>
     <plugins>
-      ...
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <configuration>
-          ...
-          <linkJavadoc>true</linkJavadoc>
-          <javadocDir>/path/to/javadocs</javadocDir>
-          ...
-        </configuration>
+        <version>${project.version}</version>
       </plugin>
     </plugins>
-  ...
   </reporting>
   ...
 </project>
 +-----+
 
- The generated JXR pages will have a link named "View Javadoc" that will display the javadoc of the class. In case there
- were no existing javadocs in the specified javadoc directory and no javadocs will be generated (meaning no javadoc plugin
- configuration in the reporting section of the pom), the link will no longer be displayed even if the <<<linkJavadoc>>> parameter
- is set to true.
+ The report will be generated when you execute site.
 
- Take note that if the <<<destDir>>> parameter is set in the javadoc plugin configuration, you need to also set the <<<javadocDir>>>
- parameter of the JXR plugin to the same directory.
++-----+
+mvn site
++-----+
+
+* Explicitly Generate JXR Files
+
+ The JXR files for the project's main sources will be executed using this command:
+
++-----+
+mvn jxr:jxr
++-----+
+
+ To generate JXR files for the project's test sources, execute this command:
+
++-----+
+mvn jxr:test-jxr
++-----+
