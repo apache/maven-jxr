@@ -48,6 +48,7 @@ under the License.
 
   <properties>
     <mavenVersion>2.0.6</mavenVersion>
+    <sitePluginVersion>2.0.1</sitePluginVersion>
   </properties>
 
   <prerequisites>
@@ -153,7 +154,6 @@ under the License.
                 <goal>site</goal>
               </goals>
               <settingsFile>src/it/settings.xml</settingsFile>
-              <debug>true</debug>
             </configuration>
             <executions>
               <execution>
@@ -168,6 +168,20 @@ under the License.
         </plugins>
       </build>
     </profile>
+    
+    <profile>
+      <id>maven-3</id>
+      <activation>
+        <file>
+          <!-- This employs that the basedir expression is only recognized by Maven 3.x (see MNG-2363) -->
+          <exists>${basedir}</exists>
+        </file>
+      </activation>
+      <properties>
+        <sitePluginVersion>3.0-beta-1-SNAPSHOT</sitePluginVersion>
+      </properties>
+    </profile>     
+    
   </profiles>  
   
 </project>
