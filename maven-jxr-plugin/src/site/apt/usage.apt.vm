@@ -5,7 +5,7 @@
  <bellingard.NO-SPAM@gmail.com>
  Maria Odea Ching
  ------
- 5 July 2006
+ 2010-01-20
  ------
 
  ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -28,7 +28,7 @@
 
 Usage
 
- The JXR plugin generates a cross-reference of the project's sources. Below are the different goals and configuration
+ The JXR Plugin generates a cross-reference of the project's sources. Below are the different goals and configuration
  for the plugin.
 
 * Generate JXR as Part of Project Reports
@@ -55,7 +55,7 @@ Usage
 </project>
 +-----+
 
- The report will be generated when you execute site.
+ The report will be generated when you execute:
 
 +-----+
 mvn site

@@ -1,9 +1,9 @@
  ------
- Aggregating JXR Reports for Multi-Projects
+ Aggregating JXR Reports for Multi-module Projects
  ------
  Maria Odea Ching
  ------
- 5 July 2006
+ 2010-01-20
  ------
 
  ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -24,10 +24,10 @@
  ~~ under the License.
 
 
-Aggregating JXR Reports for Multi-Projects
+Aggregating JXR Reports for Multi-module Projects
 
- The <<<aggregate>>> parameter of the JXR plugin can be used to generate JXR files for multi-module projects. Using this parameter,
- you can opt to generate 1 compiled set of JXR files for the whole project (all modules) or generate 1 set of JXR files for
+ The <<<aggregate>>> parameter of the JXR Plugin can be used to generate JXR files for multi-module projects. Using this parameter,
+ you can opt to generate one compiled set of JXR files for the whole project (all modules) or generate one set of JXR files for
  each module.
 
  For example, you have the following directory structure:
@@ -64,7 +64,7 @@ Project
     `-- pom.xml
 +-----+
 
- And you have the following configuration in your pom.xml:
+ And you have the following configuration in your <<<pom.xml>>>:
 
 +-----+
 <project>
@@ -88,8 +88,7 @@ Project
 </project>
 +-----+
 
- When you execute <<<mvn site:site>>> from the parent directory, which is Project, a set of JXR files will be created
- in the target directory of Project where all of the JXR files of the project's submodules are included. Otherwise if
- the <<<aggregate>>> parameter is set to false, a set of JXR files for Module1 will be generated in the target directory of
- Module1, another set of JXR files for Module2 will be generated in the target directory of Module2, and so on.
-
+ When you execute <<<mvn site>>> from the parent directory, which is <Project>, a set of JXR files will be created
+ in the target directory of <Project> where all of the JXR files of the project's submodules are included. Otherwise if
+ the <<<aggregate>>> parameter is set to <<<false>>>, a set of JXR files for <Module1> will be generated in the target directory of
+ <Module1>, another set of JXR files for <Module2> will be generated in the target directory of <Module2>, and so on.

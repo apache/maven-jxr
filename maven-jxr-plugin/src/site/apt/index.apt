@@ -3,7 +3,7 @@
  ------
  Maria Odea Ching
  ------
- 4 July 2006
+ 2010-01-20
  ------
 
  ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -26,13 +26,13 @@
 
 Maven JXR Plugin
 
- The JXR plugin produces a cross-reference of the project's sources. The generated reports make it easier for the user
- to reference or find specific lines of code. It is also handy when used with the PMD plugin for referencing errors found
+ The JXR Plugin produces a cross-reference of the project's sources. The generated reports make it easier for the user
+ to reference or find specific lines of code. It is also handy when used with the PMD Plugin for referencing errors found
  in the code.
 
 * Goals Overview
 
-  The JXR plugin has 2 goals:
+  The JXR Plugin has 2 goals:
 
   * {{{./jxr-mojo.html}jxr:jxr}} is used to generate a cross-reference page of the project's main sources. The generated JXR
   files can be linked to the javadocs of the project.
@@ -61,7 +61,7 @@ Maven JXR Plugin
 
 * Examples
 
-   To provide you with better understanding on some usages of the Javadoc plugin,  you can take a look into the
+   To provide you with better understanding on some usages of the JXR Plugin,  you can take a look into the
    following examples:
 
    * {{{./examples/aggregate.html}Aggregating JXR Reports for Multi-Projects}}
