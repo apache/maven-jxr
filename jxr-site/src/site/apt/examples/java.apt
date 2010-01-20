@@ -3,7 +3,7 @@
  ------
  Vincent Siveton
  ------
- October 2006
+ 2010-01-20
  ------
 
  ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -35,7 +35,7 @@ Using Maven JXR in Java
 * Transforming Java Packages
 
  JXR handles several options like an input/output encoding. See the {{{../apidocs/org/apache/maven/jxr/JXR.html}API}}
- for more informations.
+ for more information.
 
 +------+
 JXR jxr = new JXR();
@@ -43,7 +43,7 @@ jxr.setDest( "/target/jxr" );
 jxr.setLog( new DummyLog() );
 
 jxr.xref( Collections.singletonList( "/src/main/java/" ), "templateDir",
-               "WindowsTitle", "DocTitle", "Bottom" );
+                                     "WindowsTitle", "DocTitle", "Bottom" );
 +------+
 
  <<Note>>: the <templateDir> is a directory with several {{{http://velocity.apache.org/}Velocity}} templates.
