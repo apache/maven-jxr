@@ -1065,6 +1065,7 @@ public class JavaCodeTransform
         reservedWords.put( "protected", "protected" );
         reservedWords.put( "try", "try" );
         reservedWords.put( "throws", "throws" );
+        reservedWords.put( "implements", "implements" );
     }
 
     /**
