@@ -5,7 +5,7 @@
  <bellingard.NO-SPAM@gmail.com>
  Maria Odea Ching
  ------
- 2010-01-20
+ 2010-04-27
  ------
 
  ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -28,13 +28,13 @@
 
 Usage
 
- The JXR Plugin generates a cross-reference of the project's sources. Below are the different goals and configuration
+ The JXR Plugin generates a cross-reference of the project's sources. Below are the different goals and configurations
  for the plugin.
 
 * Generate JXR as Part of Project Reports
 
- To include the JXR report in the site generation process, insert the following in the \<reporting\> section of your
- pom.xml:
+ To include the JXR report in the site generation process, insert the following in the <<<\<reporting\>>>> section of your
+ <<<pom.xml>>>:
 
 +-----+
 <project>
@@ -63,7 +63,7 @@ mvn site
 
 * Explicitly Generate JXR Files
 
- The JXR files for the project's main sources will be executed using this command:
+ The JXR files for the project's main sources will be generated using this command:
 
 +-----+
 mvn jxr:jxr
