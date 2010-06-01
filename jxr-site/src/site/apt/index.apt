@@ -31,7 +31,7 @@
 Maven JXR
 
  Maven JXR project (formally Java Cross Reference) is a library to analyze a set of Java
- source files and produces documentation in HTML format <à la Javadoc>.
+ source files and produces documentation in HTML format <Ã  la Javadoc>.
 
  Take a look at this {{{xref/index.html}JXR report}} to see an example.
 
