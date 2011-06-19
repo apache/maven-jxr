@@ -127,7 +127,7 @@ public class SimpleWordTokenizer
 
 
     /**
-     * Go through the entire String and if any character is not a Letter( a, b,
+     * Go through the entire String and if any character is not a Java identifier part (_, a, b,
      * c, d, etc) then return false.
      */
     private static boolean isWord( String string )
@@ -144,7 +144,7 @@ public class SimpleWordTokenizer
 
             char c = string.charAt( i );
 
-            if ( Character.isLetter( c ) == false && c != '.' )
+            if ( !Character.isJavaIdentifierPart( c ) && c != '.' )
             {
                 return false;
             }
