@@ -226,28 +226,30 @@ public abstract class AbstractJxrReport
      */
     private boolean hasSources( File dir )
     {
-        boolean found = false;
         if ( dir.exists() && dir.isDirectory() )
         {
             File[] files = dir.listFiles();
-            for ( int i = 0; i < files.length && !found; i++ )
+            for ( int i = 0; i < files.length; i++ )
             {
                 File currentFile = files[i];
-                if ( currentFile.isFile() && currentFile.getName().endsWith( ".java" ) )
+                if ( currentFile.isFile() )
                 {
-                    found = true;
-                }
-                else if ( currentFile.isDirectory() )
-                {
-                    boolean hasSources = hasSources( currentFile );
-                    if ( hasSources )
+                    if ( currentFile.getName().endsWith( ".java" ) )
                     {
-                        found = true;
+                        return true;
+                    }
+                }
+                else
+                {
+                    if ( Character.isJavaIdentifierStart( currentFile.getName().charAt( 0 ) ) // avoid .svn directory
+                        && hasSources( currentFile ) )
+                    {
+                        return true;
                     }
                 }
             }
         }
-        return found;
+        return false;
     }
 
     /**
