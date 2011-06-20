@@ -19,14 +19,17 @@ specific language governing permissions and limitations
 under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>org.apache.maven.jxr.it</groupId>
   <artifactId>simple-project</artifactId>
-  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
   <name>simple-project</name>
   <url>http://maven.apache.org</url>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -35,6 +38,7 @@ under the License.
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -49,6 +53,7 @@ under the License.
       </plugin>
     </plugins>
   </build>
+
   <reporting>
     <excludeDefaults>true</excludeDefaults>
     <plugins>
@@ -57,7 +62,6 @@ under the License.
         <artifactId>maven-jxr-plugin</artifactId>
         <version>@pom.version@</version>
       </plugin>
-      
     </plugins>
   </reporting>
 </project>
