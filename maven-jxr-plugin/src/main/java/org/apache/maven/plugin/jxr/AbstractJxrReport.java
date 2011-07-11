@@ -155,6 +155,7 @@ public abstract class AbstractJxrReport
      * Whether to build an aggregated report at the root, or build individual reports.
      *
      * @parameter expression="${aggregate}" default-value="false"
+     * @deprecated
      */
     protected boolean aggregate;
 
@@ -412,7 +413,7 @@ public abstract class AbstractJxrReport
     {
         boolean canGenerate = !sourceDirs.isEmpty();
 
-        if ( aggregate && !project.isExecutionRoot() )
+        if ( isAggregate() && !project.isExecutionRoot() )
         {
             canGenerate = false;
         }
@@ -454,7 +455,7 @@ public abstract class AbstractJxrReport
     protected List constructSourceDirs()
     {
         List sourceDirs = new ArrayList( getSourceRoots() );
-        if ( aggregate )
+        if ( isAggregate() )
         {
             for ( Iterator i = reactorProjects.iterator(); i.hasNext(); )
             {
@@ -513,18 +514,15 @@ public abstract class AbstractJxrReport
                 if ( StringUtils.isNotEmpty( stagingDirectory ) )
                 {
                     String javadocDestDir = getJavadocDir().getName();
-                    boolean javadocAggregate = Boolean
-                        .valueOf( JxrReportUtil.getMavenJavadocPluginBasicOption( project, "aggregate", "false" ) )
-                        .booleanValue();
-
+                    boolean javadocAggregate = JxrReportUtil.isJavadocAggregated( project );
                     String structureProject = JxrReportUtil.getStructure( project, false );
 
-                    if ( aggregate && javadocAggregate )
+                    if ( isAggregate() && javadocAggregate )
                     {
                         File outputDirectory = new File( stagingDirectory, structureProject );
                         location = outputDirectory + "/" + javadocDestDir;
                     }
-                    if ( !aggregate && javadocAggregate )
+                    if ( !isAggregate() && javadocAggregate )
                     {
                         location = stagingDirectory + "/" + javadocDestDir;
 
@@ -539,13 +537,13 @@ public abstract class AbstractJxrReport
                         File outputDirectory = new File( stagingDirectory, hierarchy );
                         location = outputDirectory + "/" + javadocDestDir;
                     }
-                    if ( aggregate && !javadocAggregate )
+                    if ( isAggregate() && !javadocAggregate )
                     {
                         getLog().warn(
                                        "The JXR plugin is configured to build an aggregated report at the root, "
                                            + "not the Javadoc plugin." );
                     }
-                    if ( !aggregate && !javadocAggregate )
+                    if ( !isAggregate() && !javadocAggregate )
                     {
                         location = stagingDirectory + "/" + structureProject + "/" + javadocDestDir;
                     }
@@ -594,4 +592,13 @@ public abstract class AbstractJxrReport
      * @return a File for the directory of the javadocs
      */
     protected abstract File getJavadocDir();
+
+    /**
+     * Is the current report aggregated?
+     * @return
+     */
+    protected boolean isAggregate()
+    {
+        return aggregate;
+    }
 }

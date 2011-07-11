@@ -30,6 +30,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Site;
 import org.apache.maven.project.MavenProject;
@@ -50,6 +51,58 @@ import org.xml.sax.SAXException;
  */
 public class JxrReportUtil
 {
+    
+    private static final String MAVEN_JAVADOC_PLUGIN_GROUP_ID = "org.apache.maven.plugins";
+    private static final String MAVEN_JAVADOC_PLUGIN_ARTIFACT_ID = "maven-javadoc-plugin";
+
+    /**
+     * Determine if javadoc is aggregated in this project, paying attention to both
+     * the old parameter and the new mojo.
+     * @param project
+     * @return
+     * @throws IOException
+     */
+    protected static boolean isJavadocAggregated( MavenProject project )
+        throws IOException
+    {
+        // first check conf for obsolete aggregate param.
+        boolean javadocAggregate = Boolean
+                        .valueOf( JxrReportUtil.getMavenJavadocPluginBasicOption( project, "aggregate", "false" ) )
+                        .booleanValue();
+        if ( javadocAggregate ) 
+        {
+            return true;
+        }
+        List plugins = getMavenJavadocPlugins ( project );
+        Iterator pi = plugins.iterator();
+        while ( pi.hasNext() )
+        {
+            Object pluginObject = pi.next();
+            
+            if ( pluginObject instanceof Plugin )
+            {
+                Plugin plugin = (Plugin)pluginObject;
+                List executions = plugin.getExecutions();
+                Iterator ei = executions.iterator();
+                while ( ei.hasNext() )
+                {
+                    PluginExecution pe = (PluginExecution) ei.next();
+                    List goals = pe.getGoals();
+                    Iterator gi = goals.iterator();
+                    while ( gi.hasNext() )
+                    {
+                        String goal = (String) gi.next();
+                        if ( "aggregate".equals(goal) )
+                        {
+                            return true;
+                        }
+                    }
+                }
+            } 
+        }
+        return false;
+    }
+    
     /**
      * Return the <code>optionName</code> value defined in a project for the "maven-javadoc-plugin" plugin.
      *
@@ -73,7 +126,7 @@ public class JxrReportUtil
             plugins.add( it.next() );
         }
 
-        String pluginArtifactId = "maven-javadoc-plugin";
+        String pluginArtifactId = MAVEN_JAVADOC_PLUGIN_ARTIFACT_ID;
         for ( Iterator it = plugins.iterator(); it.hasNext(); )
         {
             Object next = it.next();
@@ -85,7 +138,7 @@ public class JxrReportUtil
                 Plugin plugin = (Plugin) next;
 
                 // using out-of-box Maven plugins
-                if ( !( ( plugin.getGroupId().equals( "org.apache.maven.plugins" ) ) && ( plugin.getArtifactId()
+                if ( !( ( plugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) ) && ( plugin.getArtifactId()
                     .equals( pluginArtifactId ) ) ) )
                 {
                     continue;
@@ -99,7 +152,7 @@ public class JxrReportUtil
                 ReportPlugin reportPlugin = (ReportPlugin) next;
 
                 // using out-of-box Maven plugins
-                if ( !( ( reportPlugin.getGroupId().equals( "org.apache.maven.plugins" ) ) && ( reportPlugin
+                if ( !( ( reportPlugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) ) && ( reportPlugin
                     .getArtifactId().equals( pluginArtifactId ) ) ) )
                 {
                     continue;
@@ -144,6 +197,62 @@ public class JxrReportUtil
         }
 
         return defaultValue;
+    }
+    
+    /**
+     * Return the plugin references for the javadoc plugin in a project.
+     *
+     * @param project not null
+     * @throws IOException if any
+     */
+    protected static List getMavenJavadocPlugins( MavenProject project )
+        throws IOException
+    {
+        List plugins = new ArrayList();
+        for ( Iterator it = project.getModel().getReporting().getPlugins().iterator(); it.hasNext(); )
+        {
+            plugins.add( it.next() );
+        }
+        for ( Iterator it = project.getModel().getBuild().getPlugins().iterator(); it.hasNext(); )
+        {
+            plugins.add( it.next() );
+        }
+        
+        List result = new ArrayList();
+
+        String pluginArtifactId = MAVEN_JAVADOC_PLUGIN_ARTIFACT_ID;
+        for ( Iterator it = plugins.iterator(); it.hasNext(); )
+        {
+            Object next = it.next();
+
+            if ( next instanceof Plugin )
+            {
+                Plugin plugin = (Plugin) next;
+
+                // using out-of-box Maven plugins
+                if ( !( ( plugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) ) && ( plugin.getArtifactId()
+                    .equals( pluginArtifactId ) ) ) )
+                {
+                    continue;
+                }
+
+                result.add( plugin );
+            }
+
+            if ( next instanceof ReportPlugin )
+            {
+                ReportPlugin reportPlugin = (ReportPlugin) next;
+
+                // using out-of-box Maven plugins
+                if ( !( ( reportPlugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) ) && ( reportPlugin
+                    .getArtifactId().equals( pluginArtifactId ) ) ) )
+                {
+                    continue;
+                }
+                result.add( reportPlugin );
+            }
+        }
+        return result;
     }
 
     /**
