@@ -57,6 +57,7 @@ public class JxrReportUtil
 
     /**
      * Determine if javadoc is aggregated in this project, paying attention to both
+     * TODO: take cognizance of javadoc versus test-javadoc
      * the old parameter and the new mojo.
      * @param project
      * @return

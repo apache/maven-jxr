@@ -1,5 +1,3 @@
-package org.apache.maven.jxr.it;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,40 +16,22 @@ package org.apache.maven.jxr.it;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+package org.apache.maven.plugin.jxr;
 
 /**
- * Unit test for simple App.
+ * Generates a combined JXR report for test code in an aggregating project.
+ * 
+ * @goal test-aggregate
+ * @aggregator
+ * @since 2.3
+ *
  */
-public class AppTest 
-    extends TestCase
+public class AggregatorJxrTestReport
+    extends JxrTestReport
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
+    protected boolean isAggregate()
     {
-        super( testName );
+        return true;
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
 }

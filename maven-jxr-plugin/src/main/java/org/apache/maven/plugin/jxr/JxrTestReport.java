@@ -91,11 +91,6 @@ public class JxrTestReport
     {
         List l = new ArrayList();
 
-        if ( !"pom".equals( project.getPackaging().toLowerCase() ) )
-        {
-            l.addAll( project.getExecutionProject().getTestCompileSourceRoots() );
-        }
-
         if ( project.getExecutionProject() != null )
         {
             if ( !"pom".equals( project.getExecutionProject().getPackaging().toLowerCase() ) )
