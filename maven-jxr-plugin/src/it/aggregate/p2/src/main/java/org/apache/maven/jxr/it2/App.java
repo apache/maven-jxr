@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.it;
+package org.apache.maven.jxr.it2;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
