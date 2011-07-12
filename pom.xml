@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>16</version>
+    <version>20</version>
     <relativePath>../pom/maven/pom.xml</relativePath>
   </parent>
 
@@ -55,6 +55,16 @@ under the License.
     <module>maven-jxr-plugin</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+	<groupId>junit</groupId>
+	<artifactId>junit</artifactId>
+	<version>4.8.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -67,55 +77,4 @@ under the License.
       </plugins>
     </pluginManagement>
   </build>
-  
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>3.8.2</version>
-        <scope>test</scope>
-      </dependency>    
-    </dependencies>
-  </dependencyManagement>
-  
-  <profiles>
-    <profile>
-      <id>m2e</id>
-      <properties>
-        <m2BuildDirectory>target</m2BuildDirectory>
-      </properties>
-      <activation>
-        <property>
-          <name>m2e.version</name>
-        </property>
-      </activation>
-      <build>
-        <directory>${m2BuildDirectory}</directory>
-        <plugins>
-          <plugin>
-            <groupId>org.maven.ide.eclipse</groupId>
-            <artifactId>lifecycle-mapping</artifactId>
-            <version>0.10.0</version>
-            <configuration>
-              <mappingId>customizable</mappingId>
-              <configurators>
-                <configurator id="org.maven.ide.eclipse.jdt.javaConfigurator" />
-                <configurator id="org.maven.ide.eclipse.plexus.annotations.plexusConfigurator" />
-              </configurators>
-              <mojoExecutions>
-                <mojoExecution>org.apache.maven.plugins:maven-resources-plugin::</mojoExecution>
-              </mojoExecutions>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>2.4.3</version>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>  
-  </profiles>  
-  
 </project>

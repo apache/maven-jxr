@@ -30,6 +30,7 @@ package org.apache.maven.jxr;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.jxr.pacman.ClassType;
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.ImportType;
@@ -38,7 +39,6 @@ import org.apache.maven.jxr.pacman.PackageManager;
 import org.apache.maven.jxr.pacman.PackageType;
 import org.apache.maven.jxr.util.SimpleWordTokenizer;
 import org.apache.maven.jxr.util.StringEntry;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.File;

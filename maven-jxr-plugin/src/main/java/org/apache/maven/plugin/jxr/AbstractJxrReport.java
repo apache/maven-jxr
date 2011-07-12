@@ -290,9 +290,16 @@ public abstract class AbstractJxrReport
         {
             jxr.setIncludes( (String[]) includes.toArray( new String[0] ) );
         }
-
-        jxr.xref( sourceDirs, templateDir, windowTitle, docTitle, getBottomText( project.getInceptionYear(), project
-            .getOrganization() ) );
+        
+        // avoid winding up using Velocity in two class loaders.
+        ClassLoader savedTccl = Thread.currentThread().getContextClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
+            jxr.xref( sourceDirs, templateDir, windowTitle, docTitle, getBottomText( project.getInceptionYear(), project
+                                                                                     .getOrganization() ) );
+        } finally {
+            Thread.currentThread().setContextClassLoader( savedTccl );
+        }
 
         // and finally copy the stylesheet
         copyRequiredResources( destinationDirectory );

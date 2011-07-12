@@ -19,6 +19,7 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.jxr.pacman.ClassType;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.apache.maven.jxr.pacman.PackageType;
@@ -28,7 +29,6 @@ import org.apache.oro.text.perl.Perl5Util;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -317,7 +317,7 @@ public class DirectoryIndexer
         }
         finally
         {
-            IOUtil.close( writer );
+            IOUtils.closeQuietly( writer );
         }
     }
 
