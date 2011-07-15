@@ -31,15 +31,15 @@ under the License.
 
   <groupId>org.apache.maven.jxr</groupId>
   <artifactId>jxr</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.3</version>
   <packaging>pom</packaging>
 
   <name>Maven JXR Parent</name>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/jxr/trunk/</developerConnection>
-    <url>http://svn.apache.org/viewvc/maven/jxr/trunk/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/tags/jxr-2.3</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/jxr/tags/jxr-2.3</developerConnection>
+    <url>http://svn.apache.org/viewvc/maven/jxr/tags/jxr-2.3</url>
   </scm>
   <issueManagement>
     <system>jira</system>
