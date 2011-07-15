@@ -158,6 +158,14 @@ public abstract class AbstractJxrReport
      * @deprecated
      */
     protected boolean aggregate;
+    
+    /**
+     * Whether to skip this execution.
+     * 
+     * @parameter expression="${maven.jxr.skip}" default-value="false"
+     * @since 2.3
+     */
+    protected boolean skip;
 
     /**
      * Link the Javadoc from the Source XRef. Defaults to true and will link
@@ -433,6 +441,11 @@ public abstract class AbstractJxrReport
     protected void executeReport( Locale locale )
         throws MavenReportException
     {
+        if ( skip )
+        {
+            getLog().info( "Skipping JXR." );
+            return;
+        }
         List sourceDirs = constructSourceDirs();
         if ( canGenerateReport( sourceDirs ) )
         {
