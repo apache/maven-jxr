@@ -32,12 +32,17 @@ Maven JXR Plugin
 
 * Goals Overview
 
-  The JXR Plugin has 2 goals:
+  The JXR Plugin has 4 goals:
 
   * {{{./jxr-mojo.html}jxr:jxr}} is used to generate a cross-reference page of the project's main sources. The generated JXR
   files can be linked to the javadocs of the project.
 
+  * {{{./aggregate-mojo.html}jxr:aggregate}} is used to generate an aggregated cross-reference page of the project's main sources. The generated JXR
+  files can be linked to the javadocs of the project.
+
   * {{{./test-jxr-mojo.html}jxr:test-jxr}} on the other hand, is used to generate a cross-reference page of the project's test sources.
+
+  * {{{./test-aggregate-mojo.html}jxr:test-aggregate}} on the other hand, is used to generate an aggregated cross-reference page of the project's test sources.
 
 * Usage
 
