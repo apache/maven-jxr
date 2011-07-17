@@ -155,7 +155,7 @@ public abstract class AbstractJxrReport
      * Whether to build an aggregated report at the root, or build individual reports.
      *
      * @parameter expression="${aggregate}" default-value="false"
-     * @deprecated
+     * @deprecated since 2.3. Use the goals <code>jxr:aggregate</code> and <code>jxr:test-aggregate</code> instead.
      */
     protected boolean aggregate;
     
