@@ -48,7 +48,7 @@ under the License.
 
   <properties>
     <mavenVersion>2.0.9</mavenVersion>
-    <sitePluginVersion>2.2</sitePluginVersion>
+    <sitePluginVersion>2.3</sitePluginVersion>
     <doxia-sitetoolsVersion>1.2</doxia-sitetoolsVersion>
     <doxiaVersion>1.2</doxiaVersion>
   </properties>
@@ -73,10 +73,6 @@ under the License.
      <forkMode>always</forkMode>
     </configuration>
    </plugin>
-   <plugin>
-    <artifactId>maven-site-plugin</artifactId>
-    <version>${sitePluginVersion}</version>
-   </plugin>
   </plugins>
  </pluginManagement>
 
@@ -84,6 +80,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
+	<version>2.8</version>
         <executions>
           <execution>
             <id>generated-helpmojo</id>
@@ -185,6 +182,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
+	<version>2.8</version>
       </plugin>
     </plugins>
   </reporting>
@@ -235,7 +233,7 @@ under the License.
         </file>
       </activation>
       <properties>
-        <sitePluginVersion>3.0-beta-1-SNAPSHOT</sitePluginVersion>
+        <sitePluginVersion>3.0-beta-4-SNAPSHOT</sitePluginVersion>
       </properties>
     </profile>
 
@@ -246,13 +244,13 @@ under the License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.5</version>
+            <version>2.8</version>
             <configuration>
               <tagletArtifacts>
                 <tagletArtifact>
                   <groupId>org.apache.maven.plugin-tools</groupId>
                   <artifactId>maven-plugin-tools-javadoc</artifactId>
-                  <version>2.5</version>
+                  <version>2.8</version>
                 </tagletArtifact>
                 <tagletArtifact>
                   <groupId>org.codehaus.plexus</groupId>
