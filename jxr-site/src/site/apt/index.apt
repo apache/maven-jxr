@@ -48,7 +48,7 @@ Maven JXR
 
 * Brief History
 
- The orignal JXR code was merged in 2004 with the Javasrc project from the defunct
+ The original JXR code was merged in 2004 with the Javasrc project from the defunct
  {{{http://jakarta.apache.org/alexandria}Jakarta Alexandria}} project.
  The code was first maintained within the Maven 1 JXR plugin. In September 2005, it
  was voted to fork the base and create a separate library.
