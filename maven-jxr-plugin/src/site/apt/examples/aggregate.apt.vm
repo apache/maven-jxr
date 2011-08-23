@@ -69,18 +69,31 @@ Project
 +-----+
 <project>
   ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <id>aggregate</id>
+            <goals>
+              <goal>aggregate</goal>
+              <goal>test-aggregate</goal></goals>
+            <phase>site</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
   <reporting>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
         <version>${project.version}</version>
-        <configuration>
-          ...
-          <aggregate>true</aggregate>
-          ...
-        </configuration>
-      </plugin>
+       </plugin>
     </plugins>
   ...
   </reporting>
@@ -89,6 +102,6 @@ Project
 +-----+
 
  When you execute <<<mvn site>>> from the parent directory, which is <Project>, a set of JXR files will be created
- in the target directory of <Project> where all of the JXR files of the project's submodules are included. Otherwise if
- the <<<aggregate>>> parameter is set to <<<false>>>, a set of JXR files for <Module1> will be generated in the target directory of
+ in the target directory of <Project> where all of the JXR files of the project's submodules are included. 
+ Otherwise a set of JXR files for <Module1> will be generated in the target directory of
  <Module1>, another set of JXR files for <Module2> will be generated in the target directory of <Module2>, and so on.
