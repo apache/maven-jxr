@@ -223,7 +223,7 @@ public class DirectoryIndexer
         }
         catch ( Exception e )
         {
-            throw new JxrException( "Error initialising Velocity", e );
+            throw new JxrException( "Error initializing Velocity", e );
         }
 
         VelocityContext context = new VelocityContext();
