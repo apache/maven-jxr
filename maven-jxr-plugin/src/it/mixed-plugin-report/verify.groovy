@@ -40,5 +40,5 @@ assert content.contains( 'App2.html' );
 content = new File( basedir, 'target/site/xref/org/apache/maven/jxr/it2/App.html' ).text;
 assert content.contains( 'App2.html' );
 content = new File( basedir, 'target/site/xref/index.html' ).text;
-assert content.contains( 'this is a JXR report set' );
+assert content.contains( '<!-- this is a JXR report set -->' );
 return true;
