@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,5 +33,6 @@ assert new File( basedir, 'target/site/xref-test/org/apache/maven/jxr/it/AppTest
 
 content = new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html' ).text;
 assert content.contains( 'App2.html' );
+assert content.contains( '<div id="overview"><a href="../../../../../../apidocs/org/apache/maven/jxr/it/App.html">View Javadoc</a></div>' );
 
 return true;
