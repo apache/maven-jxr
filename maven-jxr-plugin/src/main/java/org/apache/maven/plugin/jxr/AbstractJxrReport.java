@@ -35,6 +35,7 @@ import org.apache.maven.jxr.JXR;
 import org.apache.maven.jxr.JxrException;
 import org.apache.maven.model.Organization;
 import org.apache.maven.model.ReportPlugin;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
@@ -433,6 +434,32 @@ public abstract class AbstractJxrReport
             canGenerate = false;
         }
         return canGenerate;
+    }
+
+    /* 
+     * This is called for a standalone execution. Well, that's the claim. It also ends up called for the aggregate mojo, since 
+     * that is configured as an execution, not in the reporting section, at least by some people on some days. We do NOT want
+     * the default behavior.
+     */
+    public void execute()
+        throws MojoExecutionException
+    {
+        
+        if ( skip )
+        {
+            getLog().info( "Skipping JXR." );
+            return;
+        }
+        
+        Locale locale = Locale.getDefault();
+        try
+        {
+            executeReport( locale );
+        }
+        catch ( MavenReportException e )
+        {
+            throw new MojoExecutionException( "Error generating JXR report", e );
+        }
     }
 
     /**
