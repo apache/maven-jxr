@@ -69,20 +69,22 @@ import java.util.Vector;
  * of filters that deal with specific portions of the java code. The filters are
  * as follows: <pre>
  *  htmlFilter
- *     |__
- *        multiLineCommentFilter -> uriFilter
- *           |___
- *              inlineCommentFilter
- *                 |___
- *                    stringFilter
- *                       |___
- *                          keywordFilter
- *                             |___
- *                                uriFilter
- *                                   |___
- *                                      jxrFilter
- *                                         |___
- *                                            importFilter
+ *    |__
+ *      ongoingMultiLineCommentFilter -> uriFilter
+ *        |__
+ *          inlineCommentFilter
+ *            |__
+ *              beginMultiLineCommentFilter -> ongoingMultiLineCommentFilter
+ *                |__
+ *                  stringFilter
+ *                    |__
+ *                      keywordFilter
+ *                        |__
+ *                          uriFilter
+ *                            |__
+ *                              jxrFilter
+ *                                |__
+ *                                  importFilter
  * </pre>
  */
 public class JavaCodeTransform
@@ -708,110 +710,59 @@ public class JavaCodeTransform
         line = replace( line, "\\\\", "&#92;&#92;" );
         line = replace( line, "\\\"", "\\&quot;" );
         line = replace( line, "'\"'", "'&quot;'" );
-        return multiLineCommentFilter( line );
+        return ongoingMultiLineCommentFilter( line );
     }
 
     /**
-     * Filter out multiLine comments. State is kept with a private boolean variable.
+     * Handle ongoing multi-line comments, detecting ends if present.
+     * State is maintained in private boolean members,
+     * one each for javadoc and (normal) multiline comments.
      *
      * @param line String
      * @return String
      */
-    private final String multiLineCommentFilter( String line )
+    private final String ongoingMultiLineCommentFilter( String line )
     {
         if ( line == null || line.equals( "" ) )
         {
             return "";
         }
-        StringBuffer buf = new StringBuffer();
-        int index;
+        final String[] tags =
+            inJavadocComment
+                ? new String[] { JAVADOC_COMMENT_START, JAVADOC_COMMENT_END } :
+            inMultiLineComment
+                ? new String[] { COMMENT_START, COMMENT_END } :
+            null;
 
-        //First, check for the end of a java comment.
-        if ( inJavadocComment && ( index = line.indexOf( "*/" ) ) > -1 && !isInsideString( line, index ) )
+        if ( tags == null )
         {
-            inJavadocComment = false;
-            buf.append( JAVADOC_COMMENT_START );
-            buf.append( line.substring( 0, index ) );
-            buf.append( "*/" ).append( JAVADOC_COMMENT_END );
-            if ( line.length() > index + 2 )
-            {
-                buf.append( inlineCommentFilter( line.substring( index + 2 ) ) );
-            }
-
-            return uriFilter( buf.toString() );
-        }
-
-        //Second, check for the end of a multi-line comment.
-        if ( inMultiLineComment && ( index = line.indexOf( "*/" ) ) > -1 && !isInsideString( line, index ) )
-        {
-            inMultiLineComment = false;
-            buf.append( COMMENT_START );
-            buf.append( line.substring( 0, index ) );
-            buf.append( "*/" ).append( COMMENT_END );
-            if ( line.length() > index + 2 )
-            {
-                buf.append( inlineCommentFilter( line.substring( index + 2 ) ) );
-            }
-            return uriFilter( buf.toString() );
-        }
-
-        //If there was no end detected and we're currently in a multi-line
-        //comment, we don't want to do anymore work, so return line.
-        else if ( inMultiLineComment )
-        {
-
-            StringBuffer buffer = new StringBuffer( line );
-            buffer.insert( 0, COMMENT_START );
-            buffer.append( COMMENT_END );
-            return uriFilter( buffer.toString() );
-        }
-        else if ( inJavadocComment )
-        {
-
-            StringBuffer buffer = new StringBuffer( line );
-            buffer.insert( 0, JAVADOC_COMMENT_START );
-            buffer.append( JAVADOC_COMMENT_END );
-            return uriFilter( buffer.toString() );
-        }
-
-        //We're not currently in a Javadoc comment, so check to see if the start
-        //of a multi-line Javadoc comment is in this line.
-        else if ( ( index = line.indexOf( "/**" ) ) > -1 && !isInsideString( line, index ) )
-        {
-            inJavadocComment = true;
-            //Return result of other filters + everything after the start
-            //of the multiline comment. We need to pass the through the
-            //to the multiLineComment filter again in case the comment ends
-            //on the same line.
-            buf.append( inlineCommentFilter( line.substring( 0, index ) ) );
-            buf.append( JAVADOC_COMMENT_START ).append( "/**" );
-            buf.append( JAVADOC_COMMENT_END );
-            buf.append( multiLineCommentFilter( line.substring( index + 3 ) ) );
-            return uriFilter( buf.toString() );
-        }
-
-        //We're not currently in a comment, so check to see if the start
-        //of a multi-line comment is in this line.
-        else if ( ( index = line.indexOf( "/*" ) ) > -1 && !isInsideString( line, index ) )
-        {
-            inMultiLineComment = true;
-            //Return result of other filters + everything after the start
-            //of the multiline comment. We need to pass the through the
-            //to the multiLineComment filter again in case the comment ends
-            //on the same line.
-            buf.append( inlineCommentFilter( line.substring( 0, index ) ) );
-            buf.append( COMMENT_START ).append( "/*" );
-            buf.append( multiLineCommentFilter( line.substring( index + 2 ) ) );
-            buf.append( COMMENT_END );
-            return uriFilter( buf.toString() );
-        }
-
-        //Otherwise, no useful multi-line comment information was found so
-        //pass the line down to the next filter for processesing.
-        else
-        {
+            //pass the line down to the next filter for processing.
             return inlineCommentFilter( line );
         }
+
+        int index = line.indexOf( "*/" );
+        // only filter the portion without the end-of-comment,
+        // since * and / seem to be valid URI characters
+        String comment = uriFilter( index < 0 ? line : line.substring( 0, index ) );
+        if ( index >= 0 )
+        {
+            inJavadocComment = false;
+            inMultiLineComment = false;
+        }
+        StringBuilder buf = new StringBuilder( tags[0] ).append(
+            comment );
+
+        if ( index >= 0 )
+        {
+            buf.append( "*/" );
+        }
+        buf.append( tags[1] );
+
+        if ( index >= 0 && line.length() > index + 2 )
+        {
+            buf.append( inlineCommentFilter( line.substring( index + 2 ) ) );
+        }
+        return buf.toString();
     }
 
     /**
@@ -827,25 +778,72 @@ public class JavaCodeTransform
      */
     private final String inlineCommentFilter( String line )
     {
+        //assert !inJavadocComment;
+        //assert !inMultiLineComment;
+
         if ( line == null || line.equals( "" ) )
         {
             return "";
         }
-        StringBuffer buf = new StringBuffer();
         int index;
-        if ( ( index = line.indexOf( "//" ) ) > -1 && !isInsideString( line, index ) )
+        if ( ( index = line.indexOf( "//" ) ) >= 0 && !isInsideString( line, index ) )
         {
-            buf.append( stringFilter( line.substring( 0, index ) ) );
-            buf.append( COMMENT_START );
-            buf.append( line.substring( index ) );
-            buf.append( COMMENT_END );
-        }
-        else
-        {
-            buf.append( stringFilter( line ) );
+            return new StringBuffer(
+                beginMultiLineCommentFilter( line.substring( 0, index ) ) )
+                .append( COMMENT_START )
+                .append( line.substring( index ) )
+                .append( COMMENT_END )
+                .toString();
         }
 
-        return buf.toString();
+        return beginMultiLineCommentFilter( line );
+    }
+
+    /**
+     * Detect and handle the start of multiLine comments.
+     * State is maintained in private boolean members
+     * one each for javadoc and (normal) multiline comments.
+     *
+     * @param line String
+     * @return String
+     */
+    private final String beginMultiLineCommentFilter( String line )
+    {
+        //assert !inJavadocComment;
+        //assert !inMultiLineComment;
+
+        if ( line == null || line.equals( "" ) )
+        {
+            return "";
+        }
+
+        int index;
+        //check to see if a multi-line comment starts on this line:
+        if ( ( index = line.indexOf( "/*" ) ) > -1 && !isInsideString( line, index ) )
+        {
+            String fromIndex = line.substring( index );
+            if ( fromIndex.startsWith( "/**" )
+                && !( fromIndex.startsWith( "/**/" ) ) )
+            {
+                inJavadocComment = true;
+            } else {
+                inMultiLineComment = true;
+            }
+            //Return result of other filters + everything after the start
+            //of the multiline comment. We need to pass the through the
+            //to the ongoing multiLineComment filter again in case the comment
+            //ends on the same line.
+            return new StringBuilder(
+                stringFilter( line.substring( 0, index ) ) ).append(
+                ongoingMultiLineCommentFilter( fromIndex ) ).toString();
+        }
+
+        //Otherwise, no useful multi-line comment information was found so
+        //pass the line down to the next filter for processesing.
+        else
+        {
+            return stringFilter( line );
+        }
     }
 
     /**

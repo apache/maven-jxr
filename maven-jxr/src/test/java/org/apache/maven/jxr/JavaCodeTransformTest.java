@@ -26,14 +26,22 @@ import org.apache.maven.jxr.pacman.FileManager;
 import java.io.File;
 import java.util.Locale;
 
+/**
+ * JUnit test for {@link JavaCodeTransform}.
+ */
 public class JavaCodeTransformTest
     extends TestCase
 {
-
+    /** JavaCodeTransform object under test */
     private JavaCodeTransform codeTransform;
 
+    /***/
     private PackageManager packageManager;
 
+    /**
+     * Set up this test.
+     */
+    @Override
     protected void setUp()
         throws Exception
     {
@@ -42,18 +50,27 @@ public class JavaCodeTransformTest
         codeTransform = new JavaCodeTransform( packageManager );
     }
 
+    /**
+     * Test basic transformation of a java source file.
+     */
     public void testTransform()
-        throws Exception
+        //test transforms its own sourcefile, so add some comments
+        throws Exception // single line despite /*
     {
         File sourceFile = new File( System.getProperty( "user.dir" )
             + "/src/test/java/org/apache/maven/jxr/JavaCodeTransformTest.java" );
-        assertTrue( sourceFile.exists() );
+        assertTrue( /* mid-line comment */ sourceFile.exists() ); /*
 
-        codeTransform.transform( sourceFile.getAbsolutePath(), System.getProperty( "user.dir" )
+        multiline comment text
+
+        */ codeTransform.transform( sourceFile.getAbsolutePath(), System.getProperty( "user.dir" ) // additional comment
             + "/target/JavaCodeTransformTest.html", Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", "", "" );
-        assertTrue( new File( System.getProperty( "user.dir" ), "/target/JavaCodeTransformTest.html" ).exists() );
+        assertTrue( /**/ new File( System.getProperty( "user.dir" ), "/target/JavaCodeTransformTest.html" ).exists() );
     }
 
+    /**
+     * Test what happens with an empty sourcefile.
+     */
     public void testTransformWithEmptyClassFile()
         throws Exception
     {
@@ -64,4 +81,5 @@ public class JavaCodeTransformTest
             + "/target/EmptyClass.html", Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", "", "" );
         assertTrue( new File( System.getProperty( "user.dir" ), "/target/EmptyClass.html" ).exists() );
     }
+
 }
