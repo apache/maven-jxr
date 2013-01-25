@@ -118,7 +118,6 @@ under the License.
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.5.8</version>
     </dependency>
     <dependency>
       <groupId>xml-apis</groupId>
