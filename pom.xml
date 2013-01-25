@@ -66,6 +66,12 @@ under the License.
 
   </properties>
 
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>${maven.jxr.siteUrlDeployment}</url>
+    </site>
+  </distributionManagement>
 
   <modules>
     <module>maven-jxr</module>
