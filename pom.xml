@@ -36,6 +36,10 @@ under the License.
 
   <name>Maven JXR Parent</name>
 
+  <url>http://maven.apache.org/jxr/</url>
+
+  <description>Source cross reference library</description>
+
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/maven/jxr/trunk/</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/jxr/trunk/</developerConnection>
