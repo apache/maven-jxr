@@ -53,7 +53,7 @@ under the License.
 
   <ciManagement>
     <system>Jenkins</system>
-    <url>https://builds.apache.org/hudson/job/maven-jxr/</url>
+    <url>https://builds.apache.org/job/maven-jxr/</url>
   </ciManagement>
 
   <properties>
