@@ -44,7 +44,7 @@ Maven JXR
  * Easy configuration for color, style or template
 
  * Fully integrated with Maven: plugins are available for {{{http://maven.apache.org/maven-1.x/plugins/jxr/}Maven 1}}
- and {{{http://maven.apache.org/plugins/maven-jxr-plugin/}Maven 2}}
+ and {{{./maven-jxr-plugin/}Maven 2}}
 
 * Brief History
 
