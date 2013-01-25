@@ -34,7 +34,7 @@ Using Maven JXR in Java
 
 * Transforming Java Packages
 
- JXR handles several options like an input/output encoding. See the {{{../apidocs/org/apache/maven/jxr/JXR.html}API}}
+ JXR handles several options like an input/output encoding. See the {{{./apidocs/org/apache/maven/jxr/JXR.html}API}}
  for more information.
 
 +------+
