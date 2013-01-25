@@ -58,6 +58,12 @@ under the License.
 
   <properties>
     <sitePluginVersion>3.0</sitePluginVersion>
+
+    <maven.jxr.siteFilePath>${maven.site.cache}/maven-jxr</maven.jxr.siteFilePath>
+    <maven.jxr.siteUrlDeployment>file://${maven.jxr.siteFilePath}</maven.jxr.siteUrlDeployment>
+    <maven.jxr.scmPubCheckoutDirectory>${maven.site.cache}/maven-jxr-site-content</maven.jxr.scmPubCheckoutDirectory>
+    <maven.jxr.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/maven/content/jxr</maven.jxr.scmPubUrl>
+
   </properties>
 
 
@@ -89,6 +95,17 @@ under the License.
           <artifactId>maven-release-plugin</artifactId>
           <configuration>
             <tagBase>https://svn.apache.org/repos/asf/maven/jxr/tags</tagBase>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-scm-publish-plugin</artifactId>
+          <configuration>
+            <checkoutDirectory>${maven.jxr.scmPubCheckoutDirectory}</checkoutDirectory>
+            <pubScmUrl>scm:svn:${maven.jxr.scmPubUrl}</pubScmUrl>
+            <checkinComment>Apache Maven Jxr site deployment</checkinComment>
+            <content>${maven.jxr.siteFilePath}</content>
+            <tryUpdate>true</tryUpdate>
           </configuration>
         </plugin>
       </plugins>
