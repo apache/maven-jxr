@@ -23,10 +23,9 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-plugins</artifactId>
-    <version>22</version>
-    <relativePath>../../plugins/maven-plugins</relativePath>
+    <groupId>org.apache.maven.jxr</groupId>
+    <artifactId>jxr</artifactId>
+    <version>2.4-SNAPSHOT</version>
   </parent>
 
   <groupId>org.apache.maven.plugins</groupId>
@@ -37,28 +36,8 @@ under the License.
   <name>Maven JXR Plugin</name>
   <inceptionYear>2005</inceptionYear>
 
-  <developers>
-    <developer>
-      <name>Fabrice Bellingard</name>
-      <email>bellingard.NO-SPAM@gmail.com</email>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-      <timezone>+1</timezone>
-    </developer>
-    <developer>
-      <name>Benson Margulies</name>
-      <email>bimargulies@gmail.com</email>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-      <timezone>EST</timezone>
-    </developer>
-  </developers>
-
   <properties>
     <mavenVersion>2.0.9</mavenVersion>
-    <sitePluginVersion>3.0</sitePluginVersion>
     <doxia-sitetoolsVersion>1.2</doxia-sitetoolsVersion>
     <doxiaVersion>1.2</doxiaVersion>
   </properties>
@@ -66,13 +45,6 @@ under the License.
   <prerequisites>
     <maven>${mavenVersion}</maven>
   </prerequisites>
-
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/maven.apache.org/plugins/maven-jxr-plugin/</url>
-    </site>
-  </distributionManagement>
 
   <build>
     <pluginManagement>
@@ -161,7 +133,6 @@ under the License.
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8</version>
       <scope>test</scope>
     </dependency>
     <dependency>

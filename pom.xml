@@ -56,6 +56,11 @@ under the License.
     <url>https://builds.apache.org/hudson/job/maven-jxr/</url>
   </ciManagement>
 
+  <properties>
+    <sitePluginVersion>3.0</sitePluginVersion>
+  </properties>
+
+
   <modules>
     <module>maven-jxr</module>
     <module>maven-jxr-plugin</module>
