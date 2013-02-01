@@ -33,7 +33,6 @@ import java.util.ResourceBundle;
 import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.jxr.JXR;
 import org.apache.maven.jxr.JxrException;
-import org.apache.maven.model.Organization;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -107,7 +106,7 @@ public abstract class AbstractJxrReport
     /**
      * String uses at the bottom of the Xref HTML files.
      *
-     * @parameter expression="${bottom}" default-value="Copyright &#169; {inceptionYear}-{currentYear} {projectOrganizationName}. All Rights Reserved."
+     * @parameter expression="${bottom}" default-value="Copyright &#169; {inceptionYear}&#x2013;{currentYear} {organizationName}. All Rights Reserved."
      */
     private String bottom;
 
@@ -304,8 +303,7 @@ public abstract class AbstractJxrReport
         ClassLoader savedTccl = Thread.currentThread().getContextClassLoader();
         try {
             Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
-            jxr.xref( sourceDirs, templateDir, windowTitle, docTitle, getBottomText( project.getInceptionYear(), project
-                                                                                     .getOrganization() ) );
+            jxr.xref( sourceDirs, templateDir, windowTitle, docTitle, getBottomText() );
         } finally {
             Thread.currentThread().setContextClassLoader( savedTccl );
         }
@@ -315,45 +313,60 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Get the bottom text to be displayed at the lower part of the generated JXR reports.
-     *
-     * @param inceptionYear the year when the project was started
-     * @param organization the organization for the project
-     * @return  a String that contains the bottom text to be displayed in the lower part of the generated JXR reports
+     * Returns the bottom text to be displayed at the lower part of the generated JXR reports.
      */
-    private String getBottomText( String inceptionYear, Organization organization )
+    private String getBottomText()
     {
-        int actualYear = Calendar.getInstance().get( Calendar.YEAR );
-        String year = String.valueOf( actualYear );
+        int currentYear = Calendar.getInstance().get( Calendar.YEAR );
+        String year = String.valueOf( currentYear );
 
-        String bottom = StringUtils.replace( this.bottom, "{currentYear}", year );
+        String inceptionYear = project.getInceptionYear();
 
-        if ( inceptionYear == null )
-        {
-            bottom = StringUtils.replace( bottom, "{inceptionYear}-", "" );
-        }
-        else
+        String theBottom = StringUtils.replace( this.bottom, "{currentYear}", year );
+
+        if ( inceptionYear != null )
         {
             if ( inceptionYear.equals( year ) )
             {
-                bottom = StringUtils.replace( bottom, "{inceptionYear}-", "" );
+                theBottom = StringUtils.replace( theBottom, "{inceptionYear}&#x2013;", "" );
             }
             else
             {
-                bottom = StringUtils.replace( bottom, "{inceptionYear}", inceptionYear );
+                theBottom = StringUtils.replace( theBottom, "{inceptionYear}", inceptionYear );
             }
-        }
-
-        if ( organization != null && StringUtils.isNotEmpty( organization.getName() ) )
-        {
-            bottom = StringUtils.replace( bottom, "{projectOrganizationName}", organization.getName() );
         }
         else
         {
-            bottom = StringUtils.replace( bottom, " {projectOrganizationName}", "" );
+            theBottom = StringUtils.replace( theBottom, "{inceptionYear}&#x2013;", "" );
         }
 
-        return bottom;
+        if ( project.getOrganization() == null )
+        {
+            theBottom = StringUtils.replace( theBottom, " {organizationName}", "" );
+        }
+        else
+        {
+            if ( StringUtils.isNotEmpty( project.getOrganization().getName() ) )
+            {
+                if ( StringUtils.isNotEmpty( project.getOrganization().getUrl() ) )
+                {
+                    theBottom = StringUtils.replace( theBottom, "{organizationName}",
+                                                     "<a href=\"" + project.getOrganization().getUrl() + "\">"
+                                                         + project.getOrganization().getName() + "</a>" );
+                }
+                else
+                {
+                    theBottom =
+                        StringUtils.replace( theBottom, "{organizationName}", project.getOrganization().getName() );
+                }
+            }
+            else
+            {
+                theBottom = StringUtils.replace( theBottom, " {organizationName}", "" );
+            }
+        }
+
+        return theBottom;
     }
 
     /**
