@@ -158,10 +158,10 @@ public abstract class AbstractJxrReport
      * @deprecated since 2.3. Use the goals <code>jxr:aggregate</code> and <code>jxr:test-aggregate</code> instead.
      */
     protected boolean aggregate;
-    
+
     /**
      * Whether to skip this execution.
-     * 
+     *
      * @parameter expression="${maven.jxr.skip}" default-value="false"
      * @since 2.3
      */
@@ -179,7 +179,7 @@ public abstract class AbstractJxrReport
      * Gets the effective reporting output files encoding.
      *
      * @return The effective reporting output file encoding, never <code>null</code>: defaults to
-     * <code>UTF-8</code> instead.
+     *         <code>UTF-8</code> instead.
      */
     protected String getOutputEncoding()
     {
@@ -281,7 +281,7 @@ public abstract class AbstractJxrReport
         {
             String platformEncoding = System.getProperty( "file.encoding" );
             getLog().warn( "File encoding has not been set, using platform encoding " + platformEncoding
-                           + ", i.e. build is platform dependent!" );
+                               + ", i.e. build is platform dependent!" );
         }
         jxr.setInputEncoding( inputEncoding );
         jxr.setLocale( locale );
@@ -298,13 +298,16 @@ public abstract class AbstractJxrReport
         {
             jxr.setIncludes( (String[]) includes.toArray( new String[0] ) );
         }
-        
+
         // avoid winding up using Velocity in two class loaders.
         ClassLoader savedTccl = Thread.currentThread().getContextClassLoader();
-        try {
+        try
+        {
             Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
             jxr.xref( sourceDirs, templateDir, windowTitle, docTitle, getBottomText() );
-        } finally {
+        }
+        finally
+        {
             Thread.currentThread().setContextClassLoader( savedTccl );
         }
 
@@ -457,13 +460,13 @@ public abstract class AbstractJxrReport
     public void execute()
         throws MojoExecutionException
     {
-        
+
         if ( skip )
         {
             getLog().info( "Skipping JXR." );
             return;
         }
-        
+
         Locale locale = Locale.getDefault();
         try
         {
@@ -599,8 +602,7 @@ public abstract class AbstractJxrReport
                     }
                     if ( isAggregate() && !javadocAggregate )
                     {
-                        getLog().warn(
-                                       "The JXR plugin is configured to build an aggregated report at the root, "
+                        getLog().warn( "The JXR plugin is configured to build an aggregated report at the root, "
                                            + "not the Javadoc plugin." );
                     }
                     if ( !isAggregate() && !javadocAggregate )
@@ -626,7 +628,7 @@ public abstract class AbstractJxrReport
     /**
      * Abstract method that returns the target directory where the generated JXR reports will be put.
      *
-     * @return  a String that contains the target directory name
+     * @return a String that contains the target directory name
      */
     protected abstract String getDestinationDirectory();
 
@@ -655,6 +657,7 @@ public abstract class AbstractJxrReport
 
     /**
      * Is the current report aggregated?
+     *
      * @return
      */
     protected boolean isAggregate()
