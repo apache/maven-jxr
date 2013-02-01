@@ -78,6 +78,12 @@ under the License.
     <module>maven-jxr-plugin</module>
   </modules>
 
+  <contributors>
+    <contributor>
+      <name>Michael Osipov</name>
+    </contributor>
+  </contributors>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
