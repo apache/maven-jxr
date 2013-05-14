@@ -106,7 +106,7 @@ public abstract class AbstractJxrReport
     /**
      * String uses at the bottom of the Xref HTML files.
      *
-     * @parameter expression="${bottom}" default-value="Copyright &#169; {inceptionYear}&#x2013;{currentYear} {organizationName}. All Rights Reserved."
+     * @parameter expression="${bottom}" default-value="Copyright &#169; {inceptionYear}&#x2013;{currentYear} {organizationName}. All rights reserved."
      */
     private String bottom;
 
@@ -452,8 +452,8 @@ public abstract class AbstractJxrReport
         return canGenerate;
     }
 
-    /* 
-     * This is called for a standalone execution. Well, that's the claim. It also ends up called for the aggregate mojo, since 
+    /*
+     * This is called for a standalone execution. Well, that's the claim. It also ends up called for the aggregate mojo, since
      * that is configured as an execution, not in the reporting section, at least by some people on some days. We do NOT want
      * the default behavior.
      */
