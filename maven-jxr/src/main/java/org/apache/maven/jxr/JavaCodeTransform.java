@@ -330,7 +330,7 @@ public class JavaCodeTransform
      */
     public final String getFooter()
     {
-        return "</pre>\n" + "<hr/>" + "<div id=\"footer\">" + JXR.NOTICE + "</div>" + "</body>\n" + "</html>\n";
+        return "</pre>\n" + "<hr/>" + "<div id=\"footer\"></div>" + "</body>\n" + "</html>\n";
     }
 
     /**
@@ -343,13 +343,10 @@ public class JavaCodeTransform
      * @param outputEncoding String
      * @param javadocLinkDir String
      * @param revision String
-     * @param showHeader boolean
-     * @param showFooter boolean
      * @throws IOException
      */
     public final void transform( Reader sourceReader, Writer destWriter, Locale locale, String inputEncoding,
-                                 String outputEncoding, String javadocLinkDir, String revision, boolean showHeader,
-                                 boolean showFooter )
+                                 String outputEncoding, String javadocLinkDir, String revision )
         throws IOException
     {
         this.locale = locale;
@@ -364,10 +361,7 @@ public class JavaCodeTransform
 
         String line = "";
 
-        if ( showHeader )
-        {
-            out.println( getHeader() );
-        }
+        out.println( getHeader() );
 
         int linenumber = 1;
         while ( ( line = in.readLine() ) != null )
@@ -383,10 +377,7 @@ public class JavaCodeTransform
             ++linenumber;
         }
 
-        if ( showFooter )
-        {
-            out.println( getFooter() );
-        }
+        out.println( getFooter() );
 
         out.flush();
     }
@@ -436,7 +427,7 @@ public class JavaCodeTransform
                 fw = new FileWriter( destfile );
             }
 
-            transform( fr, fw, locale, inputEncoding, outputEncoding, javadocLinkDir, revision, true, true );
+            transform( fr, fw, locale, inputEncoding, outputEncoding, javadocLinkDir, revision );
         }
         catch ( RuntimeException e )
         {
