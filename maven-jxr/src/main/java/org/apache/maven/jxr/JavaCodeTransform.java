@@ -264,13 +264,12 @@ public class JavaCodeTransform
 
     /**
      * Gets the header attribute of the JavaCodeTransform object
+     * @param out the writer where the header is appended to
      *
      * @return String
      */
-    public String getHeader()
+    public void appendHeader( PrintWriter out )
     {
-        StringBuffer buffer = new StringBuffer();
-
         String outputEncoding = this.outputEncoding;
         if ( outputEncoding == null )
         {
@@ -278,29 +277,33 @@ public class JavaCodeTransform
         }
 
         // header
-        buffer
-            .append(
-                "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" )
-            .append( "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" ).append( locale )
-            .append( "\" lang=\"" ).append( locale ).append( "\">\n" ).append( "<head>\n" )
-            .append( "<meta http-equiv=\"content-type\" content=\"text/html; charset=" ).append( outputEncoding )
-            .append( "\" />\n" );
+        out.println(
+                "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" );
+        out.print( "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" );
+        out.print( locale );
+        out.print( "\" lang=\"" );
+        out.print( locale );
+        out.println( "\">" );
+        out.print( "<head>" );
+        out.print( "<meta http-equiv=\"content-type\" content=\"text/html; charset=" );
+        out.print( outputEncoding );
+        out.println( "\" />" );
 
         // title ("classname xref")
-        buffer.append( "<title>" );
+        out.print( "<title>" );
         try
         {
             JavaFile javaFile = fileManager.getFile( this.getCurrentFilename() );
             // Use the name of the file instead of the class to handle inner classes properly
             if ( javaFile.getClassType() != null && javaFile.getClassType().getFilename() != null )
             {
-                buffer.append( javaFile.getClassType().getFilename() );
+            	out.print( javaFile.getClassType().getFilename() );
             }
             else
             {
-                buffer.append( this.getCurrentFilename() );
+            	out.print( this.getCurrentFilename() );
             }
-            buffer.append( " " );
+            out.print( " " );
         }
         catch ( IOException e )
         {
@@ -308,30 +311,38 @@ public class JavaCodeTransform
         }
         finally
         {
-            buffer.append( "xref</title>\n" );
+            out.println( "xref</title>" );
         }
 
         // stylesheet link
-        buffer.append( "<link type=\"text/css\" rel=\"stylesheet\" href=\"" ).append( this.getPackageRoot() )
-            .append( STYLESHEET_FILENAME ).append( "\" />\n" );
+        out.print( "<link type=\"text/css\" rel=\"stylesheet\" href=\"" );
+        out.print( this.getPackageRoot() );
+        out.print( STYLESHEET_FILENAME );
+        out.println( "\" />" );
 
-        buffer.append( "</head>\n" ).append( "<body>\n" ).append( this.getFileOverview() );
+        out.println( "</head>" );
+        out.println( "<body>" );
+        out.print( this.getFileOverview() );
 
         // start code section
-        buffer.append( "<pre>\n" );
-
-        return buffer.toString();
+        out.println( "<pre>" );
     }
 
     /**
      * Gets the footer attribute of the JavaCodeTransform object
-     * @param bottom
-     *
+     * @param out the writer where the header is appended to
+     * @param bottom the bottom text
      * @return String
      */
-    public final String getFooter(String bottom)
+    public final void appendFooter( PrintWriter out, String bottom )
     {
-        return "</pre>\n" + "<hr/>" + "<div id=\"footer\">"+ bottom + "</div>" + "</body>\n" + "</html>\n";
+        out.println( "</pre>" );
+        out.println( "<hr/>" );
+        out.print( "<div id=\"footer\">" );
+        out.print( bottom );
+        out.println( "</div>" );
+        out.println( "</body>" );
+        out.println( "</html>" );
     }
 
     /**
@@ -363,7 +374,7 @@ public class JavaCodeTransform
 
         String line = "";
 
-        out.println( getHeader() );
+        appendHeader( out );
 
         int linenumber = 1;
         while ( ( line = in.readLine() ) != null )
@@ -379,7 +390,7 @@ public class JavaCodeTransform
             ++linenumber;
         }
 
-        out.println( getFooter(bottom) );
+        appendFooter( out, bottom );
 
         out.flush();
     }
