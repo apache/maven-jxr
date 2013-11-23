@@ -64,7 +64,7 @@ public class JavaCodeTransformTest
         multiline comment text
 
         */ codeTransform.transform( sourceFile.getAbsolutePath(), System.getProperty( "user.dir" ) // additional comment
-            + "/target/JavaCodeTransformTest.html", Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", "", "" );
+            + "/target/JavaCodeTransformTest.html", Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", "", "", "" );
         assertTrue( /**/ new File( System.getProperty( "user.dir" ), "/target/JavaCodeTransformTest.html" ).exists() );
     }
 
@@ -78,7 +78,7 @@ public class JavaCodeTransformTest
         assertTrue( sourceFile.exists() );
 
         codeTransform.transform( sourceFile.getAbsolutePath(), System.getProperty( "user.dir" )
-            + "/target/EmptyClass.html", Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", "", "" );
+            + "/target/EmptyClass.html", Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", "", "", "" );
         assertTrue( new File( System.getProperty( "user.dir" ), "/target/EmptyClass.html" ).exists() );
     }
 

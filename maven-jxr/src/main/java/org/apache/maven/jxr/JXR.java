@@ -92,9 +92,10 @@ public class JXR
      *
      * @param packageManager
      * @param source
+     * @param bottom
      * @throws IOException
      */
-    public void processPath( PackageManager packageManager, String source )
+    public void processPath( PackageManager packageManager, String source, String bottom )
         throws IOException
     {
         this.transformer = new JavaCodeTransform( packageManager );
@@ -130,7 +131,7 @@ public class JXR
 
             if ( isJavaFile( src ) )
             {
-                transform( src, getDestination( source, src ) );
+                transform( src, getDestination( source, src ), bottom );
             }
 
         }
@@ -262,7 +263,7 @@ public class JXR
 
             pkgmgr.process( path );
 
-            processPath( pkgmgr, path );
+            processPath( pkgmgr, path, bottom );
         }
 
         // once we have all the source files xref'd, create the index pages
@@ -318,16 +319,18 @@ public class JXR
      *
      * @param source The java source file
      * @param dest The directory to put the HTML into
+     * @param bottom The bottom footer text just as in the package pages
      * @throws IOException Thrown if the transform can't happen for some reason.
      */
-    private void transform( String source, String dest )
+    private void transform( String source, String dest, String bottom )
         throws IOException
     {
         log.debug( source + " -> " + dest );
 
         // get a relative link to the javadocs
         String javadoc = javadocLinkDir != null ? getRelativeLink( dest, javadocLinkDir ) : null;
-        transformer.transform( source, dest, locale, inputEncoding, outputEncoding, javadoc, this.revision );
+        transformer.transform( source, dest, locale, inputEncoding, outputEncoding, javadoc,
+            this.revision, bottom );
     }
 
     /**

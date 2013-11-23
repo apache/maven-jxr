@@ -325,12 +325,13 @@ public class JavaCodeTransform
 
     /**
      * Gets the footer attribute of the JavaCodeTransform object
+     * @param bottom
      *
      * @return String
      */
-    public final String getFooter()
+    public final String getFooter(String bottom)
     {
-        return "</pre>\n" + "<hr/>" + "<div id=\"footer\"></div>" + "</body>\n" + "</html>\n";
+        return "</pre>\n" + "<hr/>" + "<div id=\"footer\">"+ bottom + "</div>" + "</body>\n" + "</html>\n";
     }
 
     /**
@@ -343,10 +344,11 @@ public class JavaCodeTransform
      * @param outputEncoding String
      * @param javadocLinkDir String
      * @param revision String
+     * @param bottom string
      * @throws IOException
      */
     public final void transform( Reader sourceReader, Writer destWriter, Locale locale, String inputEncoding,
-                                 String outputEncoding, String javadocLinkDir, String revision )
+                                 String outputEncoding, String javadocLinkDir, String revision, String bottom )
         throws IOException
     {
         this.locale = locale;
@@ -377,7 +379,7 @@ public class JavaCodeTransform
             ++linenumber;
         }
 
-        out.println( getFooter() );
+        out.println( getFooter(bottom) );
 
         out.flush();
     }
@@ -392,10 +394,11 @@ public class JavaCodeTransform
      * @param outputEncoding String
      * @param javadocLinkDir String
      * @param revision String
+     * @param bottom TODO
      * @throws IOException
      */
     public final void transform( String sourcefile, String destfile, Locale locale, String inputEncoding,
-                                 String outputEncoding, String javadocLinkDir, String revision )
+                                 String outputEncoding, String javadocLinkDir, String revision, String bottom )
         throws IOException
     {
         this.setCurrentFilename( sourcefile );
@@ -427,7 +430,7 @@ public class JavaCodeTransform
                 fw = new FileWriter( destfile );
             }
 
-            transform( fr, fw, locale, inputEncoding, outputEncoding, javadocLinkDir, revision );
+            transform( fr, fw, locale, inputEncoding, outputEncoding, javadocLinkDir, revision, bottom );
         }
         catch ( RuntimeException e )
         {

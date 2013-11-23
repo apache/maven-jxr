@@ -86,6 +86,8 @@ under the License.
 		## Navigation Bar -------- END --------
 
 		<hr />
-		${bottom}
+		<div id="footer">
+			${bottom}
+		</div>
 	</body>
 </html>
