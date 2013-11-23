@@ -374,7 +374,7 @@ public class JavaCodeTransform
         {
             if ( LINE_NUMBERS )
             {
-                out.print( "<a class=\"jxr_linenumber\" name=\"" + linenumber + "\" " + "href=\"#" + linenumber + "\">" + linenumber
+                out.print( "<a class=\"jxr_linenumber\" name=\"L" + linenumber + "\" " + "href=\"#L" + linenumber + "\">" + linenumber
                     + "</a>" + getLineWidth( linenumber ) );
             }
 
