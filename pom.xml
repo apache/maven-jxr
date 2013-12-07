@@ -57,7 +57,7 @@ under the License.
   </ciManagement>
 
   <properties>
-    <sitePluginVersion>3.0</sitePluginVersion>
+    <sitePluginVersion>3.3</sitePluginVersion>
 
     <maven.jxr.siteFilePath>${maven.site.cache}/maven-jxr</maven.jxr.siteFilePath>
     <maven.jxr.siteUrlDeployment>file://${maven.jxr.siteFilePath}</maven.jxr.siteUrlDeployment>
@@ -120,6 +120,18 @@ under the License.
             <tryUpdate>true</tryUpdate>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.3</version>
+        </plugin>
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <quiet>true</quiet>
+        </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -141,6 +153,9 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.9</version>
+        <configuration>
+          <quiet>true</quiet>
+        </configuration>
         <reportSets>
           <reportSet>
             <reports>
@@ -148,6 +163,11 @@ under the License.
             </reports>
           </reportSet>
         </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.7</version><!-- TODO remove when upgrading parent to 24 -->
       </plugin>
     </plugins>
   </reporting>
