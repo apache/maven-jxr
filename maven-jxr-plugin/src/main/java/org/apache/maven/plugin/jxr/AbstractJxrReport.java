@@ -104,7 +104,7 @@ public abstract class AbstractJxrReport
     private String docTitle;
 
     /**
-     * String uses at the bottom of the Xref HTML files.
+     * String used at the bottom of the Xref HTML files.
      *
      * @parameter expression="${bottom}" default-value="Copyright &#169; {inceptionYear}&#x2013;{currentYear} {organizationName}. All rights reserved."
      */
