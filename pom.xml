@@ -106,7 +106,7 @@ under the License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-scm-publish-plugin</artifactId>
           <configuration>
-            <content>${project.reporting.outputDirectory}</content>
+            <content>${project.build.directory}/staging/${maven.site.path}</content>
             <pubScmUrl>scm:svn:https://svn.apache.org/repos/infra/websites/production/maven/content/${maven.site.path}</pubScmUrl>
             <checkoutDirectory>${maven.site.cache}/${maven.site.path}</checkoutDirectory>
             <tryUpdate>true</tryUpdate>
