@@ -25,12 +25,12 @@ under the License.
   <parent>
     <groupId>org.apache.maven.jxr</groupId>
     <artifactId>jxr</artifactId>
-    <version>2.4-SNAPSHOT</version>
+    <version>2.4</version>
   </parent>
 
   <groupId>org.apache.maven.plugins</groupId>
   <artifactId>maven-jxr-plugin</artifactId>
-  <version>2.4-SNAPSHOT</version>
+  <version>2.4</version>
   <packaging>maven-plugin</packaging>
 
   <name>Maven JXR Plugin</name>
