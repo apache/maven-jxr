@@ -37,14 +37,13 @@ Maven JXR
 
 * Main Features
 
- * Support JDK 1.4+
+ * Supports JDK 1.4+
 
  * Complementary tool for Javadoc
 
  * Easy configuration for color, style or template
 
- * Fully integrated with Maven: plugins are available for {{{http://maven.apache.org/maven-1.x/plugins/jxr/}Maven 1}}
- and {{{./maven-jxr-plugin/}Maven 2}}
+ * Fully integrated with {{{./maven-jxr-plugin/}Maven 2/3}}
 
 * Brief History
 
@@ -55,6 +54,6 @@ Maven JXR
 
 * Examples
 
-   The following example shows how to use Maven JXR in more advanced usecases:
+   The following example shows how to use Maven JXR in more advanced use cases:
 
    * {{{./examples/java.html}Using Maven JXR in Java}}

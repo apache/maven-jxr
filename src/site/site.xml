@@ -26,13 +26,9 @@ under the License.
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
+      <item name="Maven JXR Plugin" href="./maven-jxr-plugin/"/>
       <item name="FAQ" href="faq.html"/>
       <item name="Further Links" href="links.html"/>
-    </menu>
-
-    <menu name="Maven plugins">
-      <item name="Maven 1" href="http://maven.apache.org/maven-1.x/plugins/jxr/"/>
-      <item name="Maven 2" href="/maven-jxr-plugin/"/>
     </menu>
 
     <menu name="Examples">
