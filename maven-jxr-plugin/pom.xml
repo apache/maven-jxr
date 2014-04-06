@@ -56,6 +56,19 @@ under the License.
             <forkMode>always</forkMode>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <!--
+                This file is in a format that doesn't support comments, so a
+                license header can not be applied.
+              -->
+              <exclude>src/test/resources/unit/default-configuration/javadoc-files/apidocs/package-list</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>

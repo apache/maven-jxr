@@ -33,6 +33,31 @@ under the License.
 
   <name>Maven JXR</name>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <!--
+                This file has been copied and is under another license which
+                allows redistribution and use in source and binary forms, under
+                certain circumstances.
+              -->
+              <exclude>src/main/java/org/apache/maven/jxr/JavaCodeTransform.java</exclude>
+              <!--
+                A test resource that must be empty.
+              -->
+              <exclude>src/test/resources/EmptyClass.java</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
