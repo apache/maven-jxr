@@ -19,6 +19,8 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
@@ -33,32 +35,27 @@ import java.util.Locale;
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @version $Id$
- * @goal test-jxr
  */
+@Mojo( name = "test-jxr" )
 public class JxrTestReport
     extends AbstractJxrReport
 {
     /**
      * Test directories of the project.
-     *
-     * @parameter expression="${project.testCompileSourceRoots}"
-     * @required
-     * @readonly
      */
+    @Parameter( defaultValue = "${project.testCompileSourceRoots}", required = true, readonly = true )
     private List sourceDirs;
 
     /**
      * Folder where the Xref files will be copied to.
-     *
-     * @parameter expression="${project.reporting.outputDirectory}/xref-test"
      */
+    @Parameter( defaultValue = "${project.reporting.outputDirectory}/xref-test" )
     private String destDir;
 
     /**
      * Folder where Test Javadoc is generated for this project.
-     *
-     * @parameter expression="${project.reporting.outputDirectory}/testapidocs"
      */
+    @Parameter( defaultValue = "${project.reporting.outputDirectory}/testapidocs" )
     private File testJavadocDir;
 
     /**

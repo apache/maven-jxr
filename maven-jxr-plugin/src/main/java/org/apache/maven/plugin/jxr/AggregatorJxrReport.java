@@ -19,14 +19,14 @@
 
 package org.apache.maven.plugin.jxr;
 
+import org.apache.maven.plugins.annotations.Mojo;
+
 /**
  * Generates a combined JXR report in an aggregating project.
  * 
- * @goal aggregate
- * @aggregator
  * @since 2.3
- *
  */
+@Mojo( name = "aggregate", aggregator = true )
 public class AggregatorJxrReport
     extends JxrReport
 {

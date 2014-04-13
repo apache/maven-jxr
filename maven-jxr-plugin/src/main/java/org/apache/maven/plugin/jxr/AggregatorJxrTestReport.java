@@ -18,14 +18,14 @@
  */
 package org.apache.maven.plugin.jxr;
 
+import org.apache.maven.plugins.annotations.Mojo;
+
 /**
  * Generates a combined JXR report for test code in an aggregating project.
  * 
- * @goal test-aggregate
- * @aggregator
  * @since 2.3
- *
  */
+@Mojo( name = "test-aggregate", aggregator = true )
 public class AggregatorJxrTestReport
     extends JxrTestReport
 {

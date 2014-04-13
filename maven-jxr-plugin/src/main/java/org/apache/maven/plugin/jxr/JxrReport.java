@@ -19,6 +19,8 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
@@ -33,40 +35,34 @@ import java.util.Locale;
  *
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
  * @version $Id$
- * @goal jxr
  */
+@Mojo( name = "jxr" )
 public class JxrReport
     extends AbstractJxrReport
 {
     /**
      * Source directories of the project.
-     *
-     * @parameter expression="${project.compileSourceRoots}"
-     * @required
-     * @readonly
      */
+    @Parameter( defaultValue = "${project.compileSourceRoots}", required = true, readonly = true )
     private List sourceDirs;
 
     /**
      * Specifies the source path where the java files are located.
      * The paths are separated by '<code>;</code>'.
-     *
-     * @parameter expression="${sourcePath}"
      */
+    @Parameter
     private String sourcePath;
 
     /**
      * Folder where the Xref files will be copied to.
-     *
-     * @parameter expression="${project.reporting.outputDirectory}/xref"
      */
+    @Parameter( defaultValue = "${project.reporting.outputDirectory}/xref" )
     private String destDir;
 
     /**
      * Folder where Javadoc is generated for this project.
-     *
-     * @parameter expression="${project.reporting.outputDirectory}/apidocs"
      */
+    @Parameter( defaultValue = "${project.reporting.outputDirectory}/apidocs" )
     private File javadocDir;
 
     /**

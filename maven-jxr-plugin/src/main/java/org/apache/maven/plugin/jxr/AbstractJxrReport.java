@@ -35,6 +35,8 @@ import org.apache.maven.jxr.JXR;
 import org.apache.maven.jxr.JxrException;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
@@ -53,126 +55,108 @@ import org.codehaus.plexus.util.StringUtils;
 public abstract class AbstractJxrReport
     extends AbstractMavenReport
 {
-    /**
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
+    @Parameter( defaultValue = "${project}", readonly = true, required = true )
     private MavenProject project;
 
-    /**
-     * @component
-     */
+    @Component
     private Renderer siteRenderer;
 
     /**
      * Output folder where the main page of the report will be generated. Note that this parameter is only relevant if
      * the goal is run directly from the command line or from the default lifecycle. If the goal is run indirectly as
      * part of a site generation, the output directory configured in the Maven Site Plugin will be used instead.
-     *
-     * @parameter expression="${project.reporting.outputDirectory}"
-     * @required
      */
+    @Parameter( defaultValue = "${project.reporting.outputDirectory}", required = true )
     private File outputDirectory;
 
     /**
      * File input encoding.
-     *
-     * @parameter expression="${encoding}" default-value="${project.build.sourceEncoding}"
      */
+    @Parameter( property = "encoding", defaultValue = "${project.build.sourceEncoding}" )
     private String inputEncoding;
 
     /**
      * File output encoding.
-     *
-     * @parameter expression="${outputEncoding}" default-value="${project.reporting.outputEncoding}"
      */
+    @Parameter( property = "outputEncoding", defaultValue = "${project.reporting.outputEncoding}" )
     private String outputEncoding;
 
     /**
      * Title of window of the Xref HTML files.
-     *
-     * @parameter expression="${project.name} ${project.version} Reference"
      */
+    @Parameter( defaultValue = "${project.name} ${project.version} Reference" )
     private String windowTitle;
 
     /**
      * Title of main page of the Xref HTML files.
-     *
-     * @parameter expression="${project.name} ${project.version} Reference"
      */
+    @Parameter( defaultValue = "${project.name} ${project.version} Reference" )
     private String docTitle;
 
     /**
      * String used at the bottom of the Xref HTML files.
-     *
-     * @parameter expression="${bottom}" default-value="Copyright &#169; {inceptionYear}&#x2013;{currentYear} {organizationName}. All rights reserved."
      */
+    @Parameter( property = "bottom", defaultValue = "Copyright &#169; {inceptionYear}&#x2013;{currentYear} {organizationName}. All rights reserved." )
     private String bottom;
 
     /**
      * Directory where Velocity templates can be found to generate overviews,
      * frames and summaries.
      * Should not be used. If used, should be an absolute path, like <code>"${basedir}/myTemplates"</code>.
-     *
-     * @parameter default-value="templates"
      */
+    @Parameter( defaultValue = "templates" )
     private String templateDir;
 
     /**
      * Style sheet used for the Xref HTML files.
      * Should not be used. If used, should be an absolute path, like <code>"${basedir}/myStyles.css"</code>.
-     *
-     * @parameter default-value="stylesheet.css"
      */
+    @Parameter( defaultValue = "stylesheet.css" )
     private String stylesheet;
 
     /**
      * A list of exclude patterns to use. By default no files are excluded.
      *
-     * @parameter expression="${excludes}"
      * @since 2.1
      */
+    @Parameter
     private ArrayList excludes;
 
     /**
      * A list of include patterns to use. By default all .java files are included.
      *
-     * @parameter expression="${includes}"
      * @since 2.1
      */
+    @Parameter
     private ArrayList includes;
 
     /**
      * The projects in the reactor for aggregation report.
-     *
-     * @parameter expression="${reactorProjects}"
-     * @readonly
      */
+    @Parameter( defaultValue = "${reactorProjects}", readonly = true )
     protected List reactorProjects;
 
     /**
      * Whether to build an aggregated report at the root, or build individual reports.
      *
-     * @parameter expression="${aggregate}" default-value="false"
      * @deprecated since 2.3. Use the goals <code>jxr:aggregate</code> and <code>jxr:test-aggregate</code> instead.
      */
+    @Parameter( defaultValue = "false" )
     protected boolean aggregate;
 
     /**
      * Whether to skip this execution.
      *
-     * @parameter expression="${maven.jxr.skip}" default-value="false"
      * @since 2.3
      */
+    @Parameter( property = "maven.jxr.skip", defaultValue = "false" )
     protected boolean skip;
 
     /**
      * Link the Javadoc from the Source XRef. Defaults to true and will link
      * automatically if javadoc plugin is being used.
-     *
-     * @parameter expression="${linkJavadoc}" default-value="true"
      */
+    @Parameter( defaultValue = "true" )
     private boolean linkJavadoc;
 
     /**
