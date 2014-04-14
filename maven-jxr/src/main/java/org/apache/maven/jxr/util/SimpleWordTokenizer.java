@@ -69,16 +69,14 @@ public class SimpleWordTokenizer
     public static StringEntry[] tokenize( String line, String find )
     {
 
-        Vector v = new Vector();
+        Vector<StringEntry> v = new Vector<StringEntry>();
 
-        StringEntry[] se = tokenize( line );
-
-        for ( int i = 0; i < se.length; ++i )
+        for ( StringEntry se : tokenize( line ) )
         {
 
-            if ( se[i].toString().equals( find ) )
+            if ( se.toString().equals( find ) )
             {
-                v.addElement( se[i] );
+                v.addElement( se );
             }
 
         }
@@ -95,7 +93,7 @@ public class SimpleWordTokenizer
     private static StringEntry[] tokenize( String line, int start )
     {
 
-        Vector words = new Vector();
+        Vector<StringEntry> words = new Vector<StringEntry>();
 
         //algorithm works like this... break the line out into segments
         //that are separated by spaces, and if the entire String doesn't contain

@@ -44,7 +44,7 @@ public class JxrTestReport
      * Test directories of the project.
      */
     @Parameter( defaultValue = "${project.testCompileSourceRoots}", required = true, readonly = true )
-    private List sourceDirs;
+    private List<String> sourceDirs;
 
     /**
      * Folder where the Xref files will be copied to.
@@ -61,9 +61,9 @@ public class JxrTestReport
     /**
      * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getSourceRoots()
      */
-    protected List getSourceRoots()
+    protected List<String> getSourceRoots()
     {
-        List l = new ArrayList();
+        List<String> l = new ArrayList<String>();
 
         if ( !"pom".equals( getProject().getPackaging().toLowerCase() ) )
         {
@@ -84,9 +84,9 @@ public class JxrTestReport
     /**
      * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getSourceRoots(org.apache.maven.project.MavenProject)
      */
-    protected List getSourceRoots( MavenProject project )
+    protected List<String> getSourceRoots( MavenProject project )
     {
-        List l = new ArrayList();
+        List<String> l = new ArrayList<String>();
 
         if ( project.getExecutionProject() != null )
         {

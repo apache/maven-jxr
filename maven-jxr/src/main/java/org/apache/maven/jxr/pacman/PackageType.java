@@ -29,7 +29,7 @@ public class PackageType
     extends BaseType
 {
 
-    private Hashtable classes = new Hashtable();
+    private Hashtable<String, ClassType> classes = new Hashtable<String, ClassType>();
 
     /**
      * Create a Java package
@@ -52,7 +52,7 @@ public class PackageType
     /**
      * Get all the known classes
      */
-    public Enumeration getClassTypes()
+    public Enumeration<ClassType> getClassTypes()
     {
 
         return classes.elements();
@@ -75,7 +75,7 @@ public class PackageType
     public ClassType getClassType( String classType )
     {
 
-        return (ClassType) this.classes.get( classType );
+        return this.classes.get( classType );
     }
 
 }

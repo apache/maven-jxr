@@ -26,8 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
-
 
 /**
  * Given a list of directories, parse them out and store them as rendered
@@ -37,12 +35,12 @@ public class PackageManager
 {
     private final Log log;
 
-    private Hashtable directories = new Hashtable();
+    private Hashtable<String, String> directories = new Hashtable<String, String>();
 
     /**
      * All the packages that have been parsed
      */
-    private Hashtable packages = new Hashtable();
+    private Hashtable<String, PackageType> packages = new Hashtable<String, PackageType>();
 
     /**
      * The default Java package.
@@ -59,7 +57,7 @@ public class PackageManager
     /**
      * The list of include patterns to use.
      */
-    private String[] includes = {"**/*.java"};
+    private String[] includes = { "**/*.java" };
 
     public PackageManager( Log log, FileManager fileManager )
     {
@@ -80,7 +78,7 @@ public class PackageManager
             return defaultPackage;
         }
 
-        return (PackageType) this.packages.get( name );
+        return this.packages.get( name );
     }
 
     /**
@@ -94,7 +92,7 @@ public class PackageManager
     /**
      * Get all of the packages in the PackageManager
      */
-    public Enumeration getPackageTypes()
+    public Enumeration<PackageType> getPackageTypes()
     {
         return packages.elements();
     }
@@ -113,16 +111,15 @@ public class PackageManager
         directoryScanner.setExcludes( excludes );
         directoryScanner.setIncludes( includes );
         directoryScanner.scan();
-        String[] files = directoryScanner.getIncludedFiles();
 
-        for ( int j = 0; j < files.length; ++j )
+        for ( String file : directoryScanner.getIncludedFiles() )
         {
-            log.debug( "parsing... " + files[j] );
+            log.debug( "parsing... " + file );
 
             //now parse out this file to get the packages/classname/etc
             try
             {
-                String fileName = new File( baseDir, files[j] ).getAbsolutePath();
+                String fileName = new File( baseDir, file ).getAbsolutePath();
                 JavaFile jfi = fileManager.getFile( fileName );
 
                 // now that we have this parsed out blend its information
@@ -138,9 +135,9 @@ public class PackageManager
                 // Add the current file's class(es) to this global package.
                 if ( jfi.getClassTypes() != null && !jfi.getClassTypes().isEmpty() )
                 {
-                    for ( Iterator iterator = jfi.getClassTypes().iterator(); iterator.hasNext(); )
+                    for ( ClassType ct : jfi.getClassTypes() )
                     {
-                        jp.addClassType( (ClassType) iterator.next() );
+                        jp.addClassType( ct );
                     }
                 }
 
@@ -187,23 +184,23 @@ public class PackageManager
 
         log.debug( "Dumping out PackageManager structure" );
 
-        Enumeration pts = this.getPackageTypes();
+        Enumeration<PackageType> pts = this.getPackageTypes();
 
         while ( pts.hasMoreElements() )
         {
 
             //get the current package and print it.
-            PackageType current = (PackageType) pts.nextElement();
+            PackageType current = pts.nextElement();
 
             log.debug( current.getName() );
 
             //get the classes under the package and print those too.
-            Enumeration classes = current.getClassTypes();
+            Enumeration<ClassType> classes = current.getClassTypes();
 
             while ( classes.hasMoreElements() )
             {
 
-                ClassType currentClass = (ClassType) classes.nextElement();
+                ClassType currentClass = classes.nextElement();
 
                 log.debug( "\t" + currentClass.getName() );
 

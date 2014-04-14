@@ -24,7 +24,7 @@ package org.apache.maven.jxr.util;
  * this StringEntry was found in the source string
  */
 public class StringEntry
-    implements Comparable
+    implements Comparable<StringEntry>
 {
 
     private String value = null;
@@ -63,17 +63,9 @@ public class StringEntry
     /**
      * Compare two objects for equality.
      */
-    public int compareTo( Object obj )
+    public int compareTo( StringEntry se )
     {
         //right now only sort by the index.
-
-        if ( obj instanceof StringEntry == false )
-        {
-
-            throw new IllegalArgumentException( "object must be a StringEntry" );
-        }
-
-        StringEntry se = (StringEntry) obj;
 
         if ( se.getIndex() < this.getIndex() )
         {

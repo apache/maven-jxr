@@ -336,10 +336,10 @@ public class DirectoryIndexer
      * allClasses collection of Maps with class info, format as above
      *
      */
-    private Map getPackageInfo()
+    private Map<String, Object> getPackageInfo()
     {
-        TreeMap allPackages = new TreeMap();
-        TreeMap allClasses = new TreeMap();
+        TreeMap<String, Map<String, Object>> allPackages = new TreeMap<String, Map<String, Object>>();
+        TreeMap<String, Map<String, String>> allClasses = new TreeMap<String, Map<String, String>>();
         Perl5Util perl = new Perl5Util();
 
         Enumeration packages = packageManager.getPackageTypes();
@@ -359,14 +359,14 @@ public class DirectoryIndexer
                 rootRef = "./";
             }
 
-            TreeMap pkgClasses = new TreeMap();
+            TreeMap<String, Map<String, String>> pkgClasses = new TreeMap<String, Map<String, String>>();
             Enumeration classes = pkg.getClassTypes();
             while ( classes.hasMoreElements() )
             {
                 ClassType clazz = (ClassType) classes.nextElement();
 
                 String className = clazz.getName();
-                Map classInfo = new HashMap();
+                Map<String, String> classInfo = new HashMap<String, String>();
                 if ( clazz.getFilename() != null )
                 {
                     classInfo.put( "filename", clazz.getFilename() );
@@ -382,7 +382,7 @@ public class DirectoryIndexer
                 allClasses.put( className, classInfo );
             }
 
-            Map pkgInfo = new HashMap();
+            Map<String, Object> pkgInfo = new HashMap<String, Object>();
             pkgInfo.put( "name", pkgName );
             pkgInfo.put( "dir", pkgDir );
             pkgInfo.put( "classes", pkgClasses );
@@ -390,7 +390,7 @@ public class DirectoryIndexer
             allPackages.put( pkgName, pkgInfo );
         }
 
-        Map info = new HashMap();
+        Map<String, Object> info = new HashMap<String, Object>();
         info.put( "allPackages", allPackages );
         info.put( "allClasses", allClasses );
 

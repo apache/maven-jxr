@@ -163,7 +163,7 @@ public class JavaCodeTransform
     /**
      * HashTable containing java reserved words
      */
-    private Hashtable reservedWords = new Hashtable();
+    private Hashtable<String, String> reservedWords = new Hashtable<String, String>();
 
     /**
      * flag set to true when a multi-line comment is started
@@ -1196,7 +1196,7 @@ public class JavaCodeTransform
             return line;
         }
 
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
 
         //get the imported packages
         ImportType[] imports = jf.getImportTypes();

@@ -74,26 +74,18 @@ public class JxrReportUtil
         {
             return true;
         }
-        List plugins = getMavenJavadocPlugins ( project );
-        Iterator pi = plugins.iterator();
-        while ( pi.hasNext() )
+        for ( Object pluginObject : getMavenJavadocPlugins ( project ) )
         {
-            Object pluginObject = pi.next();
-            
             if ( pluginObject instanceof Plugin )
             {
-                Plugin plugin = (Plugin)pluginObject;
-                List executions = plugin.getExecutions();
-                Iterator ei = executions.iterator();
-                while ( ei.hasNext() )
+                Plugin plugin = (Plugin) pluginObject;
+                List<PluginExecution> executions = plugin.getExecutions();
+                for ( PluginExecution pe : executions )
                 {
-                    PluginExecution pe = (PluginExecution) ei.next();
-                    List goals = pe.getGoals();
-                    Iterator gi = goals.iterator();
-                    while ( gi.hasNext() )
+                    List<String> goals = pe.getGoals();
+                    for ( String goal : goals )
                     {
-                        String goal = (String) gi.next();
-                        if ( "aggregate".equals(goal) )
+                        if ( "aggregate".equals( goal ) )
                         {
                             return true;
                         }
@@ -117,21 +109,19 @@ public class JxrReportUtil
                                                               String defaultValue )
         throws IOException
     {
-        List plugins = new ArrayList();
-        for ( Iterator it = project.getModel().getReporting().getPlugins().iterator(); it.hasNext(); )
+        List<Object> plugins = new ArrayList<Object>();
+        for ( Iterator<?> it = project.getModel().getReporting().getPlugins().iterator(); it.hasNext(); )
         {
             plugins.add( it.next() );
         }
-        for ( Iterator it = project.getModel().getBuild().getPlugins().iterator(); it.hasNext(); )
+        for ( Iterator<?> it = project.getModel().getBuild().getPlugins().iterator(); it.hasNext(); )
         {
             plugins.add( it.next() );
         }
 
         String pluginArtifactId = MAVEN_JAVADOC_PLUGIN_ARTIFACT_ID;
-        for ( Iterator it = plugins.iterator(); it.hasNext(); )
+        for ( Object next : plugins )
         {
-            Object next = it.next();
-
             Xpp3Dom pluginConf = null;
 
             if ( next instanceof Plugin )
@@ -206,26 +196,24 @@ public class JxrReportUtil
      * @param project not null
      * @throws IOException if any
      */
-    protected static List getMavenJavadocPlugins( MavenProject project )
+    protected static List<?> getMavenJavadocPlugins( MavenProject project )
         throws IOException
     {
-        List plugins = new ArrayList();
-        for ( Iterator it = project.getModel().getReporting().getPlugins().iterator(); it.hasNext(); )
+        List<Object> plugins = new ArrayList<Object>();
+        for ( Iterator<?> it = project.getModel().getReporting().getPlugins().iterator(); it.hasNext(); )
         {
             plugins.add( it.next() );
         }
-        for ( Iterator it = project.getModel().getBuild().getPlugins().iterator(); it.hasNext(); )
+        for ( Iterator<?> it = project.getModel().getBuild().getPlugins().iterator(); it.hasNext(); )
         {
             plugins.add( it.next() );
         }
         
-        List result = new ArrayList();
+        List<Object> result = new ArrayList<Object>();
 
         String pluginArtifactId = MAVEN_JAVADOC_PLUGIN_ARTIFACT_ID;
-        for ( Iterator it = plugins.iterator(); it.hasNext(); )
+        for ( Object next : plugins )
         {
-            Object next = it.next();
-
             if ( next instanceof Plugin )
             {
                 Plugin plugin = (Plugin) next;

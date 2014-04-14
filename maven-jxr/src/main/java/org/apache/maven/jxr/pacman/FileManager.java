@@ -41,7 +41,7 @@ public class FileManager
      */
     private static FileManager instance = new FileManager();
 
-    private Hashtable files = new Hashtable();
+    private Hashtable<String, JavaFile> files = new Hashtable<String, JavaFile>();
 
     private String encoding = null;
 
@@ -61,7 +61,7 @@ public class FileManager
         throws IOException
     {
 
-        JavaFile real = (JavaFile) this.files.get( name );
+        JavaFile real = this.files.get( name );
 
         if ( real == null )
         {

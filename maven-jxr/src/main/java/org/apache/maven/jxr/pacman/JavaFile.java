@@ -32,9 +32,9 @@ import java.util.Vector;
 public abstract class JavaFile
 {
 
-    private Vector imports = new Vector();
+    private Vector<ImportType> imports = new Vector<ImportType>();
 
-    private ArrayList classTypes = new ArrayList();
+    private List<ClassType> classTypes = new ArrayList<ClassType>();
 
     private PackageType packageType = new PackageType();
 
@@ -65,14 +65,14 @@ public abstract class JavaFile
         else
         {
             // To retain backward compatibility, return the first class
-            return (ClassType) this.classTypes.get( 0 );
+            return this.classTypes.get( 0 );
         }
     }
 
     /**
      * Get the names of the classes in this file.
      */
-    public List getClassTypes()
+    public List<ClassType> getClassTypes()
     {
         return this.classTypes;
     }

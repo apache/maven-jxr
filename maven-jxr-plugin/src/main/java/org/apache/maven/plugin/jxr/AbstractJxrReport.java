@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -120,7 +119,7 @@ public abstract class AbstractJxrReport
      * @since 2.1
      */
     @Parameter
-    private ArrayList excludes;
+    private ArrayList<String> excludes;
 
     /**
      * A list of include patterns to use. By default all .java files are included.
@@ -128,13 +127,13 @@ public abstract class AbstractJxrReport
      * @since 2.1
      */
     @Parameter
-    private ArrayList includes;
+    private ArrayList<String> includes;
 
     /**
      * The projects in the reactor for aggregation report.
      */
     @Parameter( defaultValue = "${reactorProjects}", readonly = true )
-    protected List reactorProjects;
+    protected List<MavenProject> reactorProjects;
 
     /**
      * Whether to build an aggregated report at the root, or build individual reports.
@@ -176,12 +175,11 @@ public abstract class AbstractJxrReport
      * @param sourceDirs the List of the source directories
      * @return a List of the directories that will be included in the JXR report generation
      */
-    protected List pruneSourceDirs( List sourceDirs )
+    protected List<String> pruneSourceDirs( List<String> sourceDirs )
     {
-        List pruned = new ArrayList( sourceDirs.size() );
-        for ( Iterator i = sourceDirs.iterator(); i.hasNext(); )
+        List<String> pruned = new ArrayList<String>( sourceDirs.size() );
+        for ( String dir : sourceDirs )
         {
-            String dir = (String) i.next();
             if ( !pruned.contains( dir ) && hasSources( new File( dir ) ) )
             {
                 pruned.add( dir );
@@ -197,12 +195,11 @@ public abstract class AbstractJxrReport
     {
         // wanna know if Javadoc is being generated
         // TODO: what if it is not part of the site though, and just on the command line?
-        Collection plugin = project.getReportPlugins();
+        Collection<ReportPlugin> plugin = project.getReportPlugins();
         if ( plugin != null )
         {
-            for ( Iterator iter = plugin.iterator(); iter.hasNext(); )
+            for ( ReportPlugin reportPlugin : plugin )
             {
-                ReportPlugin reportPlugin = (ReportPlugin) iter.next();
                 if ( "maven-javadoc-plugin".equals( reportPlugin.getArtifactId() ) )
                 {
                     break;
@@ -221,10 +218,8 @@ public abstract class AbstractJxrReport
     {
         if ( dir.exists() && dir.isDirectory() )
         {
-            File[] files = dir.listFiles();
-            for ( int i = 0; i < files.length; i++ )
+            for ( File currentFile : dir.listFiles() )
             {
-                File currentFile = files[i];
                 if ( currentFile.isFile() )
                 {
                     if ( currentFile.getName().endsWith( ".java" ) )
@@ -256,7 +251,7 @@ public abstract class AbstractJxrReport
      * @throws org.apache.maven.jxr.JxrException
      *
      */
-    private void createXref( Locale locale, String destinationDirectory, List sourceDirs )
+    private void createXref( Locale locale, String destinationDirectory, List<String> sourceDirs )
         throws IOException, JxrException
     {
         JXR jxr = new JXR();
@@ -276,11 +271,11 @@ public abstract class AbstractJxrReport
         // Set include/exclude patterns on the jxr instance
         if ( excludes != null && !excludes.isEmpty() )
         {
-            jxr.setExcludes( (String[]) excludes.toArray( new String[0] ) );
+            jxr.setExcludes( excludes.toArray( new String[0] ) );
         }
         if ( includes != null && !includes.isEmpty() )
         {
-            jxr.setIncludes( (String[]) includes.toArray( new String[0] ) );
+            jxr.setIncludes( includes.toArray( new String[0] ) );
         }
 
         // avoid winding up using Velocity in two class loaders.
@@ -425,7 +420,7 @@ public abstract class AbstractJxrReport
      * @param sourceDirs
      * @return true if the report could be generated
      */
-    protected boolean canGenerateReport( List sourceDirs )
+    protected boolean canGenerateReport( List<String> sourceDirs )
     {
         boolean canGenerate = !sourceDirs.isEmpty();
 
@@ -473,7 +468,7 @@ public abstract class AbstractJxrReport
             getLog().info( "Skipping JXR." );
             return;
         }
-        List sourceDirs = constructSourceDirs();
+        List<String> sourceDirs = constructSourceDirs();
         if ( canGenerateReport( sourceDirs ) )
         {
             // init some attributes -- TODO (javadoc)
@@ -499,15 +494,13 @@ public abstract class AbstractJxrReport
      *
      * @return a List of the source directories whose contents will be included in the JXR report generation
      */
-    protected List constructSourceDirs()
+    protected List<String> constructSourceDirs()
     {
-        List sourceDirs = new ArrayList( getSourceRoots() );
+        List<String> sourceDirs = new ArrayList<String>( getSourceRoots() );
         if ( isAggregate() )
         {
-            for ( Iterator i = reactorProjects.iterator(); i.hasNext(); )
+            for ( MavenProject project : reactorProjects )
             {
-                MavenProject project = (MavenProject) i.next();
-
                 if ( "java".equals( project.getArtifact().getArtifactHandler().getLanguage() ) )
                 {
                     sourceDirs.addAll( getSourceRoots( project ) );
@@ -621,7 +614,7 @@ public abstract class AbstractJxrReport
      *
      * @return a List of the source directories
      */
-    protected abstract List getSourceRoots();
+    protected abstract List<String> getSourceRoots();
 
     /**
      * Abstract method that returns the compile source directories of the specified project that will be included in the
@@ -630,7 +623,7 @@ public abstract class AbstractJxrReport
      * @param project the MavenProject where the JXR report plugin will be executed
      * @return a List of the source directories
      */
-    protected abstract List getSourceRoots( MavenProject project );
+    protected abstract List<String> getSourceRoots( MavenProject project );
 
     /**
      * Abstract method that returns the directory of the javadoc files.

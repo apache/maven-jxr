@@ -44,7 +44,7 @@ public class JxrReport
      * Source directories of the project.
      */
     @Parameter( defaultValue = "${project.compileSourceRoots}", required = true, readonly = true )
-    private List sourceDirs;
+    private List<String> sourceDirs;
 
     /**
      * Specifies the source path where the java files are located.
@@ -76,7 +76,7 @@ public class JxrReport
     /**
      * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getSourceRoots()
      */
-    protected List getSourceRoots()
+    protected List<String> getSourceRoots()
     {
         if ( sourcePath != null )
         {
@@ -87,7 +87,7 @@ public class JxrReport
             }
         }
 
-        List l = new ArrayList();
+        List<String> l = new ArrayList<String>();
 
         if ( !"pom".equals( getProject().getPackaging().toLowerCase() ) )
         {
@@ -108,9 +108,9 @@ public class JxrReport
     /**
      * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getSourceRoots(org.apache.maven.project.MavenProject)
      */
-    protected List getSourceRoots( MavenProject project )
+    protected List<String> getSourceRoots( MavenProject project )
     {
-        List l = new ArrayList();
+        List<String> l = new ArrayList<String>();
 
         if ( !"pom".equals( project.getPackaging().toLowerCase() ) )
         {

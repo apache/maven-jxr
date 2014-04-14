@@ -27,7 +27,6 @@ import org.apache.maven.jxr.pacman.PackageManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +47,7 @@ public class JXR
     /**
      * The default list of include patterns to use.
      */
-    private static final String[] DEFAULT_INCLUDES = {"**/*.java"};
+    private static final String[] DEFAULT_INCLUDES = { "**/*.java" };
 
     /**
      * Path to destination.
@@ -244,7 +243,7 @@ public class JXR
      * @throws IOException
      * @throws JxrException
      */
-    public void xref( List sourceDirs, String templateDir, String windowTitle, String docTitle, String bottom )
+    public void xref( List<String> sourceDirs, String templateDir, String windowTitle, String docTitle, String bottom )
         throws IOException, JxrException
     {
         // first collect package and class info
@@ -256,9 +255,8 @@ public class JXR
         pkgmgr.setIncludes( includes );
 
         // go through each source directory and xref the java files
-        for ( Iterator i = sourceDirs.iterator(); i.hasNext(); )
+        for ( String path : sourceDirs )
         {
-            String path = (String) i.next();
             path = new File( path ).getCanonicalPath();
 
             pkgmgr.process( path );
@@ -354,7 +352,7 @@ public class JXR
         StringBuffer fromLink = new StringBuffer(); // down into toDir
 
         // create a List of toDir's parent directories
-        List parents = new LinkedList();
+        List<File> parents = new LinkedList<File>();
         File f = new File( toDir );
         f = f.getCanonicalFile();
         while ( f != null )
@@ -377,14 +375,14 @@ public class JXR
         {
             for ( int i = 0; i < parents.size(); ++i )
             {
-                File parent = (File) parents.get( i );
+                File parent = parents.get( i );
                 if ( f.equals( parent ) )
                 {
                     // when we find the common parent, add the subdirectories
                     // down to toDir itself
                     for ( int j = 0; j < i; ++j )
                     {
-                        File p = (File) parents.get( j );
+                        File p = parents.get( j );
                         toLink.insert( 0, p.getName() + "/" );
                     }
                     found = true;
