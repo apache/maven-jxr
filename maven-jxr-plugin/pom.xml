@@ -36,7 +36,7 @@ under the License.
   <inceptionYear>2005</inceptionYear>
 
   <properties>
-    <mavenVersion>2.0.9</mavenVersion>
+    <mavenVersion>2.2.1</mavenVersion>
     <doxia-sitetoolsVersion>1.2</doxia-sitetoolsVersion>
     <doxiaVersion>1.2</doxiaVersion>
     <mavenPluginToolsVersion>3.2</mavenPluginToolsVersion>
