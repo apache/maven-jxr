@@ -47,7 +47,6 @@ under the License.
           <bottom>Copyright 2006 Apache Foundation</bottom>
           <templateDir>templates</templateDir>
           <stylesheet>stylesheet.css</stylesheet>
-          <aggregate>true</aggregate>
           <reactorProjects>
             <project implementation="org.apache.maven.plugin.jxr.stubs.AggregateSubmodule1MavenProjectStub"/>
             <project implementation="org.apache.maven.plugin.jxr.stubs.AggregateSubmodule2MavenProjectStub"/>

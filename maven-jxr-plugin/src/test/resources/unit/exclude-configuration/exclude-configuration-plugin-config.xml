@@ -43,7 +43,6 @@ under the License.
           <destDir>${basedir}/target/test/unit/exclude-configuration/target/site/xref</destDir>
           <javadocDir>${basedir}/target/test/unit/exclude-configuration/target/site/apidocs</javadocDir>
           <linkJavadoc>true</linkJavadoc>
-          <aggregate>false</aggregate>
           <bottom>Copyright 2006 Apache Foundation</bottom>
           <templateDir>templates</templateDir>
           <stylesheet>stylesheet.css</stylesheet>
