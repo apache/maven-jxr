@@ -138,14 +138,6 @@ public abstract class AbstractJxrReport
     protected List<MavenProject> reactorProjects;
 
     /**
-     * Whether to build an aggregated report at the root, or build individual reports.
-     *
-     * @deprecated since 2.3. Use the goals <code>jxr:aggregate</code> and <code>jxr:test-aggregate</code> instead.
-     */
-    @Parameter( defaultValue = "false" )
-    protected boolean aggregate;
-
-    /**
      * Whether to skip this execution.
      *
      * @since 2.3
@@ -641,6 +633,6 @@ public abstract class AbstractJxrReport
      */
     protected boolean isAggregate()
     {
-        return aggregate;
+        return false;
     }
 }
