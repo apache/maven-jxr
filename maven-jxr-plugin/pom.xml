@@ -37,8 +37,8 @@ under the License.
 
   <properties>
     <mavenVersion>2.2.1</mavenVersion>
-    <doxia-sitetoolsVersion>1.2</doxia-sitetoolsVersion>
-    <doxiaVersion>1.2</doxiaVersion>
+    <doxia-sitetoolsVersion>1.4</doxia-sitetoolsVersion>
+    <doxiaVersion>1.4</doxiaVersion>
     <mavenPluginToolsVersion>3.2</mavenPluginToolsVersion>
   </properties>
 
