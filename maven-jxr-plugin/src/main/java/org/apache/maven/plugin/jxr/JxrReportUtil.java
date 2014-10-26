@@ -51,14 +51,15 @@ import org.xml.sax.SAXException;
  */
 public class JxrReportUtil
 {
-    
+
     private static final String MAVEN_JAVADOC_PLUGIN_GROUP_ID = "org.apache.maven.plugins";
+
     private static final String MAVEN_JAVADOC_PLUGIN_ARTIFACT_ID = "maven-javadoc-plugin";
 
     /**
-     * Determine if javadoc is aggregated in this project, paying attention to both
-     * TODO: take cognizance of javadoc versus test-javadoc
-     * the old parameter and the new mojo.
+     * Determine if javadoc is aggregated in this project, paying attention to both TODO: take cognizance of javadoc
+     * versus test-javadoc the old parameter and the new mojo.
+     * 
      * @param project
      * @return
      * @throws IOException
@@ -67,14 +68,16 @@ public class JxrReportUtil
         throws IOException
     {
         // first check conf for obsolete aggregate param.
-        boolean javadocAggregate = Boolean
-                        .valueOf( JxrReportUtil.getMavenJavadocPluginBasicOption( project, "aggregate", "false" ) )
-                        .booleanValue();
-        if ( javadocAggregate ) 
+        // CHECKSTYLE_OFF: LineLength
+        boolean javadocAggregate =
+            Boolean.valueOf( JxrReportUtil.getMavenJavadocPluginBasicOption( project, "aggregate", "false" ) ).booleanValue();
+        // CHECKSTYLE_ON: LineLength
+
+        if ( javadocAggregate )
         {
             return true;
         }
-        for ( Object pluginObject : getMavenJavadocPlugins ( project ) )
+        for ( Object pluginObject : getMavenJavadocPlugins( project ) )
         {
             if ( pluginObject instanceof Plugin )
             {
@@ -91,11 +94,11 @@ public class JxrReportUtil
                         }
                     }
                 }
-            } 
+            }
         }
         return false;
     }
-    
+
     /**
      * Return the <code>optionName</code> value defined in a project for the "maven-javadoc-plugin" plugin.
      *
@@ -128,9 +131,10 @@ public class JxrReportUtil
             {
                 Plugin plugin = (Plugin) next;
 
+                // CHECKSTYLE_OFF: LineLength
                 // using out-of-box Maven plugins
-                if ( !( ( plugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) ) && ( plugin.getArtifactId()
-                    .equals( pluginArtifactId ) ) ) )
+                if ( !isReportPluginMavenJavadoc( pluginArtifactId, plugin ) )
+                // CHECKSTYLE_ON: LineLength
                 {
                     continue;
                 }
@@ -143,8 +147,7 @@ public class JxrReportUtil
                 ReportPlugin reportPlugin = (ReportPlugin) next;
 
                 // using out-of-box Maven plugins
-                if ( !( ( reportPlugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) ) && ( reportPlugin
-                    .getArtifactId().equals( pluginArtifactId ) ) ) )
+                if ( !isReportPluginJavaDocPlugin( pluginArtifactId, reportPlugin ) )
                 {
                     continue;
                 }
@@ -159,8 +162,8 @@ public class JxrReportUtil
 
             try
             {
-                Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse( new StringInputStream( pluginConf.toString() ) );
+                StringInputStream stringInputStream = new StringInputStream( pluginConf.toString() );
+                Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse( stringInputStream );
 
                 XObject obj = XPathAPI.eval( doc, "//configuration/" + optionName );
 
@@ -189,7 +192,7 @@ public class JxrReportUtil
 
         return defaultValue;
     }
-    
+
     /**
      * Return the plugin references for the javadoc plugin in a project.
      *
@@ -208,7 +211,7 @@ public class JxrReportUtil
         {
             plugins.add( it.next() );
         }
-        
+
         List<Object> result = new ArrayList<Object>();
 
         String pluginArtifactId = MAVEN_JAVADOC_PLUGIN_ARTIFACT_ID;
@@ -219,8 +222,7 @@ public class JxrReportUtil
                 Plugin plugin = (Plugin) next;
 
                 // using out-of-box Maven plugins
-                if ( !( ( plugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) ) && ( plugin.getArtifactId()
-                    .equals( pluginArtifactId ) ) ) )
+                if ( !isReportPluginMavenJavadoc( pluginArtifactId, plugin ) )
                 {
                     continue;
                 }
@@ -233,8 +235,7 @@ public class JxrReportUtil
                 ReportPlugin reportPlugin = (ReportPlugin) next;
 
                 // using out-of-box Maven plugins
-                if ( !( ( reportPlugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) ) && ( reportPlugin
-                    .getArtifactId().equals( pluginArtifactId ) ) ) )
+                if ( !isReportPluginJavaDocPlugin( pluginArtifactId, reportPlugin ) )
                 {
                     continue;
                 }
@@ -244,13 +245,25 @@ public class JxrReportUtil
         return result;
     }
 
+    private static boolean isReportPluginMavenJavadoc( String pluginArtifactId, Plugin plugin )
+    {
+        return ( plugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) )
+            && ( plugin.getArtifactId().equals( pluginArtifactId ) );
+    }
+
+    private static boolean isReportPluginJavaDocPlugin( String pluginArtifactId, ReportPlugin reportPlugin )
+    {
+        return ( reportPlugin.getGroupId().equals( MAVEN_JAVADOC_PLUGIN_GROUP_ID ) )
+            && ( reportPlugin.getArtifactId().equals( pluginArtifactId ) );
+    }
+
     /**
      * Generates the site structure using the project hierarchy (project and its modules) or using the
      * distributionManagement elements from the pom.xml.
      *
      * @todo come from site plugin!
-     * @see org.apache.maven.plugins.site.SiteStageMojo#getStructure( MavenProject project, boolean ignoreMissingSiteUrl )
-     *
+     * @see org.apache.maven.plugins.site.SiteStageMojo#getStructure(MavenProject project, boolean ignoreMissingSiteUrl
+     *      )
      * @param project
      * @param ignoreMissingSiteUrl
      * @return the structure relative path
@@ -278,9 +291,8 @@ public class JxrReportUtil
         {
             if ( !ignoreMissingSiteUrl )
             {
-                throw new IOException(
-                                       "Missing site information in the distribution management element in the project: '"
-                                           + project.getName() + "'." );
+                throw new IOException( "Missing site information in the distribution management "
+                    + "element in the project: '" + project.getName() + "'." );
             }
 
             return null;

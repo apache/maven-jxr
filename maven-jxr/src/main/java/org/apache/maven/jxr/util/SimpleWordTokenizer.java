@@ -23,10 +23,9 @@ import java.util.Collections;
 import java.util.Vector;
 
 /**
- * This is a small and fast word tokenizer. It has different characteristics
- * from the normal Java tokenizer. It only considers clear words that are only
- * ended with spaces as strings. EX: "Flight" would be a word but "Flight()"
- * would not.
+ * This is a small and fast word tokenizer. It has different characteristics from the normal Java tokenizer. It only
+ * considers clear words that are only ended with spaces as strings. EX: "Flight" would be a word but "Flight()" would
+ * not.
  */
 public class SimpleWordTokenizer
 {
@@ -34,7 +33,7 @@ public class SimpleWordTokenizer
     /**
      * Description of the Field
      */
-    public static final char[] BREAKERS = {'(', ')', '[', ' ', '{', '}'};
+    public static final char[] BREAKERS = { '(', ')', '[', ' ', '{', '}' };
 
     /**
      * Break the given line into multiple StringUtils
@@ -43,12 +42,12 @@ public class SimpleWordTokenizer
     {
 
         /*
-        determine where to start processing this String... this could
-        either be the start of the line or just keep going until the first
-        */
+         * determine where to start processing this String... this could either be the start of the line or just keep
+         * going until the first
+         */
         int start = getStart( line );
 
-        //find the first non-BREAKER char and assume that is where you want to start
+        // find the first non-BREAKER char and assume that is where you want to start
 
         if ( line == null || line.length() == 0 || start == -1 )
         {
@@ -58,10 +57,8 @@ public class SimpleWordTokenizer
         return tokenize( line, start );
     }
 
-
     /**
-     * Tokenize the given line but only return StringUtils that match the parameter
-     * find.
+     * Tokenize the given line but only return StringUtils that match the parameter find.
      *
      * @param line String to search in
      * @param find String to match.
@@ -95,9 +92,9 @@ public class SimpleWordTokenizer
 
         Vector<StringEntry> words = new Vector<StringEntry>();
 
-        //algorithm works like this... break the line out into segments
-        //that are separated by spaces, and if the entire String doesn't contain
-        //a non-Alpha char then assume it is a word.
+        // algorithm works like this... break the line out into segments
+        // that are separated by spaces, and if the entire String doesn't contain
+        // a non-Alpha char then assume it is a word.
         while ( true )
         {
 
@@ -123,10 +120,9 @@ public class SimpleWordTokenizer
         return found;
     }
 
-
     /**
-     * Go through the entire String and if any character is not a Java identifier part (_, a, b,
-     * c, d, etc) then return false.
+     * Go through the entire String and if any character is not a Java identifier part (_, a, b, c, d, etc) then return
+     * false.
      */
     private static boolean isWord( String string )
     {
@@ -174,7 +170,7 @@ public class SimpleWordTokenizer
 
         }
 
-        //if the breakPoint is still -1 go to the end of the string
+        // if the breakPoint is still -1 go to the end of the string
         if ( breakPoint == -1 )
         {
             breakPoint = string.length();
@@ -192,7 +188,7 @@ public class SimpleWordTokenizer
         for ( int i = 0; i < string.length(); ++i )
         {
 
-            if ( isBreaker( string.charAt( i ) ) == false )
+            if ( !isBreaker( string.charAt( i ) ) )
             {
                 return i;
             }
@@ -201,7 +197,6 @@ public class SimpleWordTokenizer
 
         return -1;
     }
-
 
     /**
      * Return true if the given char is considered a breaker.
@@ -223,4 +218,3 @@ public class SimpleWordTokenizer
     }
 
 }
-

@@ -92,23 +92,25 @@ public abstract class AbstractJxrReport
     @Parameter( defaultValue = "${project.name} ${project.version} Reference" )
     private String docTitle;
 
+    // CHECKSTYLE_OFF: LineLength
     /**
      * String used at the bottom of the Xref HTML files.
      */
     @Parameter( property = "bottom", defaultValue = "Copyright &#169; {inceptionYear}&#x2013;{currentYear} {organizationName}. All rights reserved." )
     private String bottom;
 
+    // CHECKSTYLE_ON: LineLength
+
     /**
-     * Directory where Velocity templates can be found to generate overviews,
-     * frames and summaries.
-     * Should not be used. If used, should be an absolute path, like <code>"${basedir}/myTemplates"</code>.
+     * Directory where Velocity templates can be found to generate overviews, frames and summaries. Should not be used.
+     * If used, should be an absolute path, like <code>"${basedir}/myTemplates"</code>.
      */
     @Parameter( defaultValue = "templates" )
     private String templateDir;
 
     /**
-     * Style sheet used for the Xref HTML files.
-     * Should not be used. If used, should be an absolute path, like <code>"${basedir}/myStyles.css"</code>.
+     * Style sheet used for the Xref HTML files. Should not be used. If used, should be an absolute path, like
+     * <code>"${basedir}/myStyles.css"</code>.
      */
     @Parameter( defaultValue = "stylesheet.css" )
     private String stylesheet;
@@ -152,8 +154,8 @@ public abstract class AbstractJxrReport
     protected boolean skip;
 
     /**
-     * Link the Javadoc from the Source XRef. Defaults to true and will link
-     * automatically if javadoc plugin is being used.
+     * Link the Javadoc from the Source XRef. Defaults to true and will link automatically if javadoc plugin is being
+     * used.
      */
     @Parameter( defaultValue = "true" )
     private boolean linkJavadoc;
@@ -161,8 +163,8 @@ public abstract class AbstractJxrReport
     /**
      * Gets the effective reporting output files encoding.
      *
-     * @return The effective reporting output file encoding, never <code>null</code>: defaults to
-     *         <code>UTF-8</code> instead.
+     * @return The effective reporting output file encoding, never <code>null</code>: defaults to <code>UTF-8</code>
+     *         instead.
      */
     protected String getOutputEncoding()
     {
@@ -241,15 +243,14 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Creates the Xref for the Java files found in the given source directory and puts
-     * them in the given destination directory.
+     * Creates the Xref for the Java files found in the given source directory and puts them in the given destination
+     * directory.
      *
-     * @param locale               The user locale to use for the Xref generation
+     * @param locale The user locale to use for the Xref generation
      * @param destinationDirectory The output folder
-     * @param sourceDirs           The source directories
+     * @param sourceDirs The source directories
      * @throws java.io.IOException
      * @throws org.apache.maven.jxr.JxrException
-     *
      */
     private void createXref( Locale locale, String destinationDirectory, List<String> sourceDirs )
         throws IOException, JxrException
@@ -332,9 +333,11 @@ public abstract class AbstractJxrReport
             {
                 if ( StringUtils.isNotEmpty( project.getOrganization().getUrl() ) )
                 {
-                    theBottom = StringUtils.replace( theBottom, "{organizationName}",
-                                                     "<a href=\"" + project.getOrganization().getUrl() + "\">"
-                                                         + project.getOrganization().getName() + "</a>" );
+                    // CHECKSTYLE_OFF: LineLength
+                    theBottom =
+                        StringUtils.replace( theBottom, "{organizationName}", "<a href=\""
+                            + project.getOrganization().getUrl() + "\">" + project.getOrganization().getName() + "</a>" );
+                    // CHECKSTYLE_ON: LineLength
                 }
                 else
                 {
@@ -352,8 +355,7 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Copy some required resources (like the stylesheet) to the
-     * given directory
+     * Copy some required resources (like the stylesheet) to the given directory
      *
      * @param dir the directory to copy the resources to
      */
@@ -432,9 +434,9 @@ public abstract class AbstractJxrReport
     }
 
     /*
-     * This is called for a standalone execution. Well, that's the claim. It also ends up called for the aggregate mojo, since
-     * that is configured as an execution, not in the reporting section, at least by some people on some days. We do NOT want
-     * the default behavior.
+     * This is called for a standalone execution. Well, that's the claim. It also ends up called for the aggregate mojo,
+     * since that is configured as an execution, not in the reporting section, at least by some people on some days. We
+     * do NOT want the default behavior.
      */
     public void execute()
         throws MojoExecutionException

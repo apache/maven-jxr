@@ -19,13 +19,12 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
-import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-import org.codehaus.plexus.util.FileUtils;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
+import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
@@ -52,9 +51,9 @@ public class JxrTestReportTest
         JxrTestReport mojo = (JxrTestReport) lookupMojo( "test-jxr", testPom );
         mojo.execute();
 
-    	File xrefTestDir = new File( getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test" );
+        File xrefTestDir = new File( getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test" );
 
-        //check if the jxr docs were generated
+        // check if the jxr docs were generated
         assertTrue( new File( xrefTestDir, "testsourcedir/test/AppSampleTest.html" ).exists() );
         assertTrue( new File( xrefTestDir, "testsourcedir/test/AppTest.html" ).exists() );
         assertTrue( new File( xrefTestDir, "testsourcedir/test/package-frame.html" ).exists() );
@@ -65,7 +64,7 @@ public class JxrTestReportTest
         assertTrue( new File( xrefTestDir, "overview-summary.html" ).exists() );
         assertTrue( new File( xrefTestDir, "stylesheet.css" ).exists() );
 
-        //check if there's a link to the javadoc files
+        // check if there's a link to the javadoc files
         String str = readFile( new File( xrefTestDir, "testsourcedir/test/AppSampleTest.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/testsourcedir/test/AppSample.html\"".toLowerCase() ) == -1 );
 
