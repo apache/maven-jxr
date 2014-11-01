@@ -42,6 +42,12 @@ under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
+          <!-- 
+               The following has to be execluded from checkstyle otherwise
+               it will fail based on the license of the file until
+               a better solution exists.
+               http://jira.codehaus.org/browse/JXR-117
+          -->
           <configuration>
             <excludes>**/JavaCodeTransform.java</excludes>
           </configuration>
