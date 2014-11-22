@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>25</version>
+    <version>26</version>
     <relativePath>../pom/maven/pom.xml</relativePath>
   </parent>
 
@@ -101,23 +101,6 @@ under the License.
           <configuration>
             <tagBase>https://svn.apache.org/repos/asf/maven/jxr/tags</tagBase>
             <autoVersionSubmodules>true</autoVersionSubmodules>
-          </configuration>
-        </plugin>
-        <!-- 
-             Requested an enhancement:
-             https://issues.apache.org/jira/browse/RAT-184
-             http://jira.codehaus.org/browse/JXR-122
-             This needed to be added to ingore the generated DEPENDENCIES files
-             otherwise we will have a release in release area which can't be built
-             without changing.
-        -->
-        <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
-          <configuration>
-            <excludes>
-              <exclude>DEPENDENCIES</exclude>
-            </excludes>
           </configuration>
         </plugin>
       </plugins>

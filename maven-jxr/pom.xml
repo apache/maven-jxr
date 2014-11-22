@@ -46,14 +46,14 @@ under the License.
                http://jira.codehaus.org/browse/JXR-117
           -->
           <configuration>
-            <excludes>**/JavaCodeTransform.java</excludes>
+            <excludes combine.children="append">**/JavaCodeTransform.java</excludes>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
           <configuration>
-            <excludes>
+            <excludes combine.children="append">
               <!--
                 This file has been copied and is under another license which
                 allows redistribution and use in source and binary forms, under
