@@ -31,7 +31,9 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -288,11 +290,11 @@ public class DirectoryIndexer
         // output file
         File file = new File( outDir, templateName + ".html" );
         file.getParentFile().mkdirs();
-        FileWriter writer = null;
+        Writer writer = null;
 
         try
         {
-            writer = new FileWriter( file );
+            writer = new OutputStreamWriter( new FileOutputStream( file ), getOutputEncoding() );
 
             // template file
             StringBuffer templateFile = new StringBuffer();
