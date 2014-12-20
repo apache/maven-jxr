@@ -36,7 +36,7 @@ under the License.
       	<ul>
       		#foreach ($classInfo in $pkgInfo.classes.values())
           	<li>
-            	<a href="${classInfo.filename}.html" target="classFrame">$classInfo.name</a>
+            	<a href="${classInfo.filename}.html#${classInfo.name}" target="classFrame">$classInfo.name</a>
           	</li>
           	#end
       	</ul>
