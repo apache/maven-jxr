@@ -65,7 +65,7 @@ import java.util.Vector;
  * how the java code will be highlighted with setter methods. Only valid java lines should be passed in since the object
  * maintains state and may not handle illegal code gracefully. The actual system is implemented as a series of filters
  * that deal with specific portions of the java code. The filters are as follows:
- * 
+ *
  * <pre>
  *  htmlFilter
  *    |__
@@ -262,7 +262,7 @@ public class JavaCodeTransform
 
     /**
      * Gets the header attribute of the JavaCodeTransform object
-     * 
+     *
      * @param out the writer where the header is appended to
      * @return String
      */
@@ -328,7 +328,7 @@ public class JavaCodeTransform
 
     /**
      * Gets the footer attribute of the JavaCodeTransform object
-     * 
+     *
      * @param out the writer where the header is appended to
      * @param bottom the bottom text
      * @return String
@@ -642,15 +642,18 @@ public class JavaCodeTransform
         {
             href = this.getHREF( packageName, classType );
             find = classType.getName();
+
+            // build out what the link would be.
+            link = "<a name=\"" + find + "\" href=\"" + href + "\">" + find + "</a>";
         }
         else
         {
             href = this.getHREF( packageName );
             find = packageName;
-        }
 
-        // build out what the link would be.
-        link = "<a href=\"" + href + "\">" + find + "</a>";
+            // build out what the link would be.
+            link = "<a href=\"" + href + "\">" + find + "</a>";
+        }
 
         // use the SimpleWordTokenizer to find all entries
         // that match word. Then replace these with the link
@@ -1301,6 +1304,8 @@ public class JavaCodeTransform
             href.append( "/" );
             href.append( jc.getFilename() );
             href.append( ".html" );
+            href.append('#');
+            href.append( jc.getName() );
         }
 
         return href.toString();
