@@ -39,7 +39,6 @@ under the License.
     <mavenVersion>2.2.1</mavenVersion>
     <doxia-sitetoolsVersion>1.4</doxia-sitetoolsVersion>
     <doxiaVersion>1.4</doxiaVersion>
-    <mavenPluginToolsVersion>3.3</mavenPluginToolsVersion>
   </properties>
 
   <prerequisites>
@@ -52,10 +51,6 @@ under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
-          <version>${mavenPluginToolsVersion}</version>
-          <configuration>
-            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-          </configuration>
           <executions>
             <execution>
               <id>mojo-descriptor</id>
@@ -183,7 +178,6 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>${mavenPluginToolsVersion}</version>
       </plugin>
     </plugins>
   </reporting>

@@ -43,7 +43,7 @@ under the License.
                The following has to be execluded from checkstyle otherwise
                it will fail based on the license of the file until
                a better solution exists.
-               http://jira.codehaus.org/browse/JXR-117
+               https://issues.apache.org/jira/browse/JXR-117
           -->
           <configuration>
             <excludes combine.children="append">**/JavaCodeTransform.java</excludes>
