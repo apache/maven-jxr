@@ -19,14 +19,17 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
+import org.apache.maven.plugins.annotations.Execute;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 
 /**
  * Generates a combined JXR report for test code in an aggregating project.
- * 
+ *
  * @since 2.3
  */
 @Mojo( name = "test-aggregate", aggregator = true )
+@Execute( phase = LifecyclePhase.TEST_COMPILE )
 public class AggregatorJxrTestReport
     extends JxrTestReport
 {
