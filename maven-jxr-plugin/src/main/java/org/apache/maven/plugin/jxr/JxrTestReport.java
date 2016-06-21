@@ -19,14 +19,16 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import org.apache.maven.plugins.annotations.Execute;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 
 /**
  * Creates an html-based, cross referenced version of Java source code
@@ -37,6 +39,7 @@ import java.util.Locale;
  * @version $Id$
  */
 @Mojo( name = "test-jxr" )
+@Execute( phase = LifecyclePhase.GENERATE_TEST_SOURCES )
 public class JxrTestReport
     extends AbstractJxrReport
 {
