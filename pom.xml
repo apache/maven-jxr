@@ -41,9 +41,10 @@ under the License.
   <description>Source cross reference library</description>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/jxr/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/jxr/trunk/</developerConnection>
-    <url>https://svn.apache.org/viewvc/maven/jxr/trunk/</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-jxr.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-jxr.git</developerConnection>
+    <url>https://github.com/apache/maven-jxr/tree/${project.scm.tag}</url>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
