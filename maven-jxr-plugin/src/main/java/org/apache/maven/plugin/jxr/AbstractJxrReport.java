@@ -474,11 +474,11 @@ public abstract class AbstractJxrReport
             }
             catch ( JxrException e )
             {
-                throw new MavenReportException( "Error while generating the HTML source code of the projet.", e );
+                throw new MavenReportException( "Error while generating the HTML source code of the project.", e );
             }
             catch ( IOException e )
             {
-                throw new MavenReportException( "Error while generating the HTML source code of the projet.", e );
+                throw new MavenReportException( "Error while generating the HTML source code of the project.", e );
             }
         }
     }
