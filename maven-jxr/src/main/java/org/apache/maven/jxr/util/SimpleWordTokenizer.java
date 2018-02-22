@@ -19,7 +19,9 @@ package org.apache.maven.jxr.util;
  * under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -89,35 +91,24 @@ public class SimpleWordTokenizer
      */
     private static StringEntry[] tokenize( String line, int start )
     {
+        List<StringEntry> entries = new ArrayList<>();
+        line = line.substring(start);
 
-        Vector<StringEntry> words = new Vector<StringEntry>();
-
-        // algorithm works like this... break the line out into segments
-        // that are separated by spaces, and if the entire String doesn't contain
-        // a non-Alpha char then assume it is a word.
-        while ( true )
+        for (char breaker : BREAKERS)
         {
-
-            int next = getNextBreak( line, start );
-
-            if ( next < 0 || next <= start )
-            {
-                break;
-            }
-
-            String word = line.substring( start, next );
-
-            if ( isWord( word ) )
-            {
-                words.addElement( new StringEntry( word, start ) );
-            }
-
-            start = next + 1;
+            line = line.replace(breaker + "", " ");
         }
 
-        StringEntry[] found = new StringEntry[words.size()];
-        words.copyInto( found );
-        return found;
+        String[] split = line.split("\\s+");
+        entries.add(new StringEntry(split[0], line.indexOf(split[0],0)));
+
+        for (int i = 1; i < split.length; i++)
+        {
+            int index = line.indexOf(split[i], line.indexOf(split[i - 1]) + split[i - 1].length());
+            entries.add(new StringEntry(split[i], index));
+        }
+
+        return entries.toArray(new StringEntry[entries.size()]);
     }
 
     /**
