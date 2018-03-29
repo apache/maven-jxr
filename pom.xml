@@ -65,6 +65,7 @@ under the License.
   <properties>
     <sitePluginVersion>3.3</sitePluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
+    <surefire.version>2.21.0</surefire.version>
   </properties>
 
   <modules>
