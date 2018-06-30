@@ -19,13 +19,14 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * PacMan implementation of a JavaFile. This will parse out the file and
@@ -45,20 +46,17 @@ public class JavaFileImpl
      * @param filename
      * @throws IOException
      */
-    public JavaFileImpl( String filename, String encoding )
+    public JavaFileImpl( Path path, String encoding )
         throws IOException
     {
-        this.setFilename( filename );
-        this.setEncoding( encoding );
+        super( path, encoding );
 
         //always add java.lang.* to the package imports because the JVM always
         //does this implicitly.  Unless we add this to the ImportTypes JXR
         //won't pick up on this.
-
         this.addImportType( new ImportType( "java.lang.*" ) );
 
         //now parse out this file.
-
         this.parse();
     }
 
@@ -118,7 +116,7 @@ public class JavaFileImpl
                 {
                     stok.nextToken();
                     this.addClassType( new ClassType( stok.sval,
-                                                      getFilenameWithoutPathOrExtension( this.getFilename() ) ) );
+                                                      getFilenameWithoutPathOrExtension( this.getPath() ) ) );
                 }
 
             }
@@ -136,31 +134,16 @@ public class JavaFileImpl
     /**
      * Remove the path and the ".java" extension from a filename.
      */
-    private static String getFilenameWithoutPathOrExtension( String filename )
+    private static String getFilenameWithoutPathOrExtension( Path path )
     {
-        String newFilename;
+        String newFilename = path.getFileName().toString();
         // Remove the ".java" extension from the filename, if it exists
-        int extensionIndex = filename.lastIndexOf( ".java" );
-        if ( extensionIndex == -1 )
+        int extensionIndex = newFilename.lastIndexOf( ".java" );
+        if ( extensionIndex >= 0 )
         {
-            newFilename = filename;
+            newFilename = newFilename.substring( 0, extensionIndex );
         }
-        else
-        {
-            newFilename = filename.substring( 0, extensionIndex );
-        }
-
-        // Remove the path, after unifying path separators
-        newFilename = newFilename.replace( '\\', '/' );
-        int pathIndex = newFilename.lastIndexOf( '/' );
-        if ( pathIndex == -1 )
-        {
-            return newFilename;
-        }
-        else
-        {
-            return newFilename.substring( pathIndex + 1 );
-        }
+        return newFilename;
     }
 
     /**
@@ -170,18 +153,18 @@ public class JavaFileImpl
         throws IOException
     {
 
-        if ( !new File( this.getFilename() ).exists() )
+        if ( Files.notExists( this.getPath() ) )
         {
-            throw new IOException( this.getFilename() + " does not exist!" );
+            throw new IOException( this.getPath() + " does not exist!" );
         }
 
         if ( this.getEncoding() != null )
         {
-            this.reader = new InputStreamReader( new FileInputStream( this.getFilename() ), this.getEncoding() );
+            this.reader = new InputStreamReader( new FileInputStream( this.getPath().toFile() ), this.getEncoding() );
         }
         else
         {
-            this.reader = new FileReader( this.getFilename() );
+            this.reader = new FileReader( this.getPath().toFile() );
         }
 
         StreamTokenizer stok = new StreamTokenizer( reader );

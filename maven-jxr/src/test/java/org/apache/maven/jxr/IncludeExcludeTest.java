@@ -39,7 +39,7 @@ public class IncludeExcludeTest extends TestCase
     {
         super.setUp();
         jxr = new JXR();
-        jxr.setDest( System.getProperty( "basedir" ) + "/target" );
+        jxr.setDest( "target" );
         jxr.setInputEncoding( "ISO-8859-1" );
         jxr.setOutputEncoding( "ISO-8859-1" );
         jxr.setJavadocLinkDir( "" );
@@ -53,13 +53,13 @@ public class IncludeExcludeTest extends TestCase
         jxr.setExcludes( excludes );
         String[] includes = {"**/exclude/*.java", "**/include/IncludedClass.java"};
         jxr.setIncludes( includes );
-        jxr.xref( Collections.singletonList( System.getProperty( "basedir" ) + "/src/test/resources" ), "templates",
+        jxr.xref( Collections.singletonList( "src/test/resources" ), "templates",
                   "title", "title", "copyright" );
-        File excludedFile = new File( System.getProperty( "basedir" ) + "/target/exclude/ExcludedClass.html" );
+        File excludedFile = new File( "target/exclude/ExcludedClass.html" );
         assertFalse( excludedFile.exists() );
-        File includedFile = new File( System.getProperty( "basedir" ) + "/target/include/IncludedClass.html" );
+        File includedFile = new File( "target/include/IncludedClass.html" );
         assertTrue( includedFile.exists() );
-        File notIncludedFile = new File( System.getProperty( "basedir" ) + "/target/include/NotIncludedClass.html" );
+        File notIncludedFile = new File( "target/include/NotIncludedClass.html" );
         assertFalse( notIncludedFile.exists() );
     }
 }

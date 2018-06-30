@@ -27,6 +27,8 @@ import org.apache.maven.jxr.pacman.PackageManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -94,7 +96,7 @@ public class JXR
      * @param bottom
      * @throws IOException
      */
-    public void processPath( PackageManager packageManager, String source, String bottom )
+    public void processPath( PackageManager packageManager, Path sourceDir, String bottom )
         throws IOException
     {
         this.transformer = new JavaCodeTransform( packageManager );
@@ -106,18 +108,7 @@ public class JXR
         ds.setIncludes( includes );
         ds.addDefaultExcludes();
 
-        File dir = new File( source );
-
-        if ( !dir.exists() )
-        {
-            if ( !dir.mkdirs() )
-            {
-                throw new IllegalStateException(
-                    "Your source directory does not exist and could not be created:" + source );
-            }
-        }
-
-        ds.setBasedir( source );
+        ds.setBasedir( sourceDir.toString() );
         ds.scan();
 
         //now get the list of included files
@@ -126,11 +117,11 @@ public class JXR
 
         for ( int i = 0; i < files.length; ++i )
         {
-            String src = source + System.getProperty( "file.separator" ) + files[i];
+            String src = sourceDir.resolve( files[i] ).toString();
 
             if ( isJavaFile( src ) )
             {
-                transform( src, getDestination( source, src ), bottom );
+                transform( src, getDestination( sourceDir.toString(), src ), bottom );
             }
 
         }
@@ -144,8 +135,7 @@ public class JXR
      */
     public static boolean isJavaFile( String filename )
     {
-        File file = new File( filename );
-        return filename.endsWith( ".java" ) && file.length() > 0;
+        return filename.endsWith( ".java" );
     }
 
     /**
@@ -255,9 +245,9 @@ public class JXR
         pkgmgr.setIncludes( includes );
 
         // go through each source directory and xref the java files
-        for ( String path : sourceDirs )
+        for ( String dir : sourceDirs )
         {
-            path = new File( path ).getCanonicalPath();
+            Path path = Paths.get( dir ).toRealPath();
 
             pkgmgr.process( path );
 

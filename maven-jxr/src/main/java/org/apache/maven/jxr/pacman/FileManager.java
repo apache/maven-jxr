@@ -20,7 +20,9 @@ package org.apache.maven.jxr.pacman;
  */
 
 import java.io.IOException;
-import java.util.Hashtable;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -35,13 +37,12 @@ import java.util.Hashtable;
  */
 public class FileManager
 {
-
     /**
      * The Singleton instance of this FileManager
      */
     private static FileManager instance = new FileManager();
 
-    private Hashtable<String, JavaFile> files = new Hashtable<String, JavaFile>();
+    private Map<Path, JavaFile> files = new HashMap<>();
 
     private String encoding = null;
 
@@ -57,15 +58,15 @@ public class FileManager
      * Get a file from it's name. If the file does not exist within the
      * FileManager, create a new one and return it.
      */
-    public JavaFile getFile( String name )
+    public JavaFile getFile( Path path )
         throws IOException
     {
 
-        JavaFile real = this.files.get( name );
+        JavaFile real = this.files.get( path );
 
         if ( real == null )
         {
-            real = new JavaFileImpl( name, this.getEncoding() );
+            real = new JavaFileImpl( path, this.getEncoding() );
             this.addFile( real );
         }
 
@@ -77,7 +78,7 @@ public class FileManager
      */
     public void addFile( JavaFile file )
     {
-        this.files.put( file.getFilename(), file );
+        this.files.put( file.getPath(), file );
     }
 
     /**

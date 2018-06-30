@@ -34,7 +34,7 @@ public class JxrBeanTest
     {
         super.setUp();
         jxrBean = new JXR();
-        jxrBean.setDest( System.getProperty( "basedir" ) + "/target" );
+        jxrBean.setDest( "target" );
         jxrBean.setInputEncoding( "ISO-8859-1" );
         jxrBean.setOutputEncoding( "ISO-8859-1" );
         jxrBean.setJavadocLinkDir( "" );
@@ -44,7 +44,7 @@ public class JxrBeanTest
     public void testXref()
         throws Exception
     {
-        jxrBean.xref( Collections.singletonList( System.getProperty( "basedir" ) + "/src/test/java" ), "templates",
+        jxrBean.xref( Collections.singletonList( "src/test/java" ), "templates",
                       "title", "title", "copyright" );
     }
 

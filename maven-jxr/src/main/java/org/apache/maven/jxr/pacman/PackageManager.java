@@ -22,10 +22,13 @@ package org.apache.maven.jxr.pacman;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.apache.maven.jxr.log.Log;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * Given a list of directories, parse them out and store them as rendered
@@ -35,7 +38,7 @@ public class PackageManager
 {
     private final Log log;
 
-    private Hashtable<String, String> directories = new Hashtable<String, String>();
+    private Set<Path> directories = new HashSet<>();
 
     /**
      * All the packages that have been parsed
@@ -106,8 +109,8 @@ public class PackageManager
         // files for this dir.
         log.debug( "Scanning " + directory );
         DirectoryScanner directoryScanner = new DirectoryScanner();
-        File baseDir = new File( directory );
-        directoryScanner.setBasedir( baseDir );
+        Path baseDir = Paths.get( directory );
+        directoryScanner.setBasedir( baseDir.toFile() );
         directoryScanner.setExcludes( excludes );
         directoryScanner.setIncludes( includes );
         directoryScanner.scan();
@@ -119,7 +122,7 @@ public class PackageManager
             //now parse out this file to get the packages/classname/etc
             try
             {
-                String fileName = new File( baseDir, file ).getAbsolutePath();
+                Path fileName = baseDir.resolve( file );
                 JavaFile jfi = fileManager.getFile( fileName );
 
                 // now that we have this parsed out blend its information
@@ -154,26 +157,12 @@ public class PackageManager
     /**
      * Description of the Method
      */
-    public void process( String directory )
+    public void process( Path directory )
     {
-        if ( this.directories.get( directory ) == null )
+        if ( this.directories.add( directory ) )
         {
-            this.parse( directory );
-            this.directories.put( directory, directory );
+            this.parse( directory.toString() );
         }
-    }
-
-    /**
-     * Description of the Method
-     */
-    public void process( String[] directories )
-    {
-
-        for ( int i = 0; i < directories.length; ++i )
-        {
-            this.process( directories[i] );
-        }
-
     }
 
     /**

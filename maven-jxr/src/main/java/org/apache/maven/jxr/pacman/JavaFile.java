@@ -19,6 +19,7 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,9 +40,15 @@ public abstract class JavaFile
 
     private PackageType packageType = new PackageType();
 
-    private String filename = null;
+    private final Path path;
 
-    private String encoding = null;
+    private final String encoding;
+    
+    protected JavaFile(  Path path, String encoding )
+    {
+        this.path = path;
+        this.encoding = encoding;
+    }
 
     /**
      * Get the imported packages/files that this package has.
@@ -122,19 +129,10 @@ public abstract class JavaFile
     /**
      * Gets the filename attribute of the JavaFile object
      */
-    public String getFilename()
+    public Path getPath()
     {
-        return this.filename;
+        return this.path;
     }
-
-    /**
-     * Sets the filename attribute of the JavaFile object
-     */
-    public void setFilename( String filename )
-    {
-        this.filename = filename;
-    }
-
 
     /**
      * Gets the encoding attribute of the JavaFile object
@@ -142,13 +140,5 @@ public abstract class JavaFile
     public String getEncoding()
     {
         return this.encoding;
-    }
-
-    /**
-     * Sets the encoding attribute of the JavaFile object
-     */
-    public void setEncoding( String encoding )
-    {
-        this.encoding = encoding;
     }
 }

@@ -41,7 +41,6 @@ import org.apache.maven.jxr.util.SimpleWordTokenizer;
 import org.apache.maven.jxr.util.StringEntry;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -55,6 +54,9 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -179,7 +181,7 @@ public class JavaCodeTransform
     /**
      * Set the filename that is currently being processed.
      */
-    private String currentFilename = null;
+    private Path currentFilename = null;
 
     /**
      * The current CVS revision of the currently transformed document
@@ -413,35 +415,16 @@ public class JavaCodeTransform
                                  String outputEncoding, String javadocLinkDir, String revision, String bottom )
         throws IOException
     {
-        this.setCurrentFilename( sourcefile );
+        this.setCurrentFilename( Paths.get( sourcefile ) );
 
         this.sourcefile = sourcefile;
         this.destfile = destfile;
 
         // make sure that the parent directories exist...
-        new File( new File( destfile ).getParent() ).mkdirs();
+        Files.createDirectories( Paths.get( destfile ).getParent() );
 
-        Reader fr = null;
-        Writer fw = null;
-        try
+        try ( Reader fr = getReader( sourcefile, inputEncoding ); Writer fw = getWriter( destfile, outputEncoding ) )
         {
-            if ( inputEncoding != null )
-            {
-                fr = new InputStreamReader( new FileInputStream( sourcefile ), inputEncoding );
-            }
-            else
-            {
-                fr = new FileReader( sourcefile );
-            }
-            if ( outputEncoding != null )
-            {
-                fw = new OutputStreamWriter( new FileOutputStream( destfile ), outputEncoding );
-            }
-            else
-            {
-                fw = new FileWriter( destfile );
-            }
-
             transform( fr, fw, locale, inputEncoding, outputEncoding, javadocLinkDir, revision, bottom );
         }
         catch ( RuntimeException e )
@@ -449,31 +432,36 @@ public class JavaCodeTransform
             System.out.println( "Unable to processPath " + sourcefile + " => " + destfile );
             throw e;
         }
-        finally
+    }
+
+    private Writer getWriter( String destfile, String outputEncoding )
+        throws IOException
+    {
+        Writer fw;
+        if ( outputEncoding != null )
         {
-            if ( fr != null )
-            {
-                try
-                {
-                    fr.close();
-                }
-                catch ( Exception ex )
-                {
-                    ex.printStackTrace();
-                }
-            }
-            if ( fw != null )
-            {
-                try
-                {
-                    fw.close();
-                }
-                catch ( Exception ex )
-                {
-                    ex.printStackTrace();
-                }
-            }
+            fw = new OutputStreamWriter( new FileOutputStream( destfile ), outputEncoding );
         }
+        else
+        {
+            fw = new FileWriter( destfile );
+        }
+        return fw;
+    }
+
+    private Reader getReader( String sourcefile, String inputEncoding )
+        throws IOException
+    {
+        Reader fr;
+        if ( inputEncoding != null )
+        {
+            fr = new InputStreamReader( new FileInputStream( sourcefile ), inputEncoding );
+        }
+        else
+        {
+            fr = new FileReader( sourcefile );
+        }
+        return fr;
     }
 
     /**
@@ -481,7 +469,7 @@ public class JavaCodeTransform
      *
      * @return String
      */
-    public final String getCurrentFilename()
+    public final Path getCurrentFilename()
     {
         return this.currentFilename;
     }
@@ -491,7 +479,7 @@ public class JavaCodeTransform
      *
      * @param filename String
      */
-    public final void setCurrentFilename( String filename )
+    public final void setCurrentFilename( Path filename )
     {
         this.currentFilename = filename;
     }
