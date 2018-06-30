@@ -38,8 +38,6 @@ import java.nio.file.Path;
 public class JavaFileImpl
     extends JavaFile
 {
-    private Reader reader;
-
     /**
      * Create a new JavaFileImpl that points to a given file...
      *
@@ -68,9 +66,9 @@ public class JavaFileImpl
         throws IOException
     {
         StreamTokenizer stok = null;
-        try
+        try ( Reader reader = getReader() )
         {
-            stok = this.getTokenizer();
+            stok = this.getTokenizer( reader );
 
             while ( stok.nextToken() != StreamTokenizer.TT_EOF )
             {
@@ -124,10 +122,6 @@ public class JavaFileImpl
         finally
         {
             stok = null;
-            if ( this.reader != null )
-            {
-                this.reader.close();
-            }
         }
     }
 
@@ -149,24 +143,9 @@ public class JavaFileImpl
     /**
      * Get a StreamTokenizer for this file.
      */
-    private StreamTokenizer getTokenizer()
+    private StreamTokenizer getTokenizer( Reader reader )
         throws IOException
     {
-
-        if ( Files.notExists( this.getPath() ) )
-        {
-            throw new IOException( this.getPath() + " does not exist!" );
-        }
-
-        if ( this.getEncoding() != null )
-        {
-            this.reader = new InputStreamReader( new FileInputStream( this.getPath().toFile() ), this.getEncoding() );
-        }
-        else
-        {
-            this.reader = new FileReader( this.getPath().toFile() );
-        }
-
         StreamTokenizer stok = new StreamTokenizer( reader );
         //int tok;
 
@@ -179,5 +158,22 @@ public class JavaFileImpl
 
         return stok;
     }
+    
+    private Reader getReader()
+        throws IOException
+    {
+        if ( Files.notExists( this.getPath() ) )
+        {
+            throw new IOException( this.getPath() + " does not exist!" );
+        }
 
+        if ( this.getEncoding() != null )
+        {
+            return new InputStreamReader( new FileInputStream( this.getPath().toFile() ), this.getEncoding() );
+        }
+        else
+        {
+            return new FileReader( this.getPath().toFile() );
+        }
+    }    
 }

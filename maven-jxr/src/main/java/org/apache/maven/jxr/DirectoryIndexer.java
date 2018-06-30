@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.maven.jxr.log.Log;
 import org.apache.maven.jxr.log.VelocityLogger;
 import org.apache.maven.jxr.pacman.ClassType;
@@ -292,12 +291,9 @@ public class DirectoryIndexer
         // output file
         File file = new File( outDir, templateName + ".html" );
         file.getParentFile().mkdirs();
-        Writer writer = null;
 
-        try
+        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( file ), getOutputEncoding() ) )
         {
-            writer = new OutputStreamWriter( new FileOutputStream( file ), getOutputEncoding() );
-
             // template file
             StringBuilder templateFile = new StringBuilder();
             File templateDirFile = new File( getTemplateDir() );
@@ -318,10 +314,6 @@ public class DirectoryIndexer
         catch ( Exception e )
         {
             throw new JxrException( "Error merging velocity template", e );
-        }
-        finally
-        {
-            IOUtils.closeQuietly( writer );
         }
     }
 

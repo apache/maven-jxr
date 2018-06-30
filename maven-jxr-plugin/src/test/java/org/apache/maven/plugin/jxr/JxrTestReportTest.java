@@ -90,13 +90,14 @@ public class JxrTestReportTest
         throws IOException
     {
         String str = "", strTmp = "";
-        BufferedReader in = new BufferedReader( new FileReader( file ) );
-
-        while ( ( strTmp = in.readLine() ) != null )
+        
+        try ( BufferedReader in = new BufferedReader( new FileReader( file ) ) )
         {
-            str = str + ' ' + strTmp;
+            while ( ( strTmp = in.readLine() ) != null )
+            {
+                str = str + ' ' + strTmp;
+            }
         }
-        in.close();
 
         return str;
     }
