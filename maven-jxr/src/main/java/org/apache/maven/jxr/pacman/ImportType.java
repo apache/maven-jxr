@@ -43,11 +43,11 @@ public class ImportType
 
         //compute member variables
 
-        this.isclass = this.getName().indexOf( "*" ) == -1;
+        this.isclass = this.getName().indexOf( '*' ) == -1;
 
-        this.ispackage = this.getName().indexOf( "*" ) != -1;
+        this.ispackage = this.getName().indexOf( '*' ) != -1;
 
-        int end = this.getName().lastIndexOf( "." );
+        int end = this.getName().lastIndexOf( '.' );
         if ( end != -1 )
         {
             this.packagename = this.getName().substring( 0, end );

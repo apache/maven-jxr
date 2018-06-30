@@ -303,7 +303,7 @@ public class JavaCodeTransform
             {
                 out.print( this.getCurrentFilename() );
             }
-            out.print( " " );
+            out.print( ' ' );
         }
         catch ( IOException e )
         {
@@ -853,7 +853,7 @@ public class JavaCodeTransform
             return "";
         }
         StringBuilder buf = new StringBuilder();
-        if ( line.indexOf( "\"" ) <= -1 )
+        if ( line.indexOf( '"' ) <= -1 )
         {
             return keywordFilter( line );
         }
@@ -862,14 +862,14 @@ public class JavaCodeTransform
         int endStringIndex = -1;
         int tempIndex;
         // Keep moving through String characters until we want to stop...
-        while ( ( tempIndex = line.indexOf( "\"" ) ) > -1 )
+        while ( ( tempIndex = line.indexOf( '"' ) ) > -1 )
         {
             // We found the beginning of a string
             if ( startStringIndex == -1 )
             {
                 startStringIndex = 0;
                 buf.append( stringFilter( line.substring( start, tempIndex ) ) );
-                buf.append( STRING_START ).append( "\"" );
+                buf.append( STRING_START ).append( '"' );
                 line = line.substring( tempIndex + 1 );
             }
             // Must be at the end
@@ -1085,8 +1085,8 @@ public class JavaCodeTransform
             {
                 JavaFile jf = fileManager.getFile( this.getCurrentFilename() );
 
-                javadocURI.append( StringUtils.replace( jf.getPackageType().getName(), ".", "/" ) );
-                javadocURI.append( "/" );
+                javadocURI.append( jf.getPackageType().getName().replace( '.', '/' ) );
+                javadocURI.append( '/' );
                 // Use the name of the file instead of the class to handle inner classes properly
                 if ( jf.getClassType() != null && jf.getClassType().getFilename() != null )
                 {
@@ -1202,7 +1202,7 @@ public class JavaCodeTransform
 
                 String wordName = word.toString();
 
-                if ( wordName.indexOf( "." ) != -1 )
+                if ( wordName.indexOf( '.' ) != -1 )
                 {
                     // if there is a "." in the string then we have to assume
                     // it is a package.
@@ -1210,8 +1210,8 @@ public class JavaCodeTransform
                     String fqpnPackage = null;
                     String fqpnClass = null;
 
-                    fqpnPackage = wordName.substring( 0, wordName.lastIndexOf( "." ) );
-                    fqpnClass = wordName.substring( wordName.lastIndexOf( "." ) + 1, wordName.length() );
+                    fqpnPackage = wordName.substring( 0, wordName.lastIndexOf( '.' ) );
+                    fqpnClass = wordName.substring( wordName.lastIndexOf( '.' ) + 1, wordName.length() );
 
                     // note. since this is a reference to a full package then
                     // it doesn't have to be explicitly imported so this information
@@ -1266,18 +1266,17 @@ public class JavaCodeTransform
         href.append( this.getPackageRoot() );
 
         // now find out how to get to the dest package
-        dest = StringUtils.replace( dest, ".*", "" );
-        dest = StringUtils.replace( dest, ".", "/" );
+        dest = StringUtils.replace( dest, ".*", "" ).replace( '.', '/' );
 
         href.append( dest );
 
         // Now append filename.html
         if ( jc != null )
         {
-            href.append( "/" );
+            href.append( '/' );
             href.append( jc.getFilename() );
             href.append( ".html" );
-            href.append('#');
+            href.append( '#' );
             href.append( jc.getName() );
         }
 
@@ -1354,7 +1353,7 @@ public class JavaCodeTransform
 
         if ( isImport || isPackage )
         {
-            start = line.trim().indexOf( " " );
+            start = line.trim().indexOf( ' ' );
         }
 
         if ( start != -1 )
@@ -1383,14 +1382,14 @@ public class JavaCodeTransform
                 // This breaks Jxr and won't be a problem when we hook
                 // in the real parser.
 
-                int a = packageLine.lastIndexOf( "." ) + 1;
+                int a = packageLine.lastIndexOf( '.' ) + 1;
                 int b = packageLine.length() - 1;
 
                 if ( a > b + 1 )
                 {
-                    classname = packageLine.substring( packageLine.lastIndexOf( "." ) + 1, packageLine.length() - 1 );
+                    classname = packageLine.substring( packageLine.lastIndexOf( '.' ) + 1, packageLine.length() - 1 );
 
-                    int end = pkg.lastIndexOf( "." );
+                    int end = pkg.lastIndexOf( '.' );
                     if ( end == -1 )
                     {
                         end = pkg.length() - 1;
@@ -1410,13 +1409,13 @@ public class JavaCodeTransform
                 if ( classname != null )
                 {
                     line =
-                        StringUtils.replace( line, classname, "<a href=\"" + pkgHREF + "/" + classname + ".html"
+                        StringUtils.replace( line, classname, "<a href=\"" + pkgHREF + '/' + classname + ".html"
                             + "\">" + classname + "</a>" );
                 }
 
                 // now replace the given package with a href
                 line =
-                    StringUtils.replace( line, pkg, "<a href=\"" + pkgHREF + "/" + DirectoryIndexer.INDEX + "\">" + pkg
+                    StringUtils.replace( line, pkg, "<a href=\"" + pkgHREF + '/' + DirectoryIndexer.INDEX + "\">" + pkg
                         + "</a>" );
             }
 

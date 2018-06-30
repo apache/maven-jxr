@@ -19,8 +19,6 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
-import org.codehaus.plexus.util.StringUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -107,7 +105,7 @@ public class JavaFileImpl
                     */
                     if ( name.charAt( name.length() - 1 ) == '.' )
                     {
-                        name = name + "*";
+                        name = name + '*';
                     }
 
                     this.addImportType( new ImportType( name ) );
@@ -153,8 +151,8 @@ public class JavaFileImpl
         }
 
         // Remove the path, after unifying path separators
-        newFilename = StringUtils.replace( newFilename, "\\", "/" );
-        int pathIndex = newFilename.lastIndexOf( "/" );
+        newFilename = newFilename.replace( '\\', '/' );
+        int pathIndex = newFilename.lastIndexOf( '/' );
         if ( pathIndex == -1 )
         {
             return newFilename;

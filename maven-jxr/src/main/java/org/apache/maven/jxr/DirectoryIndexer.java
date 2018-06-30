@@ -248,7 +248,7 @@ public class DirectoryIndexer
             VelocityContext subContext = new VelocityContext( context );
             subContext.put( "pkgInfo", pkgInfo );
 
-            String outDir = root + "/" + (String) pkgInfo.get( "dir" );
+            String outDir = root + '/' + (String) pkgInfo.get( "dir" );
             doVelocity( "package-summary", outDir, subContext, engine );
             doVelocity( "package-frame", outDir, subContext, engine );
         }
@@ -303,7 +303,7 @@ public class DirectoryIndexer
             {
                 // default templates
                 templateFile.append( getTemplateDir() );
-                templateFile.append( "/" );
+                templateFile.append( '/' );
             }
             templateFile.append( templateName );
             templateFile.append( ".vm" );

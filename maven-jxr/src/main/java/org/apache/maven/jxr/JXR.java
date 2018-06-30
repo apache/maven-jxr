@@ -383,7 +383,7 @@ public class JXR
                     for ( int j = 0; j < i; ++j )
                     {
                         File p = parents.get( j );
-                        toLink.insert( 0, p.getName() + "/" );
+                        toLink.insert( 0, p.getName() + '/' );
                     }
                     found = true;
                     break;

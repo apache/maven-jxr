@@ -94,7 +94,7 @@ public class JxrTestReportTest
 
         while ( ( strTmp = in.readLine() ) != null )
         {
-            str = str + " " + strTmp;
+            str = str + ' ' + strTmp;
         }
         in.close();
 

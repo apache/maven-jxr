@@ -279,7 +279,7 @@ public class JxrReportUtil
             MavenProject parent = project.getParent();
             while ( parent != null )
             {
-                hierarchy = parent.getName() + "/" + hierarchy;
+                hierarchy = parent.getName() + '/' + hierarchy;
                 parent = parent.getParent();
             }
 
@@ -319,6 +319,6 @@ public class JxrReportUtil
             return repository.getHost() + repository.getBasedir();
         }
 
-        return repository.getHost() + "/" + repository.getBasedir();
+        return repository.getHost() + '/' + repository.getBasedir();
     }
 }
