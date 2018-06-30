@@ -23,7 +23,9 @@ import junit.framework.TestCase;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.apache.maven.jxr.pacman.FileManager;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 
 /**
@@ -57,15 +59,14 @@ public class JavaCodeTransformTest
         //test transforms its own sourcefile, so add some comments
         throws Exception // single line despite /*
     {
-        File sourceFile = new File( System.getProperty( "user.dir" )
-            + "/src/test/java/org/apache/maven/jxr/JavaCodeTransformTest.java" );
-        assertTrue( /* mid-line comment */ sourceFile.exists() ); /*
+        Path sourceFile = Paths.get( "src/test/java/org/apache/maven/jxr/JavaCodeTransformTest.java" );
+        assertTrue( /* mid-line comment */ Files.exists( sourceFile ) ); /*
 
         multiline comment text
 
-        */ codeTransform.transform( sourceFile.getAbsolutePath(), System.getProperty( "user.dir" ) // additional comment
-            + "/target/JavaCodeTransformTest.html", Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", "", "", "" );
-        assertTrue( /**/ new File( System.getProperty( "user.dir" ), "/target/JavaCodeTransformTest.html" ).exists() );
+        */ codeTransform.transform( sourceFile, Paths.get( "target/JavaCodeTransformTest.html" ) // additional comment
+           , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "", "" );
+        assertTrue( /**/ Files.exists( Paths.get( "target/JavaCodeTransformTest.html" ) ) );
     }
 
     /**
@@ -74,12 +75,12 @@ public class JavaCodeTransformTest
     public void testTransformWithEmptyClassFile()
         throws Exception
     {
-        File sourceFile = new File( System.getProperty( "user.dir" ) + "/src/test/resources/EmptyClass.java" );
-        assertTrue( sourceFile.exists() );
+        Path sourceFile = Paths.get( "src/test/resources/EmptyClass.java" );
+        assertTrue( Files.exists( sourceFile ) );
 
-        codeTransform.transform( sourceFile.getAbsolutePath(), System.getProperty( "user.dir" )
-            + "/target/EmptyClass.html", Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", "", "", "" );
-        assertTrue( new File( System.getProperty( "user.dir" ), "/target/EmptyClass.html" ).exists() );
+        codeTransform.transform( sourceFile, Paths.get( "target/EmptyClass.html" )
+            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "", "" );
+        assertTrue( Files.exists( Paths.get( "target/EmptyClass.html" ) ) );
     }
 
 }

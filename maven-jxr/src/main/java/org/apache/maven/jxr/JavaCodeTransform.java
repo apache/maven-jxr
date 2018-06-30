@@ -56,7 +56,6 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -189,21 +188,6 @@ public class JavaCodeTransform
     private String revision = null;
 
     /**
-     * The currently being transformed source file
-     */
-    private String sourcefile = null;
-
-    /**
-     * The currently being written destination file
-     */
-    private String destfile = null;
-
-    /**
-     * The virtual source directory that is being read from: <code>src/java</code>
-     */
-    private String sourcedir = null;
-
-    /**
      * The input encoding
      */
     private String inputEncoding = null;
@@ -221,7 +205,7 @@ public class JavaCodeTransform
     /**
      * Relative path to javadocs, suitable for hyperlinking
      */
-    private String javadocLinkDir;
+    private Path javadocLinkDir;
 
     /**
      * Package Manager for this project.
@@ -362,7 +346,7 @@ public class JavaCodeTransform
      * @throws IOException
      */
     public final void transform( Reader sourceReader, Writer destWriter, Locale locale, String inputEncoding,
-                                 String outputEncoding, String javadocLinkDir, String revision, String bottom )
+                                 String outputEncoding, Path javadocLinkDir, String revision, String bottom )
         throws IOException
     {
         this.locale = locale;
@@ -411,17 +395,14 @@ public class JavaCodeTransform
      * @param bottom TODO
      * @throws IOException
      */
-    public final void transform( String sourcefile, String destfile, Locale locale, String inputEncoding,
-                                 String outputEncoding, String javadocLinkDir, String revision, String bottom )
+    public final void transform( Path sourcefile, Path destfile, Locale locale, String inputEncoding,
+                                 String outputEncoding, Path javadocLinkDir, String revision, String bottom )
         throws IOException
     {
-        this.setCurrentFilename( Paths.get( sourcefile ) );
-
-        this.sourcefile = sourcefile;
-        this.destfile = destfile;
+        this.setCurrentFilename( sourcefile );
 
         // make sure that the parent directories exist...
-        Files.createDirectories( Paths.get( destfile ).getParent() );
+        Files.createDirectories( destfile.getParent() );
 
         try ( Reader fr = getReader( sourcefile, inputEncoding ); Writer fw = getWriter( destfile, outputEncoding ) )
         {
@@ -434,32 +415,32 @@ public class JavaCodeTransform
         }
     }
 
-    private Writer getWriter( String destfile, String outputEncoding )
+    private Writer getWriter( Path destfile, String outputEncoding )
         throws IOException
     {
         Writer fw;
         if ( outputEncoding != null )
         {
-            fw = new OutputStreamWriter( new FileOutputStream( destfile ), outputEncoding );
+            fw = new OutputStreamWriter( new FileOutputStream( destfile.toFile() ), outputEncoding );
         }
         else
         {
-            fw = new FileWriter( destfile );
+            fw = new FileWriter( destfile.toFile() );
         }
         return fw;
     }
 
-    private Reader getReader( String sourcefile, String inputEncoding )
+    private Reader getReader( Path sourcefile, String inputEncoding )
         throws IOException
     {
         Reader fr;
         if ( inputEncoding != null )
         {
-            fr = new InputStreamReader( new FileInputStream( sourcefile ), inputEncoding );
+            fr = new InputStreamReader( new FileInputStream( sourcefile.toFile() ), inputEncoding );
         }
         else
         {
-            fr = new FileReader( sourcefile );
+            fr = new FileReader( sourcefile.toFile() );
         }
         return fr;
     }
@@ -580,36 +561,6 @@ public class JavaCodeTransform
     public final String getRevision()
     {
         return this.revision;
-    }
-
-    /**
-     * The current source file being read
-     *
-     * @return source file name
-     */
-    public final String getSourcefile()
-    {
-        return this.sourcefile;
-    }
-
-    /**
-     * The current destination file being written
-     *
-     * @return destination file name
-     */
-    public final String getDestfile()
-    {
-        return this.destfile;
-    }
-
-    /**
-     * The current source directory being read from.
-     *
-     * @return source directory
-     */
-    public final String getSourceDirectory()
-    {
-        return this.sourcedir;
     }
 
     /**
@@ -1067,35 +1018,29 @@ public class JavaCodeTransform
         {
             overview.append( "<div id=\"overview\">" );
             // get the URI to get Javadoc info.
-            StringBuilder javadocURI = new StringBuilder().append( javadocLinkDir );
+            Path javadocURI = javadocLinkDir;
 
             try
             {
                 JavaFile jf = fileManager.getFile( this.getCurrentFilename() );
 
-                javadocURI.append( jf.getPackageType().getName().replace( '.', '/' ) );
-                javadocURI.append( '/' );
+                javadocURI = javadocLinkDir.resolve( jf.getPackageType().getName().replace( '.', '/' ) )
+                                ;
                 // Use the name of the file instead of the class to handle inner classes properly
                 if ( jf.getClassType() != null && jf.getClassType().getFilename() != null )
                 {
-                    javadocURI.append( jf.getClassType().getFilename() );
+                    javadocURI = javadocURI.resolve( jf.getClassType().getFilename() + ".html" );
                 }
-                else
-                {
-                    return "";
-                }
-                javadocURI.append( ".html" );
 
+                String javadocHREF = "<a href=\"" + javadocURI.toString().replace( '\\', '/' ) + "\">View Javadoc</a>";
+
+                // get the generation time...
+                overview.append( javadocHREF );
             }
             catch ( IOException e )
             {
                 e.printStackTrace();
             }
-
-            String javadocHREF = "<a href=\"" + javadocURI + "\">View Javadoc</a>";
-
-            // get the generation time...
-            overview.append( javadocHREF );
 
             overview.append( "</div>" );
         }

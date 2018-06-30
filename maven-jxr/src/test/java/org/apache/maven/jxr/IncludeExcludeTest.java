@@ -21,7 +21,9 @@ package org.apache.maven.jxr;
 
 import junit.framework.TestCase;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 
 /**
@@ -39,10 +41,10 @@ public class IncludeExcludeTest extends TestCase
     {
         super.setUp();
         jxr = new JXR();
-        jxr.setDest( "target" );
+        jxr.setDest( Paths.get( "target" ) );
         jxr.setInputEncoding( "ISO-8859-1" );
         jxr.setOutputEncoding( "ISO-8859-1" );
-        jxr.setJavadocLinkDir( "" );
+        jxr.setJavadocLinkDir( Paths.get( "." ) );
         jxr.setLog( new DummyLog() );
     }
 
@@ -55,11 +57,11 @@ public class IncludeExcludeTest extends TestCase
         jxr.setIncludes( includes );
         jxr.xref( Collections.singletonList( "src/test/resources" ), "templates",
                   "title", "title", "copyright" );
-        File excludedFile = new File( "target/exclude/ExcludedClass.html" );
-        assertFalse( excludedFile.exists() );
-        File includedFile = new File( "target/include/IncludedClass.html" );
-        assertTrue( includedFile.exists() );
-        File notIncludedFile = new File( "target/include/NotIncludedClass.html" );
-        assertFalse( notIncludedFile.exists() );
+        Path excludedFile = Paths.get( "target/exclude/ExcludedClass.html" );
+        assertFalse( Files.exists( excludedFile ) );
+        Path includedFile = Paths.get( "target/include/IncludedClass.html" );
+        assertTrue( Files.exists( includedFile ) );
+        Path notIncludedFile = Paths.get( "target/include/NotIncludedClass.html" );
+        assertFalse( Files.exists( notIncludedFile ) );
     }
 }

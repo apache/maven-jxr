@@ -24,12 +24,9 @@ import org.apache.maven.jxr.log.Log;
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +51,7 @@ public class JXR
     /**
      * Path to destination.
      */
-    private String dest = "";
+    private Path destDir;
 
     private Locale locale;
 
@@ -65,7 +62,7 @@ public class JXR
     /**
      * Relative path to javadocs, suitable for hyperlinking.
      */
-    private String javadocLinkDir;
+    private Path javadocLinkDir;
 
     /**
      * Handles taking .java files and changing them into html. "More than meets
@@ -115,15 +112,16 @@ public class JXR
 
         String[] files = ds.getIncludedFiles();
 
-        for ( int i = 0; i < files.length; ++i )
+        for ( String file : files )
         {
-            String src = sourceDir.resolve( files[i] ).toString();
+            Path sourceFile = sourceDir.resolve( file );
 
-            if ( isJavaFile( src ) )
+            if ( isJavaFile( sourceFile.toString() ) )
             {
-                transform( src, getDestination( sourceDir.toString(), src ), bottom );
+                String newFileName = file.replaceFirst( ".java$", ".html" );
+                
+                transform( sourceFile, this.destDir.resolve( newFileName ), bottom );
             }
-
         }
     }
 
@@ -150,21 +148,11 @@ public class JXR
     }
 
     /**
-     * Get the path to the destination files.
-     *
-     * @return The path to the destination files
-     */
-    public String getDest()
-    {
-        return this.dest;
-    }
-
-    /**
      * @param dest
      */
-    public void setDest( String dest )
+    public void setDest( Path dest )
     {
-        this.dest = dest;
+        this.destDir = dest;
     }
 
     /**
@@ -194,7 +182,7 @@ public class JXR
     /**
      * @param javadocLinkDir
      */
-    public void setJavadocLinkDir( String javadocLinkDir )
+    public void setJavadocLinkDir( Path javadocLinkDir )
     {
         // get a relative link to the javadocs
         this.javadocLinkDir = javadocLinkDir;
@@ -255,7 +243,7 @@ public class JXR
         }
 
         // once we have all the source files xref'd, create the index pages
-        DirectoryIndexer indexer = new DirectoryIndexer( pkgmgr, dest );
+        DirectoryIndexer indexer = new DirectoryIndexer( pkgmgr, destDir.toString() );
         indexer.setOutputEncoding( outputEncoding );
         indexer.setTemplateDir( templateDir );
         indexer.setWindowTitle( windowTitle );
@@ -267,57 +255,23 @@ public class JXR
     // ----------------------------------------------------------------------
     // private methods
     // ----------------------------------------------------------------------
-
-    /**
-     * Given a filename get the destination on the filesystem of where to store
-     * the to be generated HTML file. Pay attention to the package name.
-     *
-     * @param source
-     * @param filename
-     * @return A String with the store destination.
-     */
-    private String getDestination( String source, String filename )
-    {
-        //remove the source directory from the filename.
-
-        String dest = filename.substring( source.length(), filename.length() );
-
-        int start = 0;
-        int end = dest.indexOf( ".java" );
-
-        if ( end != -1 )
-        {
-            //remove the .java from the filename
-            dest = dest.substring( start, end );
-        }
-
-        //add the destination directory to the filename.
-        dest = this.getDest() + dest;
-
-        //add .html to the filename
-
-        dest = dest + ".html";
-
-        return dest;
-    }
-
     /**
      * Given a source file transform it into HTML and write it to the
      * destination (dest) file.
      *
      * @param source The java source file
-     * @param dest The directory to put the HTML into
+     * @param destDir The directory to put the HTML into
      * @param bottom The bottom footer text just as in the package pages
      * @throws IOException Thrown if the transform can't happen for some reason.
      */
-    private void transform( String source, String dest, String bottom )
+    private void transform( Path sourceFile, Path destFile, String bottom )
         throws IOException
     {
-        log.debug( source + " -> " + dest );
+        log.debug( sourceFile + " -> " + destFile );
 
         // get a relative link to the javadocs
-        String javadoc = javadocLinkDir != null ? getRelativeLink( dest, javadocLinkDir ) : null;
-        transformer.transform( source, dest, locale, inputEncoding, outputEncoding, javadoc,
+        Path javadoc = javadocLinkDir != null ? getRelativeLink( destFile.getParent(), javadocLinkDir ) : null;
+        transformer.transform( sourceFile, destFile, locale, inputEncoding, outputEncoding, javadoc,
             this.revision, bottom );
     }
 
@@ -335,60 +289,10 @@ public class JXR
      * @return a String of format <code>"../../schmoo/"</code>
      * @throws java.io.IOException If a problem is encountered while navigating through the directories.
      */
-    private static String getRelativeLink( String fromDir, String toDir )
+    private static Path getRelativeLink( Path fromDir, Path toDir )
         throws IOException
     {
-        StringBuilder toLink = new StringBuilder();   // up from fromDir
-        StringBuilder fromLink = new StringBuilder(); // down into toDir
-
-        // create a List of toDir's parent directories
-        List<File> parents = new LinkedList<File>();
-        File f = new File( toDir );
-        f = f.getCanonicalFile();
-        while ( f != null )
-        {
-            parents.add( f );
-            f = f.getParentFile();
-        }
-
-        // walk up fromDir to find the common parent
-        f = new File( fromDir );
-        if ( !f.isDirectory() )
-        {
-            // Passed in a fromDir with a filename on the end - strip it
-            f = f.getParentFile();
-        }
-        f = f.getCanonicalFile();
-        f = f.getParentFile();
-        boolean found = false;
-        while ( f != null && !found )
-        {
-            for ( int i = 0; i < parents.size(); ++i )
-            {
-                File parent = parents.get( i );
-                if ( f.equals( parent ) )
-                {
-                    // when we find the common parent, add the subdirectories
-                    // down to toDir itself
-                    for ( int j = 0; j < i; ++j )
-                    {
-                        File p = parents.get( j );
-                        toLink.insert( 0, p.getName() + '/' );
-                    }
-                    found = true;
-                    break;
-                }
-            }
-            f = f.getParentFile();
-            fromLink.append( "../" );
-        }
-
-        if ( !found )
-        {
-            throw new FileNotFoundException( fromDir + " and " + toDir + " have no common parent." );
-        }
-
-        return fromLink.append( toLink.toString() ).toString();
+        return fromDir.relativize( toDir );
     }
 
     public void setExcludes( String[] excludes )

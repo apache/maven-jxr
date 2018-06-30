@@ -21,6 +21,7 @@ package org.apache.maven.jxr;
 
 import junit.framework.TestCase;
 
+import java.nio.file.Paths;
 import java.util.Collections;
 
 public class JxrBeanTest
@@ -34,10 +35,10 @@ public class JxrBeanTest
     {
         super.setUp();
         jxrBean = new JXR();
-        jxrBean.setDest( "target" );
+        jxrBean.setDest( Paths.get( "target" ) );
         jxrBean.setInputEncoding( "ISO-8859-1" );
         jxrBean.setOutputEncoding( "ISO-8859-1" );
-        jxrBean.setJavadocLinkDir( "" );
+        jxrBean.setJavadocLinkDir( Paths.get( "." ) );
         jxrBean.setLog( new DummyLog() );
     }
 

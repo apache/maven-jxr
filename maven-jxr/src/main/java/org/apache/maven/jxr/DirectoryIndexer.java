@@ -19,26 +19,28 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
-import org.apache.commons.io.IOUtils;
-import org.apache.maven.jxr.pacman.ClassType;
-import org.apache.maven.jxr.pacman.PackageManager;
-import org.apache.maven.jxr.pacman.PackageType;
-import org.apache.maven.jxr.log.VelocityLogger;
-import org.apache.maven.jxr.log.Log;
-import org.apache.oro.text.perl.Perl5Util;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.maven.jxr.log.Log;
+import org.apache.maven.jxr.log.VelocityLogger;
+import org.apache.maven.jxr.pacman.ClassType;
+import org.apache.maven.jxr.pacman.PackageManager;
+import org.apache.maven.jxr.pacman.PackageType;
+import org.apache.oro.text.perl.Perl5Util;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 
 /**
  * This class creates the navigational pages for jxr's cross-referenced source
@@ -259,7 +261,7 @@ public class DirectoryIndexer
      */
     private void setProperties( VelocityEngine engine, Log log )
     {
-        File templateDirFile = new File( getTemplateDir() );
+        Path templateDirFile = Paths.get( getTemplateDir() );
         if ( templateDirFile.isAbsolute() )
         {
             // the property has been overridden: need to use a FileResourceLoader
