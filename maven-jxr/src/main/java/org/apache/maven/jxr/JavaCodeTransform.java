@@ -503,7 +503,7 @@ public class JavaCodeTransform
      */
     public final String getPackageRoot()
     {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
 
         JavaFile jf = null;
 
@@ -634,7 +634,7 @@ public class JavaCodeTransform
      */
     public final String xrLine( String line, String packageName, ClassType classType )
     {
-        StringBuffer buff = new StringBuffer( line );
+        StringBuilder buff = new StringBuilder( line );
 
         String link = null;
         String find = null;
@@ -712,12 +712,12 @@ public class JavaCodeTransform
         {
             return "";
         }
-        line = replace( line, "&", "&amp;" );
-        line = replace( line, "<", "&lt;" );
-        line = replace( line, ">", "&gt;" );
-        line = replace( line, "\\\\", "&#92;&#92;" );
-        line = replace( line, "\\\"", "\\&quot;" );
-        line = replace( line, "'\"'", "'&quot;'" );
+        line = line.replace( "&", "&amp;" )
+                    .replace( "<", "&lt;" )
+                    .replace( ">", "&gt;" )
+                    .replace( "\\\\", "&#92;&#92;" )
+                    .replace( "\\\"", "\\&quot;" )
+                    .replace( "'\"'", "'&quot;'" );
         return ongoingMultiLineCommentFilter( line );
     }
 
@@ -789,7 +789,7 @@ public class JavaCodeTransform
         int index = line.indexOf( "//" );
         if ( ( index >= 0 ) && !isInsideString( line, index ) )
         {
-            return new StringBuffer( beginMultiLineCommentFilter( line.substring( 0, index ) ) ).append( COMMENT_START ).append( line.substring( index ) ).append( COMMENT_END ).toString();
+            return new StringBuilder( beginMultiLineCommentFilter( line.substring( 0, index ) ) ).append( COMMENT_START ).append( line.substring( index ) ).append( COMMENT_END ).toString();
         }
 
         return beginMultiLineCommentFilter( line );
@@ -852,7 +852,7 @@ public class JavaCodeTransform
         {
             return "";
         }
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         if ( line.indexOf( "\"" ) <= -1 )
         {
             return keywordFilter( line );
@@ -902,10 +902,10 @@ public class JavaCodeTransform
         {
             return "";
         }
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         int i = 0;
         char ch;
-        StringBuffer temp = new StringBuffer();
+        StringBuilder temp = new StringBuilder();
         while ( i < line.length() )
         {
             temp.setLength( 0 );
@@ -928,7 +928,7 @@ public class JavaCodeTransform
             }
             else if ( reservedWords.containsKey( tempString ) )
             {
-                StringBuffer newLine = new StringBuffer( line.substring( 0, i - tempString.length() ) );
+                StringBuilder newLine = new StringBuilder( line.substring( 0, i - tempString.length() ) );
                 newLine.append( RESERVED_WORD_START );
                 newLine.append( tempString );
                 newLine.append( RESERVED_WORD_END );
@@ -944,27 +944,6 @@ public class JavaCodeTransform
         buf.append( line );
 
         return uriFilter( buf.toString() );
-    }
-
-    /**
-     * Replace... I made it use a <code>StringBuffer</code>... hope it still works :)
-     *
-     * @param line String
-     * @param oldString String
-     * @param newString String
-     * @return String
-     */
-    private String replace( String line, String oldString, String newString )
-    {
-        int i = 0;
-        while ( ( i = line.indexOf( oldString, i ) ) >= 0 )
-        {
-            line =
-                ( new StringBuffer().append( line.substring( 0, i ) ).append( newString ).append( line.substring( i
-                    + oldString.length() ) ) ).toString();
-            i += newString.length();
-        }
-        return line;
     }
 
     /**
@@ -1093,14 +1072,14 @@ public class JavaCodeTransform
      */
     private String getFileOverview()
     {
-        StringBuffer overview = new StringBuffer();
+        StringBuilder overview = new StringBuilder();
 
         // only add the header if javadocs are present
         if ( javadocLinkDir != null )
         {
             overview.append( "<div id=\"overview\">" );
             // get the URI to get Javadoc info.
-            StringBuffer javadocURI = new StringBuffer().append( javadocLinkDir );
+            StringBuilder javadocURI = new StringBuilder().append( javadocLinkDir );
 
             try
             {
@@ -1281,7 +1260,7 @@ public class JavaCodeTransform
      */
     private String getHREF( String dest, ClassType jc )
     {
-        StringBuffer href = new StringBuffer();
+        StringBuilder href = new StringBuilder();
 
         // find out how to go back to the root
         href.append( this.getPackageRoot() );

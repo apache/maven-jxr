@@ -297,7 +297,7 @@ public class DirectoryIndexer
             writer = new OutputStreamWriter( new FileOutputStream( file ), getOutputEncoding() );
 
             // template file
-            StringBuffer templateFile = new StringBuffer();
+            StringBuilder templateFile = new StringBuilder();
             File templateDirFile = new File( getTemplateDir() );
             if ( !templateDirFile.isAbsolute() )
             {

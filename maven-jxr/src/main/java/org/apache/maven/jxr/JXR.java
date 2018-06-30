@@ -348,8 +348,8 @@ public class JXR
     private static String getRelativeLink( String fromDir, String toDir )
         throws IOException
     {
-        StringBuffer toLink = new StringBuffer();   // up from fromDir
-        StringBuffer fromLink = new StringBuffer(); // down into toDir
+        StringBuilder toLink = new StringBuilder();   // up from fromDir
+        StringBuilder fromLink = new StringBuilder(); // down into toDir
 
         // create a List of toDir's parent directories
         List<File> parents = new LinkedList<File>();
