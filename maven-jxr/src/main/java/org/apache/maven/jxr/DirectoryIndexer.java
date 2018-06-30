@@ -36,7 +36,6 @@ import org.apache.maven.jxr.log.VelocityLogger;
 import org.apache.maven.jxr.pacman.ClassType;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.apache.maven.jxr.pacman.PackageType;
-import org.apache.oro.text.perl.Perl5Util;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -216,7 +215,7 @@ public class DirectoryIndexer
     public void process( Log log )
         throws JxrException
     {
-        Map info = getPackageInfo();
+        Map<String, Object> info = getPackageInfo();
 
         VelocityEngine engine = new VelocityEngine();
         setProperties( engine, log );
@@ -334,17 +333,16 @@ public class DirectoryIndexer
      */
     private Map<String, Object> getPackageInfo()
     {
-        TreeMap<String, Map<String, Object>> allPackages = new TreeMap<String, Map<String, Object>>();
-        TreeMap<String, Map<String, String>> allClasses = new TreeMap<String, Map<String, String>>();
-        Perl5Util perl = new Perl5Util();
+        Map<String, Map<String, Object>> allPackages = new TreeMap<>();
+        Map<String, Map<String, String>> allClasses = new TreeMap<>();
 
-        Enumeration packages = packageManager.getPackageTypes();
+        Enumeration<PackageType> packages = packageManager.getPackageTypes();
         while ( packages.hasMoreElements() )
         {
-            PackageType pkg = (PackageType) packages.nextElement();
+            PackageType pkg = packages.nextElement();
             String pkgName = pkg.getName();
-            String pkgDir = perl.substitute( "s/\\./\\//g", pkgName );
-            String rootRef = perl.substitute( "s/[^\\.]*(\\.|$)/..\\//g", pkgName );
+            String pkgDir = pkgName.replace( '.', '/' );
+            String rootRef = pkgName.replaceAll( "[^\\.]+(\\.|$)", "../" );
 
             // special case for the default package
             // javadoc doesn't deal with it, but it's easy for us
@@ -355,14 +353,14 @@ public class DirectoryIndexer
                 rootRef = "./";
             }
 
-            TreeMap<String, Map<String, String>> pkgClasses = new TreeMap<String, Map<String, String>>();
-            Enumeration classes = pkg.getClassTypes();
+            Map<String, Map<String, String>> pkgClasses = new TreeMap<String, Map<String, String>>();
+            Enumeration<ClassType> classes = pkg.getClassTypes();
             while ( classes.hasMoreElements() )
             {
-                ClassType clazz = (ClassType) classes.nextElement();
+                ClassType clazz = classes.nextElement();
 
                 String className = clazz.getName();
-                Map<String, String> classInfo = new HashMap<String, String>();
+                Map<String, String> classInfo = new HashMap<>();
                 if ( clazz.getFilename() != null )
                 {
                     classInfo.put( "filename", clazz.getFilename() );
@@ -378,7 +376,7 @@ public class DirectoryIndexer
                 allClasses.put( className, classInfo );
             }
 
-            Map<String, Object> pkgInfo = new HashMap<String, Object>();
+            Map<String, Object> pkgInfo = new HashMap<>();
             pkgInfo.put( "name", pkgName );
             pkgInfo.put( "dir", pkgDir );
             pkgInfo.put( "classes", pkgClasses );
@@ -386,7 +384,7 @@ public class DirectoryIndexer
             allPackages.put( pkgName, pkgInfo );
         }
 
-        Map<String, Object> info = new HashMap<String, Object>();
+        Map<String, Object> info = new HashMap<>();
         info.put( "allPackages", allPackages );
         info.put( "allClasses", allClasses );
 

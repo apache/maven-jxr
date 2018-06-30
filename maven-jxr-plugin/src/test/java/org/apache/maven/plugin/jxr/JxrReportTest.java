@@ -35,24 +35,6 @@ public class JxrReportTest
     extends AbstractMojoTestCase
 {
     /**
-     * @see org.apache.maven.plugin.testing.AbstractMojoTestCase#setUp()
-     */
-    protected void setUp()
-        throws Exception
-    {
-        super.setUp();
-    }
-
-    /**
-     * @see org.codehaus.plexus.PlexusTestCase#tearDown()
-     */
-    protected void tearDown()
-        throws Exception
-    {
-        // nop
-    }
-
-    /**
      * Test the plugin with default configuration
      *
      * @throws Exception
