@@ -55,9 +55,11 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
+import java.util.Set;
 
 /**
  * Syntax highlights java by turning it into html. A codeviewer object is created and then keeps state as lines are
@@ -661,13 +663,12 @@ public class JavaCodeTransform
         // now replace the word in the buffer with the link
 
         String replace = link;
-        StringEntry[] tokens = SimpleWordTokenizer.tokenize( buff.toString(), find );
+        List<StringEntry> tokens = SimpleWordTokenizer.tokenize( buff.toString(), find );
 
-        for ( int l = 0; l < tokens.length; ++l )
+        for ( StringEntry token : tokens )
         {
-
-            int start = tokens[l].getIndex();
-            int end = tokens[l].getIndex() + find.length();
+            int start = token.getIndex();
+            int end = token.getIndex() + find.length();
 
             buff.replace( start, end, replace );
 
@@ -1183,35 +1184,28 @@ public class JavaCodeTransform
             return line;
         }
 
-        Vector<String> v = new Vector<String>();
+        Set<String> packages = new HashSet<String>();
 
         // get the imported packages
-        ImportType[] imports = jf.getImportTypes();
-        for ( int j = 0; j < imports.length; ++j )
+        for ( ImportType importType : jf.getImportTypes() )
         {
-            v.addElement( imports[j].getPackage() );
+            packages.add( importType.getPackage() );
         }
 
         // add the current package.
-        v.addElement( jf.getPackageType().getName() );
+        packages.add( jf.getPackageType().getName() );
 
-        String[] packages = new String[v.size()];
-        v.copyInto( packages );
-
-        StringEntry[] words = SimpleWordTokenizer.tokenize( line );
+        List<StringEntry> words = SimpleWordTokenizer.tokenize( line );
 
         // go through each word and then match them to the correct class if necessary.
-        for ( int i = 0; i < words.length; ++i )
+        for ( StringEntry word : words )
         {
-            // each word
-            StringEntry word = words[i];
-
-            for ( int j = 0; j < packages.length; ++j )
+            for ( String pkg : packages )
             {
                 // get the package from the PackageManager because this will hold
                 // the version with the classes also.
 
-                PackageType currentImport = packageManager.getPackageType( packages[j] );
+                PackageType currentImport = packageManager.getPackageType( pkg );
 
                 // the package here might in fact be null because it wasn't parsed out
                 // this might be something that is either not included or is part
@@ -1265,12 +1259,12 @@ public class JavaCodeTransform
                     {
                         // then the package we are currently in is the one specified in the string
                         // and the import class is correct.
-                        line = xrLine( line, packages[j], currentImport.getClassType( fqpnClass ) );
+                        line = xrLine( line, pkg, currentImport.getClassType( fqpnClass ) );
                     }
                 }
                 else if ( currentImport.getClassType( wordName ) != null )
                 {
-                    line = xrLine( line, packages[j], currentImport.getClassType( wordName ) );
+                    line = xrLine( line, pkg, currentImport.getClassType( wordName ) );
                 }
             }
         }

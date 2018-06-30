@@ -20,8 +20,10 @@ package org.apache.maven.jxr.pacman;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
+import java.util.Set;
 
 /**
  * Interface for objects which wish to provide meta-info about a JavaFile.
@@ -31,8 +33,7 @@ import java.util.Vector;
  */
 public abstract class JavaFile
 {
-
-    private Vector<ImportType> imports = new Vector<ImportType>();
+    private Set<ImportType> imports = new HashSet<ImportType>();
 
     private List<ClassType> classTypes = new ArrayList<ClassType>();
 
@@ -45,12 +46,9 @@ public abstract class JavaFile
     /**
      * Get the imported packages/files that this package has.
      */
-    public ImportType[] getImportTypes()
+    public Set<ImportType> getImportTypes()
     {
-
-        ImportType[] it = new ImportType[this.imports.size()];
-        this.imports.copyInto( it );
-        return it;
+        return Collections.unmodifiableSet( imports );
     }
 
     /**
@@ -99,7 +97,7 @@ public abstract class JavaFile
      */
     public void addImportType( ImportType importType )
     {
-        this.imports.addElement( importType );
+        this.imports.add( importType );
     }
 
     /**

@@ -19,8 +19,9 @@ package org.apache.maven.jxr.util;
  * under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Vector;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,7 +43,7 @@ public class SimpleWordTokenizer
     /**
      * Break the given line into multiple StringUtils
      */
-    public static StringEntry[] tokenize( String line )
+    public static List<StringEntry> tokenize( String line )
     {
 
         /*
@@ -55,7 +56,7 @@ public class SimpleWordTokenizer
 
         if ( line == null || line.length() == 0 || start == -1 )
         {
-            return new StringEntry[0];
+            return Collections.emptyList();
         }
 
         return tokenize( line, start );
@@ -67,35 +68,32 @@ public class SimpleWordTokenizer
      * @param line String to search in
      * @param find String to match.
      */
-    public static StringEntry[] tokenize( String line, String find )
+    public static List<StringEntry> tokenize( String line, String find )
     {
 
-        Vector<StringEntry> v = new Vector<StringEntry>();
+        List<StringEntry> foundTokens = new ArrayList<StringEntry>();
 
         for ( StringEntry se : tokenize( line ) )
         {
 
             if ( se.toString().equals( find ) )
             {
-                v.addElement( se );
+                foundTokens.add( se );
             }
 
         }
 
-        StringEntry[] found = new StringEntry[v.size()];
-        Collections.sort( v );
-        v.copyInto( found );
-        return found;
+        return foundTokens;
     }
 
     /**
      * Internal impl. Specify the start and end.
      */
-    private static StringEntry[] tokenize( String line, int start )
+    private static List<StringEntry> tokenize( String line, int start )
     {
         Matcher matcher = NONBREAKERS.matcher( line.substring( start ) );
 
-        Vector<StringEntry> words = new Vector<StringEntry>();
+        List<StringEntry> words = new ArrayList<StringEntry>();
 
         while ( matcher.find() )
         {
@@ -103,9 +101,7 @@ public class SimpleWordTokenizer
             words.add( entry );
         }
 
-        StringEntry[] found = new StringEntry[words.size()];
-        words.copyInto( found );
-        return found;
+        return words;
     }
 
     /**
