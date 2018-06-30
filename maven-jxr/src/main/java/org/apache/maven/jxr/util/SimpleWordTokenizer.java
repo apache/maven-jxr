@@ -21,6 +21,8 @@ package org.apache.maven.jxr.util;
 
 import java.util.Collections;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is a small and fast word tokenizer. It has different characteristics from the normal Java tokenizer. It only
@@ -30,6 +32,8 @@ import java.util.Vector;
 public class SimpleWordTokenizer
 {
 
+    private static final Pattern NONBREAKERS = Pattern.compile( "([^()\\[ {}]+)" );
+    
     /**
      * Description of the Field
      */
@@ -89,94 +93,19 @@ public class SimpleWordTokenizer
      */
     private static StringEntry[] tokenize( String line, int start )
     {
+        Matcher matcher = NONBREAKERS.matcher( line.substring( start ) );
 
         Vector<StringEntry> words = new Vector<StringEntry>();
 
-        // algorithm works like this... break the line out into segments
-        // that are separated by spaces, and if the entire String doesn't contain
-        // a non-Alpha char then assume it is a word.
-        while ( true )
+        while ( matcher.find() )
         {
-
-            int next = getNextBreak( line, start );
-
-            if ( next < 0 || next <= start )
-            {
-                break;
-            }
-
-            String word = line.substring( start, next );
-
-            if ( isWord( word ) )
-            {
-                words.addElement( new StringEntry( word, start ) );
-            }
-
-            start = next + 1;
+            StringEntry entry = new StringEntry( matcher.group( 1 ), matcher.start() + start );
+            words.add( entry );
         }
 
         StringEntry[] found = new StringEntry[words.size()];
         words.copyInto( found );
         return found;
-    }
-
-    /**
-     * Go through the entire String and if any character is not a Java identifier part (_, a, b, c, d, etc) then return
-     * false.
-     */
-    private static boolean isWord( String string )
-    {
-
-        if ( string == null || string.length() == 0 )
-        {
-
-            return false;
-        }
-
-        for ( int i = 0; i < string.length(); ++i )
-        {
-
-            char c = string.charAt( i );
-
-            if ( !Character.isJavaIdentifierPart( c ) && c != '.' )
-            {
-                return false;
-            }
-
-        }
-
-        return true;
-    }
-
-    /**
-     * Go through the list of BREAKERS and find the closes one.
-     */
-    private static int getNextBreak( String string, int start )
-    {
-
-        int breakPoint = -1;
-
-        for ( int i = 0; i < BREAKERS.length; ++i )
-        {
-
-            int next = string.indexOf( BREAKERS[i], start );
-
-            if ( breakPoint == -1 || next < breakPoint && next != -1 )
-            {
-
-                breakPoint = next;
-
-            }
-
-        }
-
-        // if the breakPoint is still -1 go to the end of the string
-        if ( breakPoint == -1 )
-        {
-            breakPoint = string.length();
-        }
-
-        return breakPoint;
     }
 
     /**
