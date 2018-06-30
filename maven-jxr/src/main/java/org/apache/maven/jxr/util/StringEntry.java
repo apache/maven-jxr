@@ -55,6 +55,7 @@ public class StringEntry
     /**
      * Description of the Method
      */
+    @Override
     public String toString()
     {
         return this.value;
@@ -63,6 +64,7 @@ public class StringEntry
     /**
      * Compare two objects for equality.
      */
+    @Override
     public int compareTo( StringEntry se )
     {
         //right now only sort by the index.

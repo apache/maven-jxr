@@ -33,6 +33,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 public class AggregatorJxrTestReport
     extends JxrTestReport
 {
+    @Override
     protected boolean isAggregate()
     {
         return true;

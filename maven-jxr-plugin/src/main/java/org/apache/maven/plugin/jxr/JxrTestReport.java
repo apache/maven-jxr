@@ -61,9 +61,7 @@ public class JxrTestReport
     @Parameter( defaultValue = "${project.reporting.outputDirectory}/testapidocs" )
     private File testJavadocDir;
 
-    /**
-     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getSourceRoots()
-     */
+    @Override
     protected List<String> getSourceRoots()
     {
         List<String> l = new ArrayList<String>();
@@ -84,9 +82,7 @@ public class JxrTestReport
         return l;
     }
 
-    /**
-     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getSourceRoots(org.apache.maven.project.MavenProject)
-     */
+    @Override
     protected List<String> getSourceRoots( MavenProject project )
     {
         List<String> l = new ArrayList<String>();
@@ -102,49 +98,37 @@ public class JxrTestReport
         return l;
     }
 
-    /**
-     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getDestinationDirectory()
-     */
+    @Override
     protected String getDestinationDirectory()
     {
         return destDir;
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getDescription(java.util.Locale)
-     */
+    @Override
     public String getDescription( Locale locale )
     {
         return getBundle( locale ).getString( "report.xref.test.description" );
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getName(java.util.Locale)
-     */
+    @Override
     public String getName( Locale locale )
     {
         return getBundle( locale ).getString( "report.xref.test.name" );
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getOutputName()
-     */
+    @Override
     public String getOutputName()
     {
         return "xref-test/index";
     }
 
-    /**
-     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getJavadocDir()
-     */
+    @Override
     protected File getJavadocDir()
     {
         return testJavadocDir;
     }
 
-    /**
-     * @see org.apache.maven.reporting.AbstractMavenReport#setReportOutputDirectory(java.io.File)
-     */
+    @Override
     public void setReportOutputDirectory( File reportOutputDirectory )
     {
         if ( ( reportOutputDirectory != null ) && ( !reportOutputDirectory.getAbsolutePath().endsWith( "xref-test" ) ) )

@@ -33,11 +33,13 @@ public class VelocityLogger
 {
     private Log log;
 
+    @Override
     public void init( RuntimeServices runtimeServices )
     {
         log = (Log) runtimeServices.getProperty( Log.class.getName() );
     }
 
+    @Override
     public void logVelocityMessage( int level, String msg )
     {
         switch ( level )

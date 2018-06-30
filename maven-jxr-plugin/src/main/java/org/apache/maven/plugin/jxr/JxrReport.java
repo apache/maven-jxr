@@ -68,17 +68,13 @@ public class JxrReport
     @Parameter( defaultValue = "${project.reporting.outputDirectory}/apidocs" )
     private File javadocDir;
 
-    /**
-     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getDestinationDirectory()
-     */
+    @Override
     protected String getDestinationDirectory()
     {
         return destDir;
     }
 
-    /**
-     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getSourceRoots()
-     */
+    @Override
     protected List<String> getSourceRoots()
     {
         if ( sourcePath != null )
@@ -108,9 +104,7 @@ public class JxrReport
         return l;
     }
 
-    /**
-     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getSourceRoots(org.apache.maven.project.MavenProject)
-     */
+    @Override
     protected List<String> getSourceRoots( MavenProject project )
     {
         List<String> l = new ArrayList<String>();
@@ -131,41 +125,31 @@ public class JxrReport
         return l;
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getDescription(java.util.Locale)
-     */
+    @Override
     public String getDescription( Locale locale )
     {
         return getBundle( locale ).getString( "report.xref.main.description" );
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getName(java.util.Locale)
-     */
+    @Override
     public String getName( Locale locale )
     {
         return getBundle( locale ).getString( "report.xref.main.name" );
     }
 
-    /**
-     * @see org.apache.maven.reporting.MavenReport#getOutputName()
-     */
+    @Override
     public String getOutputName()
     {
         return "xref/index";
     }
 
-    /**
-     * @see org.apache.maven.plugin.jxr.AbstractJxrReport#getJavadocDir()
-     */
+    @Override
     protected File getJavadocDir()
     {
         return javadocDir;
     }
 
-    /**
-     * @see org.apache.maven.reporting.AbstractMavenReport#setReportOutputDirectory(java.io.File)
-     */
+    @Override
     public void setReportOutputDirectory( File reportOutputDirectory )
     {
         if ( ( reportOutputDirectory != null ) && ( !reportOutputDirectory.getAbsolutePath().endsWith( "xref" ) ) )

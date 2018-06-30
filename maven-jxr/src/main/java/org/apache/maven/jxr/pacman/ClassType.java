@@ -38,6 +38,7 @@ public class ClassType
      * @deprecated Please use {@link #ClassType( String, String )} instead
      * @param name
      */
+    @Deprecated
     public ClassType( String name )
     {
         this.setName( name );

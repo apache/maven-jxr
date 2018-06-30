@@ -160,6 +160,7 @@ public abstract class AbstractJxrReport
      * @return The effective reporting output file encoding, never <code>null</code>: defaults to <code>UTF-8</code>
      *         instead.
      */
+    @Override
     protected String getOutputEncoding()
     {
         return ( outputEncoding == null ) ? ReaderFactory.UTF_8 : outputEncoding;
@@ -377,25 +378,19 @@ public abstract class AbstractJxrReport
 
     }
 
-    /**
-     * @see org.apache.maven.reporting.AbstractMavenReport#getSiteRenderer()
-     */
+    @Override
     protected Renderer getSiteRenderer()
     {
         return siteRenderer;
     }
 
-    /**
-     * @see org.apache.maven.reporting.AbstractMavenReport#getOutputDirectory()
-     */
+    @Override
     protected String getOutputDirectory()
     {
         return outputDirectory.getAbsolutePath();
     }
 
-    /**
-     * @see org.apache.maven.reporting.AbstractMavenReport#getProject()
-     */
+    @Override
     public MavenProject getProject()
     {
         return project;
@@ -432,6 +427,7 @@ public abstract class AbstractJxrReport
      * since that is configured as an execution, not in the reporting section, at least by some people on some days. We
      * do NOT want the default behavior.
      */
+    @Override
     public void execute()
         throws MojoExecutionException
     {
@@ -453,9 +449,7 @@ public abstract class AbstractJxrReport
         }
     }
 
-    /**
-     * @see org.apache.maven.reporting.AbstractMavenReport#executeReport(java.util.Locale)
-     */
+    @Override
     protected void executeReport( Locale locale )
         throws MavenReportException
     {
@@ -508,17 +502,13 @@ public abstract class AbstractJxrReport
         return sourceDirs;
     }
 
-    /**
-     * @see org.apache.maven.reporting.AbstractMavenReport#canGenerateReport()
-     */
+    @Override
     public boolean canGenerateReport()
     {
         return canGenerateReport( constructSourceDirs() );
     }
 
-    /**
-     * @see org.apache.maven.reporting.AbstractMavenReport#isExternalReport()
-     */
+    @Override
     public boolean isExternalReport()
     {
         return true;

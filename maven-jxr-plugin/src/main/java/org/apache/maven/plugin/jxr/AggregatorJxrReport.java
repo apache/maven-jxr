@@ -34,6 +34,7 @@ public class AggregatorJxrReport
     extends JxrReport
 {
 
+    @Override
     protected boolean isAggregate()
     {
         return true;

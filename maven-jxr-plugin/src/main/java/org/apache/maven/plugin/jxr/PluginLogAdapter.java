@@ -42,33 +42,25 @@ public class PluginLogAdapter
         this.log = log;
     }
 
-    /**
-     * @see org.apache.maven.jxr.log.Log#info(String)
-     */
+    @Override
     public void info( String string )
     {
         log.info( string );
     }
 
-    /**
-     * @see org.apache.maven.jxr.log.Log#debug(String)
-     */
+    @Override
     public void debug( String string )
     {
         log.debug( string );
     }
 
-    /**
-     * @see org.apache.maven.jxr.log.Log#warn(String)
-     */
+    @Override
     public void warn( String string )
     {
         log.warn( string );
     }
 
-    /**
-     * @see org.apache.maven.jxr.log.Log#error(String)  
-     */
+    @Override
     public void error( String string )
     {
         log.error( string );

@@ -30,6 +30,7 @@ public class DirectoryScanner
     extends org.codehaus.plexus.util.DirectoryScanner
 {
 
+    @Override
     public void addDefaultExcludes()
     {
         super.addDefaultExcludes();
