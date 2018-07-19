@@ -32,7 +32,6 @@ under the License.
   <url>http://maven.apache.org</url>
 
   <properties>
-    <jxr-plugin-version>@pom.version@</jxr-plugin-version>
     <site-plugin-version>@sitePluginVersion@</site-plugin-version>
   </properties>
 
@@ -50,7 +49,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>${jxr-plugin-version}</version>
+        <version>@project.version@</version>
         <executions>
           <execution>
             <id>aggregate</id>
@@ -62,7 +61,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.8</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <id>aggregate</id>
@@ -93,12 +92,12 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>${jxr-plugin-version}</version>
+        <version>@project.version@</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.8</version>
+        <version>3.0.0</version>
       </plugin>
     </plugins>
   </reporting>
