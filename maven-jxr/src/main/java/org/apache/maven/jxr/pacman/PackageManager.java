@@ -43,7 +43,7 @@ public class PackageManager
     /**
      * All the packages that have been parsed
      */
-    private Hashtable<String, PackageType> packages = new Hashtable<String, PackageType>();
+    private Hashtable<String, PackageType> packages = new Hashtable<>();
 
     /**
      * The default Java package.

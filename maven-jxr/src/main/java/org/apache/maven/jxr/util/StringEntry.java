@@ -69,18 +69,7 @@ public class StringEntry
     {
         //right now only sort by the index.
 
-        if ( se.getIndex() < this.getIndex() )
-        {
-            return -1;
-        }
-        else if ( se.getIndex() == this.getIndex() )
-        {
-            return 0;
-        }
-        else
-        {
-            return 1;
-        }
+        return Integer.compare( se.getIndex(), this.getIndex() );
 
     }
 

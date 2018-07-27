@@ -99,63 +99,63 @@ public class JavaCodeTransform
     /**
      * show line numbers
      */
-    public static final boolean LINE_NUMBERS = true;
+    private static final boolean LINE_NUMBERS = true;
 
     /**
      * start comment delimiter
      */
-    public static final String COMMENT_START = "<em class=\"jxr_comment\">";
+    private static final String COMMENT_START = "<em class=\"jxr_comment\">";
 
     /**
      * end comment delimiter
      */
-    public static final String COMMENT_END = "</em>";
+    private static final String COMMENT_END = "</em>";
 
     /**
      * start javadoc comment delimiter
      */
-    public static final String JAVADOC_COMMENT_START = "<em class=\"jxr_javadoccomment\">";
+    private static final String JAVADOC_COMMENT_START = "<em class=\"jxr_javadoccomment\">";
 
     /**
      * end javadoc comment delimiter
      */
-    public static final String JAVADOC_COMMENT_END = "</em>";
+    private static final String JAVADOC_COMMENT_END = "</em>";
 
     /**
      * start String delimiter
      */
-    public static final String STRING_START = "<span class=\"jxr_string\">";
+    private static final String STRING_START = "<span class=\"jxr_string\">";
 
     /**
      * end String delimiter
      */
-    public static final String STRING_END = "</span>";
+    private static final String STRING_END = "</span>";
 
     /**
      * start reserved word delimiter
      */
-    public static final String RESERVED_WORD_START = "<strong class=\"jxr_keyword\">";
+    private static final String RESERVED_WORD_START = "<strong class=\"jxr_keyword\">";
 
     /**
      * end reserved word delimiter
      */
-    public static final String RESERVED_WORD_END = "</strong>";
+    private static final String RESERVED_WORD_END = "</strong>";
 
     /**
      * stylesheet file name
      */
-    public static final String STYLESHEET_FILENAME = "stylesheet.css";
+    private static final String STYLESHEET_FILENAME = "stylesheet.css";
 
     /**
      * Description of the Field
      */
-    public static final String[] VALID_URI_SCHEMES = { "http://", "mailto:" };
+    private static final String[] VALID_URI_SCHEMES = { "http://", "mailto:" };
 
     /**
      * Specify the only characters that are allowed in a URI besides alpha and numeric characters. Refer RFC2396 -
      * http://www.ietf.org/rfc/rfc2396.txt
      */
-    public static final char[] VALID_URI_CHARS = { '?', '+', '%', '&', ':', '/', '.', '@', '_', ';', '=', '$', ',',
+    private static final char[] VALID_URI_CHARS = { '?', '+', '%', '&', ':', '/', '.', '@', '_', ';', '=', '$', ',',
         '-', '!', '~', '*', '\'', '(', ')' };
 
     // ----------------------------------------------------------------------
@@ -165,7 +165,7 @@ public class JavaCodeTransform
     /**
      * HashTable containing java reserved words
      */
-    private Hashtable<String, String> reservedWords = new Hashtable<String, String>();
+    private Hashtable<String, String> reservedWords = new Hashtable<>();
 
     /**
      * flag set to true when a multi-line comment is started
@@ -243,7 +243,7 @@ public class JavaCodeTransform
      * @param line String
      * @return filtered line of code
      */
-    public final String syntaxHighlight( String line )
+    private String syntaxHighlight( String line )
     {
         return htmlFilter( line );
     }
@@ -254,7 +254,7 @@ public class JavaCodeTransform
      * @param out the writer where the header is appended to
      * @return String
      */
-    public void appendHeader( PrintWriter out )
+    private void appendHeader( PrintWriter out )
     {
         String outputEncoding = this.outputEncoding;
         if ( outputEncoding == null )
@@ -321,7 +321,7 @@ public class JavaCodeTransform
      * @param bottom the bottom text
      * @return String
      */
-    public final void appendFooter( PrintWriter out, String bottom )
+    private void appendFooter( PrintWriter out, String bottom )
     {
         out.println( "</pre>" );
         out.println( "<hr/>" );
@@ -345,7 +345,7 @@ public class JavaCodeTransform
      * @param bottom string
      * @throws IOException
      */
-    public final void transform( Reader sourceReader, Writer destWriter, Locale locale, String inputEncoding,
+    private void transform( Reader sourceReader, Writer destWriter, Locale locale, String inputEncoding,
                                  String outputEncoding, Path javadocLinkDir, String revision, String bottom )
         throws IOException
     {
@@ -450,7 +450,7 @@ public class JavaCodeTransform
      *
      * @return String
      */
-    public final Path getCurrentFilename()
+    private Path getCurrentFilename()
     {
         return this.currentFilename;
     }
@@ -460,7 +460,7 @@ public class JavaCodeTransform
      *
      * @param filename String
      */
-    public final void setCurrentFilename( Path filename )
+    private void setCurrentFilename( Path filename )
     {
         this.currentFilename = filename;
     }
@@ -470,7 +470,7 @@ public class JavaCodeTransform
      *
      * @return String
      */
-    public final String getPackageRoot()
+    private String getPackageRoot()
     {
         StringBuilder buff = new StringBuilder();
 
@@ -504,7 +504,7 @@ public class JavaCodeTransform
      * @param line String
      * @return String
      */
-    public final String uriFilter( String line )
+    private final String uriFilter( String line )
     {
         for ( int i = 0; i < VALID_URI_SCHEMES.length; ++i )
         {
@@ -571,7 +571,7 @@ public class JavaCodeTransform
      * @param classType ClassType
      * @return String
      */
-    public final String xrLine( String line, String packageName, ClassType classType )
+    private String xrLine( String line, String packageName, ClassType classType )
     {
         StringBuilder buff = new StringBuilder( line );
 
@@ -1278,7 +1278,7 @@ public class JavaCodeTransform
             // specify the classname of this import if any.
             String classname = null;
 
-            if ( pkg.indexOf( ".*" ) != -1 )
+            if (pkg.contains(".*"))
             {
                 pkg = StringUtils.replace( pkg, ".*", "" );
             }
