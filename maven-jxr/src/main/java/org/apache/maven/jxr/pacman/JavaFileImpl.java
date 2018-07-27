@@ -116,7 +116,7 @@ public class JavaFileImpl
                 {
                     stok.nextToken();
 
-                    String name = mainClassName == null ? stok.sval : getInnerClassName( stok, mainClassName );
+                    String name = mainClassName == null ? stok.sval : getInnerClassName( stok.sval, mainClassName );
                     this.addClassType( new ClassType( name,
                                                       getFilenameWithoutPathOrExtension( this.getPath() ) ) );
 
@@ -133,13 +133,9 @@ public class JavaFileImpl
         }
     }
 
-    /**
-     * Formatting as ParentClassName.*.InnerClassName
-     * since just one general nesting level is supported so far
-     */
-    private String getInnerClassName( StreamTokenizer stok, String parentClassName )
+    private String getInnerClassName( String className, String parentClassName )
     {
-        return parentClassName + ".*." + stok.sval;
+        return parentClassName + "." + className;
     }
 
     /**

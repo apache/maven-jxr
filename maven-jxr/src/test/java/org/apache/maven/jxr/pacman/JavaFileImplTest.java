@@ -40,8 +40,9 @@ public class JavaFileImplTest
         List<ClassType> classTypes = javaFile.getClassTypes();
         assertEquals(4, classTypes.size());
         assertEquals("FileWithInnerClassesTest", classTypes.get(0).getName());
-        assertEquals("FileWithInnerClassesTest.*.Inner1", classTypes.get(1).getName());
-        assertEquals("FileWithInnerClassesTest.*.Inner2", classTypes.get(2).getName());
-        assertEquals("FileWithInnerClassesTest.*.Inner3", classTypes.get(3).getName());
+        assertEquals("FileWithInnerClassesTest.Inner1", classTypes.get(1).getName());
+        // next one ideally should be "FileWithInnerClassesTest.Inner1.Inner2" (but only one level is supported so far)
+        assertEquals("FileWithInnerClassesTest.Inner2", classTypes.get(2).getName());
+        assertEquals("FileWithInnerClassesTest.Inner3", classTypes.get(3).getName());
     }
 }
