@@ -36,6 +36,8 @@ import org.apache.maven.jxr.log.VelocityLogger;
 import org.apache.maven.jxr.pacman.ClassType;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.apache.maven.jxr.pacman.PackageType;
+import org.apache.maven.jxr.util.ClassName;
+import org.apache.maven.jxr.util.ClassNameComparator;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -334,7 +336,7 @@ public class DirectoryIndexer
     private Map<String, Object> getPackageInfo()
     {
         Map<String, Map<String, Object>> allPackages = new TreeMap<>();
-        Map<String, Map<String, String>> allClasses = new TreeMap<>();
+        Map<ClassName, Map<String, String>> allClasses = new TreeMap<>( new ClassNameComparator () );
 
         Enumeration<PackageType> packages = packageManager.getPackageTypes();
         while ( packages.hasMoreElements() )
@@ -360,6 +362,7 @@ public class DirectoryIndexer
                 ClassType clazz = classes.nextElement();
 
                 String className = clazz.getName();
+                ClassName cn = new ClassName( pkgName, className );
                 Map<String, String> classInfo = new HashMap<>();
                 if ( clazz.getFilename() != null )
                 {
@@ -373,7 +376,7 @@ public class DirectoryIndexer
                 classInfo.put( "dir", pkgDir );
 
                 pkgClasses.put( className, classInfo );
-                allClasses.put( className, classInfo );
+                allClasses.put( cn, classInfo );
             }
 
             Map<String, Object> pkgInfo = new HashMap<>();
