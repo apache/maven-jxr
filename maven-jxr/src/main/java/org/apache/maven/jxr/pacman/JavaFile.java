@@ -34,9 +34,9 @@ import java.util.Set;
  */
 public abstract class JavaFile
 {
-    private Set<ImportType> imports = new HashSet<ImportType>();
+    private Set<ImportType> imports = new HashSet<>();
 
-    private List<ClassType> classTypes = new ArrayList<ClassType>();
+    private List<ClassType> classTypes = new ArrayList<>();
 
     private PackageType packageType = new PackageType();
 

@@ -616,25 +616,6 @@ public class JavaCodeTransform
         return buff.toString();
     }
 
-    /**
-     * Highlight the package in this line.
-     *
-     * @param line input line
-     * @param packageName package name
-     * @return input line with linked package
-     */
-    public final String xrLine( String line, String packageName )
-    {
-        String href = this.getHREF( packageName );
-
-        String find = packageName;
-
-        // build out what the link would be.
-        String link = "<a href=\"" + href + "\">" + find + "</a>";
-
-        return StringUtils.replace( line, find, link );
-    }
-
     // ----------------------------------------------------------------------
     // private methods
     // ----------------------------------------------------------------------

@@ -41,7 +41,8 @@ public class JavaFileImpl
     /**
      * Create a new JavaFileImpl that points to a given file...
      *
-     * @param filename
+     * @param path
+     * @param encoding
      * @throws IOException
      */
     public JavaFileImpl( Path path, String encoding )
@@ -70,6 +71,7 @@ public class JavaFileImpl
         {
             stok = this.getTokenizer( reader );
 
+            String mainClassName = null;
             while ( stok.nextToken() != StreamTokenizer.TT_EOF )
             {
 
@@ -113,16 +115,31 @@ public class JavaFileImpl
                     &&  stok.ttype != '\"' )
                 {
                     stok.nextToken();
-                    this.addClassType( new ClassType( stok.sval,
-                                                      getFilenameWithoutPathOrExtension( this.getPath() ) ) );
-                }
 
+                    String name = mainClassName == null ? stok.sval : getInnerClassName( stok, mainClassName );
+                    this.addClassType( new ClassType( name,
+                                                      getFilenameWithoutPathOrExtension( this.getPath() ) ) );
+
+                    if ( mainClassName == null )
+                    {
+                        mainClassName = stok.sval;
+                    }
+                }
             }
         }
         finally
         {
             stok = null;
         }
+    }
+
+    /**
+     * Formatting as ParentClassName.*.InnerClassName
+     * since just one general nesting level is supported so far
+     */
+    private String getInnerClassName( StreamTokenizer stok, String parentClassName )
+    {
+        return parentClassName + ".*." + stok.sval;
     }
 
     /**
@@ -144,7 +161,6 @@ public class JavaFileImpl
      * Get a StreamTokenizer for this file.
      */
     private StreamTokenizer getTokenizer( Reader reader )
-        throws IOException
     {
         StreamTokenizer stok = new StreamTokenizer( reader );
         //int tok;

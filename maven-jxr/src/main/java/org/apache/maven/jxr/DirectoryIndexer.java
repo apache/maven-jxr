@@ -353,7 +353,7 @@ public class DirectoryIndexer
                 rootRef = "./";
             }
 
-            Map<String, Map<String, String>> pkgClasses = new TreeMap<String, Map<String, String>>();
+            Map<String, Map<String, String>> pkgClasses = new TreeMap<>();
             Enumeration<ClassType> classes = pkg.getClassTypes();
             while ( classes.hasMoreElements() )
             {
