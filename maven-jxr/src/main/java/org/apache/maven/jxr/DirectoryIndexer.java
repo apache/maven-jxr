@@ -331,7 +331,7 @@ public class DirectoryIndexer
      * allClasses collection of Maps with class info, format as above
      *
      */
-    Map<String, Object> getPackageInfo()
+    private Map<String, Object> getPackageInfo()
     {
         Map<String, Map<String, Object>> allPackages = new TreeMap<>();
         Map<String, Map<String, String>> allClasses = new TreeMap<>();
@@ -372,8 +372,8 @@ public class DirectoryIndexer
                 classInfo.put( "name", className );
                 classInfo.put( "dir", pkgDir );
 
-                pkgClasses.put( pkgName + "." + className, classInfo );
-                allClasses.put( pkgName + "." + className, classInfo );
+                pkgClasses.put( className, classInfo );
+                allClasses.put( className, classInfo );
             }
 
             Map<String, Object> pkgInfo = new HashMap<>();
