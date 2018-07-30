@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.pacman;
+package com.mycompany.app;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,15 +19,19 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
-public interface FileWithInnerClassesTest
+public class ClassWithNested
 {
-    class Inner1
-    {
-        class Inner2
-        {
+    public interface NestedInterface {}
+    public static class NestedClassWithEnum {
+        public enum NestedEnum { }
+        public class NestedClass2 {
         }
     }
-    class Inner3
-    {
+
+    public static class NestedClassWithEnum2 {
+        public enum NestedEnum { }
+        public class NestedClass2 {
+        }
     }
 }
+class NotNested {}

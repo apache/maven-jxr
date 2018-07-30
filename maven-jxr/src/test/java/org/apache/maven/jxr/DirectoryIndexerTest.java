@@ -34,11 +34,9 @@ public class DirectoryIndexerTest {
     /**
      * Parse the files in test/resources/jxr68 packages, ensure all are present in the allClasses Map,
      * in the correct order.
-     *
-     * @throws Exception
      */
     @Test
-    public void testJXR_68() throws Exception
+    public void testJXR_68()
     {
         FileManager fileManager = FileManager.getInstance();
         PackageManager packageManager = new PackageManager( new DummyLog(), fileManager );
