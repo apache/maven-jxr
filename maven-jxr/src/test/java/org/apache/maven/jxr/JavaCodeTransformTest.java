@@ -19,20 +19,22 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
-import junit.framework.TestCase;
-import org.apache.maven.jxr.pacman.PackageManager;
-import org.apache.maven.jxr.pacman.FileManager;
+import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 
+import org.apache.maven.jxr.pacman.FileManager;
+import org.apache.maven.jxr.pacman.PackageManager;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * JUnit test for {@link JavaCodeTransform}.
  */
 public class JavaCodeTransformTest
-    extends TestCase
 {
     /** JavaCodeTransform object under test */
     private JavaCodeTransform codeTransform;
@@ -43,11 +45,9 @@ public class JavaCodeTransformTest
     /**
      * Set up this test.
      */
-    @Override
-    protected void setUp()
-        throws Exception
+    @Before
+    public void setUp()
     {
-        super.setUp();
         packageManager = new PackageManager( new DummyLog(), new FileManager() );
         codeTransform = new JavaCodeTransform( packageManager );
     }
@@ -55,6 +55,7 @@ public class JavaCodeTransformTest
     /**
      * Test basic transformation of a java source file.
      */
+    @Test
     public void testTransform()
         //test transforms its own sourcefile, so add some comments
         throws Exception // single line despite /*
@@ -72,6 +73,7 @@ public class JavaCodeTransformTest
     /**
      * Test what happens with an empty sourcefile.
      */
+    @Test
     public void testTransformWithEmptyClassFile()
         throws Exception
     {

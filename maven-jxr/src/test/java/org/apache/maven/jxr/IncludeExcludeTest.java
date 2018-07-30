@@ -19,12 +19,16 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test include/exclude patterns.
@@ -32,14 +36,13 @@ import java.util.Collections;
  * @author <a href="mailto:dennisl@apache.org">Dennis Lundberg</a>
  * @version $Id$
  */
-public class IncludeExcludeTest extends TestCase
+public class IncludeExcludeTest
 {
     private JXR jxr;
 
-    protected void setUp()
-        throws Exception
+    @Before
+    public void setUp()
     {
-        super.setUp();
         jxr = new JXR();
         jxr.setDest( Paths.get( "target" ) );
         jxr.setInputEncoding( "ISO-8859-1" );
@@ -48,6 +51,7 @@ public class IncludeExcludeTest extends TestCase
         jxr.setLog( new DummyLog() );
     }
 
+    @Test
     public void testIncludeExclude()
         throws Exception
     {

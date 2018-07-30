@@ -19,21 +19,20 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
-import junit.framework.TestCase;
-
 import java.nio.file.Paths;
 import java.util.Collections;
 
+import org.junit.Before;
+import org.junit.Test;
+
 public class JxrBeanTest
-    extends TestCase
 {
 
     private JXR jxrBean;
 
-    protected void setUp()
-        throws Exception
+    @Before
+    public void setUp()
     {
-        super.setUp();
         jxrBean = new JXR();
         jxrBean.setDest( Paths.get( "target" ) );
         jxrBean.setInputEncoding( "ISO-8859-1" );
@@ -42,6 +41,7 @@ public class JxrBeanTest
         jxrBean.setLog( new DummyLog() );
     }
 
+    @Test
     public void testXref()
         throws Exception
     {
