@@ -38,7 +38,7 @@ public class SimpleWordTokenizer
     /**
      * Description of the Field
      */
-    public static final char[] BREAKERS = { '(', ')', '[', ' ', '{', '}' };
+    private static final char[] BREAKERS = { '(', ')', '[', ' ', '{', '}' };
 
     /**
      * Break the given line into multiple StringUtils
@@ -71,7 +71,7 @@ public class SimpleWordTokenizer
     public static List<StringEntry> tokenize( String line, String find )
     {
 
-        List<StringEntry> foundTokens = new ArrayList<StringEntry>();
+        List<StringEntry> foundTokens = new ArrayList<>();
 
         for ( StringEntry se : tokenize( line ) )
         {

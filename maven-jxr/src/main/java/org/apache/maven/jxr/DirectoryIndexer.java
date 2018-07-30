@@ -243,12 +243,12 @@ public class DirectoryIndexer
         Iterator<Map<String, ?>> iter = ( (Map) info.get( "allPackages" ) ).values().iterator();
         while ( iter.hasNext() )
         {
-            Map pkgInfo = (Map) iter.next();
+            Map pkgInfo = iter.next();
 
             VelocityContext subContext = new VelocityContext( context );
             subContext.put( "pkgInfo", pkgInfo );
 
-            String outDir = root + '/' + (String) pkgInfo.get( "dir" );
+            String outDir = root + '/' + pkgInfo.get( "dir" );
             doVelocity( "package-summary", outDir, subContext, engine );
             doVelocity( "package-frame", outDir, subContext, engine );
         }
@@ -353,7 +353,7 @@ public class DirectoryIndexer
                 rootRef = "./";
             }
 
-            Map<String, Map<String, String>> pkgClasses = new TreeMap<String, Map<String, String>>();
+            Map<String, Map<String, String>> pkgClasses = new TreeMap<>();
             Enumeration<ClassType> classes = pkg.getClassTypes();
             while ( classes.hasMoreElements() )
             {

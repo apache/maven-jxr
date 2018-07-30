@@ -41,7 +41,8 @@ public class JavaFileImpl
     /**
      * Create a new JavaFileImpl that points to a given file...
      *
-     * @param filename
+     * @param path
+     * @param encoding
      * @throws IOException
      */
     public JavaFileImpl( Path path, String encoding )
@@ -165,7 +166,6 @@ public class JavaFileImpl
      * Get a StreamTokenizer for this file.
      */
     private StreamTokenizer getTokenizer( Reader reader )
-        throws IOException
     {
         StreamTokenizer stok = new StreamTokenizer( reader );
         //int tok;
