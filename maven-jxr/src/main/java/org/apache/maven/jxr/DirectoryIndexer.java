@@ -215,7 +215,7 @@ public class DirectoryIndexer
     public void process( Log log )
         throws JxrException
     {
-        Map<String, Object> info = getPackageInfo();
+        Map<String, Map<String, ?>> info = getPackageInfo();
 
         VelocityEngine engine = new VelocityEngine();
         setProperties( engine, log );
@@ -240,7 +240,7 @@ public class DirectoryIndexer
         doVelocity( "allclasses-frame", root, context, engine );
         doVelocity( "overview-summary", root, context, engine );
 
-        Iterator iter = ( (Map) info.get( "allPackages" ) ).values().iterator();
+        Iterator<Map<String, ?>> iter = ( (Map) info.get( "allPackages" ) ).values().iterator();
         while ( iter.hasNext() )
         {
             Map pkgInfo = (Map) iter.next();
@@ -331,7 +331,7 @@ public class DirectoryIndexer
      * allClasses collection of Maps with class info, format as above
      *
      */
-    private Map<String, Object> getPackageInfo()
+    Map<String, Map<String, ?>> getPackageInfo()
     {
         Map<String, Map<String, Object>> allPackages = new TreeMap<>();
         Map<String, Map<String, String>> allClasses = new TreeMap<>();
@@ -373,7 +373,9 @@ public class DirectoryIndexer
                 classInfo.put( "dir", pkgDir );
 
                 pkgClasses.put( className, classInfo );
-                allClasses.put( className, classInfo );
+                // Adding package name to key in order to ensure classes with identical names in different packages are
+                // all included.
+                allClasses.put( className + "#" + pkgName, classInfo );
             }
 
             Map<String, Object> pkgInfo = new HashMap<>();
@@ -384,7 +386,7 @@ public class DirectoryIndexer
             allPackages.put( pkgName, pkgInfo );
         }
 
-        Map<String, Object> info = new HashMap<>();
+        Map<String, Map<String, ?>> info = new HashMap<>();
         info.put( "allPackages", allPackages );
         info.put( "allClasses", allClasses );
 

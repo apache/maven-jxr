@@ -71,61 +71,7 @@ public class JavaFileImpl
         {
             stok = this.getTokenizer( reader );
 
-            String mainClassName = null;
-            while ( stok.nextToken() != StreamTokenizer.TT_EOF )
-            {
-
-                if ( stok.sval == null )
-                {
-                    continue;
-                }
-
-                //set the package
-                if ( "package".equals( stok.sval ) && stok.ttype != '\"' )
-                {
-                    stok.nextToken();
-                    this.setPackageType( new PackageType( stok.sval ) );
-                }
-
-                //set the imports
-                if ( "import".equals( stok.sval )  && stok.ttype != '\"' )
-                {
-                    stok.nextToken();
-
-                    String name = stok.sval;
-
-                    /*
-                    WARNING: this is a bug/non-feature in the current
-                    StreamTokenizer.  We needed to set the comment char as "*"
-                    and packages that are imported with this (ex "test.*") will be
-                    stripped( and become "test." ).  Here we need to test for this
-                    and if necessary re-add the char.
-                    */
-                    if ( name.charAt( name.length() - 1 ) == '.' )
-                    {
-                        name = name + '*';
-                    }
-
-                    this.addImportType( new ImportType( name ) );
-                }
-
-                // Add the class or classes. There can be several classes in one file so
-                // continue with the while loop to get them all.
-                if ( ( "class".equals( stok.sval ) || "interface".equals( stok.sval ) || "enum".equals( stok.sval ) )
-                    &&  stok.ttype != '\"' )
-                {
-                    stok.nextToken();
-
-                    String name = mainClassName == null ? stok.sval : getInnerClassName( stok.sval, mainClassName );
-                    this.addClassType( new ClassType( name,
-                                                      getFilenameWithoutPathOrExtension( this.getPath() ) ) );
-
-                    if ( mainClassName == null )
-                    {
-                        mainClassName = stok.sval;
-                    }
-                }
-            }
+            parseRecursive( "", stok );
         }
         finally
         {
@@ -133,9 +79,72 @@ public class JavaFileImpl
         }
     }
 
-    private String getInnerClassName( String className, String parentClassName )
+    private void parseRecursive( String nestedPrefix, StreamTokenizer stok )
+            throws IOException
     {
-        return parentClassName + "." + className;
+        int openBracesCount = 0;
+
+        while ( stok.nextToken() != StreamTokenizer.TT_EOF )
+        {
+
+            if ( stok.sval == null )
+            {
+                if ( stok.ttype == '{' )
+                {
+                    openBracesCount++;
+                }
+                else if ( stok.ttype == '}' )
+                {
+                    if ( --openBracesCount == 0 )
+                    {
+                        // break out of recursive
+                        return;
+                    }
+                }
+                continue;
+            }
+
+            //set the package
+            if ( "package".equals( stok.sval ) && stok.ttype != '\"' )
+            {
+                stok.nextToken();
+                this.setPackageType( new PackageType( stok.sval ) );
+            }
+
+            //set the imports
+            if ( "import".equals( stok.sval )  && stok.ttype != '\"' )
+            {
+                stok.nextToken();
+
+                String name = stok.sval;
+
+                /*
+                WARNING: this is a bug/non-feature in the current
+                StreamTokenizer.  We needed to set the comment char as "*"
+                and packages that are imported with this (ex "test.*") will be
+                stripped( and become "test." ).  Here we need to test for this
+                and if necessary re-add the char.
+                */
+                if ( name.charAt( name.length() - 1 ) == '.' )
+                {
+                    name = name + '*';
+                }
+
+                this.addImportType( new ImportType( name ) );
+            }
+
+            // Add the class or classes. There can be several classes in one file so
+            // continue with the while loop to get them all.
+            if ( ( "class".equals( stok.sval ) || "interface".equals( stok.sval ) || "enum".equals( stok.sval ) )
+                    &&  stok.ttype != '\"' )
+            {
+                stok.nextToken();
+                this.addClassType( new ClassType( nestedPrefix + stok.sval,
+                        getFilenameWithoutPathOrExtension( this.getPath() ) ) );
+                parseRecursive( nestedPrefix + stok.sval + ".", stok );
+            }
+
+        }
     }
 
     /**

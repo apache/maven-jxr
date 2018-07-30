@@ -19,30 +19,32 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
 import org.junit.Test;
 
-public class JavaFileImplTest
-{
-    @Test
-    public void testNamesForInnerClasses()
-        throws IOException
-    {
-        Path testFile = Paths.get( "src/test/java/org/apache/maven/jxr/pacman/FileWithInnerClassesTest.java" );
-        JavaFile javaFile = new JavaFileImpl(testFile, "ISO-8859-1" );
+import java.nio.file.Paths;
+import java.util.Iterator;
+import java.util.List;
 
-        List<ClassType> classTypes = javaFile.getClassTypes();
-        assertEquals(4, classTypes.size());
-        assertEquals("FileWithInnerClassesTest", classTypes.get(0).getName());
-        assertEquals("FileWithInnerClassesTest.Inner1", classTypes.get(1).getName());
-        // next one ideally should be "FileWithInnerClassesTest.Inner1.Inner2" (but only one level is supported so far)
-        assertEquals("FileWithInnerClassesTest.Inner2", classTypes.get(2).getName());
-        assertEquals("FileWithInnerClassesTest.Inner3", classTypes.get(3).getName());
+import static org.junit.Assert.*;
+
+public class JavaFileImplTest {
+    @Test
+    public void testJXR_135_lotsOfNested()
+            throws Exception
+    {
+        JavaFileImpl javaFile = new JavaFileImpl( Paths.get(
+                "src/test/resources/jxr135/org/apache/maven/jxr/pacman/ClassWithNested.java" ),
+                "UTF-8" );
+        final Iterator<ClassType> classTypes = javaFile.getClassTypes().iterator();
+        assertEquals( "ClassWithNested", classTypes.next().getName() );
+        assertEquals( "ClassWithNested.NestedInterface", classTypes.next().getName() );
+        assertEquals( "ClassWithNested.NestedClassWithEnum", classTypes.next().getName() );
+        assertEquals( "ClassWithNested.NestedClassWithEnum.NestedEnum", classTypes.next().getName() );
+        assertEquals( "ClassWithNested.NestedClassWithEnum.NestedClass2", classTypes.next().getName() );
+        assertEquals( "ClassWithNested.NestedClassWithEnum2", classTypes.next().getName() );
+        assertEquals( "ClassWithNested.NestedClassWithEnum2.NestedEnum", classTypes.next().getName() );
+        assertEquals( "ClassWithNested.NestedClassWithEnum2.NestedClass2", classTypes.next().getName() );
+        assertEquals( "NotNested", classTypes.next().getName() );
     }
+
 }
