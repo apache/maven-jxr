@@ -1,4 +1,3 @@
-package org.apache.maven.jxr;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,34 +18,4 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
-import java.nio.file.Paths;
-import java.util.Collections;
-
-import org.junit.Before;
-import org.junit.Test;
-
-public class JxrBeanTest
-{
-
-    private JXR jxrBean;
-
-    @Before
-    public void setUp()
-    {
-        jxrBean = new JXR();
-        jxrBean.setDest( Paths.get( "target" ) );
-        jxrBean.setInputEncoding( "ISO-8859-1" );
-        jxrBean.setOutputEncoding( "ISO-8859-1" );
-        jxrBean.setJavadocLinkDir( Paths.get( "." ) );
-        jxrBean.setLog( new DummyLog() );
-    }
-
-    @Test
-    public void testXref()
-        throws Exception
-    {
-        jxrBean.xref( Collections.singletonList( "src/test/java" ), "templates",
-                      "title", "title", "copyright" );
-    }
-
-}
+public class CClass {}

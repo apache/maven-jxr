@@ -19,34 +19,22 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
-import java.nio.file.Paths;
-import java.util.Collections;
-
-import org.junit.Before;
-import org.junit.Test;
-
-public class JxrBeanTest
+/**
+ * Class part of the test for JXR-135 illustrating the use of nested classes, interfaces and enums
+ */
+public class ClassWithNested
 {
-
-    private JXR jxrBean;
-
-    @Before
-    public void setUp()
-    {
-        jxrBean = new JXR();
-        jxrBean.setDest( Paths.get( "target" ) );
-        jxrBean.setInputEncoding( "ISO-8859-1" );
-        jxrBean.setOutputEncoding( "ISO-8859-1" );
-        jxrBean.setJavadocLinkDir( Paths.get( "." ) );
-        jxrBean.setLog( new DummyLog() );
+    public interface NestedInterface {}
+    public static class NestedClassWithEnum {
+        public enum NestedEnum { }
+        public class NestedClass2 {
+        }
     }
 
-    @Test
-    public void testXref()
-        throws Exception
-    {
-        jxrBean.xref( Collections.singletonList( "src/test/java" ), "templates",
-                      "title", "title", "copyright" );
+    public static class NestedClassWithEnum2 {
+        public enum NestedEnum { }
+        public class NestedClass2 {
+        }
     }
-
 }
+class NotNested {}

@@ -86,7 +86,7 @@ public class JxrReport
             }
         }
 
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
 
         if ( !"pom".equals( getProject().getPackaging().toLowerCase() ) )
         {
@@ -107,7 +107,7 @@ public class JxrReport
     @Override
     protected List<String> getSourceRoots( MavenProject project )
     {
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
 
         if ( !"pom".equals( project.getPackaging().toLowerCase() ) )
         {
