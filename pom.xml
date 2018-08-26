@@ -93,6 +93,11 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-java</artifactId>
+        <version>0.9.8</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
         <version>3.1.0</version>
       </dependency>
@@ -110,6 +115,33 @@ under the License.
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-enforcer-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>enforce-bytecode-version</id>
+          <configuration>
+            <rules>
+              <enforceBytecodeVersion>
+                <ignoreClasses>
+                  <ignoreClass>module-info</ignoreClass>
+                </ignoreClasses>
+              </enforceBytecodeVersion>
+            </rules>
+          </configuration>
+        </execution>
+      </executions>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>extra-enforcer-rules</artifactId>
+          <version>1.0-beta-6</version>
+        </dependency>
+      </dependencies>
+    </plugin>
+    </plugins>
   </build>
 
   <profiles>

@@ -19,12 +19,12 @@ under the License.
 
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>exclude.configuration</groupId>
-  <artifactId>exclude-configuration</artifactId>
+  <groupId>def.configuration</groupId>
+  <artifactId>default-configuration</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <inceptionYear>2006</inceptionYear>
-  <name>Maven Jxr Plugin Exclude Configuration</name>
+  <name>Maven Jxr Plugin Default Configuration Test</name>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>
@@ -32,23 +32,18 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
         <configuration>
-          <project implementation="org.apache.maven.plugin.jxr.stubs.ExcludeConfigurationMavenProjectStub"/>
-          <outputDirectory>${basedir}/target/test/unit/exclude-configuration/target/site</outputDirectory>
-          <docTitle>Maven Jxr Plugin Exclude Configuration 1.0-SNAPSHOT Reference</docTitle>
+          <project implementation="org.apache.maven.plugin.jxr.stubs.DefaultConfigurationMavenProjectStub"/>
+          <outputDirectory>${basedir}/target/test/unit/default-configuration/target/site/7</outputDirectory>
+          <docTitle>Maven Jxr Plugin Default Configuration Test 1.0-SNAPSHOT Reference</docTitle>
           <inputEncoding>ISO-8859-1</inputEncoding>
-          <outputEncoding>ISO-8859-1</outputEncoding>
           <sourceDirs>
-            <value>${basedir}/src/test/resources/unit/exclude-configuration</value>
+            <value>${basedir}/src/test/resources/unit/default-configuration</value>
           </sourceDirs>
-          <destDir>${basedir}/target/test/unit/exclude-configuration/target/site/xref</destDir>
-          <javadocDir>${basedir}/target/test/unit/exclude-configuration/target/site/apidocs</javadocDir>
+          <destDir>${basedir}/target/test/unit/default-configuration/target/site/7/xref</destDir>
+          <javadocDir>${basedir}/target/test/unit/default-configuration/target/site/7/apidocs</javadocDir>
           <linkJavadoc>true</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
-          <javadocVersion>4</javadocVersion>
-          <stylesheet>stylesheet.css</stylesheet>
-          <excludes>
-            <exclude>**/AppSample.java</exclude>
-          </excludes>
+          <javadocVersion>7</javadocVersion>
         </configuration>
       </plugin>
     </plugins>

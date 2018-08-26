@@ -30,6 +30,9 @@ under the License.
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>@project.version@</version>
+                <configuration>
+                    <javadocVersion>4</javadocVersion>
+                </configuration>
             </plugin>
         </plugins>
       </pluginManagement>

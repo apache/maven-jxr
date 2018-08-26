@@ -35,21 +35,189 @@ public class JxrReportTest
     extends AbstractMojoTestCase
 {
     /**
-     * Test the plugin with default configuration
+     * Test the plugin with original configuration
      *
      * @throws Exception
      */
     public void testDefaultConfiguration()
         throws Exception
     {
+        File resourcesDir = new File( getBasedir(), "src/test/resources/unit/default-configuration" );
+
+        File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site" );
+        File xrefDir = new File( outputDir, "xref" );
+
+        copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+
+        File testPom = new File( resourcesDir, "default-configuration-plugin-config.xml" );
+        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
+        mojo.execute();
+
+        //check if xref files were generated
+        assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "index.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "stylesheet.css" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/App.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/AppSample.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
+
+        //check if there's a link to the javadoc files
+        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
+
+        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
+
+        // check if encoding is UTF-8, the default value
+        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
+    }
+
+    /**
+     * Test the plugin with jdk-4 configuration
+     *
+     * @throws Exception
+     */
+    public void testJdk4Configuration()
+        throws Exception
+    {
     	File resourcesDir = new File( getBasedir(), "src/test/resources/unit/default-configuration" );
 
-    	File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site" );
+    	File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site/4" );
     	File xrefDir = new File( outputDir, "xref" );
 
     	copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
-        File testPom = new File( resourcesDir, "default-configuration-plugin-config.xml" );
+        File testPom = new File( resourcesDir, "default-configuration-plugin-config-4.xml" );
+        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
+        mojo.execute();
+
+        //check if xref files were generated
+        assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "index.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "stylesheet.css" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/App.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/AppSample.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
+
+        //check if there's a link to the javadoc files
+        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
+
+        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
+
+        // check if encoding is UTF-8, the default value
+        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
+    }
+
+    /**
+     * Test the plugin with jdk-6 configuration
+     *
+     * @throws Exception
+     */
+    public void testJdk6Configuration()
+        throws Exception
+    {
+        File resourcesDir = new File( getBasedir(), "src/test/resources/unit/default-configuration" );
+
+        File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site/6" );
+        File xrefDir = new File( outputDir, "xref" );
+
+        copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+
+        File testPom = new File( resourcesDir, "default-configuration-plugin-config-6.xml" );
+        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
+        mojo.execute();
+
+        //check if xref files were generated
+        assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "index.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "stylesheet.css" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/App.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/AppSample.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
+
+        //check if there's a link to the javadoc files
+        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
+
+        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
+
+        // check if encoding is UTF-8, the default value
+        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
+    }
+
+    /**
+     * Test the plugin with jdk-7 configuration
+     *
+     * @throws Exception
+     */
+    public void testJdk7Configuration()
+        throws Exception
+    {
+        File resourcesDir = new File( getBasedir(), "src/test/resources/unit/default-configuration" );
+
+        File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site/7" );
+        File xrefDir = new File( outputDir, "xref" );
+
+        copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+
+        File testPom = new File( resourcesDir, "default-configuration-plugin-config-7.xml" );
+        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
+        mojo.execute();
+
+        //check if xref files were generated
+        assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "index.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "overview-summary.html" ).exists() );
+        assertTrue( new File( xrefDir, "stylesheet.css" ).exists() );
+        assertTrue( new File( xrefDir, "resources/background.gif" ).exists() );
+        assertTrue( new File( xrefDir, "resources/tab.gif" ).exists() );
+        assertTrue( new File( xrefDir, "resources/titlebar.gif" ).exists() );
+        assertTrue( new File( xrefDir, "resources/titlebar_end.gif" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/App.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/AppSample.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-frame.html" ).exists() );
+        assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
+
+        //check if there's a link to the javadoc files
+        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
+
+        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
+
+        // check if encoding is UTF-8, the default value
+        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
+    }
+
+    /**
+     * Test the plugin with jdk-8 configuration
+     *
+     * @throws Exception
+     */
+    public void testJdk8Configuration()
+        throws Exception
+    {
+        File resourcesDir = new File( getBasedir(), "src/test/resources/unit/default-configuration" );
+
+        File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site/8" );
+        File xrefDir = new File( outputDir, "xref" );
+
+        copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+
+        File testPom = new File( resourcesDir, "default-configuration-plugin-config-8.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
