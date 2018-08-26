@@ -42,7 +42,7 @@ under the License.
           </sourceDirs>
           <destDir>${basedir}/target/test/unit/testsourcedir-test/target/site/xref-test</destDir>
           <bottom>Copyright 2006 Apache Foundation</bottom>
-          <javadocVersion>4</javadocVersion>
+          <javadocVersion>1.4</javadocVersion>
           <stylesheet>stylesheet.css</stylesheet>
         </configuration>
       </plugin>

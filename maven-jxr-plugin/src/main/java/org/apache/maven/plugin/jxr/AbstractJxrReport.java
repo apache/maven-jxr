@@ -156,7 +156,7 @@ public abstract class AbstractJxrReport
     private boolean linkJavadoc;
 
     /**
-     * Version of the Javadoc templates to use, ex. "4", "5" etc.
+     * Version of the Javadoc templates to use, ex. "1.4", "1.5" etc.
      */
     @Parameter( property = "javadocVersion" )
     private String javadocVersion;
@@ -258,9 +258,10 @@ public abstract class AbstractJxrReport
      * @param sourceDirs The source directories
      * @throws java.io.IOException
      * @throws org.apache.maven.jxr.JxrException
+     * @throws org.apache.maven.reporting.MavenReportException
      */
     private void createXref( Locale locale, String destinationDirectory, List<String> sourceDirs )
-        throws IOException, JxrException
+        throws IOException, JxrException, MavenReportException
     {
         JXR jxr = new JXR();
         jxr.setDest( Paths.get( destinationDirectory ) );
@@ -392,11 +393,11 @@ public abstract class AbstractJxrReport
         }
         else
         {
-            if ( javadocTemplatesVersion.isAtLeast( "8" ) )
+            if ( javadocTemplatesVersion.isAtLeast( "1.8" ) )
             {
                 copyResources( dir, "jdk8/", "stylesheet.css" );
             }
-            else if ( javadocTemplatesVersion.isAtLeast( "7" ) )
+            else if ( javadocTemplatesVersion.isAtLeast( "1.7" ) )
             {
                 String[] jdk7Resources =
                 {
@@ -408,11 +409,11 @@ public abstract class AbstractJxrReport
                 };
                 copyResources( dir, "jdk7/", jdk7Resources );
             }
-            else if ( javadocTemplatesVersion.isAtLeast( "6" ) )
+            else if ( javadocTemplatesVersion.isAtLeast( "1.6" ) )
             {
                 copyResources( dir, "jdk6/", "stylesheet.css" );
             }
-            else if ( javadocTemplatesVersion.isAtLeast( "4" ) )
+            else if ( javadocTemplatesVersion.isAtLeast( "1.4" ) )
             {
                 copyResources( dir, "jdk4/", "stylesheet.css" );
             }
@@ -557,29 +558,40 @@ public abstract class AbstractJxrReport
      * Determine the templateDir to use, given javadocTemplatesVersion
      *
      * @return
+     * @throws org.apache.maven.reporting.MavenReportException if javadocTemplatesVersion cannot be parsed
      */
     private String getTemplateDir()
+        throws MavenReportException
     {
         // Check if overridden
         if ( StringUtils.isEmpty( templateDir ) )
         {
-            if ( javadocTemplatesVersion.isAtLeast( "8" ) )
+            try
             {
-                return "templates/jdk8";
+                if ( javadocTemplatesVersion.isAtLeast( "1.8" ) )
+                {
+                    return "templates/jdk8";
+                }
+                else if ( javadocTemplatesVersion.isAtLeast( "1.7" ) )
+                {
+                    return "templates/jdk7";
+                }
+                else if ( javadocTemplatesVersion.isAtLeast( "1.4" ) )
+                {
+                    return "templates/jdk4";
+                }
+                else
+                {
+                    getLog().warn(
+                        "Unsupported javadocVersion: " + javadocTemplatesVersion + ". Fallback to original" );
+                    return "templates";
+                }
             }
-            else if ( javadocTemplatesVersion.isAtLeast( "7" ) )
+            catch ( NumberFormatException e )
             {
-                return "templates/jdk7";
+                throw new MavenReportException( "Unable to parse javadoc version: " + e.getMessage(), e );
             }
-            else if ( javadocTemplatesVersion.isAtLeast( "4" ) )
-            {
-                return "templates/jdk4";
-            }
-            else
-            {
-                getLog().warn( "Unsupported javadocVersion: " + javadocTemplatesVersion + ". Fallback to original" );
-                return "templates";
-            }
+
         }
         // use value specified by user
         return templateDir;
@@ -587,24 +599,14 @@ public abstract class AbstractJxrReport
 
     /**
      * Set a new value for <code>javadocTemplatesVersion</code>
-     *
-     * @throws MavenReportException if not found
      */
     private void setJavadocTemplatesVersion()
-        throws MavenReportException
     {
         JavaVersion javaVersion = JavaVersion.JAVA_SPECIFICATION_VERSION;
 
         if ( StringUtils.isNotEmpty( javadocVersion ) )
         {
-            try
-            {
-                javadocTemplatesVersion = JavaVersion.parse( javadocVersion );
-            }
-            catch ( NumberFormatException e )
-            {
-                throw new MavenReportException( "Unable to parse javadoc version: " + e.getMessage(), e );
-            }
+            javadocTemplatesVersion = JavaVersion.parse( javadocVersion );
         }
         else
         {

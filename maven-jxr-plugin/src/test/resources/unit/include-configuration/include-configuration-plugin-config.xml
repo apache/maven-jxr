@@ -44,7 +44,7 @@ under the License.
           <javadocDir>${basedir}/target/test/unit/include-configuration/target/site/apidocs</javadocDir>
           <linkJavadoc>true</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
-          <javadocVersion>4</javadocVersion>
+          <javadocVersion>1.4</javadocVersion>
           <stylesheet>stylesheet.css</stylesheet>
           <includes>
             <include>**/App.java</include>

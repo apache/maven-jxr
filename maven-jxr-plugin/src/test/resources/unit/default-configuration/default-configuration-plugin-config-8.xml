@@ -43,7 +43,7 @@ under the License.
           <javadocDir>${basedir}/target/test/unit/default-configuration/target/site/8/apidocs</javadocDir>
           <linkJavadoc>true</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
-          <javadocVersion>8</javadocVersion>
+          <javadocVersion>1.8</javadocVersion>
         </configuration>
       </plugin>
     </plugins>

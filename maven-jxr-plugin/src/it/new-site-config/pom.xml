@@ -52,7 +52,7 @@ under the License.
               <artifactId>maven-jxr-plugin</artifactId>
               <version>@project.version@</version>
               <configuration>
-                <javadocVersion>4</javadocVersion>
+                <javadocVersion>1.4</javadocVersion>
               </configuration>
             </plugin>
             <plugin>
