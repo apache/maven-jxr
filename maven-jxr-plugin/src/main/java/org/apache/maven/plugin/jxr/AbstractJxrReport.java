@@ -410,7 +410,7 @@ public abstract class AbstractJxrReport
             }
             else if ( javadocTemplatesVersion.isAtLeast( "6" ) )
             {
-                copyResources( dir, "jdk6/","stylesheet.css" );
+                copyResources( dir, "jdk6/", "stylesheet.css" );
             }
             else if ( javadocTemplatesVersion.isAtLeast( "4" ) )
             {
@@ -431,7 +431,7 @@ public abstract class AbstractJxrReport
      * @param sourceFolder resources subfolder to copy from
      * @param files names of files to copy
      */
-    private void copyResources(String dir, String sourceFolder, String... files)
+    private void copyResources( String dir, String sourceFolder, String... files )
     {
         try
         {
