@@ -156,7 +156,9 @@ public abstract class AbstractJxrReport
     private boolean linkJavadoc;
 
     /**
-     * Version of the Javadoc templates to use, ex. "1.4", "1.5" etc.
+     * Version of the Javadoc templates to use.
+     * The value should reflect `java.specification.version`, "1.4", "1.8", "9", "10",
+     * by default this system property is used.
      */
     @Parameter( property = "javadocVersion" )
     private String javadocVersion;
@@ -258,7 +260,6 @@ public abstract class AbstractJxrReport
      * @param sourceDirs The source directories
      * @throws java.io.IOException
      * @throws org.apache.maven.jxr.JxrException
-     * @throws org.apache.maven.reporting.MavenReportException
      */
     private void createXref( Locale locale, String destinationDirectory, List<String> sourceDirs )
         throws IOException, JxrException, MavenReportException
@@ -561,37 +562,27 @@ public abstract class AbstractJxrReport
      * @throws org.apache.maven.reporting.MavenReportException if javadocTemplatesVersion cannot be parsed
      */
     private String getTemplateDir()
-        throws MavenReportException
     {
         // Check if overridden
         if ( StringUtils.isEmpty( templateDir ) )
         {
-            try
+            if ( javadocTemplatesVersion.isAtLeast( "1.8" ) )
             {
-                if ( javadocTemplatesVersion.isAtLeast( "1.8" ) )
-                {
-                    return "templates/jdk8";
-                }
-                else if ( javadocTemplatesVersion.isAtLeast( "1.7" ) )
-                {
-                    return "templates/jdk7";
-                }
-                else if ( javadocTemplatesVersion.isAtLeast( "1.4" ) )
-                {
-                    return "templates/jdk4";
-                }
-                else
-                {
-                    getLog().warn(
-                        "Unsupported javadocVersion: " + javadocTemplatesVersion + ". Fallback to original" );
-                    return "templates";
-                }
+                return "templates/jdk8";
             }
-            catch ( NumberFormatException e )
+            else if ( javadocTemplatesVersion.isAtLeast( "1.7" ) )
             {
-                throw new MavenReportException( "Unable to parse javadoc version: " + e.getMessage(), e );
+                return "templates/jdk7";
             }
-
+            else if ( javadocTemplatesVersion.isAtLeast( "1.4" ) )
+            {
+                return "templates/jdk4";
+            }
+            else
+            {
+                getLog().warn( "Unsupported javadocVersion: " + javadocTemplatesVersion + ". Fallback to original" );
+                return "templates";
+            }
         }
         // use value specified by user
         return templateDir;
