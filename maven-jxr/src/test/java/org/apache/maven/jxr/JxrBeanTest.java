@@ -45,7 +45,7 @@ public class JxrBeanTest
     public void testXref()
         throws Exception
     {
-        jxrBean.xref( Collections.singletonList( "src/test/java" ), "templates",
+        jxrBean.xref( Collections.singletonList( "src/test/java" ), "templates/jdk4",
                       "title", "title", "copyright" );
     }
 
