@@ -21,6 +21,7 @@ package org.apache.maven.jxr;
 
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -85,4 +86,30 @@ public class JavaCodeTransformTest
         assertTrue( Files.exists( Paths.get( "target/EmptyClass.html" ) ) );
     }
 
+    /**
+     * Test proper handling of link
+     */
+    @Test
+    public void testLinkHandling()
+        throws Exception
+    {
+        Path sourceFile = Paths.get( "src/test/resources/ClassWithLink.java" );
+        assertTrue( Files.exists( sourceFile ) );
+
+        codeTransform.transform( sourceFile, Paths.get( "target/ClassWithLink.html" )
+            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "", "" );
+        assertTrue( Files.exists( Paths.get( "target/ClassWithLink.html" ) ) );
+
+        byte[] bytes = Files.readAllBytes( Paths.get( "target/ClassWithLink.html" ) );
+        String content = new String( bytes, StandardCharsets.ISO_8859_1 );
+        // The proper link in its full length
+        assertTrue( content.contains(
+            "<a href=\"http://www.apache.org/licenses/LICENSE-2.0\" " +
+            "target=\"alexandria_uri\">http://www.apache.org/licenses/LICENSE-2.0</a></em>" ) );
+        // ...and the same link with https protocol
+        assertTrue( content.contains(
+            "<a href=\"https://www.apache.org/licenses/LICENSE-2.0\" " +
+            "target=\"alexandria_uri\">https://www.apache.org/licenses/LICENSE-2.0</a></em>" ) );
+
+    }
 }

@@ -149,7 +149,7 @@ public class JavaCodeTransform
     /**
      * Description of the Field
      */
-    private static final String[] VALID_URI_SCHEMES = { "http://", "mailto:" };
+    private static final String[] VALID_URI_SCHEMES = { "http://", "https://", "mailto:" };
 
     /**
      * Specify the only characters that are allowed in a URI besides alpha and numeric characters. Refer RFC2396 -
@@ -535,7 +535,7 @@ public class JavaCodeTransform
 
                 if ( end != -1 )
                 {
-                    String uri = line.substring( start, end );
+                    String uri = ( end + 1 == line.length() ) ? line.substring( start ) : line.substring( start, end );
 
                     line =
                         StringUtils.replace( line, uri, "<a href=\"" + uri + "\" target=\"alexandria_uri\">" + uri
