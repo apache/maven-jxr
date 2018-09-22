@@ -72,11 +72,11 @@ import java.util.Set;
  * <pre>
  *  htmlFilter
  *    |__
- *      ongoingMultiLineCommentFilter -> uriFilter
+ *      ongoingMultiLineCommentFilter -&gt; uriFilter
  *        |__
  *          inlineCommentFilter
  *            |__
- *              beginMultiLineCommentFilter -> ongoingMultiLineCommentFilter
+ *              beginMultiLineCommentFilter -&gt; ongoingMultiLineCommentFilter
  *                |__
  *                  stringFilter
  *                    |__

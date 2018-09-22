@@ -129,7 +129,7 @@ public class JXR
      * Check to see if the file is a Java source file.
      *
      * @param filename The name of the file to check
-     * @return <code>true</true> if the file is a Java file
+     * @return <code>true</code> if the file is a Java file
      */
     public static boolean isJavaFile( String filename )
     {
@@ -140,7 +140,7 @@ public class JXR
      * Check to see if the file is an HTML file.
      *
      * @param filename The name of the file to check
-     * @return <code>true</true> if the file is an HTML file
+     * @return <code>true</code> if the file is an HTML file
      */
     public static boolean isHtmlFile( String filename )
     {

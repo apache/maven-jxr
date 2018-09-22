@@ -261,9 +261,6 @@ public class JxrReportUtil
      * Generates the site structure using the project hierarchy (project and its modules) or using the
      * distributionManagement elements from the pom.xml.
      *
-     * @todo come from site plugin!
-     * @see org.apache.maven.plugins.site.SiteStageMojo#getStructure(MavenProject project, boolean ignoreMissingSiteUrl
-     *      )
      * @param project
      * @param ignoreMissingSiteUrl
      * @return the structure relative path
@@ -272,6 +269,8 @@ public class JxrReportUtil
     protected static String getStructure( MavenProject project, boolean ignoreMissingSiteUrl )
         throws IOException
     {
+        // @todo come from site plugin!
+        // @see o.a.m.p.site.SiteStageMojo#getStructure(MavenProject project, boolean ignoreMissingSiteUrl )
         if ( project.getDistributionManagement() == null )
         {
             String hierarchy = project.getName();
