@@ -59,7 +59,7 @@ public class IncludeExcludeTest
         jxr.setExcludes( excludes );
         String[] includes = {"**/exclude/*.java", "**/include/IncludedClass.java"};
         jxr.setIncludes( includes );
-        jxr.xref( Collections.singletonList( "src/test/resources" ), "templates",
+        jxr.xref( Collections.singletonList( "src/test/resources" ), "templates/jdk4",
                   "title", "title", "copyright" );
         Path excludedFile = Paths.get( "target/exclude/ExcludedClass.html" );
         assertFalse( Files.exists( excludedFile ) );

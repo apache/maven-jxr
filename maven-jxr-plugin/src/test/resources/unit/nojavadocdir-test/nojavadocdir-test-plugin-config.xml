@@ -44,7 +44,7 @@ under the License.
           <javadocDir>${basedir}/target/test/unit/nojavadocdir-test/target/site/apidocs</javadocDir>
           <linkJavadoc>true</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
-          <templateDir>templates</templateDir>
+          <javadocVersion>1.4</javadocVersion>
           <stylesheet>stylesheet.css</stylesheet>
         </configuration>
       </plugin>

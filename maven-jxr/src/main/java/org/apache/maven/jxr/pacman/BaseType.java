@@ -23,7 +23,6 @@ package org.apache.maven.jxr.pacman;
  * put your documentation comment here
  *
  * @author jvanzyl
- * @created February 23, 2002
  */
 public abstract class BaseType
 {

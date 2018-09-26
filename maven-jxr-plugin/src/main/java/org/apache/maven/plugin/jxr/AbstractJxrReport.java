@@ -41,6 +41,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
+import org.codehaus.plexus.languages.java.version.JavaVersion;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
@@ -107,14 +108,14 @@ public abstract class AbstractJxrReport
      * Directory where Velocity templates can be found to generate overviews, frames and summaries. Should not be used.
      * If used, should be an absolute path, like <code>"${basedir}/myTemplates"</code>.
      */
-    @Parameter( defaultValue = "templates" )
+    @Parameter
     private String templateDir;
 
     /**
      * Style sheet used for the Xref HTML files. Should not be used. If used, should be an absolute path, like
      * <code>"${basedir}/myStyles.css"</code>.
      */
-    @Parameter( defaultValue = "stylesheet.css" )
+    @Parameter
     private String stylesheet;
 
     /**
@@ -153,6 +154,19 @@ public abstract class AbstractJxrReport
      */
     @Parameter( defaultValue = "true" )
     private boolean linkJavadoc;
+
+    /**
+     * Version of the Javadoc templates to use.
+     * The value should reflect `java.specification.version`, "1.4", "1.8", "9", "10",
+     * by default this system property is used.
+     */
+    @Parameter( property = "javadocVersion" )
+    private String javadocVersion;
+
+    /**
+     * Version of the Javadoc templates to use.
+     */
+    private JavaVersion javadocTemplatesVersion;
 
     /**
      * Gets the effective reporting output files encoding.
@@ -248,7 +262,7 @@ public abstract class AbstractJxrReport
      * @throws org.apache.maven.jxr.JxrException
      */
     private void createXref( Locale locale, String destinationDirectory, List<String> sourceDirs )
-        throws IOException, JxrException
+        throws IOException, JxrException, MavenReportException
     {
         JXR jxr = new JXR();
         jxr.setDest( Paths.get( destinationDirectory ) );
@@ -279,7 +293,7 @@ public abstract class AbstractJxrReport
         try
         {
             Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
-            jxr.xref( sourceDirs, templateDir, windowTitle, docTitle, getBottomText() );
+            jxr.xref( sourceDirs, getTemplateDir(), windowTitle, docTitle, getBottomText() );
         }
         finally
         {
@@ -356,26 +370,84 @@ public abstract class AbstractJxrReport
      */
     private void copyRequiredResources( String dir )
     {
-        File stylesheetFile = new File( stylesheet );
-        File destStylesheetFile = new File( dir, "stylesheet.css" );
-
-        try
+        if ( StringUtils.isNotEmpty( stylesheet ) )
         {
-            if ( stylesheetFile.isAbsolute() )
+            File stylesheetFile = new File( stylesheet );
+            File destStylesheetFile = new File( dir, "stylesheet.css" );
+
+            try
             {
-                FileUtils.copyFile( stylesheetFile, destStylesheetFile );
+                if ( stylesheetFile.isAbsolute() )
+                {
+                    FileUtils.copyFile( stylesheetFile, destStylesheetFile );
+                }
+                else
+                {
+                    URL stylesheetUrl = this.getClass().getClassLoader().getResource( stylesheet );
+                    FileUtils.copyURLToFile( stylesheetUrl, destStylesheetFile );
+                }
+            }
+            catch ( IOException e )
+            {
+                getLog().warn( "An error occured while copying the stylesheet to the target directory", e );
+            }
+        }
+        else
+        {
+            if ( javadocTemplatesVersion.isAtLeast( "1.8" ) )
+            {
+                copyResources( dir, "jdk8/", "stylesheet.css" );
+            }
+            else if ( javadocTemplatesVersion.isAtLeast( "1.7" ) )
+            {
+                String[] jdk7Resources =
+                {
+                    "stylesheet.css",
+                    "resources/background.gif",
+                    "resources/tab.gif",
+                    "resources/titlebar.gif",
+                    "resources/titlebar_end.gif"
+                };
+                copyResources( dir, "jdk7/", jdk7Resources );
+            }
+            else if ( javadocTemplatesVersion.isAtLeast( "1.6" ) )
+            {
+                copyResources( dir, "jdk6/", "stylesheet.css" );
+            }
+            else if ( javadocTemplatesVersion.isAtLeast( "1.4" ) )
+            {
+                copyResources( dir, "jdk4/", "stylesheet.css" );
             }
             else
             {
-                URL stylesheetUrl = this.getClass().getClassLoader().getResource( stylesheet );
-                FileUtils.copyURLToFile( stylesheetUrl, destStylesheetFile );
+                // Fallback to the original stylesheet
+                copyResources( dir, "", "stylesheet.css" );
+            }
+        }
+    }
+
+    /**
+     * Copy styles and related resources to the given directory
+     *
+     * @param dir the directory to copy the resources to
+     * @param sourceFolder resources subfolder to copy from
+     * @param files names of files to copy
+     */
+    private void copyResources( String dir, String sourceFolder, String... files )
+    {
+        try
+        {
+            for ( String file : files )
+            {
+                URL resourceUrl = this.getClass().getClassLoader().getResource( sourceFolder + file );
+                File destResourceFile = new File( dir, file );
+                FileUtils.copyURLToFile( resourceUrl, destResourceFile );
             }
         }
         catch ( IOException e )
         {
-            getLog().warn( "An error occured while copying the stylesheet to the target directory", e );
+            getLog().warn( "An error occured while copying the resource to the target directory", e );
         }
-
     }
 
     @Override
@@ -464,6 +536,9 @@ public abstract class AbstractJxrReport
             // init some attributes -- TODO (javadoc)
             init();
 
+            // determine version of templates to use
+            setJavadocTemplatesVersion();
+
             try
             {
                 createXref( locale, getDestinationDirectory(), sourceDirs );
@@ -476,6 +551,57 @@ public abstract class AbstractJxrReport
             {
                 throw new MavenReportException( "Error while generating the HTML source code of the project.", e );
             }
+        }
+    }
+
+
+    /**
+     * Determine the templateDir to use, given javadocTemplatesVersion
+     *
+     * @return
+     * @throws org.apache.maven.reporting.MavenReportException if javadocTemplatesVersion cannot be parsed
+     */
+    private String getTemplateDir()
+    {
+        // Check if overridden
+        if ( StringUtils.isEmpty( templateDir ) )
+        {
+            if ( javadocTemplatesVersion.isAtLeast( "1.8" ) )
+            {
+                return "templates/jdk8";
+            }
+            else if ( javadocTemplatesVersion.isAtLeast( "1.7" ) )
+            {
+                return "templates/jdk7";
+            }
+            else if ( javadocTemplatesVersion.isAtLeast( "1.4" ) )
+            {
+                return "templates/jdk4";
+            }
+            else
+            {
+                getLog().warn( "Unsupported javadocVersion: " + javadocTemplatesVersion + ". Fallback to original" );
+                return "templates";
+            }
+        }
+        // use value specified by user
+        return templateDir;
+    }
+
+    /**
+     * Set a new value for <code>javadocTemplatesVersion</code>
+     */
+    private void setJavadocTemplatesVersion()
+    {
+        JavaVersion javaVersion = JavaVersion.JAVA_SPECIFICATION_VERSION;
+
+        if ( StringUtils.isNotEmpty( javadocVersion ) )
+        {
+            javadocTemplatesVersion = JavaVersion.parse( javadocVersion );
+        }
+        else
+        {
+            javadocTemplatesVersion = javaVersion;
         }
     }
 
