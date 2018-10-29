@@ -56,6 +56,7 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -603,6 +604,12 @@ public class JavaCodeTransform
 
         String replace = link;
         List<StringEntry> tokens = SimpleWordTokenizer.tokenize( buff.toString(), find );
+
+        // JXR-141: If there are more than 1 tokens to be replaced,
+        // then the start+end values are out of order during the
+        // buff.replace.
+        // Reversing the list solves it
+        Collections.reverse( tokens );
 
         for ( StringEntry token : tokens )
         {
