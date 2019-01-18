@@ -32,15 +32,18 @@ Maven JXR Plugin
 
 * Goals Overview
 
-  The JXR Plugin has 4 goals:
+  The JXR Plugin has 6 goals:
 
   * {{{./jxr-mojo.html}jxr:jxr}} is used to generate a cross-reference page of the project's main sources. The generated JXR
   files can be linked to the javadocs of the project.
 
-  * {{{./aggregate-mojo.html}jxr:aggregate}} is used to generate an aggregated cross-reference page of the project's main sources. The generated JXR
-  files can be linked to the javadocs of the project.
+  * {{{./jxr-no-fork-mojo.html}jxr:jxr-nofork}} is used to generate a cross-reference page of the project's main sources without forking the <<<generate-sources>>> phase again. Note that this goal does require generation of main sources before site generation, e.g. by invoking <<<mvn clean deploy site>>>.
+
+  * {{{./aggregate-mojo.html}jxr:aggregate}} is used to generate an aggregated cross-reference page of the project's main sources. The generated JXR files can be linked to the javadocs of the project.
 
   * {{{./test-jxr-mojo.html}jxr:test-jxr}} on the other hand, is used to generate a cross-reference page of the project's test sources.
+
+  * {{{./test-jxr-no-fork-mojo.html}jxr:test-jxr-nofork}} on the other hand, is used to generate a cross-reference page of the project's test sources. without forking the <<<generate-test-sources>>> phase again. Note that this goal does require generation of test sources before site generation, e.g. by invoking <<<mvn clean deploy site>>>.
 
   * {{{./test-aggregate-mojo.html}jxr:test-aggregate}} on the other hand, is used to generate an aggregated cross-reference page of the project's test sources.
 
@@ -72,5 +75,7 @@ Maven JXR Plugin
    * {{{./examples/aggregate.html}Aggregating JXR Reports for Multi-Projects}}
 
    * {{{./examples/linkjavadoc.html}Linking JXR Files to Javadocs}}
+
+   * {{{./examples/nofork.html}Generate JXR without duplicate execution of phase generate-sources}}
 
    []
