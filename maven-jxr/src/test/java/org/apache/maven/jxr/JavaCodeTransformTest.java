@@ -19,44 +19,42 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
-import static org.junit.Assert.assertTrue;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 
-import org.apache.maven.jxr.pacman.FileManager;
-import org.apache.maven.jxr.pacman.PackageManager;
-import org.junit.Before;
-import org.junit.Test;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * JUnit test for {@link JavaCodeTransform}.
  */
-public class JavaCodeTransformTest
+public class JavaCodeTransformTest extends PlexusTestCase
 {
     /** JavaCodeTransform object under test */
     private JavaCodeTransform codeTransform;
 
-    /***/
-    private PackageManager packageManager;
-
+    @Override
+    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
+    {
+        configuration.setClassPathScanning( "INDEX" );
+    }
+    
     /**
      * Set up this test.
      */
-    @Before
-    public void setUp()
+    @Override
+    public void setUp() throws Exception
     {
-        packageManager = new PackageManager( new DummyLog(), new FileManager() );
-        codeTransform = new JavaCodeTransform( packageManager );
+        super.setUp();
+        codeTransform = lookup( JavaCodeTransform.class );
     }
 
     /**
      * Test basic transformation of a java source file.
      */
-    @Test
     public void testTransform()
         //test transforms its own sourcefile, so add some comments
         throws Exception // single line despite /*
@@ -74,7 +72,6 @@ public class JavaCodeTransformTest
     /**
      * Test what happens with an empty sourcefile.
      */
-    @Test
     public void testTransformWithEmptyClassFile()
         throws Exception
     {
@@ -89,7 +86,6 @@ public class JavaCodeTransformTest
     /**
      * Test proper handling of link
      */
-    @Test
     public void testLinkHandling()
         throws Exception
     {

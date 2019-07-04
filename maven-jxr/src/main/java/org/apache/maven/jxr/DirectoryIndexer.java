@@ -25,14 +25,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.maven.jxr.log.Log;
-import org.apache.maven.jxr.log.VelocityLogger;
 import org.apache.maven.jxr.pacman.ClassType;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.apache.maven.jxr.pacman.PackageType;
@@ -212,13 +207,13 @@ public class DirectoryIndexer
      *
      * @throws JxrException If something went wrong
      */
-    public void process( Log log )
+    public void process()
         throws JxrException
     {
-        Map<String, Map<String, ?>> info = getPackageInfo();
+        ProjectInfo info = getProjectInfo();
 
         VelocityEngine engine = new VelocityEngine();
-        setProperties( engine, log );
+        setProperties( engine );
         try
         {
             engine.init();
@@ -240,15 +235,12 @@ public class DirectoryIndexer
         doVelocity( "allclasses-frame", root, context, engine );
         doVelocity( "overview-summary", root, context, engine );
 
-        Iterator<Map<String, ?>> iter = ( (Map) info.get( "allPackages" ) ).values().iterator();
-        while ( iter.hasNext() )
+        for ( PackageInfo pkgInfo : info.getAllPackages().values() )
         {
-            Map pkgInfo = iter.next();
-
             VelocityContext subContext = new VelocityContext( context );
             subContext.put( "pkgInfo", pkgInfo );
 
-            String outDir = root + '/' + pkgInfo.get( "dir" );
+            String outDir = root + '/' + pkgInfo.getDir();
             doVelocity( "package-summary", outDir, subContext, engine );
             doVelocity( "package-frame", outDir, subContext, engine );
         }
@@ -257,7 +249,7 @@ public class DirectoryIndexer
     /*
      * Set Velocity properties to find templates
      */
-    private void setProperties( VelocityEngine engine, Log log )
+    private void setProperties( VelocityEngine engine )
     {
         Path templateDirFile = Paths.get( getTemplateDir() );
         if ( templateDirFile.isAbsolute() )
@@ -277,8 +269,8 @@ public class DirectoryIndexer
         }
         // avoid "unable to find resource 'VM_global_library.vm' in any resource loader."
         engine.setProperty( "velocimacro.library", "" );
-        engine.setProperty( Log.class.getName(), log );
-        engine.setProperty( "runtime.log.logsystem.class", VelocityLogger.class.getName() );
+//        engine.setProperty( Log.class.getName(), log );
+//        engine.setProperty( "runtime.log.logsystem.class", VelocityLogger.class.getName() );
     }
 
     /*
@@ -331,15 +323,13 @@ public class DirectoryIndexer
      * allClasses collection of Maps with class info, format as above
      *
      */
-    Map<String, Map<String, ?>> getPackageInfo()
+    ProjectInfo getProjectInfo()
     {
-        Map<String, Map<String, Object>> allPackages = new TreeMap<>();
-        Map<String, Map<String, String>> allClasses = new TreeMap<>();
+        Map<String, PackageInfo> allPackages = new TreeMap<>();
+        Map<String, ClassInfo> allClasses = new TreeMap<>();
 
-        Enumeration<PackageType> packages = packageManager.getPackageTypes();
-        while ( packages.hasMoreElements() )
+        for ( PackageType pkg : packageManager.getPackageTypes() )
         {
-            PackageType pkg = packages.nextElement();
             String pkgName = pkg.getName();
             String pkgDir = pkgName.replace( '.', '/' );
             String rootRef = pkgName.replaceAll( "[^\\.]+(\\.|$)", "../" );
@@ -353,43 +343,151 @@ public class DirectoryIndexer
                 rootRef = "./";
             }
 
-            Map<String, Map<String, String>> pkgClasses = new TreeMap<>();
-            Enumeration<ClassType> classes = pkg.getClassTypes();
-            while ( classes.hasMoreElements() )
+            Map<String, ClassInfo> pkgClasses = new TreeMap<>();
+            for ( ClassType clazz : pkg.getClassTypes() )
             {
-                ClassType clazz = classes.nextElement();
-
                 String className = clazz.getName();
-                Map<String, String> classInfo = new HashMap<>();
-                if ( clazz.getFilename() != null )
-                {
-                    classInfo.put( "filename", clazz.getFilename() );
-                }
-                else
-                {
-                    classInfo.put( "filename", "" );
-                }
-                classInfo.put( "name", className );
-                classInfo.put( "dir", pkgDir );
+                
+                ClassInfo classInfo = new ClassInfo( className, pkgDir );
+                
+                classInfo.setFilename( clazz.getFilename() );
 
                 pkgClasses.put( className, classInfo );
+                
                 // Adding package name to key in order to ensure classes with identical names in different packages are
                 // all included.
                 allClasses.put( className + "#" + pkgName, classInfo );
             }
 
-            Map<String, Object> pkgInfo = new HashMap<>();
-            pkgInfo.put( "name", pkgName );
-            pkgInfo.put( "dir", pkgDir );
-            pkgInfo.put( "classes", pkgClasses );
-            pkgInfo.put( "rootRef", rootRef );
+            PackageInfo pkgInfo = new PackageInfo( pkgName, pkgDir );
+            pkgInfo.setClasses( pkgClasses );
+            pkgInfo.setRootRef( rootRef );
+
             allPackages.put( pkgName, pkgInfo );
         }
 
-        Map<String, Map<String, ?>> info = new HashMap<>();
-        info.put( "allPackages", allPackages );
-        info.put( "allClasses", allClasses );
+        return new ProjectInfo( allPackages, allClasses );
+    }
+    
+    /**
+     * 
+     * @author Robert Scholte
+     * @since 3.2.0
+     */
+    public static class ProjectInfo
+    {
+        private final Map<String, PackageInfo> allPackages;
+        
+        private final Map<String, ClassInfo> allClasses;
 
-        return info;
+        public ProjectInfo( Map<String, PackageInfo> allPackages, Map<String, ClassInfo> allClasses )
+        {
+            this.allPackages = allPackages;
+            this.allClasses = allClasses;
+        }
+
+        public Map<String, PackageInfo> getAllPackages()
+        {
+            return allPackages;
+        }
+        
+        public Map<String, ClassInfo> getAllClasses()
+        {
+            return allClasses;
+        }
+    }
+    
+    /**
+     * 
+     * @author Robert Scholte
+     * @since 3.2.0
+     */
+    public static class PackageInfo
+    {
+        private final String name;
+        
+        private final String dir;
+
+        Map<String, ClassInfo> classes;
+        
+        private String rootRef;
+        
+        public PackageInfo( String name, String dir )
+        {
+            this.name = name;
+            this.dir = dir;
+        }
+        
+        public String getName()
+        {
+            return name;
+        }
+        
+        public String getDir()
+        {
+            return dir;
+        }
+        
+        public void setClasses( Map<String, ClassInfo> classes )
+        {
+            this.classes = classes;
+        }
+        
+        public Map<String, ClassInfo> getClasses()
+        {
+            return classes;
+        }
+        
+        public void setRootRef( String rootRef )
+        {
+            this.rootRef = rootRef;
+        }
+        
+        public String getRootRef()
+        {
+            return rootRef;
+        }
+    }
+    
+    /**
+     * Holds class information
+     * 
+     * @author Robert Scholte
+     * @since 3.2.0
+     */
+    public static class ClassInfo
+    {
+        private final String name;
+        
+        private final String dir;
+        
+        private String filename;
+
+        public ClassInfo( String name, String dir )
+        {
+            super();
+            this.name = name;
+            this.dir = dir;
+        }
+        
+        public String getName()
+        {
+            return name;
+        }
+        
+        public String getDir()
+        {
+            return dir;
+        }
+        
+        public void setFilename( String filename )
+        {
+            this.filename = filename;
+        }
+        
+        public String getFilename()
+        {
+            return filename;
+        }
     }
 }

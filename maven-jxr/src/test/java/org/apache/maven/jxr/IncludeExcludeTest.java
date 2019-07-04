@@ -19,16 +19,13 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * Test include/exclude patterns.
@@ -36,22 +33,27 @@ import org.junit.Test;
  * @author <a href="mailto:dennisl@apache.org">Dennis Lundberg</a>
  * @version $Id$
  */
-public class IncludeExcludeTest
+public class IncludeExcludeTest extends PlexusTestCase  
 {
     private JXR jxr;
-
-    @Before
-    public void setUp()
+ 
+    @Override
+    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
     {
-        jxr = new JXR();
+        configuration.setClassPathScanning( "INDEX" );
+    }
+    
+    @Override
+    public void setUp() throws Exception
+    {
+        super.setUp();
+        jxr = lookup( JXR.class );
         jxr.setDest( Paths.get( "target" ) );
         jxr.setInputEncoding( "ISO-8859-1" );
         jxr.setOutputEncoding( "ISO-8859-1" );
         jxr.setJavadocLinkDir( Paths.get( "." ) );
-        jxr.setLog( new DummyLog() );
     }
 
-    @Test
     public void testIncludeExclude()
         throws Exception
     {

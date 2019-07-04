@@ -61,7 +61,12 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Syntax highlights java by turning it into html. A codeviewer object is created and then keeps state as lines are
@@ -90,6 +95,8 @@ import java.util.Set;
  *                                  importFilter
  * </pre>
  */
+@Named
+@Singleton
 public class JavaCodeTransform
     implements Serializable
 {
@@ -166,7 +173,7 @@ public class JavaCodeTransform
     /**
      * HashTable containing java reserved words
      */
-    private Hashtable<String, String> reservedWords = new Hashtable<>();
+    private Map<String, String> reservedWords = new Hashtable<>();
 
     /**
      * flag set to true when a multi-line comment is started
@@ -211,27 +218,71 @@ public class JavaCodeTransform
     /**
      * Package Manager for this project.
      */
+    @Inject
     private PackageManager packageManager;
 
     /**
      * current file manager
      */
+    @Inject
     private FileManager fileManager;
 
-    // ----------------------------------------------------------------------
-    // constructor
-    // ----------------------------------------------------------------------
-
-    /**
-     * Constructor for the JavaCodeTransform object
-     *
-     * @param packageManager PackageManager for this project
-     */
-    public JavaCodeTransform( PackageManager packageManager )
     {
-        this.packageManager = packageManager;
-        loadHash();
-        this.fileManager = packageManager.getFileManager();
+        reservedWords.put( "abstract", "abstract" );
+        reservedWords.put( "do", "do" );
+        reservedWords.put( "inner", "inner" );
+        reservedWords.put( "public", "public" );
+        reservedWords.put( "var", "var" );
+        reservedWords.put( "boolean", "boolean" );
+        reservedWords.put( "continue", "continue" );
+        reservedWords.put( "int", "int" );
+        reservedWords.put( "return", "return" );
+        reservedWords.put( "void", "void" );
+        reservedWords.put( "break", "break" );
+        reservedWords.put( "else", "else" );
+        reservedWords.put( "interface", "interface" );
+        reservedWords.put( "short", "short" );
+        reservedWords.put( "volatile", "volatile" );
+        reservedWords.put( "byvalue", "byvalue" );
+        reservedWords.put( "extends", "extends" );
+        reservedWords.put( "long", "long" );
+        reservedWords.put( "static", "static" );
+        reservedWords.put( "while", "while" );
+        reservedWords.put( "case", "case" );
+        reservedWords.put( "final", "final" );
+        reservedWords.put( "native", "native" );
+        reservedWords.put( "super", "super" );
+        reservedWords.put( "transient", "transient" );
+        reservedWords.put( "cast", "cast" );
+        reservedWords.put( "float", "float" );
+        reservedWords.put( "new", "new" );
+        reservedWords.put( "rest", "rest" );
+        reservedWords.put( "catch", "catch" );
+        reservedWords.put( "for", "for" );
+        reservedWords.put( "null", "null" );
+        reservedWords.put( "synchronized", "synchronized" );
+        reservedWords.put( "char", "char" );
+        reservedWords.put( "finally", "finally" );
+        reservedWords.put( "operator", "operator" );
+        reservedWords.put( "this", "this" );
+        reservedWords.put( "class", "class" );
+        reservedWords.put( "generic", "generic" );
+        reservedWords.put( "outer", "outer" );
+        reservedWords.put( "switch", "switch" );
+        reservedWords.put( "const", "const" );
+        reservedWords.put( "goto", "goto" );
+        reservedWords.put( "package", "package" );
+        reservedWords.put( "throw", "throw" );
+        reservedWords.put( "double", "double" );
+        reservedWords.put( "if", "if" );
+        reservedWords.put( "private", "private" );
+        reservedWords.put( "true", "true" );
+        reservedWords.put( "default", "default" );
+        reservedWords.put( "import", "import" );
+        reservedWords.put( "protected", "protected" );
+        reservedWords.put( "try", "try" );
+        reservedWords.put( "throws", "throws" );
+        reservedWords.put( "implements", "implements" );
     }
 
     // ----------------------------------------------------------------------
@@ -903,68 +954,6 @@ public class JavaCodeTransform
             right = right.substring( index + 1 );
         }
         return ( rightCount % 2 != 0 && leftCount % 2 != 0 );
-    }
-
-    /**
-     * Description of the Method
-     */
-    private void loadHash()
-    {
-        reservedWords.put( "abstract", "abstract" );
-        reservedWords.put( "do", "do" );
-        reservedWords.put( "inner", "inner" );
-        reservedWords.put( "public", "public" );
-        reservedWords.put( "var", "var" );
-        reservedWords.put( "boolean", "boolean" );
-        reservedWords.put( "continue", "continue" );
-        reservedWords.put( "int", "int" );
-        reservedWords.put( "return", "return" );
-        reservedWords.put( "void", "void" );
-        reservedWords.put( "break", "break" );
-        reservedWords.put( "else", "else" );
-        reservedWords.put( "interface", "interface" );
-        reservedWords.put( "short", "short" );
-        reservedWords.put( "volatile", "volatile" );
-        reservedWords.put( "byvalue", "byvalue" );
-        reservedWords.put( "extends", "extends" );
-        reservedWords.put( "long", "long" );
-        reservedWords.put( "static", "static" );
-        reservedWords.put( "while", "while" );
-        reservedWords.put( "case", "case" );
-        reservedWords.put( "final", "final" );
-        reservedWords.put( "native", "native" );
-        reservedWords.put( "super", "super" );
-        reservedWords.put( "transient", "transient" );
-        reservedWords.put( "cast", "cast" );
-        reservedWords.put( "float", "float" );
-        reservedWords.put( "new", "new" );
-        reservedWords.put( "rest", "rest" );
-        reservedWords.put( "catch", "catch" );
-        reservedWords.put( "for", "for" );
-        reservedWords.put( "null", "null" );
-        reservedWords.put( "synchronized", "synchronized" );
-        reservedWords.put( "char", "char" );
-        reservedWords.put( "finally", "finally" );
-        reservedWords.put( "operator", "operator" );
-        reservedWords.put( "this", "this" );
-        reservedWords.put( "class", "class" );
-        reservedWords.put( "generic", "generic" );
-        reservedWords.put( "outer", "outer" );
-        reservedWords.put( "switch", "switch" );
-        reservedWords.put( "const", "const" );
-        reservedWords.put( "goto", "goto" );
-        reservedWords.put( "package", "package" );
-        reservedWords.put( "throw", "throw" );
-        reservedWords.put( "double", "double" );
-        reservedWords.put( "if", "if" );
-        reservedWords.put( "private", "private" );
-        reservedWords.put( "true", "true" );
-        reservedWords.put( "default", "default" );
-        reservedWords.put( "import", "import" );
-        reservedWords.put( "protected", "protected" );
-        reservedWords.put( "try", "try" );
-        reservedWords.put( "throws", "throws" );
-        reservedWords.put( "implements", "implements" );
     }
 
     /**

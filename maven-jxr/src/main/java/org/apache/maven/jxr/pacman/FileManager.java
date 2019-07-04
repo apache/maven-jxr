@@ -24,6 +24,9 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * <p>
  *
@@ -35,24 +38,13 @@ import java.util.Map;
  * Note. This assumes that the file will not be modified on disk while
  * Alexandria is running. </p>
  */
+@Named
+@Singleton
 public class FileManager
 {
-    /**
-     * The Singleton instance of this FileManager
-     */
-    private static FileManager instance = new FileManager();
-
     private Map<Path, JavaFile> files = new HashMap<>();
 
     private String encoding = null;
-
-    /**
-     * Get an instance of the FileManager
-     */
-    public static FileManager getInstance()
-    {
-        return instance;
-    }
 
     /**
      * Get a file from it's name. If the file does not exist within the

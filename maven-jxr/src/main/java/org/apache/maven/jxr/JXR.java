@@ -20,9 +20,9 @@ package org.apache.maven.jxr;
  */
 
 import org.apache.maven.jxr.ant.DirectoryScanner;
-import org.apache.maven.jxr.log.Log;
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -30,19 +30,30 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Main entry point into Maven used to kick off the XReference code building.
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  * @version $Id$
  */
-public class JXR
+@Named
+@Singleton
+public class JXR extends AbstractLogEnabled
 {
-    /**
-     * The Log.
-     */
-    private Log log;
+    @Inject
+    private PackageManager pkgmgr;
 
+    /**
+     * Handles taking .java files and changing them into html. "More than meets
+     * the eye!" :)
+     */
+    @Inject
+    private JavaCodeTransform transformer;
+    
     /**
      * The default list of include patterns to use.
      */
@@ -64,11 +75,6 @@ public class JXR
      */
     private Path javadocLinkDir;
 
-    /**
-     * Handles taking .java files and changing them into html. "More than meets
-     * the eye!" :)
-     */
-    private JavaCodeTransform transformer;
 
     /**
      * The revision of the module currently being processed.
@@ -96,8 +102,6 @@ public class JXR
     public void processPath( PackageManager packageManager, Path sourceDir, String bottom )
         throws IOException
     {
-        this.transformer = new JavaCodeTransform( packageManager );
-
         DirectoryScanner ds = new DirectoryScanner();
         // I'm not sure why we don't use the directoryScanner in packageManager,
         // but since we don't we need to set includes/excludes here as well
@@ -205,14 +209,6 @@ public class JXR
     }
 
     /**
-     * @param log
-     */
-    public void setLog( Log log )
-    {
-        this.log = log;
-    }
-
-    /**
      * @param sourceDirs
      * @param templateDir
      * @param windowTitle
@@ -228,7 +224,7 @@ public class JXR
         FileManager fileManager = new FileManager();
         fileManager.setEncoding( inputEncoding );
 
-        PackageManager pkgmgr = new PackageManager( log, fileManager );
+        
         pkgmgr.setExcludes( excludes );
         pkgmgr.setIncludes( includes );
 
@@ -249,7 +245,7 @@ public class JXR
         indexer.setWindowTitle( windowTitle );
         indexer.setDocTitle( docTitle );
         indexer.setBottom( bottom );
-        indexer.process( log );
+        indexer.process();
     }
 
     // ----------------------------------------------------------------------
@@ -267,7 +263,7 @@ public class JXR
     private void transform( Path sourceFile, Path destFile, String bottom )
         throws IOException
     {
-        log.debug( sourceFile + " -> " + destFile );
+        getLogger().debug( sourceFile + " -> " + destFile );
 
         // get a relative link to the javadocs
         Path javadoc = javadocLinkDir != null ? getRelativeLink( destFile.getParent(), javadocLinkDir ) : null;

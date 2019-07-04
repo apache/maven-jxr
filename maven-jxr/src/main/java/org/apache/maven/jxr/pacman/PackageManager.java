@@ -19,38 +19,44 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.DirectoryScanner;
-import org.apache.maven.jxr.log.Log;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Enumeration;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
+import java.util.Map;
 import java.util.Set;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Given a list of directories, parse them out and store them as rendered
  * packages, classes, imports, etc.
  */
-public class PackageManager
+@Named
+@Singleton
+public class PackageManager extends AbstractLogEnabled
 {
-    private final Log log;
+    @Inject
+    private FileManager fileManager;
 
     private Set<Path> directories = new HashSet<>();
 
     /**
      * All the packages that have been parsed
      */
-    private Hashtable<String, PackageType> packages = new Hashtable<>();
+    private Map<String, PackageType> packages = new HashMap<>();
 
     /**
      * The default Java package.
      */
     private PackageType defaultPackage = new PackageType();
 
-    private FileManager fileManager;
 
     /**
      * The list of exclude patterns to use.
@@ -61,12 +67,6 @@ public class PackageManager
      * The list of include patterns to use.
      */
     private String[] includes = { "**/*.java" };
-
-    public PackageManager( Log log, FileManager fileManager )
-    {
-        this.log = log;
-        this.fileManager = fileManager;
-    }
 
     /**
      * Given the name of a package (Ex: org.apache.maven.util) obtain it from
@@ -95,21 +95,20 @@ public class PackageManager
     /**
      * Get all of the packages in the PackageManager
      */
-    public Enumeration<PackageType> getPackageTypes()
+    public Collection<PackageType> getPackageTypes()
     {
-        return packages.elements();
+        return packages.values();
     }
 
     /**
      * Parse out all the directories on which this depends.
      */
-    private void parse( String directory )
+    private void parse( Path baseDir )
     {
         // Go through each directory and get the java source 
         // files for this dir.
-        log.debug( "Scanning " + directory );
+        getLogger().debug( "Scanning " + baseDir );
         DirectoryScanner directoryScanner = new DirectoryScanner();
-        Path baseDir = Paths.get( directory );
         directoryScanner.setBasedir( baseDir.toFile() );
         directoryScanner.setExcludes( excludes );
         directoryScanner.setIncludes( includes );
@@ -117,7 +116,7 @@ public class PackageManager
 
         for ( String file : directoryScanner.getIncludedFiles() )
         {
-            log.debug( "parsing... " + file );
+            getLogger().debug( "parsing... " + file );
 
             //now parse out this file to get the packages/classname/etc
             try
@@ -161,7 +160,7 @@ public class PackageManager
     {
         if ( this.directories.add( directory ) )
         {
-            this.parse( directory.toString() );
+            this.parse( directory );
         }
     }
 
@@ -171,35 +170,18 @@ public class PackageManager
     public void dump()
     {
 
-        log.debug( "Dumping out PackageManager structure" );
+        getLogger().debug( "Dumping out PackageManager structure" );
 
-        Enumeration<PackageType> pts = this.getPackageTypes();
-
-        while ( pts.hasMoreElements() )
+        for ( PackageType current  : getPackageTypes() )
         {
-
-            //get the current package and print it.
-            PackageType current = pts.nextElement();
-
-            log.debug( current.getName() );
+            getLogger().debug( current.getName() );
 
             //get the classes under the package and print those too.
-            Enumeration<ClassType> classes = current.getClassTypes();
-
-            while ( classes.hasMoreElements() )
+            for ( ClassType currentClass  : current.getClassTypes() )
             {
-
-                ClassType currentClass = classes.nextElement();
-
-                log.debug( "\t" + currentClass.getName() );
-
+                getLogger().debug( '\t' + currentClass.getName() );
             }
         }
-    }
-
-    public FileManager getFileManager()
-    {
-        return fileManager;
     }
 
     public void setExcludes( String[] excludes )

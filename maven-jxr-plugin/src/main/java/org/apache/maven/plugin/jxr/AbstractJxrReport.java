@@ -163,6 +163,9 @@ public abstract class AbstractJxrReport
     @Parameter( property = "javadocVersion" )
     private String javadocVersion;
 
+    @Component
+    private JXR jxr;
+    
     /**
      * Version of the Javadoc templates to use.
      */
@@ -264,7 +267,6 @@ public abstract class AbstractJxrReport
     private void createXref( Locale locale, String destinationDirectory, List<String> sourceDirs )
         throws IOException, JxrException, MavenReportException
     {
-        JXR jxr = new JXR();
         jxr.setDest( Paths.get( destinationDirectory ) );
         if ( StringUtils.isEmpty( inputEncoding ) )
         {
@@ -274,7 +276,6 @@ public abstract class AbstractJxrReport
         }
         jxr.setInputEncoding( inputEncoding );
         jxr.setLocale( locale );
-        jxr.setLog( new PluginLogAdapter( getLog() ) );
         jxr.setOutputEncoding( getOutputEncoding() );
         jxr.setRevision( "HEAD" );
         jxr.setJavadocLinkDir( getJavadocLocation() );

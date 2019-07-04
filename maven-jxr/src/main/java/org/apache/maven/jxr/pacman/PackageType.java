@@ -19,8 +19,9 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a Java package and its subclasses.
@@ -29,7 +30,7 @@ public class PackageType
     extends BaseType
 {
 
-    private Hashtable<String, ClassType> classes = new Hashtable<String, ClassType>();
+    private Map<String, ClassType> classes = new HashMap<>();
 
     /**
      * Create a Java package
@@ -52,10 +53,9 @@ public class PackageType
     /**
      * Get all the known classes
      */
-    public Enumeration<ClassType> getClassTypes()
+    public Collection<ClassType> getClassTypes()
     {
-
-        return classes.elements();
+        return classes.values();
     }
 
     /**

@@ -32,12 +32,6 @@ import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 public class JxrTestReportTest
     extends AbstractMojoTestCase
 {
-    protected void setUp()
-        throws Exception
-    {
-        super.setUp();
-    }
-
     /**
      * Method to test when the source dir is the test source dir
      *

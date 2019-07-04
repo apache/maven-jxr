@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.jxr</groupId>
     <artifactId>jxr</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
   </parent>
 
   <groupId>org.apache.maven</groupId>
@@ -69,13 +69,29 @@ under the License.
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+        <plugin>
+          <groupId>org.eclipse.sisu</groupId>
+          <artifactId>sisu-maven-plugin</artifactId>
+          <version>0.3.3</version>
+          <executions>
+            <execution>
+              <id>index-project</id>
+              <goals>
+                <goal>main-index</goal>
+                <goal>test-index</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+    </plugins>
   </build>
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <groupId>org.eclipse.sisu</groupId>
+      <artifactId>org.eclipse.sisu.plexus</artifactId>
+      <version>0.0.0.M2a</version> <!-- like Maven 3.1.0 -->
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -88,13 +104,19 @@ under the License.
 
     <dependency>
       <groupId>org.apache.velocity</groupId>
-      <artifactId>velocity</artifactId>
-      <version>1.5</version>
+      <artifactId>velocity-engine-core</artifactId>
+      <version>2.0</version>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>2.6</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

@@ -19,7 +19,6 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
-import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -27,20 +26,25 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * Simple unit-testtest that illustrates a line with more
  * than one "token" to replace
  */
-public class JXR141Test {
-
-    @Test
-    public void processPath() throws Exception
+public class JXR141Test extends PlexusTestCase 
+{
+    @Override
+    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
     {
-        JXR jxr = new JXR();
+        configuration.setClassPathScanning( "INDEX" );
+    }
+    
+    public void testProcessPath() throws Exception
+    {
+        JXR jxr = lookup( JXR.class );
         jxr.setDest( Paths.get("target/jxr-141" ) );
-        jxr.setLog( new DummyLog() );
         jxr.setOutputEncoding( "UTF-8" );
         jxr.xref( Collections.singletonList( "src/test/resources/jxr141" ),"templates/jdk4",
                 "title", "title", "copyright" );
