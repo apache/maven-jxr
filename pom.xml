@@ -67,6 +67,7 @@ under the License.
     <sitePluginVersion>3.9.0</sitePluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <surefire.version>2.22.2</surefire.version>
+    <project.build.outputTimestamp>2020-04-07T21:04:00Z</project.build.outputTimestamp>
   </properties>
 
   <modules>
