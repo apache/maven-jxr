@@ -20,6 +20,7 @@ package org.apache.maven.plugin.jxr;
  */
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,10 +38,10 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.wagon.repository.Repository;
 import org.apache.xpath.XPathAPI;
 import org.apache.xpath.objects.XObject;
-import org.codehaus.plexus.util.StringInputStream;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -162,8 +163,9 @@ public class JxrReportUtil
 
             try
             {
-                StringInputStream stringInputStream = new StringInputStream( pluginConf.toString() );
-                Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse( stringInputStream );
+                StringReader reader = new StringReader( pluginConf.toString() );
+                InputSource source = new InputSource( reader );
+                Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse( source );
 
                 XObject obj = XPathAPI.eval( doc, "//configuration/" + optionName );
 
