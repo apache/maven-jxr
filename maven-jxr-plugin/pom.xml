@@ -146,14 +146,9 @@ under the License.
       <artifactId>plexus-utils</artifactId>
     </dependency>
     <dependency>
-      <groupId>xml-apis</groupId>
-      <artifactId>xml-apis</artifactId>
-      <version>1.0.b2</version>
-    </dependency>
-    <dependency>
       <groupId>xalan</groupId>
       <artifactId>xalan</artifactId>
-      <version>2.7.0</version>
+      <version>2.7.1</version>
     </dependency>
 
     <dependency>
