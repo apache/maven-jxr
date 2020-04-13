@@ -14,7 +14,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-Contributing to [Apache Maven JXR Plugin](https://maven.apache.org/jxr/maven-jxr-plugin/)
+Contributing to [Apache Maven JXR (Plugin)](https://maven.apache.org/jxr/)
 ======================
 
 [![ASF Jira](https://img.shields.io/endpoint?url=https%3A%2F%2Fmaven.apache.org%2Fbadges%2Fasf_jira-JXR.json)][jira]
@@ -61,7 +61,7 @@ There are some guidelines which will make applying PRs easier for us:
   + Check for unnecessary whitespace with `git diff --check` before committing.
 + Make sure your commit messages are in the proper format. Your commit message should contain the key of the JIRA issue.
 ```
-[JXR-XXX] Subject of the JIRA Ticket
+[JXR-XXX] - Subject of the JIRA Ticket
  Optional supplemental description.
 ```
 + Make sure you have added the necessary tests (JUnit/IT) for your changes.
@@ -91,9 +91,9 @@ Additional Resources
 
 [jira]: https://issues.apache.org/jira/projects/JXR/
 [license]: https://www.apache.org/licenses/LICENSE-2.0
-[ml-list]: http://maven.apache.org/mailing-lists.html
+[ml-list]: https://maven.apache.org/mailing-lists.html
 [code-style]: https://maven.apache.org/developers/conventions/code.html
 [cla]: https://www.apache.org/licenses/#clas
 [maven-wiki]: https://cwiki.apache.org/confluence/display/MAVEN/Index
-[test-results]: https://builds.apache.org/job/maven-box/job/maven-jxr/job/master/lastCompletedBuild/testReport/
-[build]: https://builds.apache.org/job/maven-box/job/maven-jxr/job/master/
+[test-results]: https://builds.apache.org/job/maven-box/job/maven-jxr-plugin/job/master/lastCompletedBuild/testReport/
+[build]: https://builds.apache.org/job/maven-box/job/maven-jxr-plugin/job/master/
