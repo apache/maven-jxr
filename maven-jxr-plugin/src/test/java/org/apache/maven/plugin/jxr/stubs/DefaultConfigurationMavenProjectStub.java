@@ -37,7 +37,7 @@ import java.util.List;
 public class DefaultConfigurationMavenProjectStub
     extends MavenProjectStub
 {
-    List reportPlugins = new ArrayList();
+    List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public DefaultConfigurationMavenProjectStub()
     {
@@ -62,15 +62,15 @@ public class DefaultConfigurationMavenProjectStub
         setInceptionYear( model.getInceptionYear() );
 
         String basedir = getBasedir().getAbsolutePath();
-        List compileSourceRoots = new ArrayList();
+        List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add( basedir + "/src/test/resources/unit/default-configuration/def/configuration" );
         setCompileSourceRoots( compileSourceRoots );
 
         //set the report plugins
-        List reportPlugins = new ArrayList();
-        for ( Iterator iter = model.getReporting().getPlugins().iterator(); iter.hasNext(); )
+        List<ReportPlugin> reportPlugins = new ArrayList<>();
+        for ( Iterator<ReportPlugin> iter = model.getReporting().getPlugins().iterator(); iter.hasNext(); )
         {
-            ReportPlugin plugin = (ReportPlugin) iter.next();
+            ReportPlugin plugin = iter.next();
             reportPlugins.add( plugin );
         }
         setReportPlugins( reportPlugins );
@@ -81,12 +81,12 @@ public class DefaultConfigurationMavenProjectStub
 
     }
 
-    public void setReportPlugins( List plugins )
+    public void setReportPlugins( List<ReportPlugin> plugins )
     {
         this.reportPlugins = plugins;
     }
 
-    public List getReportPlugins()
+    public List<ReportPlugin> getReportPlugins()
     {
         return reportPlugins;
     }

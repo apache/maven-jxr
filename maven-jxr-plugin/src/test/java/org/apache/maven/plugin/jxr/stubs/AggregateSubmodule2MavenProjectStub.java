@@ -20,6 +20,7 @@ package org.apache.maven.plugin.jxr.stubs;
  */
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.List;
 public class AggregateSubmodule2MavenProjectStub
     extends MavenProjectStub
 {
-    List reportPlugins = new ArrayList();
+    List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public AggregateSubmodule2MavenProjectStub()
     {
@@ -42,13 +43,13 @@ public class AggregateSubmodule2MavenProjectStub
         setInceptionYear( "2006" );
 
         String basedir = getBasedir().getAbsolutePath();
-        List compileSourceRoots = new ArrayList();
+        List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add(
             basedir + "/src/test/resources/unit/aggregate-test/submodule2/aggregate/test/submodule2" );
         setCompileSourceRoots( compileSourceRoots );
 
         //set the report plugins
-        List reportPlugins = new ArrayList();
+        List<ReportPlugin> reportPlugins = new ArrayList<>();
         setReportPlugins( reportPlugins );
 
         Artifact artifact = new JxrPluginArtifactStub( getGroupId(), getArtifactId(), getVersion(), getPackaging() );
@@ -56,12 +57,12 @@ public class AggregateSubmodule2MavenProjectStub
         setArtifact( artifact );
     }
 
-    public void setReportPlugins( List reportPlugins )
+    public void setReportPlugins( List<ReportPlugin> reportPlugins )
     {
         this.reportPlugins = reportPlugins;
     }
 
-    public List getReportPlugins()
+    public List<ReportPlugin> getReportPlugins()
     {
         return reportPlugins;
     }
