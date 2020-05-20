@@ -30,7 +30,7 @@ package org.apache.maven.jxr;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.jxr.pacman.ClassType;
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.ImportType;
@@ -194,11 +194,6 @@ public class JavaCodeTransform
      * The current CVS revision of the currently transformed document
      */
     private String revision = null;
-
-    /**
-     * The input encoding
-     */
-    private String inputEncoding = null;
 
     /**
      * The output encoding
@@ -397,12 +392,11 @@ public class JavaCodeTransform
      * @param bottom string
      * @throws IOException
      */
-    private void transform( Reader sourceReader, Writer destWriter, Locale locale, String inputEncoding,
+    private void transform( Reader sourceReader, Writer destWriter, Locale locale,
                                  String outputEncoding, Path javadocLinkDir, String revision, String bottom )
         throws IOException
     {
         this.locale = locale;
-        this.inputEncoding = inputEncoding;
         this.outputEncoding = outputEncoding;
         this.javadocLinkDir = javadocLinkDir;
         this.revision = revision;
@@ -458,7 +452,7 @@ public class JavaCodeTransform
 
         try ( Reader fr = getReader( sourcefile, inputEncoding ); Writer fw = getWriter( destfile, outputEncoding ) )
         {
-            transform( fr, fw, locale, inputEncoding, outputEncoding, javadocLinkDir, revision, bottom );
+            transform( fr, fw, locale, outputEncoding, javadocLinkDir, revision, bottom );
         }
         catch ( RuntimeException e )
         {
