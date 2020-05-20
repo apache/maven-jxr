@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class ExcludeConfigurationMavenProjectStub extends MavenProjectStub
 {
-    List<ReportPlugin> reportPlugins = new ArrayList<>();
+    private List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public ExcludeConfigurationMavenProjectStub()
     {
