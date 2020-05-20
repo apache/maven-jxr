@@ -36,7 +36,7 @@ import java.util.List;
 public class NoJavadocDirMavenProjectStub
     extends MavenProjectStub
 {
-    List<ReportPlugin> reportPlugins = new ArrayList<>();
+    private List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public NoJavadocDirMavenProjectStub()
     {

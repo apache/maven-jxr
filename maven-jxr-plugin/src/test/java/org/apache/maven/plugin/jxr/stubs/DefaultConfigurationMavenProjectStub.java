@@ -37,7 +37,7 @@ import java.util.List;
 public class DefaultConfigurationMavenProjectStub
     extends MavenProjectStub
 {
-    List<ReportPlugin> reportPlugins = new ArrayList<>();
+    private List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public DefaultConfigurationMavenProjectStub()
     {

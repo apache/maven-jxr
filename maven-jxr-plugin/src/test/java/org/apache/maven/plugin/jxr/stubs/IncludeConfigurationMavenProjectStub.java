@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class IncludeConfigurationMavenProjectStub extends MavenProjectStub
 {
-    List<ReportPlugin> reportPlugins = new ArrayList<>();
+    private List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public IncludeConfigurationMavenProjectStub()
     {
