@@ -35,8 +35,7 @@ import java.util.List;
 public class TestSourceDirMavenProjectStub
     extends MavenProjectStub
 {
-    List reportPlugins = new ArrayList();
-
+    
     public TestSourceDirMavenProjectStub()
     {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
@@ -60,7 +59,7 @@ public class TestSourceDirMavenProjectStub
         setInceptionYear( model.getInceptionYear() );
 
         String basedir = getBasedir().getAbsolutePath();
-        List compileSourceRoots = new ArrayList();
+        List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add( basedir + "/src/test/resources/unit/testsourcedir-test" );
         setCompileSourceRoots( compileSourceRoots );
 
@@ -68,15 +67,5 @@ public class TestSourceDirMavenProjectStub
         artifact.setArtifactHandler( new DefaultArtifactHandlerStub() );
         setArtifact( artifact );
 
-    }
-
-    public void setReportPlugins( List plugins )
-    {
-        this.reportPlugins = plugins;
-    }
-
-    public List getReportPlugins()
-    {
-        return reportPlugins;
     }
 }

@@ -21,16 +21,15 @@ package org.apache.maven.jxr.pacman;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Iterator;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class JavaFileImplTest {
     @Test
-    public void testJXR_135_lotsOfNested()
-            throws Exception
+    public void testJXR_135_lotsOfNested() throws IOException
     {
         JavaFileImpl javaFile = new JavaFileImpl( Paths.get(
                 "src/test/resources/jxr135/org/apache/maven/jxr/pacman/ClassWithNested.java" ),

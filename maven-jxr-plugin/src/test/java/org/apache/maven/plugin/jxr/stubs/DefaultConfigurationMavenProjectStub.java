@@ -37,7 +37,7 @@ import java.util.List;
 public class DefaultConfigurationMavenProjectStub
     extends MavenProjectStub
 {
-    List reportPlugins = new ArrayList();
+    private List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public DefaultConfigurationMavenProjectStub()
     {
@@ -62,18 +62,12 @@ public class DefaultConfigurationMavenProjectStub
         setInceptionYear( model.getInceptionYear() );
 
         String basedir = getBasedir().getAbsolutePath();
-        List compileSourceRoots = new ArrayList();
+        List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add( basedir + "/src/test/resources/unit/default-configuration/def/configuration" );
         setCompileSourceRoots( compileSourceRoots );
 
         //set the report plugins
-        List reportPlugins = new ArrayList();
-        for ( Iterator iter = model.getReporting().getPlugins().iterator(); iter.hasNext(); )
-        {
-            ReportPlugin plugin = (ReportPlugin) iter.next();
-            reportPlugins.add( plugin );
-        }
-        setReportPlugins( reportPlugins );
+        reportPlugins = new ArrayList<>( model.getReporting().getPlugins() );
 
         Artifact artifact = new JxrPluginArtifactStub( getGroupId(), getArtifactId(), getVersion(), getPackaging() );
         artifact.setArtifactHandler( new DefaultArtifactHandlerStub() );
@@ -81,12 +75,8 @@ public class DefaultConfigurationMavenProjectStub
 
     }
 
-    public void setReportPlugins( List plugins )
-    {
-        this.reportPlugins = plugins;
-    }
-
-    public List getReportPlugins()
+    @Override
+    public List<ReportPlugin> getReportPlugins()
     {
         return reportPlugins;
     }

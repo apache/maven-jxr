@@ -31,7 +31,6 @@ import java.util.List;
 public class AggregateSubmodule1MavenProjectStub
     extends MavenProjectStub
 {
-    List reportPlugins = new ArrayList();
 
     public AggregateSubmodule1MavenProjectStub()
     {
@@ -42,28 +41,14 @@ public class AggregateSubmodule1MavenProjectStub
         setInceptionYear( "2006" );
 
         String basedir = getBasedir().getAbsolutePath();
-        List compileSourceRoots = new ArrayList();
+        List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add(
             basedir + "/src/test/resources/unit/aggregate-test/submodule1/aggregate/test/submodule1" );
         setCompileSourceRoots( compileSourceRoots );
 
-        //set the report plugins
-        List reportPlugins = new ArrayList();
-        setReportPlugins( reportPlugins );
-
         Artifact artifact = new JxrPluginArtifactStub( getGroupId(), getArtifactId(), getVersion(), getPackaging() );
         artifact.setArtifactHandler( new DefaultArtifactHandlerStub() );
         setArtifact( artifact );
-    }
-
-    public void setReportPlugins( List reportPlugins )
-    {
-        this.reportPlugins = reportPlugins;
-    }
-
-    public List getReportPlugins()
-    {
-        return reportPlugins;
     }
 
 }
