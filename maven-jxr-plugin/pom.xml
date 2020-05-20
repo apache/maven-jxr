@@ -38,7 +38,7 @@ under the License.
   <properties>
     <mavenVersion>3.1.0</mavenVersion> <!-- support javax.inject -->
     <doxia-sitetoolsVersion>1.8</doxia-sitetoolsVersion>
-    <doxiaVersion>1.8</doxiaVersion>
+    <doxiaVersion>1.9.3</doxiaVersion>
   </properties>
 
   <prerequisites>
