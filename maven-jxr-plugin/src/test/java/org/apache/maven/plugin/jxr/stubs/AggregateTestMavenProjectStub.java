@@ -37,7 +37,7 @@ import java.util.List;
 public class AggregateTestMavenProjectStub
     extends MavenProjectStub
 {
-    List<ReportPlugin> reportPlugins = new ArrayList<>();
+    private List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public AggregateTestMavenProjectStub()
     {
@@ -67,13 +67,7 @@ public class AggregateTestMavenProjectStub
         setCompileSourceRoots( compileSourceRoots );
 
         //set the report plugins
-        List<ReportPlugin> reportPlugins = new ArrayList<>();
-        for ( Iterator<ReportPlugin> iter = model.getReporting().getPlugins().iterator(); iter.hasNext(); )
-        {
-            ReportPlugin plugin = iter.next();
-            reportPlugins.add( plugin );
-        }
-        setReportPlugins( reportPlugins );
+        reportPlugins = new ArrayList<>( model.getReporting().getPlugins() );
 
         Artifact artifact = new JxrPluginArtifactStub( getGroupId(), getArtifactId(), getVersion(), getPackaging() );
         artifact.setArtifactHandler( new DefaultArtifactHandlerStub() );
@@ -81,11 +75,7 @@ public class AggregateTestMavenProjectStub
         setExecutionRoot( true );
     }
 
-    public void setReportPlugins( List<ReportPlugin> plugins )
-    {
-        this.reportPlugins = plugins;
-    }
-
+    @Override
     public List<ReportPlugin> getReportPlugins()
     {
         return reportPlugins;

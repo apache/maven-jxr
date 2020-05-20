@@ -32,7 +32,7 @@ import java.util.List;
 public class AggregateSubmodule2MavenProjectStub
     extends MavenProjectStub
 {
-    List<ReportPlugin> reportPlugins = new ArrayList<>();
+    private List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public AggregateSubmodule2MavenProjectStub()
     {
@@ -49,19 +49,14 @@ public class AggregateSubmodule2MavenProjectStub
         setCompileSourceRoots( compileSourceRoots );
 
         //set the report plugins
-        List<ReportPlugin> reportPlugins = new ArrayList<>();
-        setReportPlugins( reportPlugins );
+        reportPlugins = new ArrayList<>();
 
         Artifact artifact = new JxrPluginArtifactStub( getGroupId(), getArtifactId(), getVersion(), getPackaging() );
         artifact.setArtifactHandler( new DefaultArtifactHandlerStub() );
         setArtifact( artifact );
     }
 
-    public void setReportPlugins( List<ReportPlugin> reportPlugins )
-    {
-        this.reportPlugins = reportPlugins;
-    }
-
+    @Override
     public List<ReportPlugin> getReportPlugins()
     {
         return reportPlugins;
