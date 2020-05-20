@@ -68,11 +68,11 @@ public class PomMavenProjectStub
         build.setTestOutputDirectory( super.getBasedir() + "/target/test/unit/pom-test/target/test-classes" );
         setBuild( build );
 
-        List compileSourceRoots = new ArrayList();
+        List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add( getBasedir() + "/src/main/java" );
         setCompileSourceRoots( compileSourceRoots );
 
-        List testCompileSourceRoots = new ArrayList();
+        List<String> testCompileSourceRoots = new ArrayList<>();
         testCompileSourceRoots.add( getBasedir() + "/src/test/java" );
         setTestCompileSourceRoots( testCompileSourceRoots );
     }

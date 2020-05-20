@@ -28,7 +28,6 @@ import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,7 +36,7 @@ import java.util.List;
 public class NoJavadocLinkConfigurationMavenProjectStub
     extends MavenProjectStub
 {
-    List reportPlugins = new ArrayList();
+    List<ReportPlugin> reportPlugins = new ArrayList<>();
 
     public NoJavadocLinkConfigurationMavenProjectStub()
     {
@@ -62,19 +61,13 @@ public class NoJavadocLinkConfigurationMavenProjectStub
         setInceptionYear( model.getInceptionYear() );
 
         String basedir = getBasedir().getAbsolutePath();
-        List compileSourceRoots = new ArrayList();
+        List<String> compileSourceRoots = new ArrayList<String>();
         compileSourceRoots.add(
             basedir + "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink/configuration" );
         setCompileSourceRoots( compileSourceRoots );
 
         //set the report plugins
-        List reportPlugins = new ArrayList();
-        for ( Iterator iter = model.getReporting().getPlugins().iterator(); iter.hasNext(); )
-        {
-            ReportPlugin plugin = (ReportPlugin) iter.next();
-            reportPlugins.add( plugin );
-        }
-        setReportPlugins( reportPlugins );
+        reportPlugins = new ArrayList<>( model.getReporting().getPlugins() );
 
         Artifact artifact = new JxrPluginArtifactStub( getGroupId(), getArtifactId(), getVersion(), getPackaging() );
         artifact.setArtifactHandler( new DefaultArtifactHandlerStub() );
@@ -82,12 +75,8 @@ public class NoJavadocLinkConfigurationMavenProjectStub
 
     }
 
-    public void setReportPlugins( List plugins )
-    {
-        this.reportPlugins = plugins;
-    }
-
-    public List getReportPlugins()
+    @Override
+    public List<ReportPlugin> getReportPlugins()
     {
         return reportPlugins;
     }
