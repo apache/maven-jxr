@@ -28,7 +28,6 @@ import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
