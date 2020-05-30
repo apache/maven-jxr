@@ -73,7 +73,7 @@ under the License.
         <plugin>
           <groupId>org.eclipse.sisu</groupId>
           <artifactId>sisu-maven-plugin</artifactId>
-          <version>0.3.3</version>
+          <version>0.3.4</version>
           <executions>
             <execution>
               <id>index-project</id>
