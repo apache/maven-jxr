@@ -37,8 +37,7 @@ under the License.
 
   <properties>
     <mavenVersion>3.1.0</mavenVersion> <!-- support javax.inject -->
-    <doxia-sitetoolsVersion>1.8</doxia-sitetoolsVersion>
-    <doxiaVersion>1.9.3</doxiaVersion>
+    <doxia-sitetoolsVersion>1.9.2</doxia-sitetoolsVersion>
   </properties>
 
   <prerequisites>
@@ -123,6 +122,11 @@ under the License.
 
     <!-- shared -->
     <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-site-renderer</artifactId>
+      <version>${doxia-sitetoolsVersion}</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-impl</artifactId>
       <version>3.0.0</version>
@@ -131,11 +135,6 @@ under the License.
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-provider-api</artifactId>
       <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-site-renderer</artifactId>
-      <version>${doxia-sitetoolsVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
