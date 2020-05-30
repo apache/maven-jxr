@@ -89,11 +89,6 @@ under the License.
 
   <dependencies>
     <dependency>
-      <groupId>org.eclipse.sisu</groupId>
-      <artifactId>org.eclipse.sisu.plexus</artifactId>
-      <version>0.0.0.M2a</version> <!-- like Maven 3.1.0 -->
-    </dependency>
-    <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
     </dependency>
@@ -109,6 +104,12 @@ under the License.
       <version>3.8.1</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.eclipse.sisu</groupId>
+      <artifactId>org.eclipse.sisu.plexus</artifactId>
+      <version>0.0.0.M2a</version> <!-- like Maven 3.1.0 -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
