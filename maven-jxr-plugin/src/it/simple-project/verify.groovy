@@ -35,4 +35,14 @@ assert new File( basedir, 'target/site/xref-test/org/apache/maven/jxr/it/AppTest
 content = new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html' ).text;
 assert content.contains( 'App2.html' );
 
+xrefPackageSummary = new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/package-summary.html' ).text
+assert xrefPackageSummary.contains( 'App.html' )
+assert xrefPackageSummary.contains( 'App2.html' )
+assert !xrefPackageSummary.contains( 'AppTest.html' )
+
+testXrefPackageSummary = new File( basedir, 'target/site/xref-test/org/apache/maven/jxr/it/package-summary.html' ).text
+assert !testXrefPackageSummary.contains( 'App.html' )
+assert !testXrefPackageSummary.contains( 'App2.html' )
+assert testXrefPackageSummary.contains( 'AppTest.html' )
+
 return true;

@@ -19,8 +19,9 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.DirectoryScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -30,20 +31,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 /**
  * Given a list of directories, parse them out and store them as rendered
  * packages, classes, imports, etc.
  */
-@Named
-@Singleton
-public class PackageManager extends AbstractLogEnabled
+public class PackageManager
 {
-    @Inject
-    private FileManager fileManager;
+    private static final Logger LOGGER = LoggerFactory.getLogger( PackageManager.class );
+    
+    private final FileManager fileManager;
 
     private Set<Path> directories = new HashSet<>();
 
@@ -67,6 +63,11 @@ public class PackageManager extends AbstractLogEnabled
      * The list of include patterns to use.
      */
     private String[] includes = { "**/*.java" };
+
+    public PackageManager( FileManager fileManager )
+    {
+        this.fileManager = fileManager;
+    }
 
     /**
      * Given the name of a package (Ex: org.apache.maven.util) obtain it from
@@ -107,7 +108,7 @@ public class PackageManager extends AbstractLogEnabled
     {
         // Go through each directory and get the java source 
         // files for this dir.
-        getLogger().debug( "Scanning " + baseDir );
+        LOGGER.debug( "Scanning " + baseDir );
         DirectoryScanner directoryScanner = new DirectoryScanner();
         directoryScanner.setBasedir( baseDir.toFile() );
         directoryScanner.setExcludes( excludes );
@@ -116,7 +117,7 @@ public class PackageManager extends AbstractLogEnabled
 
         for ( String file : directoryScanner.getIncludedFiles() )
         {
-            getLogger().debug( "parsing... " + file );
+            LOGGER.debug( "parsing... " + file );
 
             //now parse out this file to get the packages/classname/etc
             try
@@ -170,16 +171,16 @@ public class PackageManager extends AbstractLogEnabled
     public void dump()
     {
 
-        getLogger().debug( "Dumping out PackageManager structure" );
+        LOGGER.debug( "Dumping out PackageManager structure" );
 
         for ( PackageType current  : getPackageTypes() )
         {
-            getLogger().debug( current.getName() );
+            LOGGER.debug( current.getName() );
 
             //get the classes under the package and print those too.
             for ( ClassType currentClass  : current.getClassTypes() )
             {
-                getLogger().debug( '\t' + currentClass.getName() );
+                LOGGER.debug( '\t' + currentClass.getName() );
             }
         }
     }

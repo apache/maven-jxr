@@ -1,6 +1,5 @@
 package org.apache.maven.jxr;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,6 +19,9 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,27 +29,32 @@ import java.util.Map;
 import org.apache.maven.jxr.DirectoryIndexer.ClassInfo;
 import org.apache.maven.jxr.DirectoryIndexer.PackageInfo;
 import org.apache.maven.jxr.DirectoryIndexer.ProjectInfo;
+import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.PlexusTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-public class DirectoryIndexerTest extends PlexusTestCase 
+public class DirectoryIndexerTest
 {
-    @Override
-    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
+    private DirectoryIndexer directoryIndexer;
+    
+    @Before
+    public void setUp() 
     {
-        configuration.setClassPathScanning( "INDEX" );
+        FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager( fileManager );
+        packageManager.process( Paths.get( "src/test/resources/jxr68" ) );
+
+        directoryIndexer = new DirectoryIndexer( packageManager, "" );
     }
     
     /**
      * Parse the files in test/resources/jxr68 packages, ensure all are present in the allClasses Map,
      * in the correct order.
      */
+    @Test
     public void testJXR_68() throws Exception
     {
-        PackageManager packageManager = lookup( PackageManager.class );
-        packageManager.process( Paths.get( "src/test/resources/jxr68" ) );
-        DirectoryIndexer directoryIndexer = new DirectoryIndexer( packageManager, "" );
 
         ProjectInfo packageInfo = directoryIndexer.getProjectInfo();
         final Map<String, PackageInfo> allPackages = packageInfo.getAllPackages();

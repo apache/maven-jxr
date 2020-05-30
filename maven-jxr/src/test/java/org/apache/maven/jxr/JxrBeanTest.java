@@ -22,30 +22,28 @@ package org.apache.maven.jxr;
 import java.nio.file.Paths;
 import java.util.Collections;
 
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.PlexusTestCase;
+import org.apache.maven.jxr.pacman.FileManager;
+import org.apache.maven.jxr.pacman.PackageManager;
+import org.junit.Before;
+import org.junit.Test;
 
-public class JxrBeanTest extends PlexusTestCase
+public class JxrBeanTest
 {
     private JXR jxrBean;
 
-    @Override
-    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
-    {
-        configuration.setClassPathScanning( "INDEX" );
-    }
-    
-    @Override
-    public void setUp() throws Exception
-    {
-        super.setUp();
-        jxrBean = lookup( JXR.class );
+    @Before
+    public void setUp()
+    {   FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager( fileManager );
+        JavaCodeTransform codeTransform = new JavaCodeTransform( packageManager, fileManager );
+        jxrBean = new JXR( packageManager, codeTransform );
         jxrBean.setDest( Paths.get( "target" ) );
         jxrBean.setInputEncoding( "ISO-8859-1" );
         jxrBean.setOutputEncoding( "ISO-8859-1" );
         jxrBean.setJavadocLinkDir( Paths.get( "." ) );
     }
 
+    @Test
     public void testXref()
         throws Exception
     {

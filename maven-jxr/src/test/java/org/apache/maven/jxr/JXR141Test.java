@@ -19,6 +19,8 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -26,24 +28,32 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.PlexusTestCase;
+import org.apache.maven.jxr.pacman.FileManager;
+import org.apache.maven.jxr.pacman.PackageManager;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Simple unit-testtest that illustrates a line with more
  * than one "token" to replace
  */
-public class JXR141Test extends PlexusTestCase 
+public class JXR141Test 
 {
-    @Override
-    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
+    private JXR jxr;
+
+    @Before
+    public void setUp()
     {
-        configuration.setClassPathScanning( "INDEX" );
+        FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager( fileManager );
+        JavaCodeTransform codeTransform = new JavaCodeTransform( packageManager, fileManager );
+        
+        jxr = new JXR( packageManager, codeTransform );    
     }
     
+    @Test
     public void testProcessPath() throws Exception
     {
-        JXR jxr = lookup( JXR.class );
         jxr.setDest( Paths.get("target/jxr-141" ) );
         jxr.setOutputEncoding( "UTF-8" );
         jxr.xref( Collections.singletonList( "src/test/resources/jxr141" ),"templates/jdk4",
@@ -66,8 +76,8 @@ public class JXR141Test extends PlexusTestCase
         assertNotNull( "Line #27 not found - has source of Test141.java changed?", line27 );
         assertEquals( "<a class=\"jxr_linenumber\" name=\"L27\" href=\"#L27\">27</a>      " +
                 "<strong class=\"jxr_keyword\">public</strong> <strong class=\"jxr_keyword\">static</strong> " +
-                "<strong class=\"jxr_keyword\">final</strong> <a name=\"Test141\" href=\"..//Test141.html#Test141\">" +
-                "Test141</a> instance = <strong class=\"jxr_keyword\">new</strong> " +
+                "<strong class=\"jxr_keyword\">final</strong> " +
+                "<a name=\"Test141\" href=\"..//Test141.html#Test141\">Test141</a> instance = <strong class=\"jxr_keyword\">new</strong> " +
                 "<a name=\"Test141\" href=\"..//Test141.html#Test141\">Test141</a>();" , line27 );
     }
 }

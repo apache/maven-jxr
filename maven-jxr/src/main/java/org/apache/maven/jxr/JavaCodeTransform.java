@@ -64,10 +64,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 /**
  * Syntax highlights java by turning it into html. A codeviewer object is created and then keeps state as lines are
  * passed in. Each line passed in as java test, is returned as syntax highlighted html text. Users of the class can set
@@ -95,8 +91,6 @@ import javax.inject.Singleton;
  *                                  importFilter
  * </pre>
  */
-@Named
-@Singleton
 public class JavaCodeTransform
     implements Serializable
 {
@@ -213,14 +207,12 @@ public class JavaCodeTransform
     /**
      * Package Manager for this project.
      */
-    @Inject
-    private PackageManager packageManager;
+    private final PackageManager packageManager;
 
     /**
      * current file manager
      */
-    @Inject
-    private FileManager fileManager;
+    private final FileManager fileManager;
 
     {
         reservedWords.put( "abstract", "abstract" );
@@ -278,6 +270,12 @@ public class JavaCodeTransform
         reservedWords.put( "try", "try" );
         reservedWords.put( "throws", "throws" );
         reservedWords.put( "implements", "implements" );
+    }
+
+    public JavaCodeTransform( PackageManager packageManager, FileManager fileManager )
+    {
+        this.packageManager = packageManager;
+        this.fileManager = fileManager;
     }
 
     // ----------------------------------------------------------------------

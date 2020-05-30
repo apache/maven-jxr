@@ -19,13 +19,18 @@ package org.apache.maven.jxr;
  * under the License.
  */
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.PlexusTestCase;
+import org.apache.maven.jxr.pacman.FileManager;
+import org.apache.maven.jxr.pacman.PackageManager;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test include/exclude patterns.
@@ -33,27 +38,25 @@ import org.codehaus.plexus.PlexusTestCase;
  * @author <a href="mailto:dennisl@apache.org">Dennis Lundberg</a>
  * @version $Id$
  */
-public class IncludeExcludeTest extends PlexusTestCase  
+public class IncludeExcludeTest  
 {
     private JXR jxr;
  
-    @Override
-    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
-    {
-        configuration.setClassPathScanning( "INDEX" );
-    }
-    
-    @Override
+    @Before
     public void setUp() throws Exception
     {
-        super.setUp();
-        jxr = lookup( JXR.class );
+        FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager( fileManager );
+        JavaCodeTransform codeTransform = new JavaCodeTransform( packageManager, fileManager );
+        
+        jxr = new JXR( packageManager, codeTransform );
         jxr.setDest( Paths.get( "target" ) );
         jxr.setInputEncoding( "ISO-8859-1" );
         jxr.setOutputEncoding( "ISO-8859-1" );
         jxr.setJavadocLinkDir( Paths.get( "." ) );
     }
 
+    @Test
     public void testIncludeExclude()
         throws Exception
     {

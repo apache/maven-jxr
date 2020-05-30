@@ -33,7 +33,10 @@ import java.util.ResourceBundle;
 
 import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.jxr.JXR;
+import org.apache.maven.jxr.JavaCodeTransform;
 import org.apache.maven.jxr.JxrException;
+import org.apache.maven.jxr.pacman.FileManager;
+import org.apache.maven.jxr.pacman.PackageManager;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
@@ -163,9 +166,6 @@ public abstract class AbstractJxrReport
     @Parameter( property = "javadocVersion" )
     private String javadocVersion;
 
-    @Component
-    private JXR jxr;
-    
     /**
      * Version of the Javadoc templates to use.
      */
@@ -267,6 +267,11 @@ public abstract class AbstractJxrReport
     private void createXref( Locale locale, String destinationDirectory, List<String> sourceDirs )
         throws IOException, JxrException, MavenReportException
     {
+        FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager( fileManager );
+        JavaCodeTransform codeTransform = new JavaCodeTransform( packageManager, fileManager );
+        
+        JXR jxr = new JXR( packageManager, codeTransform );
         jxr.setDest( Paths.get( destinationDirectory ) );
         if ( StringUtils.isEmpty( inputEncoding ) )
         {

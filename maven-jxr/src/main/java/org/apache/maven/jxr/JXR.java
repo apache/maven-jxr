@@ -20,9 +20,9 @@ package org.apache.maven.jxr;
  */
 
 import org.apache.maven.jxr.ant.DirectoryScanner;
-import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -30,29 +30,22 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 /**
  * Main entry point into Maven used to kick off the XReference code building.
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- * @version $Id$
  */
-@Named
-@Singleton
-public class JXR extends AbstractLogEnabled
+public class JXR
 {
-    @Inject
-    private PackageManager pkgmgr;
+    private static final Logger LOGGER = LoggerFactory.getLogger( JXR.class );
+    
+    private final PackageManager pkgmgr;
 
     /**
      * Handles taking .java files and changing them into html. "More than meets
      * the eye!" :)
      */
-    @Inject
-    private JavaCodeTransform transformer;
+    private final JavaCodeTransform transformer;
     
     /**
      * The default list of include patterns to use.
@@ -90,6 +83,12 @@ public class JXR extends AbstractLogEnabled
      * The list of include patterns to use.
      */
     private String[] includes = DEFAULT_INCLUDES;
+    
+    public JXR( PackageManager pkgmgr, JavaCodeTransform transformer )
+    {
+        this.pkgmgr = pkgmgr;
+        this.transformer = transformer;
+    }
 
     /**
      * Now that we have instantiated everything. Process this JXR task.
@@ -193,14 +192,6 @@ public class JXR extends AbstractLogEnabled
     }
 
     /**
-     * @param transformer
-     */
-    public void setTransformer( JavaCodeTransform transformer )
-    {
-        this.transformer = transformer;
-    }
-
-    /**
      * @param revision
      */
     public void setRevision( String revision )
@@ -220,11 +211,6 @@ public class JXR extends AbstractLogEnabled
     public void xref( List<String> sourceDirs, String templateDir, String windowTitle, String docTitle, String bottom )
         throws IOException, JxrException
     {
-        // first collect package and class info
-        FileManager fileManager = new FileManager();
-        fileManager.setEncoding( inputEncoding );
-
-        
         pkgmgr.setExcludes( excludes );
         pkgmgr.setIncludes( includes );
 
@@ -263,7 +249,7 @@ public class JXR extends AbstractLogEnabled
     private void transform( Path sourceFile, Path destFile, String bottom )
         throws IOException
     {
-        getLogger().debug( sourceFile + " -> " + destFile );
+        LOGGER.debug( sourceFile + " -> " + destFile );
 
         // get a relative link to the javadocs
         Path javadoc = javadocLinkDir != null ? getRelativeLink( destFile.getParent(), javadocLinkDir ) : null;

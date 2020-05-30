@@ -1,5 +1,7 @@
 package org.apache.maven.jxr;
 
+import static org.junit.Assert.assertTrue;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -25,36 +27,35 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 
+import org.apache.maven.jxr.pacman.FileManager;
+import org.apache.maven.jxr.pacman.PackageManager;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.PlexusTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit test for {@link JavaCodeTransform}.
  */
-public class JavaCodeTransformTest extends PlexusTestCase
+public class JavaCodeTransformTest
 {
     /** JavaCodeTransform object under test */
     private JavaCodeTransform codeTransform;
 
-    @Override
-    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
-    {
-        configuration.setClassPathScanning( "INDEX" );
-    }
-    
     /**
      * Set up this test.
      */
-    @Override
+    @Before
     public void setUp() throws Exception
     {
-        super.setUp();
-        codeTransform = lookup( JavaCodeTransform.class );
+        FileManager fileManager = new FileManager();
+        codeTransform = new JavaCodeTransform( new PackageManager( fileManager ), fileManager);
     }
 
     /**
      * Test basic transformation of a java source file.
      */
+    @Test
     public void testTransform()
         //test transforms its own sourcefile, so add some comments
         throws Exception // single line despite /*
@@ -72,6 +73,7 @@ public class JavaCodeTransformTest extends PlexusTestCase
     /**
      * Test what happens with an empty sourcefile.
      */
+    @Test
     public void testTransformWithEmptyClassFile()
         throws Exception
     {
@@ -86,6 +88,7 @@ public class JavaCodeTransformTest extends PlexusTestCase
     /**
      * Test proper handling of link
      */
+    @Test
     public void testLinkHandling()
         throws Exception
     {
