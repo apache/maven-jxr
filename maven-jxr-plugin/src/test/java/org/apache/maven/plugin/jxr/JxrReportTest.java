@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
@@ -66,7 +67,7 @@ public class JxrReportTest
 
         //check if there's a link to the javadoc files
         String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
 
         str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
@@ -107,10 +108,10 @@ public class JxrReportTest
 
         //check if there's a link to the javadoc files
         String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
 
         str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/app.html\"" ) != -1 );
 
         // check if encoding is UTF-8, the default value
         assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
@@ -148,10 +149,10 @@ public class JxrReportTest
 
         //check if there's a link to the javadoc files
         String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
 
         str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/app.html\"" ) != -1 );
 
         // check if encoding is UTF-8, the default value
         assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
@@ -193,10 +194,10 @@ public class JxrReportTest
 
         //check if there's a link to the javadoc files
         String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
 
         str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/app.html\"" ) != -1 );
 
         // check if encoding is UTF-8, the default value
         assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
@@ -234,7 +235,7 @@ public class JxrReportTest
 
         //check if there's a link to the javadoc files
         String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/AppSample.html\"".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
 
         str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
         assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
@@ -275,15 +276,15 @@ public class JxrReportTest
         //check if there's a link to the javadoc files
         String str = readFile( new File( xrefDir, "nojavadoclink/configuration/AppSample.html" ) );
         assertTrue(
-            str.toLowerCase().indexOf( "/apidocs/nojavadoclink/configuration/AppSample.html\"".toLowerCase() ) == -1 );
+            str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadoclink/configuration/appsample.html\"" ) == -1 );
 
         str = readFile( new File( xrefDir, "nojavadoclink/configuration/App.html" ) );
         assertTrue(
-            str.toLowerCase().indexOf( "/apidocs/nojavadoclink/configuration/app.html\"".toLowerCase() ) == -1 );
+            str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadoclink/configuration/app.html\"" ) == -1 );
 
         str = readFile( new File( xrefDir, "nojavadoclink/configuration/sample/Sample.html" ) );
         assertTrue( str.toLowerCase().indexOf(
-            "/apidocs/nojavadoclink/configuration/sample/sample.html\"".toLowerCase() ) == -1 );
+            "/apidocs/nojavadoclink/configuration/sample/sample.html\"" ) == -1 );
 
         // check if encoding is ISO-8859-1, like specified in the plugin configuration
         assertTrue( str.indexOf( "text/html; charset=ISO-8859-1" ) != -1 );
@@ -335,10 +336,10 @@ public class JxrReportTest
 
     	//check if there's a link to the javadoc files
         String str = readFile( new File( xrefDir, "nojavadocdir/test/AppSample.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/nojavadocdir/test/AppSample.html".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadocdir/test/appsample.html") != -1 );
 
         str = readFile( new File( xrefDir, "nojavadocdir/test/App.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/nojavadocdir/test/app.html".toLowerCase() ) != -1 );
+        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadocdir/test/app.html" ) != -1 );
 
     }
 
