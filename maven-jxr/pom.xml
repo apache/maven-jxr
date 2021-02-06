@@ -40,7 +40,7 @@ under the License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <!-- 
-               The following has to be execluded from checkstyle otherwise
+               The following has to be excluded from checkstyle. Otherwise
                it will fail based on the license of the file until
                a better solution exists.
                https://issues.apache.org/jira/browse/JXR-117
@@ -104,12 +104,6 @@ under the License.
       <version>3.8.1</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.eclipse.sisu</groupId>
-      <artifactId>org.eclipse.sisu.plexus</artifactId>
-      <version>0.0.0.M2a</version> <!-- like Maven 3.1.0 -->
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
