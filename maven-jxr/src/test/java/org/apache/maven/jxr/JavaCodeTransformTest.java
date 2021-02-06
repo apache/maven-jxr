@@ -29,8 +29,6 @@ import java.util.Locale;
 
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.PlexusTestCase;
 import org.junit.Before;
 import org.junit.Test;
 
