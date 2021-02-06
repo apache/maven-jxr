@@ -26,7 +26,7 @@ under the License.
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
     <version>34</version>
-    <relativePath>../pom/maven/pom.xml</relativePath>
+    <relativePath/>
   </parent>
 
   <groupId>org.apache.maven.jxr</groupId>
@@ -67,6 +67,8 @@ under the License.
     <sitePluginVersion>3.3</sitePluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <surefire.version>2.22.2</surefire.version>
+    <mavenPluginToolsVersion>3.6.0</mavenPluginToolsVersion>
+    <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2020-05-23T14:54:38Z</project.build.outputTimestamp>
   </properties>
 
@@ -113,6 +115,11 @@ under the License.
           <configuration>
             <autoVersionSubmodules>true</autoVersionSubmodules>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.0.0-M3</version>
         </plugin>
       </plugins>
     </pluginManagement>
