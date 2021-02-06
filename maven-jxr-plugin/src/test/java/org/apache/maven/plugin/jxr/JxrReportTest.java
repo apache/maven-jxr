@@ -19,13 +19,13 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-import org.codehaus.plexus.util.FileUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 
 /**
@@ -48,7 +48,7 @@ public class JxrReportTest
         File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site" );
         File xrefDir = new File( outputDir, "xref" );
 
-        copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+        FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
         File testPom = new File( resourcesDir, "default-configuration-plugin-config.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
@@ -66,14 +66,14 @@ public class JxrReportTest
         assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
 
         //check if there's a link to the javadoc files
-        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
+        String str = readFile( xrefDir, "def/configuration/AppSample.html" );
+        assertTrue( str.toLowerCase().contains( "/apidocs/def/configuration/appsample.html\"" ) );
 
-        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
+        str = readFile( xrefDir, "def/configuration/App.html" );
+        assertTrue( str.toLowerCase().contains( "/apidocs/def/configuration/app.html\"".toLowerCase() ) );
 
         // check if encoding is UTF-8, the default value
-        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
+        assertTrue( str.contains( "text/html; charset=UTF-8" ) );
     }
 
     /**
@@ -84,12 +84,12 @@ public class JxrReportTest
     public void testJdk4Configuration()
         throws Exception
     {
-    	File resourcesDir = new File( getBasedir(), "src/test/resources/unit/default-configuration" );
+        File resourcesDir = new File( getBasedir(), "src/test/resources/unit/default-configuration" );
 
-    	File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site/4" );
-    	File xrefDir = new File( outputDir, "xref" );
+        File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site/4" );
+        File xrefDir = new File( outputDir, "xref" );
 
-    	copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+        FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
         File testPom = new File( resourcesDir, "default-configuration-plugin-config-4.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
@@ -107,14 +107,14 @@ public class JxrReportTest
         assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
 
         //check if there's a link to the javadoc files
-        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
+        String str = readFile( xrefDir, "def/configuration/AppSample.html" );
+        assertTrue( str.toLowerCase( Locale.US ).contains( "/apidocs/def/configuration/appsample.html\"" ) );
 
-        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
-        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/app.html\"" ) != -1 );
+        str = readFile( xrefDir, "def/configuration/App.html" );
+        assertTrue( str.toLowerCase( Locale.US ).contains( "/apidocs/def/configuration/app.html\"" ) );
 
         // check if encoding is UTF-8, the default value
-        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
+        assertTrue( str.contains( "text/html; charset=UTF-8" ) );
     }
 
     /**
@@ -130,7 +130,7 @@ public class JxrReportTest
         File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site/6" );
         File xrefDir = new File( outputDir, "xref" );
 
-        copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+        FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
         File testPom = new File( resourcesDir, "default-configuration-plugin-config-6.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
@@ -148,14 +148,14 @@ public class JxrReportTest
         assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
 
         //check if there's a link to the javadoc files
-        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
+        String str = readFile( xrefDir, "def/configuration/AppSample.html" );
+        assertTrue( str.toLowerCase( Locale.US ).contains( "/apidocs/def/configuration/appsample.html\"" ) );
 
-        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
-        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/app.html\"" ) != -1 );
+        str = readFile( xrefDir, "def/configuration/App.html" );
+        assertTrue( str.toLowerCase( Locale.US ).contains( "/apidocs/def/configuration/app.html\"" ) );
 
         // check if encoding is UTF-8, the default value
-        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
+        assertTrue( str.contains( "text/html; charset=UTF-8" ) );
     }
 
     /**
@@ -171,7 +171,7 @@ public class JxrReportTest
         File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site/7" );
         File xrefDir = new File( outputDir, "xref" );
 
-        copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+        FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
         File testPom = new File( resourcesDir, "default-configuration-plugin-config-7.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
@@ -193,14 +193,14 @@ public class JxrReportTest
         assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
 
         //check if there's a link to the javadoc files
-        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
+        String str = readFile( xrefDir, "def/configuration/AppSample.html" );
+        assertTrue( str.toLowerCase( Locale.US ).contains( "/apidocs/def/configuration/appsample.html\"" ) );
 
-        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
-        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/def/configuration/app.html\"" ) != -1 );
+        str = readFile( xrefDir, "def/configuration/App.html" );
+        assertTrue( str.toLowerCase( Locale.US ).contains( "/apidocs/def/configuration/app.html\"" ) );
 
         // check if encoding is UTF-8, the default value
-        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
+        assertTrue( str.contains( "text/html; charset=UTF-8" ) );
     }
 
     /**
@@ -216,7 +216,7 @@ public class JxrReportTest
         File outputDir = new File( getBasedir(), "target/test/unit/default-configuration/target/site/8" );
         File xrefDir = new File( outputDir, "xref" );
 
-        copyFilesFromDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
+        FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
         File testPom = new File( resourcesDir, "default-configuration-plugin-config-8.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
@@ -234,14 +234,14 @@ public class JxrReportTest
         assertTrue( new File( xrefDir, "def/configuration/package-summary.html" ).exists() );
 
         //check if there's a link to the javadoc files
-        String str = readFile( new File( xrefDir, "def/configuration/AppSample.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/appsample.html\"" ) != -1 );
+        String str = readFile( xrefDir, "def/configuration/AppSample.html" );
+        assertTrue( str.toLowerCase().contains( "/apidocs/def/configuration/appsample.html\"" ) );
 
-        str = readFile( new File( xrefDir, "def/configuration/App.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/def/configuration/app.html\"".toLowerCase() ) != -1 );
+        str = readFile( xrefDir, "def/configuration/App.html" );
+        assertTrue( str.toLowerCase().contains( "/apidocs/def/configuration/app.html\"".toLowerCase() ) );
 
         // check if encoding is UTF-8, the default value
-        assertTrue( str.indexOf( "text/html; charset=UTF-8" ) != -1 );
+        assertTrue( str.contains( "text/html; charset=UTF-8" ) );
     }
 
     /**
@@ -253,13 +253,13 @@ public class JxrReportTest
         throws Exception
     {
         File testPom = new File( getBasedir(),
-                                 "src/test/resources/unit/nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml" );
+                "src/test/resources/unit/nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
-    	File xrefDir = new File( getBasedir(), "target/test/unit/nojavadoclink-configuration/target/site/xref" );
+        File xrefDir = new File( getBasedir(), "target/test/unit/nojavadoclink-configuration/target/site/xref" );
 
-    	//check if xref files were generated
+        //check if xref files were generated
         assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
         assertTrue( new File( xrefDir, "index.html" ).exists() );
         assertTrue( new File( xrefDir, "overview-frame.html" ).exists() );
@@ -274,20 +274,18 @@ public class JxrReportTest
         assertTrue( new File( xrefDir, "nojavadoclink/configuration/sample/Sample.html" ).exists() );
 
         //check if there's a link to the javadoc files
-        String str = readFile( new File( xrefDir, "nojavadoclink/configuration/AppSample.html" ) );
-        assertTrue(
-            str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadoclink/configuration/appsample.html\"" ) == -1 );
+        String str = readFile( xrefDir, "nojavadoclink/configuration/AppSample.html" );
+        assertEquals( str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadoclink/configuration/appsample.html\"" ),
+                -1 );
 
-        str = readFile( new File( xrefDir, "nojavadoclink/configuration/App.html" ) );
-        assertTrue(
-            str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadoclink/configuration/app.html\"" ) == -1 );
+        str = readFile( xrefDir, "nojavadoclink/configuration/App.html" );
+        assertEquals( str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadoclink/configuration/app.html\"" ), -1 );
 
-        str = readFile( new File( xrefDir, "nojavadoclink/configuration/sample/Sample.html" ) );
-        assertTrue( str.toLowerCase().indexOf(
-            "/apidocs/nojavadoclink/configuration/sample/sample.html\"" ) == -1 );
+        str = readFile( xrefDir, "nojavadoclink/configuration/sample/Sample.html" );
+        assertEquals( str.toLowerCase().indexOf( "/apidocs/nojavadoclink/configuration/sample/sample.html\"" ), -1 );
 
         // check if encoding is ISO-8859-1, like specified in the plugin configuration
-        assertTrue( str.indexOf( "text/html; charset=ISO-8859-1" ) != -1 );
+        assertTrue( str.contains( "text/html; charset=ISO-8859-1" ) );
     }
 
     /**
@@ -298,12 +296,12 @@ public class JxrReportTest
     public void testAggregate()
         throws Exception
     {
-        File testPom =
-            new File( getBasedir(), "src/test/resources/unit/aggregate-test/aggregate-test-plugin-config.xml" );
+        File testPom = new File( getBasedir(),
+                "src/test/resources/unit/aggregate-test/aggregate-test-plugin-config.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
-    	File xrefDir = new File( getBasedir(), "target/test/unit/aggregate-test/target/site/xref" );
+        File xrefDir = new File( getBasedir(), "target/test/unit/aggregate-test/target/site/xref" );
 
         //check if xref files were generated for submodule1
         assertTrue( new File( xrefDir, "aggregate/test/submodule1/package-frame.html" ).exists() );
@@ -327,19 +325,19 @@ public class JxrReportTest
     public void testNoJavadocDir()
         throws Exception
     {
-        File testPom =
-            new File( getBasedir(), "src/test/resources/unit/nojavadocdir-test/nojavadocdir-test-plugin-config.xml" );
+        File testPom = new File( getBasedir(),
+                "src/test/resources/unit/nojavadocdir-test/nojavadocdir-test-plugin-config.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
-    	File xrefDir = new File( getBasedir(), "target/test/unit/nojavadocdir-test/target/site/xref" );
+        File xrefDir = new File( getBasedir(), "target/test/unit/nojavadocdir-test/target/site/xref" );
 
-    	//check if there's a link to the javadoc files
-        String str = readFile( new File( xrefDir, "nojavadocdir/test/AppSample.html" ) );
-        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadocdir/test/appsample.html") != -1 );
+        //check if there's a link to the javadoc files
+        String str = readFile( xrefDir, "nojavadocdir/test/AppSample.html" );
+        assertTrue( str.toLowerCase( Locale.US ).contains( "/apidocs/nojavadocdir/test/appsample.html" ) );
 
-        str = readFile( new File( xrefDir, "nojavadocdir/test/App.html" ) );
-        assertTrue( str.toLowerCase( Locale.US ).indexOf( "/apidocs/nojavadocdir/test/app.html" ) != -1 );
+        str = readFile( xrefDir, "nojavadocdir/test/App.html" );
+        assertTrue( str.toLowerCase( Locale.US ).contains( "/apidocs/nojavadocdir/test/app.html" ) );
 
     }
 
@@ -352,19 +350,17 @@ public class JxrReportTest
         throws Exception
     {
         File testPom = new File( getBasedir(),
-                                 "src/test/resources/unit/exclude-configuration/exclude-configuration-plugin-config.xml" );
+                "src/test/resources/unit/exclude-configuration/exclude-configuration-plugin-config.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
-    	File xrefDir = new File( getBasedir(), "target/test/unit/exclude-configuration/target/site/xref" );
+        Path xrefDir = new File( getBasedir(), "target/test/unit/exclude-configuration/target/site/xref" ).toPath();
 
-    	// check that the non-excluded xref files were generated
-        File generatedFile = new File( xrefDir, "exclude/configuration/App.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+        // check that the non-excluded xref files were generated
+        assertTrue( Files.exists( xrefDir.resolve( "exclude/configuration/App.html" ) ) );
 
         // check that the excluded xref files were not generated
-        generatedFile = new File( xrefDir, "exclude/configuration/AppSample.html" );
-        assertFalse( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+        assertFalse( Files.exists( xrefDir.resolve( "exclude/configuration/AppSample.html" ) ) );
     }
 
     /**
@@ -376,32 +372,29 @@ public class JxrReportTest
         throws Exception
     {
         File testPom = new File( getBasedir(),
-                                 "src/test/resources/unit/include-configuration/include-configuration-plugin-config.xml" );
+                "src/test/resources/unit/include-configuration/include-configuration-plugin-config.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
-    	File xrefDir = new File( getBasedir(), "target/test/unit/include-configuration/target/site/xref" );
+        Path xrefDir = new File( getBasedir(), "target/test/unit/include-configuration/target/site/xref" ).toPath();
 
         // check that the included xref files were generated
-        File generatedFile = new File( xrefDir, "include/configuration/App.html" );
-        assertTrue( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+        assertTrue( Files.exists( xrefDir.resolve( "include/configuration/App.html" )));
 
         // check that the non-included xref files were not generated
-        generatedFile = new File( xrefDir, "include/configuration/AppSample.html" );
-        assertFalse( FileUtils.fileExists( generatedFile.getAbsolutePath() ) );
+        assertFalse( Files.exists( xrefDir.resolve( "include/configuration/AppSample.html" )));
     }
 
-    public void testExceptions()
-        throws Exception
+    public void testExceptions() throws Exception
     {
         try
         {
-            File testPom =
-                new File( getBasedir(), "src/test/resources/unit/default-configuration/exception-test-plugin-config.xml" );
+            File testPom = new File( getBasedir(),
+                    "src/test/resources/unit/default-configuration/exception-test-plugin-config.xml" );
             JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
             mojo.execute();
 
-            fail( "Must throw exception");
+            fail( "Must throw exception" );
         }
         catch ( Exception e )
         {
@@ -417,8 +410,7 @@ public class JxrReportTest
     public void testPom()
         throws Exception
     {
-        File testPom = new File( getBasedir(),
-                                 "src/test/resources/unit/pom-test/pom-test-plugin-config.xml" );
+        File testPom = new File( getBasedir(), "src/test/resources/unit/pom-test/pom-test-plugin-config.xml" );
         JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
         mojo.execute();
 
@@ -426,38 +418,10 @@ public class JxrReportTest
     }
 
     /**
-     * Copy files from the specified source directory to the specified destination directory
-     *
-     * @param srcDir
-     * @param destDir
-     * @throws IOException
-     */
-    private static void copyFilesFromDirectory( File srcDir, File destDir )
-        throws IOException
-    {
-        FileUtils.copyDirectoryStructure( srcDir, destDir );
-    }
-
-    /**
      * Read the contents of the specified file object into a string
-     *
-     * @param file the file to be read
-     * @return a String object that contains the contents of the file
-     * @throws IOException
      */
-    private static String readFile( File file )
-        throws IOException
+    private String readFile( File xrefTestDir, String fileName ) throws IOException
     {
-        String str = "", strTmp = "";
-        
-        try ( BufferedReader in = new BufferedReader( new FileReader( file ) ) )
-        {
-            while ( ( strTmp = in.readLine() ) != null )
-            {
-                str = str + ' ' + strTmp;
-            }
-        }
-
-        return str;
+        return new String( Files.readAllBytes( xrefTestDir.toPath().resolve( fileName ) ) );
     }
 }

@@ -19,10 +19,9 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 
@@ -59,41 +58,18 @@ public class JxrTestReportTest
         assertTrue( new File( xrefTestDir, "stylesheet.css" ).exists() );
 
         // check if there's a link to the javadoc files
-        String str = readFile( new File( xrefTestDir, "testsourcedir/test/AppSampleTest.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/testsourcedir/test/AppSample.html\"".toLowerCase() ) == -1 );
+        String str = readFile( xrefTestDir, "testsourcedir/test/AppSampleTest.html" );
+        assertFalse( str.toLowerCase().contains( "/apidocs/testsourcedir/test/AppSample.html\"".toLowerCase() ) );
 
-        str = readFile( new File( xrefTestDir, "testsourcedir/test/AppTest.html" ) );
-        assertTrue( str.toLowerCase().indexOf( "/apidocs/testsourcedir/test/App.html\"".toLowerCase() ) == -1 );
-
-    }
-
-    protected void tearDown()
-        throws Exception
-    {
-
+        str = readFile( xrefTestDir, "testsourcedir/test/AppTest.html" );
+        assertFalse( str.toLowerCase().contains( "/apidocs/testsourcedir/test/App.html\"".toLowerCase() ) );
     }
 
     /**
      * Read the contents of the specified file object into a string
-     *
-     * @param file the file to be read
-     * @return a String object that contains the contents of the file
-     * @throws java.io.IOException
      */
-    private String readFile( File file )
-        throws IOException
+    private String readFile( File xrefTestDir, String fileName ) throws IOException
     {
-        String str = "", strTmp = "";
-        
-        try ( BufferedReader in = new BufferedReader( new FileReader( file ) ) )
-        {
-            while ( ( strTmp = in.readLine() ) != null )
-            {
-                str = str + ' ' + strTmp;
-            }
-        }
-
-        return str;
+        return new String( Files.readAllBytes( xrefTestDir.toPath().resolve( fileName ) ) );
     }
-
 }

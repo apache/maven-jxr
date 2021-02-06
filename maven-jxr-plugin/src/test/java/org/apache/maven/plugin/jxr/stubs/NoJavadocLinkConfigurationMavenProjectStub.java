@@ -36,7 +36,7 @@ import java.util.List;
 public class NoJavadocLinkConfigurationMavenProjectStub
     extends MavenProjectStub
 {
-    List<ReportPlugin> reportPlugins = new ArrayList<>();
+    List<ReportPlugin> reportPlugins;
 
     public NoJavadocLinkConfigurationMavenProjectStub()
     {
@@ -45,11 +45,11 @@ public class NoJavadocLinkConfigurationMavenProjectStub
 
         try
         {
-            model = pomReader.read( new FileReader( new File( getBasedir() +
-                "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml" ) ) );
+            model = pomReader.read( new FileReader( getBasedir() +
+                "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml" ) );
             setModel( model );
         }
-        catch ( Exception e )
+        catch ( Exception ignored )
         {
 
         }
@@ -61,7 +61,7 @@ public class NoJavadocLinkConfigurationMavenProjectStub
         setInceptionYear( model.getInceptionYear() );
 
         String basedir = getBasedir().getAbsolutePath();
-        List<String> compileSourceRoots = new ArrayList<String>();
+        List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add(
             basedir + "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink/configuration" );
         setCompileSourceRoots( compileSourceRoots );

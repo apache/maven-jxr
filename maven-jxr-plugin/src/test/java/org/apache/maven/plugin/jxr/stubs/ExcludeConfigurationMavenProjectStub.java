@@ -25,7 +25,6 @@ import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 
-import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +43,11 @@ public class ExcludeConfigurationMavenProjectStub extends MavenProjectStub
 
         try
         {
-            model = pomReader.read( new FileReader( new File( getBasedir() +
-                "/src/test/resources/unit/exclude-configuration/exclude-configuration-plugin-config.xml" ) ) );
+            model = pomReader.read( new FileReader( getBasedir() +
+                "/src/test/resources/unit/exclude-configuration/exclude-configuration-plugin-config.xml" ) );
             setModel( model );
         }
-        catch ( Exception e )
+        catch ( Exception ignored )
         {
 
         }
