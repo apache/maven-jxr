@@ -383,7 +383,6 @@ public class JavaCodeTransform
      * @param sourceReader Reader
      * @param destWriter Writer
      * @param locale String
-     * @param inputEncoding String
      * @param outputEncoding String
      * @param javadocLinkDir String
      * @param revision String
@@ -403,7 +402,7 @@ public class JavaCodeTransform
 
         PrintWriter out = new PrintWriter( destWriter );
 
-        String line = "";
+        String line;
 
         appendHeader( out );
 
@@ -518,7 +517,7 @@ public class JavaCodeTransform
     {
         StringBuilder buff = new StringBuilder();
 
-        JavaFile jf = null;
+        JavaFile jf;
 
         try
         {
@@ -548,12 +547,10 @@ public class JavaCodeTransform
      * @param line String
      * @return String
      */
-    private final String uriFilter( String line )
+    private String uriFilter( String line )
     {
-        for ( int i = 0; i < VALID_URI_SCHEMES.length; ++i )
+        for ( String scheme : VALID_URI_SCHEMES )
         {
-            String scheme = VALID_URI_SCHEMES[i];
-
             int index = line.indexOf( scheme );
 
             if ( index != -1 )
@@ -619,9 +616,9 @@ public class JavaCodeTransform
     {
         StringBuilder buff = new StringBuilder( line );
 
-        String link = null;
-        String find = null;
-        String href = null;
+        String link;
+        String find;
+        String href;
 
         if ( classType != null )
         {
@@ -847,7 +844,7 @@ public class JavaCodeTransform
             {
                 startStringIndex = -1;
                 endStringIndex = tempIndex;
-                buf.append( line.substring( 0, endStringIndex + 1 ) );
+                buf.append( line, 0, endStringIndex + 1 );
                 buf.append( STRING_END );
                 line = line.substring( endStringIndex + 1 );
             }
@@ -1047,7 +1044,7 @@ public class JavaCodeTransform
      */
     private String jxrFilter( String line )
     {
-        JavaFile jf = null;
+        JavaFile jf;
 
         try
         {
@@ -1065,7 +1062,7 @@ public class JavaCodeTransform
             return line;
         }
 
-        Set<String> packages = new HashSet<String>();
+        Set<String> packages = new HashSet<>();
 
         // get the imported packages
         for ( ImportType importType : jf.getImportTypes() )
@@ -1109,11 +1106,8 @@ public class JavaCodeTransform
                     // if there is a "." in the string then we have to assume
                     // it is a package.
 
-                    String fqpnPackage = null;
-                    String fqpnClass = null;
-
-                    fqpnPackage = wordName.substring( 0, wordName.lastIndexOf( '.' ) );
-                    fqpnClass = wordName.substring( wordName.lastIndexOf( '.' ) + 1, wordName.length() );
+                    String fqpnPackage = wordName.substring( 0, wordName.lastIndexOf( '.' ) );
+                    String fqpnClass = wordName.substring( wordName.lastIndexOf( '.' ) + 1 );
 
                     // note. since this is a reference to a full package then
                     // it doesn't have to be explicitly imported so this information
@@ -1261,7 +1255,7 @@ public class JavaCodeTransform
         if ( start != -1 )
         {
             // filter out this packagename...
-            String pkg = line.substring( start, line.length() ).trim();
+            String pkg = line.substring( start ).trim();
 
             // specify the classname of this import if any.
             String classname = null;
@@ -1274,7 +1268,7 @@ public class JavaCodeTransform
             {
                 // this is an explicit Class import
 
-                String packageLine = pkg.toString();
+                String packageLine = pkg;
 
                 // This catches a boundary problem where you have something like:
                 //
@@ -1334,9 +1328,9 @@ public class JavaCodeTransform
      */
     private boolean isInvalidURICharacter( char c )
     {
-        for ( int i = 0; i < VALID_URI_CHARS.length; ++i )
+        for ( char validUriChar : VALID_URI_CHARS )
         {
-            if ( VALID_URI_CHARS[i] == c )
+            if ( validUriChar == c )
             {
                 return false;
             }

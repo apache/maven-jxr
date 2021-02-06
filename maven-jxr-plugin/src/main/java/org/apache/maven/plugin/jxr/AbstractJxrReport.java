@@ -191,7 +191,7 @@ public abstract class AbstractJxrReport
      */
     protected List<String> pruneSourceDirs( List<String> sourceDirs )
     {
-        List<String> pruned = new ArrayList<String>( sourceDirs.size() );
+        List<String> pruned = new ArrayList<>( sourceDirs.size() );
         for ( String dir : sourceDirs )
         {
             if ( !pruned.contains( dir ) && hasSources( new File( dir ) ) )
@@ -265,7 +265,7 @@ public abstract class AbstractJxrReport
      * @throws org.apache.maven.jxr.JxrException
      */
     private void createXref( Locale locale, String destinationDirectory, List<String> sourceDirs )
-        throws IOException, JxrException, MavenReportException
+        throws IOException, JxrException
     {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager( fileManager );
@@ -549,11 +549,7 @@ public abstract class AbstractJxrReport
             {
                 createXref( locale, getDestinationDirectory(), sourceDirs );
             }
-            catch ( JxrException e )
-            {
-                throw new MavenReportException( "Error while generating the HTML source code of the project.", e );
-            }
-            catch ( IOException e )
+            catch ( JxrException | IOException e )
             {
                 throw new MavenReportException( "Error while generating the HTML source code of the project.", e );
             }
@@ -565,7 +561,6 @@ public abstract class AbstractJxrReport
      * Determine the templateDir to use, given javadocTemplatesVersion
      *
      * @return
-     * @throws org.apache.maven.reporting.MavenReportException if javadocTemplatesVersion cannot be parsed
      */
     private String getTemplateDir()
     {
@@ -618,7 +613,7 @@ public abstract class AbstractJxrReport
      */
     protected List<String> constructSourceDirs()
     {
-        List<String> sourceDirs = new ArrayList<String>( getSourceRoots() );
+        List<String> sourceDirs = new ArrayList<>( getSourceRoots() );
         if ( isAggregate() )
         {
             for ( MavenProject project : reactorProjects )

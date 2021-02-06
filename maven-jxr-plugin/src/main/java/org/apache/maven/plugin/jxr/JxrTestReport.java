@@ -64,7 +64,7 @@ public class JxrTestReport
     @Override
     protected List<String> getSourceRoots()
     {
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
 
         if ( !"pom".equals( getProject().getPackaging().toLowerCase( Locale.US ) ) )
         {
@@ -85,7 +85,7 @@ public class JxrTestReport
     @Override
     protected List<String> getSourceRoots( MavenProject project )
     {
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
 
         if ( project.getExecutionProject() != null )
         {

@@ -93,7 +93,7 @@ public class SimpleWordTokenizer
     {
         Matcher matcher = NONBREAKERS.matcher( line.substring( start ) );
 
-        List<StringEntry> words = new ArrayList<StringEntry>();
+        List<StringEntry> words = new ArrayList<>();
 
         while ( matcher.find() )
         {
@@ -129,10 +129,10 @@ public class SimpleWordTokenizer
     private static boolean isBreaker( char c )
     {
 
-        for ( int i = 0; i < BREAKERS.length; ++i )
+        for ( char breaker : BREAKERS )
         {
 
-            if ( BREAKERS[i] == c )
+            if ( breaker == c )
             {
                 return true;
             }

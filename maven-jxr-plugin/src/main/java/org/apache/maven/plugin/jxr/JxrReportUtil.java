@@ -20,15 +20,8 @@ package org.apache.maven.plugin.jxr;
  */
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
@@ -36,14 +29,8 @@ import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Site;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.wagon.repository.Repository;
-import org.apache.xpath.XPathAPI;
-import org.apache.xpath.objects.XObject;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 /**
  * Utility class for the jxr report.
  *
@@ -69,10 +56,8 @@ public class JxrReportUtil
         throws IOException
     {
         // first check conf for obsolete aggregate param.
-        // CHECKSTYLE_OFF: LineLength
-        boolean javadocAggregate =
-            Boolean.valueOf( JxrReportUtil.getMavenJavadocPluginBasicOption( project, "aggregate", "false" ) ).booleanValue();
-        // CHECKSTYLE_ON: LineLength
+        boolean javadocAggregate = Boolean.parseBoolean(
+                JxrReportUtil.getMavenJavadocPluginBasicOption( project, "aggregate", "false" ) );
 
         if ( javadocAggregate )
         {
@@ -113,15 +98,9 @@ public class JxrReportUtil
                                                               String defaultValue )
         throws IOException
     {
-        List<Object> plugins = new ArrayList<Object>();
-        for ( Iterator<?> it = project.getModel().getReporting().getPlugins().iterator(); it.hasNext(); )
-        {
-            plugins.add( it.next() );
-        }
-        for ( Iterator<?> it = project.getModel().getBuild().getPlugins().iterator(); it.hasNext(); )
-        {
-            plugins.add( it.next() );
-        }
+        List<Object> plugins = new ArrayList<>();
+        plugins.addAll( project.getModel().getReporting().getPlugins() );
+        plugins.addAll( project.getModel().getBuild().getPlugins() );
 
         String pluginArtifactId = MAVEN_JAVADOC_PLUGIN_ARTIFACT_ID;
         for ( Object next : plugins )
@@ -132,10 +111,8 @@ public class JxrReportUtil
             {
                 Plugin plugin = (Plugin) next;
 
-                // CHECKSTYLE_OFF: LineLength
                 // using out-of-box Maven plugins
                 if ( !isReportPluginMavenJavadoc( pluginArtifactId, plugin ) )
-                // CHECKSTYLE_ON: LineLength
                 {
                     continue;
                 }
@@ -161,34 +138,10 @@ public class JxrReportUtil
                 continue;
             }
 
-            try
+            String attribute = pluginConf.getAttribute( optionName );
+            if ( StringUtils.isNotEmpty( attribute ) )
             {
-                StringReader reader = new StringReader( pluginConf.toString() );
-                InputSource source = new InputSource( reader );
-                Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse( source );
-
-                XObject obj = XPathAPI.eval( doc, "//configuration/" + optionName );
-
-                if ( StringUtils.isNotEmpty( obj.toString() ) )
-                {
-                    return obj.toString();
-                }
-            }
-            catch ( SAXException e )
-            {
-                throw new IOException( "SAXException: " + e.getMessage() );
-            }
-            catch ( ParserConfigurationException e )
-            {
-                throw new IOException( "ParserConfigurationException: " + e.getMessage() );
-            }
-            catch ( FactoryConfigurationError e )
-            {
-                throw new IOException( "FactoryConfigurationError: " + e.getMessage() );
-            }
-            catch ( TransformerException e )
-            {
-                throw new IOException( "TransformerException: " + e.getMessage() );
+                return attribute;
             }
         }
 
@@ -204,17 +157,11 @@ public class JxrReportUtil
     protected static List<?> getMavenJavadocPlugins( MavenProject project )
         throws IOException
     {
-        List<Object> plugins = new ArrayList<Object>();
-        for ( Iterator<?> it = project.getModel().getReporting().getPlugins().iterator(); it.hasNext(); )
-        {
-            plugins.add( it.next() );
-        }
-        for ( Iterator<?> it = project.getModel().getBuild().getPlugins().iterator(); it.hasNext(); )
-        {
-            plugins.add( it.next() );
-        }
+        List<Object> plugins = new ArrayList<>();
+        plugins.addAll( project.getModel().getReporting().getPlugins() );
+        plugins.addAll( project.getModel().getBuild().getPlugins() );
 
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
 
         String pluginArtifactId = MAVEN_JAVADOC_PLUGIN_ARTIFACT_ID;
         for ( Object next : plugins )
