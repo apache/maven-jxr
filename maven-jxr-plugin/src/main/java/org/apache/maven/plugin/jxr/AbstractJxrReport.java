@@ -26,7 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -209,10 +209,10 @@ public abstract class AbstractJxrReport
     {
         // wanna know if Javadoc is being generated
         // TODO: what if it is not part of the site though, and just on the command line?
-        Collection<ReportPlugin> plugin = project.getReportPlugins();
-        if ( plugin != null )
+        if ( project.getModel().getReporting() != null )
         {
-            for ( ReportPlugin reportPlugin : plugin )
+            for ( ReportPlugin reportPlugin : Collections.unmodifiableList(
+                    project.getModel().getReporting().getPlugins() ) )
             {
                 if ( "maven-javadoc-plugin".equals( reportPlugin.getArtifactId() ) )
                 {
