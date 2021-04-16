@@ -27,8 +27,12 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Main entry point into Maven used to kick off the XReference code building.
@@ -45,13 +49,8 @@ public class JXR
      * Handles taking .java files and changing them into html. "More than meets
      * the eye!" :)
      */
-    private final JavaCodeTransform transformer;
+    private Map<String, CodeTransformer> transformers;
     
-    /**
-     * The default list of include patterns to use.
-     */
-    private static final String[] DEFAULT_INCLUDES = { "**/*.java" };
-
     /**
      * Path to destination.
      */
@@ -68,26 +67,20 @@ public class JXR
      */
     private Path javadocLinkDir;
 
-
-    /**
-     * The revision of the module currently being processed.
-     */
-    private String revision;
-
     /**
      * The list of exclude patterns to use.
      */
-    private String[] excludes = null;
+    private String[] excludes;
 
     /**
      * The list of include patterns to use.
      */
-    private String[] includes = DEFAULT_INCLUDES;
+    private String[] includes;
     
-    public JXR( PackageManager pkgmgr, JavaCodeTransform transformer )
+    public JXR( PackageManager pkgmgr, Map<String, CodeTransformer> transformers )
     {
         this.pkgmgr = pkgmgr;
-        this.transformer = transformer;
+        this.transformers = transformers;
     }
 
     /**
@@ -98,56 +91,70 @@ public class JXR
      * @param bottom
      * @throws IOException
      */
-    public void processPath( PackageManager packageManager, Path sourceDir, String bottom )
+    public void processPath( Path sourceDir, String bottom )
         throws IOException
     {
+        
         DirectoryScanner ds = new DirectoryScanner();
         // I'm not sure why we don't use the directoryScanner in packageManager,
         // but since we don't we need to set includes/excludes here as well
         ds.setExcludes( excludes );
-        ds.setIncludes( includes );
+        if ( includes != null )
+        {
+            ds.setIncludes( includes );
+        }
+        else
+        {
+            Set<String> transformerIncludes = new HashSet<>();
+            for ( CodeTransformer transformer: transformers.values() )
+            {
+               transformerIncludes.addAll( transformer.getDefaultIncludes() ); 
+            }
+            ds.setIncludes( transformerIncludes.toArray( new String[0] ) );
+        }
         ds.addDefaultExcludes();
 
         ds.setBasedir( sourceDir.toString() );
         ds.scan();
 
         //now get the list of included files
-
         String[] files = ds.getIncludedFiles();
-
+        
+        Map<String, CodeTransformer> transformerForExtension = new HashMap<>();
+        
         for ( String file : files )
         {
             Path sourceFile = sourceDir.resolve( file );
+            
+            String fileExtension = getExtension( sourceFile );
 
-            if ( isJavaFile( sourceFile.toString() ) )
+            CodeTransformer transformer = transformerForExtension.get( fileExtension );
+            if ( !transformerForExtension.containsKey( fileExtension ) )
             {
-                String newFileName = file.replaceFirst( ".java$", ".html" );
+                for ( CodeTransformer ct : transformers.values() )
+                {
+                    if ( ct.canTransform( fileExtension ) )
+                    {
+                        transformer = ct;
+                        break;
+                    }
+                }
+                transformerForExtension.put( fileExtension, transformer );
+            }
+            
+            if ( transformer != null )
+            {
+                String newFileName = file.replaceFirst( fileExtension + '$', ".html" );
                 
-                transform( sourceFile, this.destDir.resolve( newFileName ), bottom );
+                transform( transformer, sourceFile, this.destDir.resolve( newFileName ), bottom );
             }
         }
     }
-
-    /**
-     * Check to see if the file is a Java source file.
-     *
-     * @param filename The name of the file to check
-     * @return <code>true</code> if the file is a Java file
-     */
-    public static boolean isJavaFile( String filename )
+    
+    private String getExtension( Path file ) 
     {
-        return filename.endsWith( ".java" );
-    }
-
-    /**
-     * Check to see if the file is an HTML file.
-     *
-     * @param filename The name of the file to check
-     * @return <code>true</code> if the file is an HTML file
-     */
-    public static boolean isHtmlFile( String filename )
-    {
-        return filename.endsWith( ".html" );
+        String fileName = file.getFileName().toString(); 
+        return fileName.substring( fileName.indexOf( '.' ) );
     }
 
     /**
@@ -192,14 +199,6 @@ public class JXR
     }
 
     /**
-     * @param revision
-     */
-    public void setRevision( String revision )
-    {
-        this.revision = revision;
-    }
-
-    /**
      * @param sourceDirs
      * @param templateDir
      * @param windowTitle
@@ -221,7 +220,7 @@ public class JXR
 
             pkgmgr.process( path );
 
-            processPath( pkgmgr, path, bottom );
+            processPath( path, bottom );
         }
 
         // once we have all the source files xref'd, create the index pages
@@ -246,15 +245,14 @@ public class JXR
      * @param bottom The bottom footer text just as in the package pages
      * @throws IOException Thrown if the transform can't happen for some reason.
      */
-    private void transform( Path sourceFile, Path destFile, String bottom )
+    private void transform( CodeTransformer transformer, Path sourceFile, Path destFile, String bottom )
         throws IOException
     {
         LOGGER.debug( sourceFile + " -> " + destFile );
 
         // get a relative link to the javadocs
         Path javadoc = javadocLinkDir != null ? getRelativeLink( destFile.getParent(), javadocLinkDir ) : null;
-        transformer.transform( sourceFile, destFile, locale, inputEncoding, outputEncoding, javadoc,
-            this.revision, bottom );
+        transformer.transform( sourceFile, destFile, locale, inputEncoding, outputEncoding, javadoc, bottom );
     }
 
     /**
@@ -280,17 +278,8 @@ public class JXR
         this.excludes = excludes;
     }
 
-
     public void setIncludes( String[] includes )
     {
-        if ( includes == null )
-        {
-            // We should not include non-java files, so we use a sensible default pattern
-            this.includes = DEFAULT_INCLUDES;
-        }
-        else
-        {
-            this.includes = includes;
-        }
+        this.includes = includes;
     }
 }

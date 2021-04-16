@@ -107,6 +107,12 @@ under the License.
       <artifactId>commons-lang3</artifactId>
       <version>3.8.1</version>
     </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+      <scope>provided</scope>
+    </dependency>
 
     <dependency>
       <groupId>junit</groupId>

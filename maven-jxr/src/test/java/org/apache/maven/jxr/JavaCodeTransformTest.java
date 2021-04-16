@@ -38,7 +38,7 @@ import org.junit.Test;
 public class JavaCodeTransformTest
 {
     /** JavaCodeTransform object under test */
-    private JavaCodeTransform codeTransform;
+    private CodeTransformer codeTransform;
 
     /**
      * Set up this test.
@@ -64,7 +64,7 @@ public class JavaCodeTransformTest
         multiline comment text
 
         */ codeTransform.transform( sourceFile, Paths.get( "target/JavaCodeTransformTest.html" ) // additional comment
-           , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "", "" );
+           , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "" );
         assertTrue( /**/ Files.exists( Paths.get( "target/JavaCodeTransformTest.html" ) ) );
     }
 
@@ -79,7 +79,7 @@ public class JavaCodeTransformTest
         assertTrue( Files.exists( sourceFile ) );
 
         codeTransform.transform( sourceFile, Paths.get( "target/EmptyClass.html" )
-            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "", "" );
+            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "" );
         assertTrue( Files.exists( Paths.get( "target/EmptyClass.html" ) ) );
     }
 
@@ -94,7 +94,7 @@ public class JavaCodeTransformTest
         assertTrue( Files.exists( sourceFile ) );
 
         codeTransform.transform( sourceFile, Paths.get( "target/ClassWithLink.html" )
-            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "", "" );
+            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "" );
         assertTrue( Files.exists( Paths.get( "target/ClassWithLink.html" ) ) );
 
         byte[] bytes = Files.readAllBytes( Paths.get( "target/ClassWithLink.html" ) );

@@ -32,6 +32,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.jxr.CodeTransformer;
 import org.apache.maven.jxr.JXR;
 import org.apache.maven.jxr.JavaCodeTransform;
 import org.apache.maven.jxr.JxrException;
@@ -269,9 +270,9 @@ public abstract class AbstractJxrReport
     {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager( fileManager );
-        JavaCodeTransform codeTransform = new JavaCodeTransform( packageManager, fileManager );
+        CodeTransformer codeTransform = new JavaCodeTransform( packageManager, fileManager );
         
-        JXR jxr = new JXR( packageManager, codeTransform );
+        JXR jxr = new JXR( packageManager, Collections.singletonMap( "java", codeTransform ) );
         jxr.setDest( Paths.get( destinationDirectory ) );
         if ( StringUtils.isEmpty( inputEncoding ) )
         {
@@ -282,7 +283,6 @@ public abstract class AbstractJxrReport
         jxr.setInputEncoding( inputEncoding );
         jxr.setLocale( locale );
         jxr.setOutputEncoding( getOutputEncoding() );
-        jxr.setRevision( "HEAD" );
         jxr.setJavadocLinkDir( getJavadocLocation() );
         // Set include/exclude patterns on the jxr instance
         if ( excludes != null && !excludes.isEmpty() )
