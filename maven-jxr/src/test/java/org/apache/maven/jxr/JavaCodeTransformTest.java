@@ -28,6 +28,8 @@ import java.nio.file.Paths;
 import java.util.Locale;
 
 import org.apache.maven.jxr.pacman.FileManager;
+import org.apache.maven.jxr.pacman.JavaFile;
+import org.apache.maven.jxr.pacman.JavaFileImpl;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +41,8 @@ public class JavaCodeTransformTest
 {
     /** JavaCodeTransform object under test */
     private CodeTransformer codeTransform;
+    
+    private FileManager fileManager;
 
     /**
      * Set up this test.
@@ -46,7 +50,7 @@ public class JavaCodeTransformTest
     @Before
     public void setUp() throws Exception
     {
-        FileManager fileManager = new FileManager();
+        fileManager = new FileManager();
         codeTransform = new JavaCodeTransform( new PackageManager( fileManager ), fileManager);
     }
 
@@ -59,12 +63,13 @@ public class JavaCodeTransformTest
         throws Exception // single line despite /*
     {
         Path sourceFile = Paths.get( "src/test/java/org/apache/maven/jxr/JavaCodeTransformTest.java" );
+        JavaFile javaFile = new JavaFileImpl( sourceFile, "ISO-8859-1" );
         assertTrue( /* mid-line comment */ Files.exists( sourceFile ) ); /*
 
         multiline comment text
 
-        */ codeTransform.transform( sourceFile, Paths.get( "target/JavaCodeTransformTest.html" ) // additional comment
-           , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "" );
+        */ codeTransform.transform( javaFile, Paths.get( "target/JavaCodeTransformTest.html" ) // additional comment
+           , Locale.ENGLISH, "ISO-8859-1", Paths.get( "." ), "" );
         assertTrue( /**/ Files.exists( Paths.get( "target/JavaCodeTransformTest.html" ) ) );
     }
 
@@ -76,10 +81,11 @@ public class JavaCodeTransformTest
         throws Exception
     {
         Path sourceFile = Paths.get( "src/test/resources/EmptyClass.java" );
+        JavaFile javaFile = new JavaFileImpl( sourceFile, "ISO-8859-1" );
         assertTrue( Files.exists( sourceFile ) );
 
-        codeTransform.transform( sourceFile, Paths.get( "target/EmptyClass.html" )
-            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "" );
+        codeTransform.transform( javaFile, Paths.get( "target/EmptyClass.html" )
+            , Locale.ENGLISH, "ISO-8859-1", Paths.get( "." ), "" );
         assertTrue( Files.exists( Paths.get( "target/EmptyClass.html" ) ) );
     }
 
@@ -91,10 +97,11 @@ public class JavaCodeTransformTest
         throws Exception
     {
         Path sourceFile = Paths.get( "src/test/resources/ClassWithLink.java" );
+        JavaFile javaFile = new JavaFileImpl( sourceFile, "ISO-8859-1" );
         assertTrue( Files.exists( sourceFile ) );
 
-        codeTransform.transform( sourceFile, Paths.get( "target/ClassWithLink.html" )
-            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "" );
+        codeTransform.transform( javaFile, Paths.get( "target/ClassWithLink.html" )
+            , Locale.ENGLISH, "ISO-8859-1", Paths.get( "." ), "" );
         assertTrue( Files.exists( Paths.get( "target/ClassWithLink.html" ) ) );
 
         byte[] bytes = Files.readAllBytes( Paths.get( "target/ClassWithLink.html" ) );

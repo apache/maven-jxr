@@ -1,33 +1,5 @@
 package org.apache.maven.jxr;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Serializable;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 /*
  * CodeViewer.java
  * CoolServlets.com
@@ -57,6 +29,34 @@ import javax.inject.Singleton;
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.jxr.pacman.ClassType;
@@ -95,8 +95,8 @@ import org.apache.maven.jxr.util.StringEntry;
  *                                  importFilter
  * </pre>
  */
+// No Singleton as it holds state during transformation
 @Named( "java" )
-@Singleton
 public class JavaCodeTransform
     implements Serializable, CodeTransformer
 {
@@ -188,7 +188,7 @@ public class JavaCodeTransform
     /**
      * Set the filename that is currently being processed.
      */
-    private Path currentFilename = null;
+    private JavaFile currentSourceFile;
 
     /**
      * The output encoding
@@ -209,11 +209,6 @@ public class JavaCodeTransform
      * Package Manager for this project.
      */
     private final PackageManager packageManager;
-
-    /**
-     * current file manager
-     */
-    private final FileManager fileManager;
 
     {
         reservedWords.put( "abstract", "abstract" );
@@ -273,10 +268,10 @@ public class JavaCodeTransform
         reservedWords.put( "implements", "implements" );
     }
 
+    @Inject
     public JavaCodeTransform( PackageManager packageManager, FileManager fileManager )
     {
         this.packageManager = packageManager;
-        this.fileManager = fileManager;
     }
 
     @Override
@@ -335,28 +330,18 @@ public class JavaCodeTransform
 
         // title ("classname xref")
         out.print( "<title>" );
-        try
+        JavaFile javaFile = this.currentSourceFile;
+        // Use the name of the file instead of the class to handle inner classes properly
+        if ( javaFile.getClassType() != null && javaFile.getClassType().getFilename() != null )
         {
-            JavaFile javaFile = fileManager.getFile( this.getCurrentFilename() );
-            // Use the name of the file instead of the class to handle inner classes properly
-            if ( javaFile.getClassType() != null && javaFile.getClassType().getFilename() != null )
-            {
-                out.print( javaFile.getClassType().getFilename() );
-            }
-            else
-            {
-                out.print( this.getCurrentFilename() );
-            }
-            out.print( ' ' );
+            out.print( javaFile.getClassType().getFilename() );
         }
-        catch ( IOException e )
+        else
         {
-            e.printStackTrace();
+            out.print( javaFile.getPath().toString() );
         }
-        finally
-        {
-            out.println( "xref</title>" );
-        }
+        out.print( ' ' );
+        out.println( "xref</title>" );
 
         // stylesheet link
         out.print( "<link type=\"text/css\" rel=\"stylesheet\" href=\"" );
@@ -449,16 +434,16 @@ public class JavaCodeTransform
      * @throws IOException
      */
     @Override
-    public final void transform( Path sourcefile, Path destfile, Locale locale, String inputEncoding,
+    public final void transform( JavaFile sourcefile, Path destfile, Locale locale,
                                  String outputEncoding, Path javadocLinkDir, String bottom )
         throws IOException
     {
-        this.setCurrentFilename( sourcefile );
+        this.setCurrentSourceFile( sourcefile );
 
         // make sure that the parent directories exist...
         Files.createDirectories( destfile.getParent() );
 
-        try ( Reader fr = getReader( sourcefile, inputEncoding ); Writer fw = getWriter( destfile, outputEncoding ) )
+        try ( Reader fr = getReader( sourcefile.getPath(), sourcefile.getEncoding() ); Writer fw = getWriter( destfile, outputEncoding ) )
         {
             transform( fr, fw, locale, outputEncoding, javadocLinkDir, bottom );
         }
@@ -499,24 +484,15 @@ public class JavaCodeTransform
         return fr;
     }
 
-    /**
-     * Get the current filename
-     *
-     * @return String
-     */
-    private Path getCurrentFilename()
-    {
-        return this.currentFilename;
-    }
 
-    /**
-     * Set the current filename
-     *
-     * @param filename String
-     */
-    private void setCurrentFilename( Path filename )
+    private JavaFile getCurrentSourceFile()
     {
-        this.currentFilename = filename;
+        return currentSourceFile;
+    }
+    
+    private void setCurrentSourceFile( JavaFile currentSourceFile )
+    {
+        this.currentSourceFile = currentSourceFile;
     }
 
     /**
@@ -528,17 +504,7 @@ public class JavaCodeTransform
     {
         StringBuilder buff = new StringBuilder();
 
-        JavaFile jf;
-
-        try
-        {
-            jf = fileManager.getFile( this.getCurrentFilename() );
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-            return null;
-        }
+        JavaFile jf = getCurrentSourceFile();
 
         String current = jf.getPackageType().getName();
 
@@ -987,27 +953,20 @@ public class JavaCodeTransform
             // get the URI to get Javadoc info.
             Path javadocURI = javadocLinkDir;
 
-            try
+            JavaFile jf = this.getCurrentSourceFile();
+
+            javadocURI = javadocLinkDir.resolve( jf.getPackageType().getName().replace( '.', '/' ) )
+                            ;
+            // Use the name of the file instead of the class to handle inner classes properly
+            if ( jf.getClassType() != null && jf.getClassType().getFilename() != null )
             {
-                JavaFile jf = fileManager.getFile( this.getCurrentFilename() );
-
-                javadocURI = javadocLinkDir.resolve( jf.getPackageType().getName().replace( '.', '/' ) )
-                                ;
-                // Use the name of the file instead of the class to handle inner classes properly
-                if ( jf.getClassType() != null && jf.getClassType().getFilename() != null )
-                {
-                    javadocURI = javadocURI.resolve( jf.getClassType().getFilename() + ".html" );
-                }
-
-                String javadocHREF = "<a href=\"" + javadocURI.toString().replace( '\\', '/' ) + "\">View Javadoc</a>";
-
-                // get the generation time...
-                overview.append( javadocHREF );
+                javadocURI = javadocURI.resolve( jf.getClassType().getFilename() + ".html" );
             }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
+
+            String javadocHREF = "<a href=\"" + javadocURI.toString().replace( '\\', '/' ) + "\">View Javadoc</a>";
+
+            // get the generation time...
+            overview.append( javadocHREF );
 
             overview.append( "</div>" );
         }
@@ -1045,23 +1004,7 @@ public class JavaCodeTransform
      */
     private String jxrFilter( String line )
     {
-        JavaFile jf;
-
-        try
-        {
-            // if the current file isn't set then just return
-            if ( this.getCurrentFilename() == null )
-            {
-                return line;
-            }
-
-            jf = fileManager.getFile( this.getCurrentFilename() );
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-            return line;
-        }
+        JavaFile jf = getCurrentSourceFile();
 
         Set<String> packages = new HashSet<>();
 

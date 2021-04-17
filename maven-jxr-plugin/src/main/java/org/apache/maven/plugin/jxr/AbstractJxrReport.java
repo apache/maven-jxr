@@ -272,7 +272,7 @@ public abstract class AbstractJxrReport
         PackageManager packageManager = new PackageManager( fileManager );
         CodeTransformer codeTransform = new JavaCodeTransform( packageManager, fileManager );
         
-        JXR jxr = new JXR( packageManager, Collections.singletonMap( "java", codeTransform ) );
+        JXR jxr = new JXR( packageManager, fileManager, Collections.singletonMap( "java", codeTransform ) );
         jxr.setDest( Paths.get( destinationDirectory ) );
         if ( StringUtils.isEmpty( inputEncoding ) )
         {

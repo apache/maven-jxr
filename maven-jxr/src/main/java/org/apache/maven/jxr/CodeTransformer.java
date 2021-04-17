@@ -24,6 +24,8 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Set;
 
+import org.apache.maven.jxr.pacman.JavaFile;
+
 /**
  * The code transformer, responsible to turn code into JXR documentation
  * 
@@ -44,7 +46,7 @@ public interface CodeTransformer
      * @param bottom TODO
      * @throws IOException
      */
-    void transform( Path sourcefile, Path destfile, Locale locale, String inputEncoding, String outputEncoding,
+    void transform( JavaFile sourcefile, Path destfile, Locale locale, String outputEncoding,
                     Path javadocLinkDir, String bottom )
         throws IOException;
     

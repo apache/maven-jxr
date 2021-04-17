@@ -49,7 +49,7 @@ public class IncludeExcludeTest
         PackageManager packageManager = new PackageManager( fileManager );
         CodeTransformer codeTransform = new JavaCodeTransform( packageManager, fileManager );
         
-        jxr = new JXR( packageManager, Collections.singletonMap( "java", codeTransform ) );
+        jxr = new JXR( packageManager, fileManager, Collections.singletonMap( "java", codeTransform ) );
         jxr.setDest( Paths.get( "target" ) );
         jxr.setInputEncoding( "ISO-8859-1" );
         jxr.setOutputEncoding( "ISO-8859-1" );

@@ -20,6 +20,7 @@ package org.apache.maven.jxr;
  */
 
 import org.apache.maven.jxr.ant.DirectoryScanner;
+import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,8 @@ public class JXR
     private static final Logger LOGGER = LoggerFactory.getLogger( JXR.class );
     
     private final PackageManager pkgmgr;
+    
+    private final FileManager fileManager;
 
     /**
      * Handles taking .java files and changing them into html. "More than meets
@@ -77,9 +80,10 @@ public class JXR
      */
     private String[] includes;
     
-    public JXR( PackageManager pkgmgr, Map<String, CodeTransformer> transformers )
+    public JXR( PackageManager pkgmgr, FileManager fileManager, Map<String, CodeTransformer> transformers )
     {
         this.pkgmgr = pkgmgr;
+        this.fileManager = fileManager;
         this.transformers = transformers;
     }
 
@@ -249,10 +253,12 @@ public class JXR
         throws IOException
     {
         LOGGER.debug( sourceFile + " -> " + destFile );
+        
+        fileManager.getFile( sourceFile );
 
         // get a relative link to the javadocs
         Path javadoc = javadocLinkDir != null ? getRelativeLink( destFile.getParent(), javadocLinkDir ) : null;
-        transformer.transform( sourceFile, destFile, locale, inputEncoding, outputEncoding, javadoc, bottom );
+        transformer.transform( fileManager.getFile( sourceFile ), destFile, locale, outputEncoding, javadoc, bottom );
     }
 
     /**
