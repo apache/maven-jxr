@@ -124,7 +124,8 @@ public class JXR
         //now get the list of included files
         String[] files = ds.getIncludedFiles();
         
-        Map<String, CodeTransformer> transformerForExtension = new HashMap<>();
+        // < file-extension, named key >, this way we will let DI decide if we get the singleton or a new instance 
+        Map<String, String> transformerForExtension = new HashMap<>();
         
         for ( String file : files )
         {
@@ -132,25 +133,26 @@ public class JXR
             
             String fileExtension = getExtension( sourceFile );
 
-            CodeTransformer transformer = transformerForExtension.get( fileExtension );
+            String transformerName = transformerForExtension.get( fileExtension );
             if ( !transformerForExtension.containsKey( fileExtension ) )
             {
-                for ( CodeTransformer ct : transformers.values() )
+                for ( Map.Entry<String, CodeTransformer> ct : transformers.entrySet() )
                 {
-                    if ( ct.canTransform( fileExtension ) )
+                    if ( ct.getValue().canTransform( fileExtension ) )
                     {
-                        transformer = ct;
+                        transformerName = ct.getKey();
                         break;
                     }
                 }
-                transformerForExtension.put( fileExtension, transformer );
+                transformerForExtension.put( fileExtension, transformerName );
             }
             
-            if ( transformer != null )
+            if ( transformerName != null )
             {
                 String newFileName = file.replaceFirst( fileExtension + '$', ".html" );
                 
-                transform( transformer, sourceFile, this.destDir.resolve( newFileName ), bottom );
+                transform( transformers.get( transformerName ), sourceFile, this.destDir.resolve( newFileName ),
+                           bottom );
             }
         }
     }
@@ -254,8 +256,6 @@ public class JXR
     {
         LOGGER.debug( sourceFile + " -> " + destFile );
         
-        fileManager.getFile( sourceFile );
-
         // get a relative link to the javadocs
         Path javadoc = javadocLinkDir != null ? getRelativeLink( destFile.getParent(), javadocLinkDir ) : null;
         transformer.transform( fileManager.getFile( sourceFile ), destFile, locale, outputEncoding, javadoc, bottom );
