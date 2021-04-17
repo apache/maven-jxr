@@ -51,7 +51,7 @@ public class JavaCodeTransformTest
     public void setUp() throws Exception
     {
         fileManager = new FileManager();
-        codeTransform = new JavaCodeTransform( new PackageManager( fileManager ), fileManager);
+        codeTransform = new JavaCodeTransform( new PackageManager( fileManager ) );
     }
 
     /**

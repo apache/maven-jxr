@@ -60,7 +60,6 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.jxr.pacman.ClassType;
-import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.ImportType;
 import org.apache.maven.jxr.pacman.JavaFile;
 import org.apache.maven.jxr.pacman.PackageManager;
@@ -269,7 +268,7 @@ public class JavaCodeTransform
     }
 
     @Inject
-    public JavaCodeTransform( PackageManager packageManager, FileManager fileManager )
+    public JavaCodeTransform( PackageManager packageManager )
     {
         this.packageManager = packageManager;
     }

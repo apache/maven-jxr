@@ -270,7 +270,7 @@ public abstract class AbstractJxrReport
     {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager( fileManager );
-        CodeTransformer codeTransform = new JavaCodeTransform( packageManager, fileManager );
+        CodeTransformer codeTransform = new JavaCodeTransform( packageManager );
         
         JXR jxr = new JXR( packageManager, fileManager, Collections.singletonMap( "java", codeTransform ) );
         jxr.setDest( Paths.get( destinationDirectory ) );

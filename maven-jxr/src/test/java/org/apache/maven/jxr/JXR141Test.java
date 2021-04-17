@@ -46,7 +46,7 @@ public class JXR141Test
     {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager( fileManager );
-        CodeTransformer codeTransform = new JavaCodeTransform( packageManager, fileManager );
+        CodeTransformer codeTransform = new JavaCodeTransform( packageManager );
         
         jxr = new JXR( packageManager, fileManager, Collections.singletonMap( "java", codeTransform ) );    
     }

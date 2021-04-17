@@ -35,7 +35,7 @@ public class JxrBeanTest
     public void setUp()
     {   FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager( fileManager );
-        CodeTransformer codeTransform = new JavaCodeTransform( packageManager, fileManager );
+        CodeTransformer codeTransform = new JavaCodeTransform( packageManager );
         jxrBean = new JXR( packageManager, fileManager, Collections.singletonMap( "java", codeTransform ) );
         jxrBean.setDest( Paths.get( "target" ) );
         jxrBean.setInputEncoding( "ISO-8859-1" );
