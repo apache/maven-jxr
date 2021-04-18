@@ -23,13 +23,11 @@ package org.apache.maven.jxr.util;
  * A StringEntry represents a value found by the tokenizer. The index is where
  * this StringEntry was found in the source string
  */
-public class StringEntry
-    implements Comparable<StringEntry>
+public final class StringEntry
 {
+    private final String value;
 
-    private String value = null;
-
-    private int index = 0;
+    private final int index;
 
     /**
      * Constructor for the StringEntry object
@@ -60,18 +58,5 @@ public class StringEntry
     {
         return this.value;
     }
-
-    /**
-     * Compare two objects for equality.
-     */
-    @Override
-    public int compareTo( StringEntry se )
-    {
-        //right now only sort by the index.
-
-        return Integer.compare( se.getIndex(), this.getIndex() );
-
-    }
-
 }
 
