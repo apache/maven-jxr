@@ -26,12 +26,12 @@ under the License.
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
     <version>34</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <groupId>org.apache.maven.jxr</groupId>
   <artifactId>jxr</artifactId>
-  <version>3.1.1-SNAPSHOT</version>
+  <version>3.1.1</version>
   <packaging>pom</packaging>
 
   <name>Maven JXR Parent</name>
@@ -44,7 +44,7 @@ under the License.
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-jxr.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-jxr.git</developerConnection>
     <url>https://github.com/apache/maven-jxr/tree/${project.scm.tag}</url>
-    <tag>HEAD</tag>
+    <tag>jxr-3.1.1</tag>
   </scm>
 
   <issueManagement>
@@ -69,7 +69,7 @@ under the License.
     <surefire.version>2.22.2</surefire.version>
     <mavenPluginToolsVersion>3.6.0</mavenPluginToolsVersion>
     <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
-    <project.build.outputTimestamp>2020-05-23T14:54:38Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2021-04-18T19:02:45Z</project.build.outputTimestamp>
   </properties>
 
   <modules>
