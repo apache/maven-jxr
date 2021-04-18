@@ -19,6 +19,7 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,9 +43,9 @@ public abstract class JavaFile
 
     private final Path path;
 
-    private final String encoding;
+    private final Charset encoding;
     
-    protected JavaFile(  Path path, String encoding )
+    protected JavaFile(  Path path, Charset encoding )
     {
         this.path = path;
         this.encoding = encoding;
@@ -137,7 +138,7 @@ public abstract class JavaFile
     /**
      * Gets the encoding attribute of the JavaFile object
      */
-    public String getEncoding()
+    public Charset getEncoding()
     {
         return this.encoding;
     }

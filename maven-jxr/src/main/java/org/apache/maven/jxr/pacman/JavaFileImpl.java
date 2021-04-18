@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -45,7 +46,7 @@ public class JavaFileImpl
      * @param encoding
      * @throws IOException
      */
-    public JavaFileImpl( Path path, String encoding )
+    public JavaFileImpl( Path path, Charset encoding )
         throws IOException
     {
         super( path, encoding );

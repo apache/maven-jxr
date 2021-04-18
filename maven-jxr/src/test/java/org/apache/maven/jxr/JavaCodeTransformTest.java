@@ -63,7 +63,7 @@ public class JavaCodeTransformTest
         throws Exception // single line despite /*
     {
         Path sourceFile = Paths.get( "src/test/java/org/apache/maven/jxr/JavaCodeTransformTest.java" );
-        JavaFile javaFile = new JavaFileImpl( sourceFile, "ISO-8859-1" );
+        JavaFile javaFile = new JavaFileImpl( sourceFile, StandardCharsets.ISO_8859_1 );
         assertTrue( /* mid-line comment */ Files.exists( sourceFile ) ); /*
 
         multiline comment text
@@ -81,7 +81,7 @@ public class JavaCodeTransformTest
         throws Exception
     {
         Path sourceFile = Paths.get( "src/test/resources/EmptyClass.java" );
-        JavaFile javaFile = new JavaFileImpl( sourceFile, "ISO-8859-1" );
+        JavaFile javaFile = new JavaFileImpl( sourceFile, StandardCharsets.ISO_8859_1 );
         assertTrue( Files.exists( sourceFile ) );
 
         codeTransform.transform( javaFile, Paths.get( "target/EmptyClass.html" )
@@ -97,7 +97,7 @@ public class JavaCodeTransformTest
         throws Exception
     {
         Path sourceFile = Paths.get( "src/test/resources/ClassWithLink.java" );
-        JavaFile javaFile = new JavaFileImpl( sourceFile, "ISO-8859-1" );
+        JavaFile javaFile = new JavaFileImpl( sourceFile, StandardCharsets.ISO_8859_1 );
         assertTrue( Files.exists( sourceFile ) );
 
         codeTransform.transform( javaFile, Paths.get( "target/ClassWithLink.html" )

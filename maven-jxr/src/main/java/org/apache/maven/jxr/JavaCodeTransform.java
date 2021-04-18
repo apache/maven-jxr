@@ -44,6 +44,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -468,7 +469,7 @@ public class JavaCodeTransform
         return fw;
     }
 
-    private Reader getReader( Path sourcefile, String inputEncoding )
+    private Reader getReader( Path sourcefile, Charset inputEncoding )
         throws IOException
     {
         Reader fr;

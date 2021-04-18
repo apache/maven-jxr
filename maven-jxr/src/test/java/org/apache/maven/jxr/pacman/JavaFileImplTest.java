@@ -22,6 +22,7 @@ package org.apache.maven.jxr.pacman;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
@@ -31,9 +32,9 @@ public class JavaFileImplTest {
     @Test
     public void testJXR_135_lotsOfNested() throws IOException
     {
-        JavaFileImpl javaFile = new JavaFileImpl( Paths.get(
-                "src/test/resources/jxr135/org/apache/maven/jxr/pacman/ClassWithNested.java" ),
-                "UTF-8" );
+        JavaFileImpl javaFile =
+            new JavaFileImpl( Paths.get( "src/test/resources/jxr135/org/apache/maven/jxr/pacman/ClassWithNested.java" ),
+                              StandardCharsets.UTF_8 );
         final Iterator<ClassType> classTypes = javaFile.getClassTypes().iterator();
         assertEquals( "ClassWithNested", classTypes.next().getName() );
         assertEquals( "ClassWithNested.NestedInterface", classTypes.next().getName() );

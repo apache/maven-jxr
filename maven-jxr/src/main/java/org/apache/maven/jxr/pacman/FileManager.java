@@ -20,6 +20,7 @@ package org.apache.maven.jxr.pacman;
  */
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class FileManager
 {
     private Map<Path, JavaFile> files = new HashMap<>();
 
-    private String encoding = null;
+    private Charset encoding = null;
 
     /**
      * Get a file from it's name. If the file does not exist within the
@@ -73,7 +74,7 @@ public class FileManager
      *
      * @param encoding encoding of source files
      */
-    public void setEncoding( String encoding )
+    public void setEncoding( Charset encoding )
     {
         this.encoding = encoding;
     }
@@ -83,7 +84,7 @@ public class FileManager
      *
      * @see #setEncoding(String)
      */
-    public String getEncoding()
+    public Charset getEncoding()
     {
         return encoding;
     }
