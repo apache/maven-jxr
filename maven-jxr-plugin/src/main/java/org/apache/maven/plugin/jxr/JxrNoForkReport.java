@@ -25,7 +25,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 /**
  * Creates an html-based, cross referenced version of Java source code
- * for a project with forking. Note that this goal does require generation of sources before
+ * for a project without forking. Note that this goal does require generation of sources before
  * site generation, e.g. by invoking <tt>mvn clean deploy site</tt>.
  *
  * @since 3.1.0
