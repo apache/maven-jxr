@@ -37,13 +37,13 @@ Maven JXR Plugin
   * {{{./jxr-mojo.html}jxr:jxr}} is used to generate a cross-reference page of the project's main sources. The generated JXR
   files can be linked to the javadocs of the project.
 
-  * {{{./jxr-no-fork-mojo.html}jxr:jxr-nofork}} is used to generate a cross-reference page of the project's main sources without forking the <<<generate-sources>>> phase again. Note that this goal does require generation of main sources before site generation, e.g. by invoking <<<mvn clean deploy site>>>.
+  * {{{./jxr-no-fork-mojo.html}jxr:jxr-no-fork}} is used to generate a cross-reference page of the project's main sources without forking the <<<generate-sources>>> phase again. Note that this goal does require generation of main sources before site generation, e.g. by invoking <<<mvn clean deploy site>>>.
 
   * {{{./aggregate-mojo.html}jxr:aggregate}} is used to generate an aggregated cross-reference page of the project's main sources. The generated JXR files can be linked to the javadocs of the project.
 
   * {{{./test-jxr-mojo.html}jxr:test-jxr}} on the other hand, is used to generate a cross-reference page of the project's test sources.
 
-  * {{{./test-jxr-no-fork-mojo.html}jxr:test-jxr-nofork}} on the other hand, is used to generate a cross-reference page of the project's test sources. without forking the <<<generate-test-sources>>> phase again. Note that this goal does require generation of test sources before site generation, e.g. by invoking <<<mvn clean deploy site>>>.
+  * {{{./test-jxr-no-fork-mojo.html}jxr:test-jxr-no-fork}} on the other hand, is used to generate a cross-reference page of the project's test sources. without forking the <<<generate-test-sources>>> phase again. Note that this goal does require generation of test sources before site generation, e.g. by invoking <<<mvn clean deploy site>>>.
 
   * {{{./test-aggregate-mojo.html}jxr:test-aggregate}} on the other hand, is used to generate an aggregated cross-reference page of the project's test sources.
 
