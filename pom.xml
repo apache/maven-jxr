@@ -63,8 +63,8 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <javaVersion>7</javaVersion>
-    <sitePluginVersion>3.3</sitePluginVersion>
+    <javaVersion>8</javaVersion>
+    <sitePluginVersion>3.9.1</sitePluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <surefire.version>2.22.2</surefire.version>
     <mavenPluginToolsVersion>3.6.0</mavenPluginToolsVersion>
