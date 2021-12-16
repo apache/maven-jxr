@@ -756,7 +756,8 @@ public class JavaCodeTransform
         int index = line.indexOf( "//" );
         if ( ( index >= 0 ) && !isInsideString( line, index ) )
         {
-            return new StringBuilder( beginMultiLineCommentFilter( line.substring( 0, index ) ) ).append( COMMENT_START ).append( line.substring( index ) ).append( COMMENT_END ).toString();
+            return beginMultiLineCommentFilter( line.substring( 0, index ) ) + COMMENT_START + line.substring( index )
+                    + COMMENT_END;
         }
 
         return beginMultiLineCommentFilter( line );
@@ -796,7 +797,7 @@ public class JavaCodeTransform
             // of the multiline comment. We need to pass the through the
             // to the ongoing multiLineComment filter again in case the comment
             // ends on the same line.
-            return new StringBuilder( stringFilter( line.substring( 0, index ) ) ).append( ongoingMultiLineCommentFilter( fromIndex ) ).toString();
+            return stringFilter( line.substring( 0, index ) ) + ongoingMultiLineCommentFilter( fromIndex );
         }
 
         // Otherwise, no useful multi-line comment information was found so
@@ -895,12 +896,10 @@ public class JavaCodeTransform
             }
             else if ( reservedWords.containsKey( tempString ) )
             {
-                StringBuilder newLine = new StringBuilder( line.substring( 0, i - tempString.length() ) );
-                newLine.append( RESERVED_WORD_START );
-                newLine.append( tempString );
-                newLine.append( RESERVED_WORD_END );
-                newLine.append( line.substring( i ) );
-                line = newLine.toString();
+                line = line.substring( 0, i - tempString.length() ) + RESERVED_WORD_START
+                        + tempString
+                        + RESERVED_WORD_END
+                        + line.substring( i );
                 i += ( RESERVED_WORD_START.length() + RESERVED_WORD_END.length() );
             }
             else

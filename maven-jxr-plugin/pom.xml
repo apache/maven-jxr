@@ -37,7 +37,7 @@ under the License.
 
   <properties>
     <mavenVersion>3.1.1</mavenVersion> <!-- support javax.inject -->
-    <doxia-sitetoolsVersion>1.9.2</doxia-sitetoolsVersion>
+    <doxia-sitetoolsVersion>1.10</doxia-sitetoolsVersion>
   </properties>
 
   <prerequisites>
@@ -125,12 +125,12 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-shared-utils</artifactId>
-      <version>3.3.3</version>
+      <version>3.3.4</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.6</version>
+      <version>2.11.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
@@ -220,8 +220,6 @@ under the License.
               <properties>
                 <maven.compiler.source>${maven.compiler.source}</maven.compiler.source>
                 <maven.compiler.target>${maven.compiler.target}</maven.compiler.target>
-                <!-- e.g. ensure that Java7 picks up TLSv1.2 when connecting with Central -->
-                <https.protocols>${https.protocols}</https.protocols>
               </properties>
             </configuration>
             <executions>

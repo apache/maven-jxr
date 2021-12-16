@@ -385,7 +385,7 @@ public class JxrReportTest
         assertFalse( Files.exists( xrefDir.resolve( "include/configuration/AppSample.html" )));
     }
 
-    public void testExceptions() throws Exception
+    public void testExceptions()
     {
         try
         {

@@ -44,7 +44,7 @@ public class JavaCodeTransformTest
      * Set up this test.
      */
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         FileManager fileManager = new FileManager();
         codeTransform = new JavaCodeTransform( new PackageManager( fileManager ), fileManager);

@@ -53,7 +53,7 @@ public class DirectoryIndexerTest
      * in the correct order.
      */
     @Test
-    public void testJXR_68() throws Exception
+    public void testJXR_68()
     {
 
         ProjectInfo packageInfo = directoryIndexer.getProjectInfo();
