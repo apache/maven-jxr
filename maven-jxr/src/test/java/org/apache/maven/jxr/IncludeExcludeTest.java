@@ -43,7 +43,7 @@ public class IncludeExcludeTest
     private JXR jxr;
  
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager( fileManager );

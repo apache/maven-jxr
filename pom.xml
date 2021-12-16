@@ -107,6 +107,14 @@ under the License.
     </dependencies>
   </dependencyManagement>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.32</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
     <pluginManagement>
       <plugins>
@@ -119,7 +127,7 @@ under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.0.0-M3</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
@@ -136,25 +144,11 @@ under the License.
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-enforcer-plugin</artifactId>
-      <executions>
-        <execution>
-          <id>enforce-bytecode-version</id>
-          <configuration>
-            <rules>
-              <enforceBytecodeVersion>
-                <ignoreClasses>
-                  <ignoreClass>module-info</ignoreClass>
-                </ignoreClasses>
-              </enforceBytecodeVersion>
-            </rules>
-          </configuration>
-        </execution>
-      </executions>
       <dependencies>
         <dependency>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>extra-enforcer-rules</artifactId>
-          <version>1.3</version>
+          <version>1.5.1</version>
         </dependency>
       </dependencies>
     </plugin>
