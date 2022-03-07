@@ -332,7 +332,7 @@ public class JavaCodeTransform
             }
             else
             {
-                out.print( this.getCurrentFilename() );
+                out.print( javaFile.getFilename() );
             }
             out.print( ' ' );
         }
@@ -983,7 +983,7 @@ public class JavaCodeTransform
         {
             overview.append( "<div id=\"overview\">" );
             // get the URI to get Javadoc info.
-            Path javadocURI = javadocLinkDir;
+            Path javadocURI;
 
             try
             {
@@ -992,10 +992,16 @@ public class JavaCodeTransform
                 javadocURI = javadocLinkDir.resolve( jf.getPackageType().getName().replace( '.', '/' ) )
                                 ;
                 // Use the name of the file instead of the class to handle inner classes properly
+                String fileName;
                 if ( jf.getClassType() != null && jf.getClassType().getFilename() != null )
                 {
-                    javadocURI = javadocURI.resolve( jf.getClassType().getFilename() + ".html" );
+                    fileName = jf.getClassType().getFilename();
                 }
+                else
+                {
+                    fileName = jf.getFilename();
+                }
+                javadocURI = javadocURI.resolve( fileName + ".html" );
 
                 String javadocHREF = "<a href=\"" + javadocURI.toString().replace( '\\', '/' ) + "\">View Javadoc</a>";
 

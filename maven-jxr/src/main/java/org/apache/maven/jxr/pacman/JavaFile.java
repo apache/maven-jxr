@@ -42,12 +42,15 @@ public abstract class JavaFile
 
     private final Path path;
 
+    private String filename;
+
     private final String encoding;
     
     protected JavaFile(  Path path, String encoding )
     {
         this.path = path;
         this.encoding = encoding;
+        this.filename = getFilenameWithoutPathOrExtension( path );
     }
 
     /**
@@ -135,10 +138,34 @@ public abstract class JavaFile
     }
 
     /**
+     * File name without path and extension.
+     */
+    public String getFilename()
+    {
+        return filename;
+    }
+
+    /**
      * Gets the encoding attribute of the JavaFile object
      */
     public String getEncoding()
     {
         return this.encoding;
     }
+
+    /**
+     * Remove the path and the ".java" extension from a filename.
+     */
+    protected static String getFilenameWithoutPathOrExtension( Path path )
+    {
+        String newFilename = path.getFileName().toString();
+        // Remove the ".java" extension from the filename, if it exists
+        int extensionIndex = newFilename.lastIndexOf( ".java" );
+        if ( extensionIndex >= 0 )
+        {
+            newFilename = newFilename.substring( 0, extensionIndex );
+        }
+        return newFilename;
+    }
+
 }

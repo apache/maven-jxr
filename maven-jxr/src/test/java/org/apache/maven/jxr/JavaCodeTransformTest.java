@@ -1,7 +1,5 @@
 package org.apache.maven.jxr;
 
-import static org.junit.Assert.assertTrue;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,6 +29,8 @@ import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * JUnit test for {@link JavaCodeTransform}.
@@ -64,8 +64,14 @@ public class JavaCodeTransformTest
         multiline comment text
 
         */ codeTransform.transform( sourceFile, Paths.get( "target/JavaCodeTransformTest.html" ) // additional comment
-           , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "", "" );
+           , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "./javadocs-test" ), "", "" );
         assertTrue( /**/ Files.exists( Paths.get( "target/JavaCodeTransformTest.html" ) ) );
+
+        byte[] bytes = Files.readAllBytes( Paths.get( "target/JavaCodeTransformTest.html" ) );
+        String content = new String( bytes, StandardCharsets.ISO_8859_1 );
+        assertTrue( content.contains( "<title>JavaCodeTransformTest xref</title>" ) );
+        assertTrue( content.contains( "<a href=\"./javadocs-test/org/apache/maven/jxr/JavaCodeTransformTest.html\">"
+                                          + "View Javadoc</a>" ) );
     }
 
     /**
@@ -79,8 +85,13 @@ public class JavaCodeTransformTest
         assertTrue( Files.exists( sourceFile ) );
 
         codeTransform.transform( sourceFile, Paths.get( "target/EmptyClass.html" )
-            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "." ), "", "" );
+            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "javadocs" ), "", "" );
         assertTrue( Files.exists( Paths.get( "target/EmptyClass.html" ) ) );
+
+        byte[] bytes = Files.readAllBytes( Paths.get( "target/EmptyClass.html" ) );
+        String content = new String( bytes, StandardCharsets.ISO_8859_1 );
+        assertTrue( content.contains( "<title>EmptyClass xref</title>" ) );
+        assertTrue( content.contains( "<a href=\"javadocs/EmptyClass.html\">View Javadoc</a>" ) );
     }
 
     /**
@@ -109,4 +120,25 @@ public class JavaCodeTransformTest
             "target=\"alexandria_uri\">https://www.apache.org/licenses/LICENSE-2.0</a></em>" ) );
 
     }
+
+    /**
+     * Test what happens with unknown java type.
+     */
+    @Test
+    public void testTransformWithUnknownJavaType()
+        throws Exception
+    {
+        Path sourceFile = Paths.get( "src/test/resources/UnknownType.java" );
+        assertTrue( Files.exists( sourceFile ) );
+
+        codeTransform.transform( sourceFile, Paths.get( "target/UnknownType.html" )
+            , Locale.ENGLISH, "ISO-8859-1", "ISO-8859-1", Paths.get( "javadocs" ), "", "" );
+        assertTrue( Files.exists( Paths.get( "target/UnknownType.html" ) ) );
+
+        byte[] bytes = Files.readAllBytes( Paths.get( "target/UnknownType.html" ) );
+        String content = new String( bytes, StandardCharsets.ISO_8859_1 );
+        assertTrue( content.contains( "<title>UnknownType xref</title>" ) );
+        assertTrue( content.contains( "<a href=\"javadocs/example/UnknownType.html\">View Javadoc</a>" ) );
+    }
+
 }
