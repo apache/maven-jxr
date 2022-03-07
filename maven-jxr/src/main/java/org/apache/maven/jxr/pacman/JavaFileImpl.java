@@ -148,21 +148,6 @@ public class JavaFileImpl
     }
 
     /**
-     * Remove the path and the ".java" extension from a filename.
-     */
-    private static String getFilenameWithoutPathOrExtension( Path path )
-    {
-        String newFilename = path.getFileName().toString();
-        // Remove the ".java" extension from the filename, if it exists
-        int extensionIndex = newFilename.lastIndexOf( ".java" );
-        if ( extensionIndex >= 0 )
-        {
-            newFilename = newFilename.substring( 0, extensionIndex );
-        }
-        return newFilename;
-    }
-
-    /**
      * Get a StreamTokenizer for this file.
      */
     private StreamTokenizer getTokenizer( Reader reader )
