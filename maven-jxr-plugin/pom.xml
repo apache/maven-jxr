@@ -37,7 +37,6 @@ under the License.
 
   <properties>
     <mavenVersion>3.2.5</mavenVersion>
-    <doxia-sitetoolsVersion>1.11.1</doxia-sitetoolsVersion>
   </properties>
 
   <prerequisites>
@@ -137,20 +136,15 @@ under the License.
       <version>2.11.0</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-site-renderer</artifactId>
-      <version>${doxia-sitetoolsVersion}</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>plexus-container-default</artifactId>
-          <groupId>org.codehaus.plexus</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-impl</artifactId>
-      <version>3.0.0</version>
+      <version>3.1.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-container-default</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
