@@ -40,6 +40,5 @@ under the License.
       <item name="Generate JXR without duplicate execution of phase generate-sources" href="/examples/nofork.html"/>
       <item name="JXR Sample Report" href="/xref/index.html"/>
     </menu>
-    <menu ref="reports"/>
   </body>
 </project>
