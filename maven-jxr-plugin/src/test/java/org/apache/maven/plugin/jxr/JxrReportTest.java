@@ -19,8 +19,8 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
