@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>34</version>
+    <version>35</version>
     <relativePath />
   </parent>
 
@@ -66,8 +66,6 @@ under the License.
     <javaVersion>8</javaVersion>
     <sitePluginVersion>3.9.1</sitePluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
-    <surefire.version>2.22.2</surefire.version>
-    <mavenPluginToolsVersion>3.6.2</mavenPluginToolsVersion>
     <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2021-04-18T19:03:41Z</project.build.outputTimestamp>
   </properties>
@@ -115,44 +113,28 @@ under the License.
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
     <pluginManagement>
       <plugins>
+        <!-- TODO check with next parent -->
         <plugin>
-          <artifactId>maven-release-plugin</artifactId>
-          <configuration>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
-          </configuration>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.10.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
+          <artifactId>maven-pmd-plugin</artifactId>
+          <version>3.16.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>taglist-maven-plugin</artifactId>
           <version>3.0.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.3.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.1.2</version>
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-enforcer-plugin</artifactId>
-      <dependencies>
-        <dependency>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>extra-enforcer-rules</artifactId>
-          <version>1.5.1</version>
-        </dependency>
-      </dependencies>
-    </plugin>
-    </plugins>
   </build>
 
   <profiles>
