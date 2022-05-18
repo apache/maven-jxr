@@ -36,7 +36,7 @@ under the License.
   <inceptionYear>2005</inceptionYear>
 
   <properties>
-    <mavenVersion>3.2.5</mavenVersion>
+    <mavenVersion>3.8.5</mavenVersion>
   </properties>
 
   <prerequisites>
