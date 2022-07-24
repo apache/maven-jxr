@@ -1,4 +1,4 @@
-package org.apache.maven.jxr.pacman;
+package org.apache.maven.jxr;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,42 +19,22 @@ package org.apache.maven.jxr.pacman;
  * under the License.
  */
 
-import java.util.Objects;
-
 /**
- * put your documentation comment here
+ * Test Java source of the test for JXR-170.
  *
- * @author jvanzyl
+ * @author Markus Spann
  */
-public abstract class BaseType
-{
-    private final String name;
+public class ClassWithMultiLineString {
 
-    /**
-     * Construct type and set its name.
-     *
-     * @param name type name
-     */
-    public BaseType( String name )
-    {
-        this.name = Objects.requireNonNull( name );
+    private final String str;
+
+    public ClassWithMultiLineString(String _str) {
+        str = _str;
     }
 
-    /**
-     * Get the name for this type
-     *
-     * @return The name value
-     */
-    public String getName()
-    {
-        return this.name;
+    public static void main(String[] args) {
+        new ClassWithMultiLineString("""
+                import java.util.List;
+                """);
     }
-
-    @Override
-    public String toString()
-    {
-        return getClass().getSimpleName() + "[name=" + name + "]";
-    }
-
 }
-

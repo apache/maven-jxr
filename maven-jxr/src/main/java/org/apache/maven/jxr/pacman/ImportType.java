@@ -39,7 +39,7 @@ public class ImportType
      */
     public ImportType( String name )
     {
-        this.setName( name );
+        super( name );
 
         //compute member variables
 

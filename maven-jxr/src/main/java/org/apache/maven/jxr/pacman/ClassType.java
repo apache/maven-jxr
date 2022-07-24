@@ -41,7 +41,7 @@ public class ClassType
     @Deprecated
     public ClassType( String name )
     {
-        this.setName( name );
+        this( name, null );
     }
 
     /**
@@ -52,7 +52,8 @@ public class ClassType
      */
     public ClassType( String name, String filename )
     {
-        this.setName( name );
+        super( name );
+
         this.setFilename( filename );
     }
 
