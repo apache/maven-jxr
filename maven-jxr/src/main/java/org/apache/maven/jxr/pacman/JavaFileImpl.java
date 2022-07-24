@@ -84,6 +84,9 @@ public class JavaFileImpl
     {
         int openBracesCount = 0;
 
+        char prevttype = Character.MIN_VALUE; // previous token type
+        boolean inTripleQuote = false; // used to toggle between inside/outside triple-quoted multi-line strings
+
         while ( stok.nextToken() != StreamTokenizer.TT_EOF )
         {
 
@@ -103,12 +106,28 @@ public class JavaFileImpl
                 }
                 continue;
             }
+            else
+            {
+                if ( '"' == stok.ttype && '"' == prevttype )
+                {
+                    inTripleQuote = !inTripleQuote;
+                }
+                prevttype = (char) stok.ttype;
+                if ( inTripleQuote )
+                {
+                    // skip content found inside triple-quoted multi-line Java 15 String
+                    continue;
+                }
+            }
 
             //set the package
             if ( "package".equals( stok.sval ) && stok.ttype != '\"' )
             {
                 stok.nextToken();
-                this.setPackageType( new PackageType( stok.sval ) );
+                if ( stok.sval != null )
+                {
+                    this.setPackageType( new PackageType( stok.sval ) );
+                }
             }
 
             //set the imports
@@ -125,23 +144,28 @@ public class JavaFileImpl
                 stripped( and become "test." ).  Here we need to test for this
                 and if necessary re-add the char.
                 */
-                if ( name.charAt( name.length() - 1 ) == '.' )
+                if ( name != null )
                 {
-                    name = name + '*';
+                    if ( name.charAt( name.length() - 1 ) == '.' )
+                    {
+                        name = name + '*';
+                    }
+                    this.addImportType( new ImportType( name ) );
                 }
-
-                this.addImportType( new ImportType( name ) );
             }
 
             // Add the class or classes. There can be several classes in one file so
             // continue with the while loop to get them all.
             if ( ( "class".equals( stok.sval ) || "interface".equals( stok.sval ) || "enum".equals( stok.sval ) )
-                    &&  stok.ttype != '\"' )
+                    &&  stok.ttype != '"' )
             {
                 stok.nextToken();
-                this.addClassType( new ClassType( nestedPrefix + stok.sval,
-                        getFilenameWithoutPathOrExtension( this.getPath() ) ) );
-                parseRecursive( nestedPrefix + stok.sval + ".", stok );
+                if ( stok.sval != null )
+                {
+                    this.addClassType( new ClassType( nestedPrefix + stok.sval,
+                            getFilenameWithoutPathOrExtension( this.getPath() ) ) );
+                    parseRecursive( nestedPrefix + stok.sval + ".", stok );
+                }
             }
 
         }

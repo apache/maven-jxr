@@ -39,7 +39,7 @@ public class PackageType
      */
     public PackageType( String name )
     {
-        this.setName( name );
+        super( name );
     }
 
     /**
@@ -47,8 +47,8 @@ public class PackageType
      */
     public PackageType()
     {
+        super( "" );
     }
-
 
     /**
      * Get all the known classes

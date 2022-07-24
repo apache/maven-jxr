@@ -46,4 +46,14 @@ public class JavaFileImplTest {
         assertEquals( "NotNested", classTypes.next().getName() );
     }
 
+    @Test
+    public void testJXR_170_multiLineString() throws IOException
+    {
+        JavaFileImpl javaFile = new JavaFileImpl( Paths.get(
+                "src/test/resources/jxr170/org/apache/maven/jxr/pacman/ClassWithMultiLineString.java" ),
+                "UTF-8" );
+        assertEquals( 1, javaFile.getClassTypes().size() );
+        assertEquals( "ClassWithMultiLineString", javaFile.getClassTypes().get(0).getName() );
+        assertEquals( "[ImportType[name=java.lang.*]]", javaFile.getImportTypes().toString() );
+    }
 }
