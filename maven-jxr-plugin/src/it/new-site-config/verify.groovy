@@ -16,23 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-assert new File( basedir, 'target/site' ).exists();
+assert new File( basedir, 'target/site' ).exists()
 
-content = new File( basedir, 'target/site/project-reports.html' ).text;
+content = new File( basedir, 'target/site/project-reports.html' ).text
 
-assert content.contains( 'xref/index.html' );
-assert content.contains( 'xref-test/index.html' );
+assert content.contains( 'xref/index.html' )
+assert content.contains( 'xref-test/index.html' )
 
-assert new File( basedir, 'target/site/xref' ).exists();
-assert new File( basedir, 'target/site/xref/index.html' ).exists();
-assert new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html' ).exists();
+assert new File( basedir, 'target/site/xref' ).exists()
+assert new File( basedir, 'target/site/xref/index.html' ).exists()
+assert new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html' ).exists()
 
-assert new File( basedir, 'target/site/xref-test' ).exists();
-assert new File( basedir, 'target/site/xref-test/index.html' ).exists();
-assert new File( basedir, 'target/site/xref-test/org/apache/maven/jxr/it/AppTest.html' ).exists();
+assert new File( basedir, 'target/site/xref-test' ).exists()
+assert new File( basedir, 'target/site/xref-test/index.html' ).exists()
+assert new File( basedir, 'target/site/xref-test/org/apache/maven/jxr/it/AppTest.html' ).exists()
 
-content = new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html' ).text;
-assert content.contains( 'App2.html' );
-assert content.contains( '<div id="overview"><a href="../../../../../../apidocs/org/apache/maven/jxr/it/App.html">View Javadoc</a></div>' );
+content = new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html' ).text
+assert content.contains( 'App2.html' )
+assert content.contains( '<div id="overview"><a href="../../../../../../apidocs/org/apache/maven/jxr/it/App.html">View Javadoc</a></div>' )
 
-return true;
+assert new File( basedir, 'target/site/apidocs/index.html' ).exists()
+assert new File( basedir, 'target/site/testapidocs/index.html' ).exists();

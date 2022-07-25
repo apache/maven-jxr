@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>35</version>
+    <version>37</version>
     <relativePath />
   </parent>
 
@@ -65,6 +65,7 @@ under the License.
   <properties>
     <javaVersion>8</javaVersion>
     <sitePluginVersion>3.11.0</sitePluginVersion>
+    <javadocPluginVersion>3.4.0</javadocPluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2022-03-15T19:02:53Z</project.build.outputTimestamp>
@@ -138,22 +139,18 @@ under the License.
 
   <build>
     <pluginManagement>
+      <!-- use the same plugin version in project and in IT tests -->
+      <!-- additionally versions upgrade will be tracked -->
       <plugins>
-        <!-- TODO check with next parent -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${javadocPluginVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.16.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>taglist-maven-plugin</artifactId>
-          <version>3.0.0</version>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${sitePluginVersion}</version>
         </plugin>
       </plugins>
     </pluginManagement>

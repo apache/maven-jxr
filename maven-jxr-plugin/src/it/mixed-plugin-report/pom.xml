@@ -64,7 +64,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version>
+        <version>@javadocPluginVersion@</version>
         <executions>
           <execution>
             <id>aggregate</id>
@@ -79,7 +79,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>${site-plugin-version}</version>
+        <version>@sitePluginVersion@</version>
       </plugin>
     </plugins>
   </build>
@@ -103,7 +103,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version>
+        <version>@javadocPluginVersion@</version>
       </plugin>
     </plugins>
   </reporting>
