@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,4 +18,4 @@
  */
 assert new File( basedir, 'target/site/xref/com/mycompany/app/Foo.html' ).exists()
 
-assert 4 == new File( basedir, '/target/site/xref/com/mycompany/app/Foo.html' ).text.count('<a name="App" href="../../../com/mycompany/app/App.html#App">App</a>')
+assert 4 == new File( basedir, '/target/site/xref/com/mycompany/app/Foo.html' ).text.count( '<a name="App" href="../../../com/mycompany/app/App.html#App">App</a>' )
