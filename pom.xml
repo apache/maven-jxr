@@ -64,7 +64,7 @@ under the License.
 
   <properties>
     <javaVersion>8</javaVersion>
-    <sitePluginVersion>3.11.0</sitePluginVersion>
+    <sitePluginVersion>3.12.0</sitePluginVersion>
     <javadocPluginVersion>3.4.0</javadocPluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
