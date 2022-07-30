@@ -49,6 +49,7 @@ under the License.
           <includes>
             <include>**/App.java</include>
           </includes>
+          <localRepository>${localRepository}</localRepository>
         </configuration>
       </plugin>
     </plugins>

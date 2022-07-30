@@ -23,7 +23,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -32,7 +31,8 @@ import java.util.List;
 /**
  * @author <a href="mailto:dennisl@apache.org">Dennis Lundberg</a>
  */
-public class IncludeConfigurationMavenProjectStub extends MavenProjectStub
+public class IncludeConfigurationMavenProjectStub
+    extends JxrProjectStub
 {
     private List<ReportPlugin> reportPlugins = new ArrayList<>();
 

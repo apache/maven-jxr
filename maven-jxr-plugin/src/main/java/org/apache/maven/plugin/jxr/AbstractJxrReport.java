@@ -31,22 +31,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.jxr.JXR;
 import org.apache.maven.jxr.JavaCodeTransform;
 import org.apache.maven.jxr.JxrException;
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.apache.maven.model.ReportPlugin;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.codehaus.plexus.languages.java.version.JavaVersion;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -60,31 +57,9 @@ import org.codehaus.plexus.util.StringUtils;
 public abstract class AbstractJxrReport
     extends AbstractMavenReport
 {
-    @Parameter( defaultValue = "${project}", readonly = true, required = true )
-    private MavenProject project;
 
-    @Component
-    private Renderer siteRenderer;
-
-    /**
-     * Output folder where the main page of the report will be generated. Note that this parameter is only relevant if
-     * the goal is run directly from the command line or from the default lifecycle. If the goal is run indirectly as
-     * part of a site generation, the output directory configured in the Maven Site Plugin will be used instead.
-     */
-    @Parameter( defaultValue = "${project.reporting.outputDirectory}", required = true )
-    private File outputDirectory;
-
-    /**
-     * File input encoding.
-     */
-    @Parameter( property = "encoding", defaultValue = "${project.build.sourceEncoding}" )
-    private String inputEncoding;
-
-    /**
-     * File output encoding.
-     */
-    @Parameter( property = "outputEncoding", defaultValue = "${project.reporting.outputEncoding}" )
-    private String outputEncoding;
+    @Parameter( defaultValue = "${session}", readonly = true, required = true )
+    private MavenSession session;
 
     /**
      * Title of window of the Xref HTML files.
@@ -170,18 +145,6 @@ public abstract class AbstractJxrReport
      * Version of the Javadoc templates to use.
      */
     private JavaVersion javadocTemplatesVersion;
-
-    /**
-     * Gets the effective reporting output files encoding.
-     *
-     * @return The effective reporting output file encoding, never <code>null</code>: defaults to <code>UTF-8</code>
-     *         instead.
-     */
-    @Override
-    protected String getOutputEncoding()
-    {
-        return ( outputEncoding == null ) ? ReaderFactory.UTF_8 : outputEncoding;
-    }
 
     /**
      * Compiles the list of directories which contain source files that will be included in the JXR report generation.
@@ -270,16 +233,10 @@ public abstract class AbstractJxrReport
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager( fileManager );
         JavaCodeTransform codeTransform = new JavaCodeTransform( packageManager, fileManager );
-        
+
         JXR jxr = new JXR( packageManager, codeTransform );
         jxr.setDest( Paths.get( destinationDirectory ) );
-        if ( StringUtils.isEmpty( inputEncoding ) )
-        {
-            String platformEncoding = System.getProperty( "file.encoding" );
-            getLog().warn( "File encoding has not been set, using platform encoding " + platformEncoding
-                               + ", i.e. build is platform dependent!" );
-        }
-        jxr.setInputEncoding( inputEncoding );
+        jxr.setInputEncoding( getInputEncoding() );
         jxr.setLocale( locale );
         jxr.setOutputEncoding( getOutputEncoding() );
         jxr.setRevision( "HEAD" );
@@ -457,21 +414,14 @@ public abstract class AbstractJxrReport
     }
 
     @Override
-    protected Renderer getSiteRenderer()
-    {
-        return siteRenderer;
-    }
-
-    @Override
-    protected String getOutputDirectory()
-    {
-        return outputDirectory.getAbsolutePath();
-    }
-
-    @Override
-    public MavenProject getProject()
+    protected MavenProject getProject()
     {
         return project;
+    }
+
+    protected MavenSession getSession()
+    {
+        return session;
     }
 
     /**
@@ -498,33 +448,6 @@ public abstract class AbstractJxrReport
             canGenerate = false;
         }
         return canGenerate;
-    }
-
-    /*
-     * This is called for a standalone execution. Well, that's the claim. It also ends up called for the aggregate mojo,
-     * since that is configured as an execution, not in the reporting section, at least by some people on some days. We
-     * do NOT want the default behavior.
-     */
-    @Override
-    public void execute()
-        throws MojoExecutionException
-    {
-
-        if ( skip )
-        {
-            getLog().info( "Skipping JXR." );
-            return;
-        }
-
-        Locale locale = Locale.getDefault();
-        try
-        {
-            executeReport( locale );
-        }
-        catch ( MavenReportException e )
-        {
-            throw new MojoExecutionException( "Error generating JXR report", e );
-        }
     }
 
     @Override

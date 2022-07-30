@@ -37,7 +37,7 @@ under the License.
           <docTitle>Maven Jxr Plugin Aggregate Test 1.0-SNAPSHOT Reference</docTitle>
           <inputEncoding>ISO-8859-1</inputEncoding>
           <outputEncoding>ISO-8859-1</outputEncoding>
-          <sourceDirs>            
+          <sourceDirs>
             <value>${basedir}/src/test/resources/unit/aggregate-test/submodule1</value>
             <value>${basedir}/src/test/resources/unit/aggregate-test/submodule2</value>
           </sourceDirs>
@@ -51,6 +51,7 @@ under the License.
             <project implementation="org.apache.maven.plugin.jxr.stubs.AggregateSubmodule1MavenProjectStub"/>
             <project implementation="org.apache.maven.plugin.jxr.stubs.AggregateSubmodule2MavenProjectStub"/>
           </reactorProjects>
+          <localRepository>${localRepository}</localRepository>
         </configuration>
       </plugin>
     </plugins>

@@ -19,11 +19,9 @@ package org.apache.maven.plugin.jxr;
  * under the License.
  */
 
-import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -33,7 +31,7 @@ import java.util.Locale;
  * @author <a href="mailto:dennisl@apache.org">Dennis Lundberg</a>
  */
 public class JxrReportTest
-    extends AbstractMojoTestCase
+    extends AbstractJxrTestCase
 {
     /**
      * Test the plugin with original configuration
@@ -50,9 +48,7 @@ public class JxrReportTest
 
         FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
-        File testPom = new File( resourcesDir, "default-configuration-plugin-config.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "default-configuration/default-configuration-plugin-config.xml" );
 
         //check if xref files were generated
         assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
@@ -91,9 +87,7 @@ public class JxrReportTest
 
         FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
-        File testPom = new File( resourcesDir, "default-configuration-plugin-config-4.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "default-configuration/default-configuration-plugin-config-4.xml" );
 
         //check if xref files were generated
         assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
@@ -132,9 +126,7 @@ public class JxrReportTest
 
         FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
-        File testPom = new File( resourcesDir, "default-configuration-plugin-config-6.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "default-configuration/default-configuration-plugin-config-6.xml" );
 
         //check if xref files were generated
         assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
@@ -173,9 +165,7 @@ public class JxrReportTest
 
         FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
-        File testPom = new File( resourcesDir, "default-configuration-plugin-config-7.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "default-configuration/default-configuration-plugin-config-7.xml" );
 
         //check if xref files were generated
         assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
@@ -218,9 +208,7 @@ public class JxrReportTest
 
         FileUtils.copyDirectory( new File( resourcesDir, "javadoc-files" ), outputDir );
 
-        File testPom = new File( resourcesDir, "default-configuration-plugin-config-8.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "default-configuration/default-configuration-plugin-config-8.xml" );
 
         //check if xref files were generated
         assertTrue( new File( xrefDir, "allclasses-frame.html" ).exists() );
@@ -252,10 +240,7 @@ public class JxrReportTest
     public void testNoJavadocLink()
         throws Exception
     {
-        File testPom = new File( getBasedir(),
-                "src/test/resources/unit/nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml" );
 
         File xrefDir = new File( getBasedir(), "target/test/unit/nojavadoclink-configuration/target/site/xref" );
 
@@ -296,10 +281,7 @@ public class JxrReportTest
     public void testAggregate()
         throws Exception
     {
-        File testPom = new File( getBasedir(),
-                "src/test/resources/unit/aggregate-test/aggregate-test-plugin-config.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "aggregate-test/aggregate-test-plugin-config.xml" );
 
         File xrefDir = new File( getBasedir(), "target/test/unit/aggregate-test/target/site/xref" );
 
@@ -314,7 +296,6 @@ public class JxrReportTest
         assertTrue( new File( xrefDir, "aggregate/test/submodule2/package-summary.html" ).exists() );
         assertTrue( new File( xrefDir, "aggregate/test/submodule2/Submodule2App.html" ).exists() );
         assertTrue( new File( xrefDir, "aggregate/test/submodule2/Submodule2AppSample.html" ).exists() );
-
     }
 
     /**
@@ -325,10 +306,7 @@ public class JxrReportTest
     public void testNoJavadocDir()
         throws Exception
     {
-        File testPom = new File( getBasedir(),
-                "src/test/resources/unit/nojavadocdir-test/nojavadocdir-test-plugin-config.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "nojavadocdir-test/nojavadocdir-test-plugin-config.xml" );
 
         File xrefDir = new File( getBasedir(), "target/test/unit/nojavadocdir-test/target/site/xref" );
 
@@ -338,7 +316,6 @@ public class JxrReportTest
 
         str = readFile( xrefDir, "nojavadocdir/test/App.html" );
         assertTrue( str.toLowerCase( Locale.US ).contains( "/apidocs/nojavadocdir/test/app.html" ) );
-
     }
 
     /**
@@ -349,10 +326,7 @@ public class JxrReportTest
     public void testExclude()
         throws Exception
     {
-        File testPom = new File( getBasedir(),
-                "src/test/resources/unit/exclude-configuration/exclude-configuration-plugin-config.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "exclude-configuration/exclude-configuration-plugin-config.xml" );
 
         Path xrefDir = new File( getBasedir(), "target/test/unit/exclude-configuration/target/site/xref" ).toPath();
 
@@ -371,10 +345,7 @@ public class JxrReportTest
     public void testInclude()
         throws Exception
     {
-        File testPom = new File( getBasedir(),
-                "src/test/resources/unit/include-configuration/include-configuration-plugin-config.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "include-configuration/include-configuration-plugin-config.xml" );
 
         Path xrefDir = new File( getBasedir(), "target/test/unit/include-configuration/target/site/xref" ).toPath();
 
@@ -389,10 +360,7 @@ public class JxrReportTest
     {
         try
         {
-            File testPom = new File( getBasedir(),
-                    "src/test/resources/unit/default-configuration/exception-test-plugin-config.xml" );
-            JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-            mojo.execute();
+            generateReport( "jxr", "default-configuration/exception-test-plugin-config.xml" );
 
             fail( "Must throw exception" );
         }
@@ -410,18 +378,9 @@ public class JxrReportTest
     public void testPom()
         throws Exception
     {
-        File testPom = new File( getBasedir(), "src/test/resources/unit/pom-test/pom-test-plugin-config.xml" );
-        JxrReport mojo = (JxrReport) lookupMojo( "jxr", testPom );
-        mojo.execute();
+        generateReport( "jxr", "pom-test/pom-test-plugin-config.xml" );
 
         assertFalse( new File( getBasedir(), "target/test/unit/pom-test" ).exists() );
     }
 
-    /**
-     * Read the contents of the specified file object into a string
-     */
-    private String readFile( File xrefTestDir, String fileName ) throws IOException
-    {
-        return new String( Files.readAllBytes( xrefTestDir.toPath().resolve( fileName ) ) );
-    }
 }

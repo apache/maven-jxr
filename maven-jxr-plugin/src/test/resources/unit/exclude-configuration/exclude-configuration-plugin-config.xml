@@ -49,6 +49,7 @@ under the License.
           <excludes>
             <exclude>**/AppSample.java</exclude>
           </excludes>
+          <localRepository>${localRepository}</localRepository>
         </configuration>
       </plugin>
     </plugins>

@@ -33,7 +33,7 @@ import java.util.List;
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
 public class NoJavadocDirMavenProjectStub
-    extends MavenProjectStub
+    extends JxrProjectStub
 {
     private List<ReportPlugin> reportPlugins;
 

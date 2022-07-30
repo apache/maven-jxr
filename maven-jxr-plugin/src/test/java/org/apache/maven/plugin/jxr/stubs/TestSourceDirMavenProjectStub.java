@@ -22,7 +22,6 @@ package org.apache.maven.plugin.jxr.stubs;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -32,9 +31,9 @@ import java.util.List;
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
 public class TestSourceDirMavenProjectStub
-    extends MavenProjectStub
+    extends JxrProjectStub
 {
-    
+
     public TestSourceDirMavenProjectStub()
     {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
@@ -67,4 +66,5 @@ public class TestSourceDirMavenProjectStub
         setArtifact( artifact );
 
     }
+
 }

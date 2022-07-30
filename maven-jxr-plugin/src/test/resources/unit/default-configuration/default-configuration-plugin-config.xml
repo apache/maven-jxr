@@ -46,6 +46,7 @@ under the License.
           <templateDir>templates</templateDir>
           <stylesheet>stylesheet.css</stylesheet>
           <javadocVersion>3</javadocVersion>
+          <localRepository>${localRepository}</localRepository>
         </configuration>
       </plugin>
     </plugins>

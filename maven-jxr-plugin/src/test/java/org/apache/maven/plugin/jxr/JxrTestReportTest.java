@@ -23,13 +23,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
 public class JxrTestReportTest
-    extends AbstractMojoTestCase
+    extends AbstractJxrTestCase
 {
     /**
      * Method to test when the source dir is the test source dir
@@ -39,10 +37,7 @@ public class JxrTestReportTest
     public void testSourceDir()
         throws Exception
     {
-        File testPom =
-            new File( getBasedir(), "src/test/resources/unit/testsourcedir-test/testsourcedir-test-plugin-config.xml" );
-        JxrTestReport mojo = (JxrTestReport) lookupMojo( "test-jxr", testPom );
-        mojo.execute();
+        generateReport( "test-jxr", "testsourcedir-test/testsourcedir-test-plugin-config.xml" );
 
         File xrefTestDir = new File( getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test" );
 
@@ -65,11 +60,4 @@ public class JxrTestReportTest
         assertFalse( str.toLowerCase().contains( "/apidocs/testsourcedir/test/App.html\"".toLowerCase() ) );
     }
 
-    /**
-     * Read the contents of the specified file object into a string
-     */
-    private String readFile( File xrefTestDir, String fileName ) throws IOException
-    {
-        return new String( Files.readAllBytes( xrefTestDir.toPath().resolve( fileName ) ) );
-    }
 }

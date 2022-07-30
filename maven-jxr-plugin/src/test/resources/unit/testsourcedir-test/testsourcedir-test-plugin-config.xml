@@ -44,6 +44,7 @@ under the License.
           <bottom>Copyright 2006 Apache Foundation</bottom>
           <javadocVersion>1.4</javadocVersion>
           <stylesheet>stylesheet.css</stylesheet>
+          <localRepository>${localRepository}</localRepository>
         </configuration>
       </plugin>
     </plugins>
