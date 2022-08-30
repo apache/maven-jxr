@@ -27,6 +27,8 @@ import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * PacMan implementation of a JavaFile. This will parse out the file and
@@ -38,6 +40,9 @@ import java.nio.file.Path;
 public class JavaFileImpl
     extends JavaFile
 {
+
+    private final List<String> classTypes = Arrays.asList( "class", "interface", "enum", "record" );
+
     /**
      * Create a new JavaFileImpl that points to a given file...
      *
@@ -156,8 +161,7 @@ public class JavaFileImpl
 
             // Add the class or classes. There can be several classes in one file so
             // continue with the while loop to get them all.
-            if ( ( "class".equals( stok.sval ) || "interface".equals( stok.sval ) || "enum".equals( stok.sval ) )
-                    &&  stok.ttype != '"' )
+            if ( classTypes.contains( stok.sval ) &&  stok.ttype != '"' )
             {
                 stok.nextToken();
                 if ( stok.sval != null )
