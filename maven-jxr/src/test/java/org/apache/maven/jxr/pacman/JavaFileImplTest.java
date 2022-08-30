@@ -56,4 +56,15 @@ public class JavaFileImplTest {
         assertEquals( "ClassWithMultiLineString", javaFile.getClassTypes().get(0).getName() );
         assertEquals( "[ImportType[name=java.lang.*]]", javaFile.getImportTypes().toString() );
     }
+
+    @Test
+    public void testJXR_175_java14Record() throws IOException
+    {
+        JavaFileImpl javaFile = new JavaFileImpl( Paths.get(
+                "src/test/resources/jxr175/org/apache/maven/jxr/pacman/Java14Record.java" ),
+                "UTF-8" );
+        assertEquals( 1, javaFile.getClassTypes().size() );
+        assertEquals( "Java14Record", javaFile.getClassTypes().get(0).getName() );
+    }
+
 }

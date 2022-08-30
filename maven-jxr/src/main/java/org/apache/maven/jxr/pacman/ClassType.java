@@ -20,7 +20,7 @@ package org.apache.maven.jxr.pacman;
  */
 
 /**
- * Represents a Java class or interface.
+ * Represents a Java class, interface, enum or record.
  */
 public class ClassType
     extends BaseType
