@@ -30,7 +30,6 @@ package org.apache.maven.jxr;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.jxr.pacman.ClassType;
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.ImportType;
@@ -573,9 +572,7 @@ public class JavaCodeTransform
                 {
                     String uri = ( end + 1 == line.length() ) ? line.substring( start ) : line.substring( start, end );
 
-                    line =
-                        StringUtils.replace( line, uri, "<a href=\"" + uri + "\" target=\"alexandria_uri\">" + uri
-                            + "</a>" );
+                    line = line.replace( uri, "<a href=\"" + uri + "\" target=\"alexandria_uri\">" + uri + "</a>" );
                 }
             }
         }
@@ -1159,7 +1156,7 @@ public class JavaCodeTransform
         href.append( this.getPackageRoot() );
 
         // now find out how to get to the dest package
-        dest = StringUtils.replace( dest, ".*", "" ).replace( '.', '/' );
+        dest = dest.replace( ".*", "" ).replace( '.', '/' );
 
         href.append( dest );
 
@@ -1259,7 +1256,7 @@ public class JavaCodeTransform
 
             if (pkg.contains(".*"))
             {
-                pkg = StringUtils.replace( pkg, ".*", "" );
+                pkg = pkg.replace( ".*", "" );
             }
             else if ( !isPackage )
             {
@@ -1292,7 +1289,7 @@ public class JavaCodeTransform
                 }
             }
 
-            pkg = StringUtils.replace( pkg, ";", "" );
+            pkg = pkg.replace( ";", "" );
             String pkgHREF = getHREF( pkg );
             // if this package is within the PackageManager then you can create an HREF for it.
 
@@ -1301,14 +1298,13 @@ public class JavaCodeTransform
                 // Create an HREF for explicit classname imports
                 if ( classname != null )
                 {
-                    line =
-                        StringUtils.replace( line, classname, "<a href=\"" + pkgHREF + '/' + classname + ".html"
-                            + "\">" + classname + "</a>" );
+                    line = line.replace( classname, "<a href=\"" + pkgHREF + '/' + classname + ".html"
+                        + "\">" + classname + "</a>" );
                 }
 
                 // now replace the given package with a href
                 line =
-                    StringUtils.replace( line, pkg, "<a href=\"" + pkgHREF + '/' + DirectoryIndexer.INDEX + "\">" + pkg
+                    line.replace( pkg, "<a href=\"" + pkgHREF + '/' + DirectoryIndexer.INDEX + "\">" + pkg
                         + "</a>" );
             }
 
