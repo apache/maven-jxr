@@ -41,23 +41,22 @@ import org.apache.velocity.app.VelocityEngine;
  *
  * Creates the following files:
  * <ul>
- * <li><code>index.html</code>            main index containing the frameset</li>
- * <li><code>overview-frame.html</code>   list of the project's packages              (top left)</li>
- * <li><code>allclasses-frame.html</code> list of all classes in the project          (bottom left)</li>
- * <li><code>overview-summary.html</code> top-level listing of the project's packages (main frame)</li>
+ * <li>{@code index.html}            main index containing the frameset</li>
+ * <li>{@code overview-frame.html}   list of the project's packages              (top left)</li>
+ * <li>{@code allclasses-frame.html} list of all classes in the project          (bottom left)</li>
+ * <li>{@code overview-summary.html} top-level listing of the project's packages (main frame)</li>
  *
  * <li>
  * Package specific:
  * <ul>
- * <li><code>package-summary.html</code> listing of all classes in this package    (main frame)</li>
- * <li><code>package-frame.html</code>   listing of all classes in this package    (bottom left)</li>
+ * <li>{@code package-summary.html} listing of all classes in this package    (main frame)</li>
+ * <li>{@code package-frame.html}   listing of all classes in this package    (bottom left)</li>
  * </ul>
  * </li>
  * </ul>
  *
  * @author <a href="mailto:bellingard@gmail.com">Fabrice Bellingard </a>
  * @author <a href="mailto:brian@brainslug.org">Brian Leonard</a>
- * @version $Id$
  */
 public class DirectoryIndexer
 {
@@ -105,7 +104,7 @@ public class DirectoryIndexer
     /**
      * OutputEncoding is the encoding of output files.
      *
-     * @param outputEncoding output Encoding
+     * @param outputEncoding output encoding
      */
     public void setOutputEncoding( String outputEncoding )
     {
@@ -113,7 +112,8 @@ public class DirectoryIndexer
     }
 
     /**
-     * see setOutputEncoding(String)
+     * Gets the output encoding.
+     * @return output encoding
      */
     public String getOutputEncoding()
     {
@@ -121,7 +121,7 @@ public class DirectoryIndexer
     }
 
     /**
-     * TemplateDir is the location of the jelly template files used
+     * {@code templateDir} is the location of the jelly template files used
      * to generate the navigation pages.
      *
      * @param templateDir location of the template directory
@@ -132,7 +132,9 @@ public class DirectoryIndexer
     }
 
     /**
-     * see setTemplateDir(String)
+     * Gets the template directory.
+     *
+     * @return location of the template directory
      */
     public String getTemplateDir()
     {
@@ -140,7 +142,7 @@ public class DirectoryIndexer
     }
 
     /**
-     * WindowTitle is used in the output's &lt;title&gt; tags
+     * {@code windowTitle} is used in the output's &lt;title&gt; tags
      * see the javadoc documentation for the property of the same name
      *
      * @param windowTitle the &lt;title&gt; attribute
@@ -151,9 +153,9 @@ public class DirectoryIndexer
     }
 
     /**
-     * see setWindowTitle(String)
+     * Gets the window title.
      *
-     * @see #setWindowTitle(String) setWindowTitle
+     * @return window title
      */
     public String getWindowTitle()
     {
@@ -161,8 +163,8 @@ public class DirectoryIndexer
     }
 
     /**
-     * DocTitle is used as a page heading for the summary files
-     * see the javadoc documentation for the property of the same name
+     * {@code docTitle} is used as a page heading for the summary files.<br>
+     * See the javadoc documentation for the property of the same name
      *
      * @param docTitle major page heading
      */
@@ -172,9 +174,9 @@ public class DirectoryIndexer
     }
 
     /**
-     * see setDocTitle(String)
+     * Gets the major page heading.
      *
-     * @see #setDocTitle(String) setDocTitle
+     * @return major page heading
      */
     public String getDocTitle()
     {
@@ -182,8 +184,8 @@ public class DirectoryIndexer
     }
 
     /**
-     * Bottom is a footer for the navigation pages, usually a copyright
-     * see the javadoc documentation for the property of the same name
+     * Bottom is a footer for the navigation pages, usually a copyright.<br>
+     * See the javadoc documentation for the property of the same name.
      *
      * @param bottom page footer
      */
@@ -193,9 +195,9 @@ public class DirectoryIndexer
     }
 
     /**
-     * see setBottom(String)
+     * Gets the footer for the navigation pages.
      *
-     * @see #setBottom(String) setBottom
+     * @return bottom page footer
      */
     public String getBottom()
     {
@@ -247,7 +249,7 @@ public class DirectoryIndexer
     }
 
     /*
-     * Set Velocity properties to find templates
+     * Sets Velocity properties to find templates.
      */
     private void setProperties( VelocityEngine engine )
     {
@@ -347,13 +349,13 @@ public class DirectoryIndexer
             for ( ClassType clazz : pkg.getClassTypes() )
             {
                 String className = clazz.getName();
-                
+
                 ClassInfo classInfo = new ClassInfo( className, pkgDir );
-                
+
                 classInfo.setFilename( clazz.getFilename() );
 
                 pkgClasses.put( className, classInfo );
-                
+
                 // Adding package name to key in order to ensure classes with identical names in different packages are
                 // all included.
                 allClasses.put( className + "#" + pkgName, classInfo );
@@ -368,16 +370,16 @@ public class DirectoryIndexer
 
         return new ProjectInfo( allPackages, allClasses );
     }
-    
+
     /**
-     * 
+     *
      * @author Robert Scholte
      * @since 3.2.0
      */
     public static class ProjectInfo
     {
         private final Map<String, PackageInfo> allPackages;
-        
+
         private final Map<String, ClassInfo> allClasses;
 
         public ProjectInfo( Map<String, PackageInfo> allPackages, Map<String, ClassInfo> allClasses )
@@ -390,77 +392,77 @@ public class DirectoryIndexer
         {
             return allPackages;
         }
-        
+
         public Map<String, ClassInfo> getAllClasses()
         {
             return allClasses;
         }
     }
-    
+
     /**
-     * 
+     *
      * @author Robert Scholte
      * @since 3.2.0
      */
     public static class PackageInfo
     {
         private final String name;
-        
+
         private final String dir;
 
         Map<String, ClassInfo> classes;
-        
+
         private String rootRef;
-        
+
         public PackageInfo( String name, String dir )
         {
             this.name = name;
             this.dir = dir;
         }
-        
+
         public String getName()
         {
             return name;
         }
-        
+
         public String getDir()
         {
             return dir;
         }
-        
+
         public void setClasses( Map<String, ClassInfo> classes )
         {
             this.classes = classes;
         }
-        
+
         public Map<String, ClassInfo> getClasses()
         {
             return classes;
         }
-        
+
         public void setRootRef( String rootRef )
         {
             this.rootRef = rootRef;
         }
-        
+
         public String getRootRef()
         {
             return rootRef;
         }
     }
-    
+
     /**
      * Holds class information
-     * 
+     *
      * @author Robert Scholte
      * @since 3.2.0
      */
     public static class ClassInfo
     {
         private final String name;
-        
+
         private final String dir;
-        
+
         private String filename;
 
         public ClassInfo( String name, String dir )
@@ -469,22 +471,22 @@ public class DirectoryIndexer
             this.name = name;
             this.dir = dir;
         }
-        
+
         public String getName()
         {
             return name;
         }
-        
+
         public String getDir()
         {
             return dir;
         }
-        
+
         public void setFilename( String filename )
         {
             this.filename = filename;
         }
-        
+
         public String getFilename()
         {
             return filename;

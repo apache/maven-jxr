@@ -21,7 +21,7 @@ package org.apache.maven.jxr.util;
 
 /**
  * A StringEntry represents a value found by the tokenizer. The index is where
- * this StringEntry was found in the source string
+ * this StringEntry was found in the source string.
  */
 public final class StringEntry
 {
@@ -30,33 +30,31 @@ public final class StringEntry
     private final int index;
 
     /**
-     * Constructor for the StringEntry object
+     * Constructor.
      *
-     * @param value
-     * @param index
+     * @param value value
+     * @param index index
      */
     public StringEntry( String value, int index )
     {
-
         this.value = value;
         this.index = index;
     }
 
     /**
-     * Gets the index attribute of the StringEntry object
+     * Gets the index attribute of the StringEntry object.
+     *
+     * @return index
      */
     public int getIndex()
     {
         return this.index;
     }
 
-    /**
-     * Description of the Method
-     */
     @Override
     public String toString()
     {
         return this.value;
     }
-}
 
+}

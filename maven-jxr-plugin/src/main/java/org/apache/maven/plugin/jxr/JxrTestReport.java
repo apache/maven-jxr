@@ -36,7 +36,6 @@ import org.apache.maven.project.MavenProject;
  *
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
- * @version $Id$
  */
 @Mojo( name = "test-jxr" )
 @Execute( phase = LifecyclePhase.GENERATE_TEST_SOURCES )

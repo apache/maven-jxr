@@ -38,7 +38,7 @@ import java.util.Locale;
 public class JXR
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( JXR.class );
-    
+
     private final PackageManager pkgmgr;
 
     /**
@@ -46,7 +46,7 @@ public class JXR
      * the eye!" :)
      */
     private final JavaCodeTransform transformer;
-    
+
     /**
      * The default list of include patterns to use.
      */
@@ -83,7 +83,7 @@ public class JXR
      * The list of include patterns to use.
      */
     private String[] includes = DEFAULT_INCLUDES;
-    
+
     public JXR( PackageManager pkgmgr, JavaCodeTransform transformer )
     {
         this.pkgmgr = pkgmgr;
@@ -93,10 +93,10 @@ public class JXR
     /**
      * Now that we have instantiated everything. Process this JXR task.
      *
-     * @param packageManager
-     * @param sourceDir
-     * @param bottom
-     * @throws IOException
+     * @param packageManager package manager
+     * @param sourceDir source directory.
+     * @param bottom bottom text
+     * @throws IOException on transformation error
      */
     public void processPath( PackageManager packageManager, Path sourceDir, String bottom )
         throws IOException
@@ -122,7 +122,7 @@ public class JXR
             if ( isJavaFile( sourceFile.toString() ) )
             {
                 String newFileName = file.replaceFirst( ".java$", ".html" );
-                
+
                 transform( sourceFile, this.destDir.resolve( newFileName ), bottom );
             }
         }
@@ -132,7 +132,7 @@ public class JXR
      * Check to see if the file is a Java source file.
      *
      * @param filename The name of the file to check
-     * @return <code>true</code> if the file is a Java file
+     * @return {@code true} if the file is a Java file
      */
     public static boolean isJavaFile( String filename )
     {
@@ -140,10 +140,10 @@ public class JXR
     }
 
     /**
-     * Check to see if the file is an HTML file.
+     * Checks to see if the file is an HTML file.
      *
      * @param filename The name of the file to check
-     * @return <code>true</code> if the file is an HTML file
+     * @return {@code true} if the file is an HTML file
      */
     public static boolean isHtmlFile( String filename )
     {
@@ -151,7 +151,9 @@ public class JXR
     }
 
     /**
-     * @param dest
+     * Sets the destination.
+     *
+     * @param dest destination
      */
     public void setDest( Path dest )
     {
@@ -159,7 +161,9 @@ public class JXR
     }
 
     /**
-     * @param locale
+     * Sets the locale.
+     *
+     * @param locale locale
      */
     public void setLocale( Locale locale )
     {
@@ -167,7 +171,9 @@ public class JXR
     }
 
     /**
-     * @param inputEncoding
+     * Sets the input encoding.
+     *
+     * @param inputEncoding input encoding
      */
     public void setInputEncoding( String inputEncoding )
     {
@@ -175,7 +181,9 @@ public class JXR
     }
 
     /**
-     * @param outputEncoding
+     * Sets the output encoding.
+     *
+     * @param outputEncoding output encoding
      */
     public void setOutputEncoding( String outputEncoding )
     {
@@ -183,7 +191,8 @@ public class JXR
     }
 
     /**
-     * @param javadocLinkDir
+     * Sets the relative path to javadocs.
+     * @param javadocLinkDir path to javadocs
      */
     public void setJavadocLinkDir( Path javadocLinkDir )
     {
@@ -192,7 +201,9 @@ public class JXR
     }
 
     /**
-     * @param revision
+     * Sets the revision.
+     *
+     * @param revision revision
      */
     public void setRevision( String revision )
     {
@@ -200,16 +211,18 @@ public class JXR
     }
 
     /**
-     * @param sourceDirs
-     * @param templateDir
-     * @param windowTitle
-     * @param docTitle
-     * @param bottom
-     * @throws IOException
-     * @throws JxrException
+     * Performs the cross-referencing.
+     *
+     * @param sourceDirs source directories
+     * @param templateDir template directory
+     * @param windowTitle window title
+     * @param docTitle document title
+     * @param bottom bottom text
+     * @throws IOException on I/O error
+     * @throws JxrException on Velocity error
      */
     public void xref( List<String> sourceDirs, String templateDir, String windowTitle, String docTitle, String bottom )
-        throws IOException, JxrException
+            throws IOException, JxrException
     {
         pkgmgr.setExcludes( excludes );
         pkgmgr.setIncludes( includes );
@@ -244,7 +257,7 @@ public class JXR
      * @param sourceFile The java source file
      * @param destFile The directory to put the HTML into
      * @param bottom The bottom footer text just as in the package pages
-     * @throws IOException Thrown if the transform can't happen for some reason.
+     * @throws IOException if the transform can't happen for some reason
      */
     private void transform( Path sourceFile, Path destFile, String bottom )
         throws IOException
@@ -261,14 +274,14 @@ public class JXR
      * Creates a relative link from one directory to another.
      *
      * Example:
-     * given <code>/foo/bar/baz/oink</code>
-     * and <code>/foo/bar/schmoo</code>
+     * given {@code /foo/bar/baz/oink}
+     * and {@code /foo/bar/schmoo}
      *
-     * this method will return a string of <code>"../../schmoo/"</code>
+     * this method will return a string of {@code "../../schmoo/"}
      *
      * @param fromDir The directory from which the link is relative.
      * @param toDir The directory into which the link points.
-     * @return a String of format <code>"../../schmoo/"</code>
+     * @return a String of format {@code "../../schmoo/"}
      */
     private static Path getRelativeLink( Path fromDir, Path toDir )
     {

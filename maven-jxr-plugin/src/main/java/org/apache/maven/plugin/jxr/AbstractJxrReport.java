@@ -52,7 +52,6 @@ import org.codehaus.plexus.util.StringUtils;
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 public abstract class AbstractJxrReport
     extends AbstractMavenReport
@@ -84,14 +83,14 @@ public abstract class AbstractJxrReport
 
     /**
      * Directory where Velocity templates can be found to generate overviews, frames and summaries. Should not be used.
-     * If used, should be an absolute path, like <code>"${basedir}/myTemplates"</code>.
+     * If used, should be an absolute path, like {@code "${basedir}/myTemplates"}.
      */
     @Parameter
     private String templateDir;
 
     /**
      * Style sheet used for the Xref HTML files. Should not be used. If used, should be an absolute path, like
-     * <code>"${basedir}/myStyles.css"</code>.
+     * {@code "${basedir}/myStyles.css"}.
      */
     @Parameter
     private String stylesheet;
@@ -419,13 +418,17 @@ public abstract class AbstractJxrReport
         return project;
     }
 
+    /**
+     * Returns the Maven session.
+     * @return Maven session
+     */
     protected MavenSession getSession()
     {
         return session;
     }
 
     /**
-     * Returns the correct resource bundle according to the locale
+     * Returns the correct resource bundle according to the locale.
      *
      * @param locale the locale of the user
      * @return the bundle corresponding to the locale
@@ -436,7 +439,9 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * @param sourceDirs
+     * Checks whether the report can be generated.
+     *
+     * @param sourceDirs list of source directories
      * @return true if the report could be generated
      */
     protected boolean canGenerateReport( List<String> sourceDirs )
@@ -513,7 +518,7 @@ public abstract class AbstractJxrReport
     }
 
     /**
-     * Set a new value for <code>javadocTemplatesVersion</code>
+     * Sets a new value for {@code javadocTemplatesVersion}.
      */
     private void setJavadocTemplatesVersion()
     {
@@ -669,7 +674,7 @@ public abstract class AbstractJxrReport
     /**
      * Is the current report aggregated?
      *
-     * @return
+     * @return true if aggregate, false otherwise
      */
     protected boolean isAggregate()
     {

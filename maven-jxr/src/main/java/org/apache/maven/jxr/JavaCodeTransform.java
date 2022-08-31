@@ -148,9 +148,6 @@ public class JavaCodeTransform
      */
     private static final String STYLESHEET_FILENAME = "stylesheet.css";
 
-    /**
-     * Description of the Field
-     */
     private static final String[] VALID_URI_SCHEMES = { "http://", "https://", "mailto:" };
 
     /**
@@ -170,22 +167,22 @@ public class JavaCodeTransform
     private Map<String, String> reservedWords = new Hashtable<>();
 
     /**
-     * flag set to true when a multi-line comment is started
+     * Flag set to true when a multi-line comment is started.
      */
     private boolean inMultiLineComment = false;
 
     /**
-     * flag set to true when a javadoc comment is started
+     * Flag set to true when a javadoc comment is started.
      */
     private boolean inJavadocComment = false;
 
     /**
-     * Set the filename that is currently being processed.
+     * File name that is currently being processed.
      */
     private Path currentFilename = null;
 
     /**
-     * The current CVS revision of the currently transformed document
+     * Revision of the currently transformed document.
      */
     private String revision = null;
 
@@ -200,7 +197,7 @@ public class JavaCodeTransform
     private Locale locale = null;
 
     /**
-     * Relative path to javadocs, suitable for hyperlinking
+     * Relative path to javadocs, suitable for hyperlinking.
      */
     private Path javadocLinkDir;
 
@@ -297,7 +294,6 @@ public class JavaCodeTransform
      * Gets the header attribute of the JavaCodeTransform object
      *
      * @param out the writer where the header is appended to
-     * @return String
      */
     private void appendHeader( PrintWriter out )
     {
@@ -364,7 +360,6 @@ public class JavaCodeTransform
      *
      * @param out the writer where the header is appended to
      * @param bottom the bottom text
-     * @return String
      */
     private void appendFooter( PrintWriter out, String bottom )
     {
@@ -428,15 +423,15 @@ public class JavaCodeTransform
     /**
      * This is the public method for doing all transforms of code.
      *
-     * @param sourcefile String
-     * @param destfile String
-     * @param locale String
-     * @param inputEncoding String
-     * @param outputEncoding String
-     * @param javadocLinkDir String
-     * @param revision String
-     * @param bottom TODO
-     * @throws IOException
+     * @param sourcefile source file
+     * @param destfile destination file
+     * @param locale locale
+     * @param inputEncoding input encoding
+     * @param outputEncoding output encoding
+     * @param javadocLinkDir relative path to javadocs
+     * @param revision revision of the module
+     * @param bottom bottom text
+     * @throws IOException in I/O failures in reading/writing files
      */
     public final void transform( Path sourcefile, Path destfile, Locale locale, String inputEncoding,
                                  String outputEncoding, Path javadocLinkDir, String revision, String bottom )
@@ -489,9 +484,9 @@ public class JavaCodeTransform
     }
 
     /**
-     * Get the current filename
+     * Gets the current file name.
      *
-     * @return String
+     * @return path of file
      */
     private Path getCurrentFilename()
     {
@@ -499,9 +494,9 @@ public class JavaCodeTransform
     }
 
     /**
-     * Set the current filename
+     * Sets the current file name.
      *
-     * @param filename String
+     * @param filename file name
      */
     private void setCurrentFilename( Path filename )
     {
@@ -511,7 +506,7 @@ public class JavaCodeTransform
     /**
      * From the current file, determine the package root based on the current path.
      *
-     * @return String
+     * @return package root
      */
     private String getPackageRoot()
     {
@@ -542,10 +537,10 @@ public class JavaCodeTransform
     }
 
     /**
-     * Given a line of text, search for URIs and make href's out of them
+     * Given a line of text, search for URIs and make href's out of them.
      *
      * @param line String
-     * @return String
+     * @return href
      */
     private String uriFilter( String line )
     {
@@ -595,9 +590,9 @@ public class JavaCodeTransform
     }
 
     /**
-     * The current revision of the CVS module
+     * The current revision of the module.
      *
-     * @return String
+     * @return revision
      */
     public final String getRevision()
     {
@@ -607,10 +602,10 @@ public class JavaCodeTransform
     /**
      * Cross Reference the given line with JXR returning the new content.
      *
-     * @param line String
+     * @param line line
      * @param packageName String
      * @param classType ClassType
-     * @return String
+     * @return cross-referenced line
      */
     private String xrLine( String line, String packageName, ClassType classType )
     {
@@ -689,11 +684,12 @@ public class JavaCodeTransform
     }
 
     /**
-     * Handle ongoing multi-line comments, detecting ends if present. State is maintained in private boolean members,
-     * one each for javadoc and (normal) multiline comments.
+     * Handle ongoing multi-line comments, detecting ends if present.<br>
+     * State is maintained in private boolean members,
+     * one each for javadoc and (normal) multi-line comments.
      *
-     * @param line String
-     * @return String
+     * @param line line
+     * @return processed line
      */
     private String ongoingMultiLineCommentFilter( String line )
     {
@@ -741,8 +737,8 @@ public class JavaCodeTransform
      * ignore the problem, or implement a function called something like isInsideString(line, index) where index points
      * to some point in the line that we need to check... started doing this function below.
      *
-     * @param line String
-     * @return String
+     * @param line line
+     * @return processed line
      */
     private String inlineCommentFilter( String line )
     {
@@ -767,8 +763,8 @@ public class JavaCodeTransform
      * Detect and handle the start of multiLine comments. State is maintained in private boolean members one each for
      * javadoc and (normal) multiline comments.
      *
-     * @param line String
-     * @return String
+     * @param line line
+     * @return processed line
      */
     private String beginMultiLineCommentFilter( String line )
     {
@@ -811,8 +807,8 @@ public class JavaCodeTransform
     /**
      * Filters strings from a line of text and formats them properly.
      *
-     * @param line String
-     * @return String
+     * @param line line
+     * @return processed line
      */
     private String stringFilter( String line )
     {
@@ -859,8 +855,8 @@ public class JavaCodeTransform
     /**
      * Filters keywords from a line of text and formats them properly.
      *
-     * @param line String
-     * @return String
+     * @param line line
+     * @return processed line
      */
     private String keywordFilter( String line )
     {
@@ -945,10 +941,8 @@ public class JavaCodeTransform
     }
 
     /**
-     * Description of the Method
-     *
      * @param oos ObjectOutputStream
-     * @throws IOException
+     * @throws IOException on I/O error during write
      */
     final void writeObject( ObjectOutputStream oos )
         throws IOException
@@ -957,11 +951,9 @@ public class JavaCodeTransform
     }
 
     /**
-     * Description of the Method
-     *
-     * @param ois ObjectInputStream
-     * @throws ClassNotFoundException
-     * @throws IOException
+     * @param ois object input stream
+     * @throws ClassNotFoundException if the class of a serialized object could not be found.
+     * @throws IOException on I/O error during read
      */
     final void readObject( ObjectInputStream ois )
         throws ClassNotFoundException, IOException
@@ -970,9 +962,9 @@ public class JavaCodeTransform
     }
 
     /**
-     * Get an overview header for this file.
+     * Gets an overview header for this file.
      *
-     * @return String
+     * @return overview header
      */
     private String getFileOverview()
     {
@@ -1023,7 +1015,7 @@ public class JavaCodeTransform
      * Handles line width which may need to change depending on which line number you are on.
      *
      * @param linenumber int
-     * @return String
+     * @return blanks
      */
     private String getLineWidth( int linenumber )
     {
@@ -1044,8 +1036,8 @@ public class JavaCodeTransform
     /**
      * Handles finding classes based on the current filename and then makes HREFs for you to link to them with.
      *
-     * @param line String
-     * @return String
+     * @param line line
+     * @return processed line
      */
     private String jxrFilter( String line )
     {
@@ -1155,9 +1147,9 @@ public class JavaCodeTransform
     /**
      * Given the current package, get an HREF to the package and class given
      *
-     * @param dest String
-     * @param jc ClassType
-     * @return String
+     * @param dest destination
+     * @param jc class type
+     * @return href
      */
     private String getHREF( String dest, ClassType jc )
     {
@@ -1187,8 +1179,8 @@ public class JavaCodeTransform
     /**
      * Based on the destination package, get the HREF.
      *
-     * @param dest String
-     * @return String
+     * @param dest destination
+     * @return href
      */
     private String getHREF( String dest )
     {
@@ -1200,7 +1192,7 @@ public class JavaCodeTransform
      * Given the name of a package... get the number of subdirectories/subpackages there would be.
      * </p>
      * <p>
-     * EX: <code>org.apache.maven == 3</code>
+     * EX: {@code org.apache.maven == 3}
      * </p>
      *
      * @param packageName String
@@ -1237,8 +1229,8 @@ public class JavaCodeTransform
     /**
      * Parse out the current link and look for package/import statements and then create HREFs for them
      *
-     * @param line String
-     * @return String
+     * @param line line
+     * @return processed line
      */
     private String importFilter( String line )
     {
@@ -1329,7 +1321,7 @@ public class JavaCodeTransform
      * if the given char is not one of the following in VALID_URI_CHARS then return true
      *
      * @param c char to check against VALID_URI_CHARS list
-     * @return <code>true</code> if c is a valid URI char
+     * @return {@code true} if c is a valid URI char
      */
     private boolean isInvalidURICharacter( char c )
     {

@@ -36,19 +36,18 @@ import org.junit.Test;
  * Test include/exclude patterns.
  *
  * @author <a href="mailto:dennisl@apache.org">Dennis Lundberg</a>
- * @version $Id$
  */
-public class IncludeExcludeTest  
+public class IncludeExcludeTest
 {
     private JXR jxr;
- 
+
     @Before
     public void setUp()
     {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager( fileManager );
         JavaCodeTransform codeTransform = new JavaCodeTransform( packageManager, fileManager );
-        
+
         jxr = new JXR( packageManager, codeTransform );
         jxr.setDest( Paths.get( "target" ) );
         jxr.setInputEncoding( "ISO-8859-1" );

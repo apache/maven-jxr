@@ -40,9 +40,6 @@ public class JavaCodeTransformTest
     /** JavaCodeTransform object under test */
     private JavaCodeTransform codeTransform;
 
-    /**
-     * Set up this test.
-     */
     @Before
     public void setUp()
     {

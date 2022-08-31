@@ -33,9 +33,9 @@ public class ImportType
     private String packagename = null;
 
     /**
-     * Create a new ImportType with the specified name
+     * Create a new {@code ImportType} with the specified name.
      *
-     * @param name
+     * @param name name
      */
     public ImportType( String name )
     {
@@ -56,7 +56,9 @@ public class ImportType
     }
 
     /**
-     * Return true if this is a class import. Ex: test.Test
+     * Determines whether this is a class import. Ex: test.Test
+     *
+     * @return true if class import, false otherwise
      */
     public boolean isClass()
     {
@@ -64,17 +66,20 @@ public class ImportType
     }
 
     /**
-     * Return true if this is a package import. Ex: test.*
+     * Determines whether this is a package import. Ex: test.*
+     *
+     * @return true if package, false otherwise
      */
     public boolean isPackage()
     {
         return this.ispackage;
     }
 
-
     /**
-     * Get the name of the package that this import is based on: EX: test.* will
+     * Gets the name of the package that this import is based on: EX: test.* will
      * return "test" EX: test.Test will return "test"
+     *
+     * @return package
      */
     public String getPackage()
     {
@@ -82,4 +87,3 @@ public class ImportType
     }
 
 }
-

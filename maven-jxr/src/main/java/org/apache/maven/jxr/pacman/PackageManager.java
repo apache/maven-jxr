@@ -38,7 +38,7 @@ import java.util.Set;
 public class PackageManager
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( PackageManager.class );
-    
+
     private final FileManager fileManager;
 
     private Set<Path> directories = new HashSet<>();
@@ -71,11 +71,13 @@ public class PackageManager
 
     /**
      * Given the name of a package (Ex: org.apache.maven.util) obtain it from
-     * the PackageManager
+     * the package manager.
+     *
+     * @param name name of package
+     * @return package type if found or default package type
      */
     public PackageType getPackageType( String name )
     {
-
         //return the default package if the name is null.
         if ( name == null )
         {
@@ -86,7 +88,9 @@ public class PackageManager
     }
 
     /**
-     * Add a package to the PackageManager
+     * Add a package to this package manager.
+     *
+     * @param packageType package type to add
      */
     public void addPackageType( PackageType packageType )
     {
@@ -94,7 +98,9 @@ public class PackageManager
     }
 
     /**
-     * Get all of the packages in the PackageManager
+     * Gets all of the packages in this package manager.
+     *
+     * @return package types
      */
     public Collection<PackageType> getPackageTypes()
     {
@@ -106,7 +112,7 @@ public class PackageManager
      */
     private void parse( Path baseDir )
     {
-        // Go through each directory and get the java source 
+        // Go through each directory and get the java source
         // files for this dir.
         LOGGER.debug( "Scanning " + baseDir );
         DirectoryScanner directoryScanner = new DirectoryScanner();
@@ -154,9 +160,6 @@ public class PackageManager
 
     }
 
-    /**
-     * Description of the Method
-     */
     public void process( Path directory )
     {
         if ( this.directories.add( directory ) )
