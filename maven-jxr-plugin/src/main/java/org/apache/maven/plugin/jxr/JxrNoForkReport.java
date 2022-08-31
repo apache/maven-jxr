@@ -29,7 +29,6 @@ import org.apache.maven.plugins.annotations.Mojo;
  * site generation, e.g. by invoking {@code }mvn clean deploy site}.
  *
  * @since 3.1.0
- * @version $Id$
  */
 @Mojo( name = "jxr-no-fork" )
 @Execute( phase = LifecyclePhase.NONE )

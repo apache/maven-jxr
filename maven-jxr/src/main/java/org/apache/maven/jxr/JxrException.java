@@ -23,7 +23,6 @@ package org.apache.maven.jxr;
  * Exception occurring in JXR.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
- * @version $Id$
  */
 public class JxrException
     extends Exception

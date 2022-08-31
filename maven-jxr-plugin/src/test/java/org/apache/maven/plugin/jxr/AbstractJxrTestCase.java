@@ -67,7 +67,7 @@ public abstract class AbstractJxrTestCase
     }
 
     /**
-     * Get the current Maven project
+     * Gets the current Maven project.
      *
      * @return the maven project
      */
@@ -77,7 +77,7 @@ public abstract class AbstractJxrTestCase
     }
 
     /**
-     * Get the generated report as file in the test maven project.
+     * Gets the generated report as file in the test maven project.
      *
      * @param name the name of the report.
      * @return the generated report as file

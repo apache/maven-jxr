@@ -35,7 +35,6 @@ import java.util.List;
  * determine package, class, and imports
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- * @version $Id$
  */
 public class JavaFileImpl
     extends JavaFile
@@ -44,11 +43,11 @@ public class JavaFileImpl
     private final List<String> classTypes = Arrays.asList( "class", "interface", "enum", "record" );
 
     /**
-     * Create a new JavaFileImpl that points to a given file...
+     * Constructor of a new object that points to a given file.
      *
-     * @param path
-     * @param encoding
-     * @throws IOException
+     * @param path path of the file
+     * @param encoding encoding of the file
+     * @throws IOException on parsing failure
      */
     public JavaFileImpl( Path path, String encoding )
         throws IOException
@@ -65,8 +64,7 @@ public class JavaFileImpl
     }
 
     /**
-     * Open up the file and try to determine package, class and import
-     * statements.
+     * Opens up the file and try to determine package, class and import statements.
      */
     private void parse()
         throws IOException
@@ -176,12 +174,11 @@ public class JavaFileImpl
     }
 
     /**
-     * Get a StreamTokenizer for this file.
+     * Gets a {@link StreamTokenizer} for this file.
      */
     private StreamTokenizer getTokenizer( Reader reader )
     {
         StreamTokenizer stok = new StreamTokenizer( reader );
-        //int tok;
 
         stok.commentChar( '*' );
         stok.wordChars( '_', '_' );
@@ -192,7 +189,7 @@ public class JavaFileImpl
 
         return stok;
     }
-    
+
     private Reader getReader()
         throws IOException
     {
@@ -209,5 +206,5 @@ public class JavaFileImpl
         {
             return new FileReader( this.getPath().toFile() );
         }
-    }    
+    }
 }

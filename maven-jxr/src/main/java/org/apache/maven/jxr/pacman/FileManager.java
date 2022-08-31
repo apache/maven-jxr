@@ -42,8 +42,12 @@ public class FileManager
     private String encoding = null;
 
     /**
-     * Get a file from it's name. If the file does not exist within the
-     * FileManager, create a new one and return it.
+     * Gets a file from its name.<br>
+     * If the file does not exist within the FileManager, creates a new one and returns it.
+     *
+     * @param path path of the file
+     * @return the {@link JavaFile} meta object for the specified file
+     * @throws IOException on parsing failure
      */
     public JavaFile getFile( Path path )
         throws IOException
@@ -61,7 +65,8 @@ public class FileManager
     }
 
     /**
-     * Add a file to this filemanager.
+     * Add a file to this file manager.
+     * @param file file to add
      */
     public void addFile( JavaFile file )
     {
@@ -69,7 +74,7 @@ public class FileManager
     }
 
     /**
-     * Encoding is the encoding of source files.
+     * Sets the encoding of source files.
      *
      * @param encoding encoding of source files
      */
@@ -79,9 +84,9 @@ public class FileManager
     }
 
     /**
-     * see setEncoding(String)
+     * Gets the encoding of source files.
      *
-     * @see #setEncoding(String)
+     * @return encoding
      */
     public String getEncoding()
     {

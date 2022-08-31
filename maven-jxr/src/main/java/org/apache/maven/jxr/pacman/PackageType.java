@@ -33,9 +33,9 @@ public class PackageType
     private Map<String, ClassType> classes = new HashMap<>();
 
     /**
-     * Create a Java package
+     * Creates a Java package.
      *
-     * @param name
+     * @param name name of package
      */
     public PackageType( String name )
     {
@@ -43,7 +43,7 @@ public class PackageType
     }
 
     /**
-     * Create a Java package with no name IE the default Java package.
+     * Creates a Java package with no name IE the default Java package.
      */
     public PackageType()
     {
@@ -51,7 +51,9 @@ public class PackageType
     }
 
     /**
-     * Get all the known classes
+     * Gets all the known classes
+     *
+     * @return collection of class types
      */
     public Collection<ClassType> getClassTypes()
     {
@@ -59,7 +61,9 @@ public class PackageType
     }
 
     /**
-     * Add a class to this package.
+     * Adds a class to this package.
+     *
+     * @param classType class type to add
      */
     public void addClassType( ClassType classType )
     {
@@ -70,7 +74,10 @@ public class PackageType
 
     /**
      * Given the name of a class, get it from this package or null if it does
-     * not exist
+     * not exist.
+     *
+     * @param classType class type String
+     * @return class type object
      */
     public ClassType getClassType( String classType )
     {

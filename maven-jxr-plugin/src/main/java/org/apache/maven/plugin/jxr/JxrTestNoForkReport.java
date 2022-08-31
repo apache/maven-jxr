@@ -25,11 +25,10 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 /**
  * Creates an html-based, cross referenced version of Java source code
- * for a project's test sources without forking. Note that this goal does require generation of test 
+ * for a project's test sources without forking. Note that this goal does require generation of test
  * sources before site generation, e.g. by invoking {@code }mvn clean deploy site}.
  *
  * @since 3.1.0
- * @version $Id$
  */
 @Mojo( name = "test-jxr-no-fork" )
 @Execute( phase = LifecyclePhase.NONE )

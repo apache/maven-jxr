@@ -31,7 +31,7 @@ public abstract class BaseType
     private final String name;
 
     /**
-     * Construct type and set its name.
+     * Constructs type and set its name.
      *
      * @param name type name
      */
@@ -41,7 +41,7 @@ public abstract class BaseType
     }
 
     /**
-     * Get the name for this type
+     * Gets the name for this type.
      *
      * @return The name value
      */

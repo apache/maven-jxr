@@ -35,7 +35,6 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  * Utility class for the jxr report.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 public class JxrReportUtil
 {
@@ -47,13 +46,11 @@ public class JxrReportUtil
     /**
      * Determine if javadoc is aggregated in this project, paying attention to both TODO: take cognizance of javadoc
      * versus test-javadoc the old parameter and the new mojo.
-     * 
-     * @param project
-     * @return
-     * @throws IOException
+     *
+     * @param project the Maven project
+     * @return if javadoc is aggregated, false otherwise
      */
     protected static boolean isJavadocAggregated( MavenProject project )
-        throws IOException
     {
         // first check conf for obsolete aggregate param.
         boolean javadocAggregate = Boolean.parseBoolean(
@@ -86,17 +83,15 @@ public class JxrReportUtil
     }
 
     /**
-     * Return the <code>optionName</code> value defined in a project for the "maven-javadoc-plugin" plugin.
+     * Returns the {@code optionName} value defined in a project for the "maven-javadoc-plugin" plugin.
      *
      * @param project not null
      * @param optionName the option name wanted
      * @param defaultValue a default value
      * @return the value for the option name or the default value. Could be null if not found.
-     * @throws IOException if any
      */
     protected static String getMavenJavadocPluginBasicOption( MavenProject project, String optionName,
                                                               String defaultValue )
-        throws IOException
     {
         List<Object> plugins = new ArrayList<>();
         plugins.addAll( project.getModel().getReporting().getPlugins() );
@@ -149,13 +144,12 @@ public class JxrReportUtil
     }
 
     /**
-     * Return the plugin references for the javadoc plugin in a project.
+     * Returns the plugin references for the javadoc plugin in a project.
      *
-     * @param project not null
-     * @throws IOException if any
+     * @param project Maven project
+     * @return list of Javadoc plugins
      */
     protected static List<?> getMavenJavadocPlugins( MavenProject project )
-        throws IOException
     {
         List<Object> plugins = new ArrayList<>();
         plugins.addAll( project.getModel().getReporting().getPlugins() );
@@ -210,10 +204,10 @@ public class JxrReportUtil
      * Generates the site structure using the project hierarchy (project and its modules) or using the
      * distributionManagement elements from the pom.xml.
      *
-     * @param project
-     * @param ignoreMissingSiteUrl
+     * @param project the Maven project
+     * @param ignoreMissingSiteUrl whether missing site url in distribution management of the POM should be ignored
      * @return the structure relative path
-     * @throws IOException if any
+     * @throws IOException if site url is missing
      */
     protected static String getStructure( MavenProject project, boolean ignoreMissingSiteUrl )
         throws IOException

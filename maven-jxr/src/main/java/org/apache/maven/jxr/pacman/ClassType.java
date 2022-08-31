@@ -36,7 +36,7 @@ public class ClassType
      * Create a new ClassType without a filename.
      *
      * @deprecated Please use {@link #ClassType( String, String )} instead
-     * @param name
+     * @param name name
      */
     @Deprecated
     public ClassType( String name )
@@ -47,8 +47,8 @@ public class ClassType
     /**
      * Create a new ClassType.
      *
-     * @param name
-     * @param filename
+     * @param name name
+     * @param filename file name
      */
     public ClassType( String name, String filename )
     {
@@ -58,11 +58,21 @@ public class ClassType
     }
 
 
+    /**
+     * Returns the file name.
+     *
+     * @return file name
+     */
     public String getFilename()
     {
         return filename;
     }
 
+    /**
+     * Sets the file name.
+     *
+     * @param filename file name
+     */
     public void setFilename( String filename )
     {
         this.filename = filename;

@@ -36,7 +36,6 @@ import org.apache.maven.project.MavenProject;
  * for a project.
  *
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
- * @version $Id$
  */
 @Mojo( name = "jxr" )
 @Execute( phase = LifecyclePhase.GENERATE_SOURCES )
@@ -51,7 +50,7 @@ public class JxrReport
 
     /**
      * Specifies the source path where the java files are located.
-     * The paths are separated by '<code>;</code>'.
+     * The paths are separated by '{@code ;}'.
      */
     @Parameter
     private String sourcePath;

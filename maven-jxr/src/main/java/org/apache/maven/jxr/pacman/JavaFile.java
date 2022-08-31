@@ -30,7 +30,6 @@ import java.util.Set;
  * Interface for objects which wish to provide meta-info about a JavaFile.
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- * @version $Id$
  */
 public abstract class JavaFile
 {
@@ -45,7 +44,7 @@ public abstract class JavaFile
     private String filename;
 
     private final String encoding;
-    
+
     protected JavaFile(  Path path, String encoding )
     {
         this.path = path;
@@ -54,7 +53,9 @@ public abstract class JavaFile
     }
 
     /**
-     * Get the imported packages/files that this package has.
+     * Gets the imported packages/files that this package has.
+     *
+     * @return import types
      */
     public Set<ImportType> getImportTypes()
     {
@@ -62,7 +63,8 @@ public abstract class JavaFile
     }
 
     /**
-     * Get the name of this class.
+     * Gets the name of this class.
+     * @return class type
      */
     public ClassType getClassType()
     {
@@ -72,13 +74,15 @@ public abstract class JavaFile
         }
         else
         {
-            // To retain backward compatibility, return the first class
+            // to retain backward compatibility, return the first class
             return this.classTypes.get( 0 );
         }
     }
 
     /**
-     * Get the names of the classes in this file.
+     * Gets the names of the classes in this file.
+     *
+     * @return list of class types
      */
     public List<ClassType> getClassTypes()
     {
@@ -86,7 +90,9 @@ public abstract class JavaFile
     }
 
     /**
-     * Get the package of this class.
+     * Gets the package of this class.
+     *
+     * @return package type
      */
     public PackageType getPackageType()
     {
@@ -95,7 +101,9 @@ public abstract class JavaFile
 
 
     /**
-     * Add a ClassType to the current list of class types.
+     * Add a class type to the current list of class types.
+     *
+     * @param classType class type
      */
     public void addClassType( ClassType classType )
     {
@@ -103,7 +111,9 @@ public abstract class JavaFile
     }
 
     /**
-     * Add an ImportType to the current imports.
+     * Add an import type.
+     *
+     * @param importType import type
      */
     public void addImportType( ImportType importType )
     {
@@ -111,26 +121,31 @@ public abstract class JavaFile
     }
 
     /**
-     * Set the name of this class.
+     * Sets the name of this class.
+     *
+     * @param classType class type
      */
     public void setClassType( ClassType classType )
     {
-        // To retain backward compatibility, make sure the list contains only the supplied classType
+        // to retain backward compatibility, make sure the list contains only the supplied classType
         this.classTypes.clear();
         this.classTypes.add( classType );
     }
 
     /**
-     * Set the PackageType of this class.
+     * Sets the package type of this class.
+     *
+     * @param packageType package type
      */
     public void setPackageType( PackageType packageType )
     {
         this.packageType = packageType;
     }
 
-
     /**
-     * Gets the filename attribute of the JavaFile object
+     * Gets the path attribute.
+     *
+     * @return path
      */
     public Path getPath()
     {
@@ -138,7 +153,9 @@ public abstract class JavaFile
     }
 
     /**
-     * File name without path and extension.
+     * Gets the file name without path and extension.
+     *
+     * @return file name
      */
     public String getFilename()
     {
@@ -146,7 +163,9 @@ public abstract class JavaFile
     }
 
     /**
-     * Gets the encoding attribute of the JavaFile object
+     * Gets the encoding attribute.
+     *
+     * @return encoding
      */
     public String getEncoding()
     {
@@ -155,6 +174,9 @@ public abstract class JavaFile
 
     /**
      * Remove the path and the ".java" extension from a filename.
+     *
+     * @param path path to modify
+     * @return modified path
      */
     protected static String getFilenameWithoutPathOrExtension( Path path )
     {

@@ -34,14 +34,14 @@ public class SimpleWordTokenizer
 {
 
     private static final Pattern NONBREAKERS = Pattern.compile( "([^()\\[ {}]+)" );
-    
-    /**
-     * Description of the Field
-     */
+
     private static final char[] BREAKERS = { '(', ')', '[', ' ', '{', '}' };
 
     /**
-     * Break the given line into multiple StringUtils
+     * Breaks the given line into multiple tokens.
+     *
+     * @param line line to tokenize
+     * @return list of tokens
      */
     public static List<StringEntry> tokenize( String line )
     {
@@ -63,10 +63,11 @@ public class SimpleWordTokenizer
     }
 
     /**
-     * Tokenize the given line but only return StringUtils that match the parameter find.
+     * Tokenize the given line but only return those tokens that match the parameter {@code find}.
      *
-     * @param line String to search in
-     * @param find String to match.
+     * @param line line to search in
+     * @param find String to match
+     * @return list of matching tokens
      */
     public static List<StringEntry> tokenize( String line, String find )
     {
