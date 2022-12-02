@@ -65,6 +65,7 @@ under the License.
   <properties>
     <javaVersion>8</javaVersion>
     <sitePluginVersion>3.12.1</sitePluginVersion>
+    <slf4jVersion>1.7.36</slf4jVersion>
     <javadocPluginVersion>3.4.1</javadocPluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
@@ -105,12 +106,12 @@ under the License.
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>1.7.36</version>
+        <version>${slf4jVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>1.7.36</version>
+        <version>${slf4jVersion}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
