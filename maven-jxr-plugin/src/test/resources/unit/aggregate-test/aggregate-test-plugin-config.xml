@@ -41,7 +41,6 @@ under the License.
             <value>${basedir}/src/test/resources/unit/aggregate-test/submodule1</value>
             <value>${basedir}/src/test/resources/unit/aggregate-test/submodule2</value>
           </sourceDirs>
-          <destDir>${basedir}/target/test/unit/aggregate-test/target/site/xref</destDir>
           <javadocDir>${basedir}/target/test/unit/aggregate-test/target/site/apidocs</javadocDir>
           <linkJavadoc>false</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
@@ -51,7 +50,6 @@ under the License.
             <project implementation="org.apache.maven.plugin.jxr.stubs.AggregateSubmodule1MavenProjectStub"/>
             <project implementation="org.apache.maven.plugin.jxr.stubs.AggregateSubmodule2MavenProjectStub"/>
           </reactorProjects>
-          <localRepository>${localRepository}</localRepository>
         </configuration>
       </plugin>
     </plugins>

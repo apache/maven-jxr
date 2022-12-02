@@ -18,7 +18,9 @@
  */
 package org.apache.maven.plugin.jxr.stubs;
 
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,12 +37,10 @@ public class TestSourceDirMavenProjectStub extends JxrProjectStub {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
         Model model = null;
 
-        try {
-            model = pomReader.read(new FileReader(
-                    getBasedir() + "/src/test/resources/unit/testsourcedir-test/testsourcedir-test-plugin-config.xml"));
+        try (InputStream is = new FileInputStream(new File(getBasedir() + "/" + getPOM()))) {
+            model = pomReader.read(is);
             setModel(model);
         } catch (Exception ignored) {
-
         }
 
         setArtifactId(model.getArtifactId());
@@ -51,11 +51,21 @@ public class TestSourceDirMavenProjectStub extends JxrProjectStub {
 
         String basedir = getBasedir().getAbsolutePath();
         List<String> compileSourceRoots = new ArrayList<>();
-        compileSourceRoots.add(basedir + "/src/test/resources/unit/testsourcedir-test");
+        compileSourceRoots.add(basedir);
         setCompileSourceRoots(compileSourceRoots);
 
         Artifact artifact = new JxrPluginArtifactStub(getGroupId(), getArtifactId(), getVersion(), getPackaging());
         artifact.setArtifactHandler(new DefaultArtifactHandlerStub());
         setArtifact(artifact);
+    }
+
+    @Override
+    public File getBasedir() {
+        return new File(super.getBasedir() + "/testsourcedir-test");
+    }
+
+    @Override
+    protected String getPOM() {
+        return "testsourcedir-test-plugin-config.xml";
     }
 }

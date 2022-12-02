@@ -19,30 +19,29 @@
 package org.apache.maven.plugin.jxr.stubs;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
-public class PomMavenProjectStub extends MavenProjectStub {
+public class PomMavenProjectStub extends JxrProjectStub {
     private Build build;
 
     public PomMavenProjectStub() {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
-        Model model;
+        Model model = null;
 
-        try {
-            model = pomReader.read(new FileReader(new File(getBasedir(), "pom-test-plugin-config.xml")));
+        try (InputStream is = new FileInputStream(new File(getBasedir() + "/" + getPOM()))) {
+            model = pomReader.read(is);
             setModel(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception ignored) {
         }
 
         setGroupId(model.getGroupId());
@@ -54,11 +53,11 @@ public class PomMavenProjectStub extends MavenProjectStub {
 
         Build build = new Build();
         build.setFinalName(model.getArtifactId());
-        build.setDirectory(super.getBasedir() + "/target/test/unit/pom-test/target");
+        build.setDirectory(getBasedir() + "/target");
         build.setSourceDirectory(getBasedir() + "/src/main/java");
-        build.setOutputDirectory(super.getBasedir() + "/target/test/unit/pom-test/target/classes");
+        build.setOutputDirectory(getBasedir() + "/target/classes");
         build.setTestSourceDirectory(getBasedir() + "/src/test/java");
-        build.setTestOutputDirectory(super.getBasedir() + "/target/test/unit/pom-test/target/test-classes");
+        build.setTestOutputDirectory(getBasedir() + "/target/test-classes");
         setBuild(build);
 
         List<String> compileSourceRoots = new ArrayList<>();
@@ -84,10 +83,13 @@ public class PomMavenProjectStub extends MavenProjectStub {
         this.build = build;
     }
 
-    /**
-     * @see org.apache.maven.plugin.testing.stubs.MavenProjectStub#getBasedir()
-     */
+    @Override
     public File getBasedir() {
-        return new File(super.getBasedir() + "/src/test/resources/unit/pom-test");
+        return new File(super.getBasedir() + "/pom-test");
+    }
+
+    @Override
+    protected String getPOM() {
+        return "pom-test-plugin-config.xml";
     }
 }
