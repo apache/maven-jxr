@@ -41,7 +41,6 @@ under the License.
         <configuration>
           <project implementation="org.apache.maven.plugin.jxr.stubs.PomMavenProjectStub"/>
           <outputDirectory>${basedir}/target/test/unit/pom-test/target/site/</outputDirectory>
-          <localRepository>${localRepository}</localRepository>
         </configuration>
       </plugin>
     </plugins>

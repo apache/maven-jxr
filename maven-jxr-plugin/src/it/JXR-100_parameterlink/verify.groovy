@@ -16,6 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-assert new File( basedir, 'target/site/xref/com/mycompany/app/Foo.html' ).exists()
+File file = new File( basedir, 'target/reports/xref/com/mycompany/app/Foo.html' );
 
-assert 4 == new File( basedir, '/target/site/xref/com/mycompany/app/Foo.html' ).text.count( '<a name="App" href="../../../com/mycompany/app/App.html#App">App</a>' )
+assert file.exists()
+
+assert 4 == file.text.count( '<a name="App" href="../../../com/mycompany/app/App.html#App">App</a>' )

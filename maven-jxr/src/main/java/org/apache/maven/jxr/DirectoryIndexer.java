@@ -236,21 +236,17 @@ public class DirectoryIndexer {
         Path templateDirFile = Paths.get(getTemplateDir());
         if (templateDirFile.isAbsolute()) {
             // the property has been overridden: need to use a FileResourceLoader
-            engine.setProperty("resource.loader", "file");
+            engine.setProperty("resource.loaders", "file");
             engine.setProperty(
-                    "file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
-            engine.setProperty("file.resource.loader.path", templateDirFile.toString());
+                    "resource.loader.file.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
+            engine.setProperty("resource.loader.file.path", templateDirFile.toString());
         } else {
             // use of the default templates
-            engine.setProperty("resource.loader", "classpath");
+            engine.setProperty("resource.loaders", "classpath");
             engine.setProperty(
-                    "classpath.resource.loader.class",
+                    "resource.loader.classpath.class",
                     "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         }
-        // avoid "unable to find resource 'VM_global_library.vm' in any resource loader."
-        engine.setProperty("velocimacro.library", "");
-        //        engine.setProperty( Log.class.getName(), log );
-        //        engine.setProperty( "runtime.log.logsystem.class", VelocityLogger.class.getName() );
     }
 
     /*

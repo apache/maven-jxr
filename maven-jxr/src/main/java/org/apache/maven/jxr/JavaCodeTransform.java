@@ -82,8 +82,8 @@ import org.apache.maven.jxr.util.SimpleWordTokenizer;
 import org.apache.maven.jxr.util.StringEntry;
 
 /**
- * Syntax highlights java by turning it into html. A codeviewer object is created and then keeps state as lines are
- * passed in. Each line passed in as java test, is returned as syntax highlighted html text. Users of the class can set
+ * Syntax highlights java by turning it into HTML. A codeviewer object is created and then keeps state as lines are
+ * passed in. Each line passed in as java test, is returned as syntax highlighted HTML text. Users of the class can set
  * how the java code will be highlighted with setter methods. Only valid java lines should be passed in since the object
  * maintains state and may not handle illegal code gracefully. The actual system is implemented as a series of filters
  * that deal with specific portions of the java code. The filters are as follows:
@@ -640,10 +640,10 @@ public class JavaCodeTransform implements Serializable {
     // ----------------------------------------------------------------------
 
     /**
-     * Filter html tags into more benign text.
+     * Filter HTML tags into more benign text.
      *
      * @param line String
-     * @return html encoded line
+     * @return HTML-encoded line
      */
     private String htmlFilter(String line) {
         if (line == null || line.equals("")) {

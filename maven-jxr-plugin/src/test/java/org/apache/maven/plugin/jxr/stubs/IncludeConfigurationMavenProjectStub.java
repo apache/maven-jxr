@@ -18,7 +18,9 @@
  */
 package org.apache.maven.plugin.jxr.stubs;
 
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +39,10 @@ public class IncludeConfigurationMavenProjectStub extends JxrProjectStub {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
         Model model = null;
 
-        try {
-            model = pomReader.read(new FileReader(getBasedir()
-                    + "/src/test/resources/unit/include-configuration/include-configuration-plugin-config.xml"));
+        try (InputStream is = new FileInputStream(new File(getBasedir() + "/" + getPOM()))) {
+            model = pomReader.read(is);
             setModel(model);
         } catch (Exception ignored) {
-
         }
 
         setArtifactId(model.getArtifactId());
@@ -53,7 +53,7 @@ public class IncludeConfigurationMavenProjectStub extends JxrProjectStub {
 
         String basedir = getBasedir().getAbsolutePath();
         List<String> compileSourceRoots = new ArrayList<>();
-        compileSourceRoots.add(basedir + "/src/test/resources/unit/include-configuration/include/configuration");
+        compileSourceRoots.add(basedir + "/include/configuration");
         setCompileSourceRoots(compileSourceRoots);
 
         // set the report plugins
@@ -67,5 +67,15 @@ public class IncludeConfigurationMavenProjectStub extends JxrProjectStub {
     @Override
     public List<ReportPlugin> getReportPlugins() {
         return reportPlugins;
+    }
+
+    @Override
+    public File getBasedir() {
+        return new File(super.getBasedir() + "/include-configuration");
+    }
+
+    @Override
+    protected String getPOM() {
+        return "include-configuration-plugin-config.xml";
     }
 }

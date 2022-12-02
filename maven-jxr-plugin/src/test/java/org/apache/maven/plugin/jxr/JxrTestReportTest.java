@@ -30,7 +30,7 @@ public class JxrTestReportTest extends AbstractJxrTestCase {
      * @throws Exception
      */
     public void testSourceDir() throws Exception {
-        generateReport("test-jxr", "testsourcedir-test/testsourcedir-test-plugin-config.xml");
+        generateReport(getGoal(), "testsourcedir-test/testsourcedir-test-plugin-config.xml");
 
         File xrefTestDir = new File(getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test");
 
@@ -51,5 +51,10 @@ public class JxrTestReportTest extends AbstractJxrTestCase {
 
         str = readFile(xrefTestDir, "testsourcedir/test/AppTest.html");
         assertFalse(str.toLowerCase().contains("/apidocs/testsourcedir/test/App.html\"".toLowerCase()));
+    }
+
+    @Override
+    protected String getGoal() {
+        return "test-jxr";
     }
 }

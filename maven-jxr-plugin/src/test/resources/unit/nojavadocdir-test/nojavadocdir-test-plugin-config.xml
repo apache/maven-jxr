@@ -40,13 +40,11 @@ under the License.
           <sourceDirs>
             <value>${basedir}/src/test/resources/unit/nojavadocdir-test</value>
           </sourceDirs>
-          <destDir>${basedir}/target/test/unit/nojavadocdir-test/target/site/xref</destDir>
           <javadocDir>${basedir}/target/test/unit/nojavadocdir-test/target/site/apidocs</javadocDir>
           <linkJavadoc>true</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
           <javadocVersion>1.4</javadocVersion>
           <stylesheet>stylesheet.css</stylesheet>
-          <localRepository>${localRepository}</localRepository>
         </configuration>
       </plugin>
     </plugins>

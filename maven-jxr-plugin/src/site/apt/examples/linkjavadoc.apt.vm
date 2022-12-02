@@ -56,6 +56,3 @@ Linking JXR Files to Javadocs
  were no existing Javadocs in the specified Javadoc directory and no Javadocs will be generated (meaning no Javadoc Plugin
  configuration in the reporting section of the POM), the link will not be displayed even if the <<<linkJavadoc>>> parameter
  is set to <<<true>>>.
-
- Take note that if the <<<destDir>>> parameter is set in the Javadoc Plugin configuration, you need to also set the <<<javadocDir>>>
- parameter of the JXR Plugin to the same directory.

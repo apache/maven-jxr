@@ -37,6 +37,7 @@ import org.apache.maven.jxr.JxrException;
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.apache.maven.model.ReportPlugin;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
@@ -73,10 +74,7 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
     /**
      * String used at the bottom of the Xref HTML files.
      */
-    @Parameter(
-            property = "bottom",
-            defaultValue =
-                    "Copyright &#169; {inceptionYear}&#x2013;{currentYear} {organizationName}. All rights reserved.")
+    @Parameter(property = "bottom", defaultValue = "\u00A9 {inceptionYear}\u2013{currentYear} {organizationName}")
     private String bottom;
 
     // CHECKSTYLE_ON: LineLength
@@ -110,12 +108,6 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
      */
     @Parameter
     private ArrayList<String> includes;
-
-    /**
-     * The projects in the reactor for aggregation report.
-     */
-    @Parameter(defaultValue = "${reactorProjects}", readonly = true)
-    protected List<MavenProject> reactorProjects;
 
     /**
      * Whether to skip this execution.
@@ -202,23 +194,23 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
     }
 
     /**
-     * Creates the Xref for the Java files found in the given source directory and puts them in the given destination
+     * Creates the Xref for the Java files found in the given source directory and puts them in the given output
      * directory.
      *
      * @param locale The user locale to use for the Xref generation
-     * @param destinationDirectory The output directory
+     * @param outputDirectory The output directory
      * @param sourceDirs The source directories
      * @throws java.io.IOException
      * @throws org.apache.maven.jxr.JxrException
      */
-    private void createXref(Locale locale, String destinationDirectory, List<String> sourceDirs)
+    private void createXref(Locale locale, File outputDirectory, List<String> sourceDirs)
             throws IOException, JxrException {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager(fileManager);
         JavaCodeTransform codeTransform = new JavaCodeTransform(packageManager, fileManager);
 
         JXR jxr = new JXR(packageManager, codeTransform);
-        jxr.setDest(Paths.get(destinationDirectory));
+        jxr.setDest(outputDirectory.toPath());
         jxr.setInputEncoding(getInputEncoding());
         jxr.setLocale(locale);
         jxr.setOutputEncoding(getOutputEncoding());
@@ -242,11 +234,11 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
         }
 
         // and finally copy the stylesheet
-        copyRequiredResources(destinationDirectory);
+        copyRequiredResources(outputDirectory);
     }
 
     /**
-     * Returns the bottom text to be displayed at the lower part of the generated JXR reports.
+     * Returns the bottom text to be displayed at the lower part of the generated JXR report.
      */
     private String getBottomText() {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -258,12 +250,12 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
 
         if (inceptionYear != null) {
             if (inceptionYear.equals(year)) {
-                theBottom = StringUtils.replace(theBottom, "{inceptionYear}&#x2013;", "");
+                theBottom = StringUtils.replace(theBottom, "{inceptionYear}\u2013", "");
             } else {
                 theBottom = StringUtils.replace(theBottom, "{inceptionYear}", inceptionYear);
             }
         } else {
-            theBottom = StringUtils.replace(theBottom, "{inceptionYear}&#x2013;", "");
+            theBottom = StringUtils.replace(theBottom, "{inceptionYear}\u2013", "");
         }
 
         if (project.getOrganization() == null) {
@@ -293,28 +285,28 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
     }
 
     /**
-     * Copy some required resources (like the stylesheet) to the given directory
+     * Copy some required resources (like the stylesheet) to the given target directory
      *
-     * @param dir the directory to copy the resources to
+     * @param targetDirectory the directory to copy the resources to
      */
-    private void copyRequiredResources(String dir) {
+    private void copyRequiredResources(File targetDirectory) {
         if (stylesheet != null && !stylesheet.isEmpty()) {
             File stylesheetFile = new File(stylesheet);
-            File destStylesheetFile = new File(dir, "stylesheet.css");
+            File targetStylesheetFile = new File(targetDirectory, "stylesheet.css");
 
             try {
                 if (stylesheetFile.isAbsolute()) {
-                    FileUtils.copyFile(stylesheetFile, destStylesheetFile);
+                    FileUtils.copyFile(stylesheetFile, targetStylesheetFile);
                 } else {
                     URL stylesheetUrl = this.getClass().getClassLoader().getResource(stylesheet);
-                    FileUtils.copyURLToFile(stylesheetUrl, destStylesheetFile);
+                    FileUtils.copyURLToFile(stylesheetUrl, targetStylesheetFile);
                 }
             } catch (IOException e) {
                 getLog().warn("An error occured while copying the stylesheet to the target directory", e);
             }
         } else {
             if (javadocTemplatesVersion.isAtLeast("1.8")) {
-                copyResources(dir, "jdk8/", "stylesheet.css");
+                copyResources(targetDirectory, "jdk8/", "stylesheet.css");
             } else if (javadocTemplatesVersion.isAtLeast("1.7")) {
                 String[] jdk7Resources = {
                     "stylesheet.css",
@@ -323,14 +315,14 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
                     "resources/titlebar.gif",
                     "resources/titlebar_end.gif"
                 };
-                copyResources(dir, "jdk7/", jdk7Resources);
+                copyResources(targetDirectory, "jdk7/", jdk7Resources);
             } else if (javadocTemplatesVersion.isAtLeast("1.6")) {
-                copyResources(dir, "jdk6/", "stylesheet.css");
+                copyResources(targetDirectory, "jdk6/", "stylesheet.css");
             } else if (javadocTemplatesVersion.isAtLeast("1.4")) {
-                copyResources(dir, "jdk4/", "stylesheet.css");
+                copyResources(targetDirectory, "jdk4/", "stylesheet.css");
             } else {
                 // Fallback to the original stylesheet
-                copyResources(dir, "", "stylesheet.css");
+                copyResources(targetDirectory, "", "stylesheet.css");
             }
         }
     }
@@ -338,16 +330,16 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
     /**
      * Copy styles and related resources to the given directory
      *
-     * @param dir the directory to copy the resources to
+     * @param targetDirectory the target directory to copy the resources to
      * @param sourceDirectory resources subdirectory to copy from
      * @param files names of files to copy
      */
-    private void copyResources(String dir, String sourceDirectory, String... files) {
+    private void copyResources(File targetDirectory, String sourceDirectory, String... files) {
         try {
             for (String file : files) {
                 URL resourceUrl = this.getClass().getClassLoader().getResource(sourceDirectory + file);
-                File destResourceFile = new File(dir, file);
-                FileUtils.copyURLToFile(resourceUrl, destResourceFile);
+                File targetResourceFile = new File(targetDirectory, file);
+                FileUtils.copyURLToFile(resourceUrl, targetResourceFile);
             }
         } catch (IOException e) {
             getLog().warn("An error occured while copying the resource to the target directory", e);
@@ -359,12 +351,16 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
         return project;
     }
 
-    /**
-     * Returns the Maven session.
-     * @return Maven session
-     */
     protected MavenSession getSession() {
         return session;
+    }
+
+    protected List<MavenProject> getReactorProjects() {
+        return reactorProjects;
+    }
+
+    protected MojoExecution getMojoExecution() {
+        return mojoExecution;
     }
 
     /**
@@ -386,7 +382,7 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
         setJavadocTemplatesVersion();
 
         try {
-            createXref(locale, getDestinationDirectory(), constructSourceDirs());
+            createXref(locale, getPluginReportOutputDirectory(), constructSourceDirs());
         } catch (JxrException | IOException e) {
             throw new MavenReportException("Error while generating the HTML source code of the project.", e);
         }
@@ -450,7 +446,6 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
     @Override
     public boolean canGenerateReport() {
         if (skip) {
-            getLog().info("Skipping JXR.");
             return false;
         }
 
@@ -528,11 +523,12 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
     }
 
     /**
-     * Abstract method that returns the target directory where the generated JXR reports will be put.
+     * Abstract method that returns the plugin report output directory where the generated JXR report will be put
+     * beneath {@link #getReportOutputDirectory()}.
      *
-     * @return a String that contains the target directory name
+     * @return a File for the plugin's report output directory
      */
-    protected abstract String getDestinationDirectory();
+    protected abstract File getPluginReportOutputDirectory();
 
     /**
      * Abstract method that returns the specified source directories that will be included in the JXR report generation.

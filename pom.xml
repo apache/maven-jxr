@@ -76,9 +76,9 @@ under the License.
 
   <properties>
     <javaVersion>8</javaVersion>
-    <sitePluginVersion>3.12.1</sitePluginVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
-    <javadocPluginVersion>3.6.3</javadocPluginVersion>
+    <sitePluginVersion>3.20.0</sitePluginVersion>
+    <javadocPluginVersion>3.8.0</javadocPluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2024-06-01T20:47:27Z</project.build.outputTimestamp>
@@ -110,18 +110,6 @@ under the License.
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.13.2</version>
-      </dependency>
-
-      <!-- override transitive dependency with security issues -->
-      <dependency>
-        <groupId>commons-beanutils</groupId>
-        <artifactId>commons-beanutils</artifactId>
-        <version>1.9.4</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>2.16.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
