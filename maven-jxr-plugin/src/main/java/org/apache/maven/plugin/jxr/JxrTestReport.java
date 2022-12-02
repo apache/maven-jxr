@@ -30,8 +30,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Creates an html-based, cross referenced version of Java source code
- * for a project's test sources.
+ * Creates an HTML-based, cross referenced version of Java test source code
+ * for a project.
  *
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
@@ -46,12 +46,6 @@ public class JxrTestReport extends AbstractJxrReport {
     private List<String> sourceDirs;
 
     /**
-     * Directory where the Xref files will be copied to.
-     */
-    @Parameter(defaultValue = "${project.reporting.outputDirectory}/xref-test")
-    private String destDir;
-
-    /**
      * Directory where Test Javadoc is generated for this project.
      */
     @Parameter(defaultValue = "${project.reporting.outputDirectory}/testapidocs")
@@ -61,12 +55,12 @@ public class JxrTestReport extends AbstractJxrReport {
     protected List<String> getSourceRoots() {
         List<String> l = new ArrayList<>();
 
-        if (!"pom".equals(getProject().getPackaging().toLowerCase(Locale.US))) {
+        if (!"pom".equals(getProject().getPackaging().toLowerCase(Locale.ENGLISH))) {
             l.addAll(sourceDirs);
         }
 
         if (getProject().getExecutionProject() != null) {
-            if (!"pom".equals(getProject().getExecutionProject().getPackaging().toLowerCase(Locale.US))) {
+            if (!"pom".equals(getProject().getExecutionProject().getPackaging().toLowerCase(Locale.ENGLISH))) {
                 l.addAll(getProject().getExecutionProject().getTestCompileSourceRoots());
             }
         }
@@ -79,7 +73,7 @@ public class JxrTestReport extends AbstractJxrReport {
         List<String> l = new ArrayList<>();
 
         if (project.getExecutionProject() != null) {
-            if (!"pom".equals(project.getExecutionProject().getPackaging().toLowerCase(Locale.US))) {
+            if (!"pom".equals(project.getExecutionProject().getPackaging().toLowerCase(Locale.ENGLISH))) {
                 l.addAll(project.getExecutionProject().getTestCompileSourceRoots());
             }
         }
@@ -88,8 +82,8 @@ public class JxrTestReport extends AbstractJxrReport {
     }
 
     @Override
-    protected String getDestinationDirectory() {
-        return destDir;
+    protected File getPluginReportOutputDirectory() {
+        return new File(getReportOutputDirectory(), "xref-test");
     }
 
     @Override
@@ -110,15 +104,5 @@ public class JxrTestReport extends AbstractJxrReport {
     @Override
     protected File getJavadocDir() {
         return testJavadocDir;
-    }
-
-    @Override
-    public void setReportOutputDirectory(File reportOutputDirectory) {
-        if ((reportOutputDirectory != null)
-                && (!reportOutputDirectory.getAbsolutePath().endsWith("xref-test"))) {
-            this.destDir = new File(reportOutputDirectory, "xref-test").getAbsolutePath();
-        } else {
-            this.destDir = reportOutputDirectory.getAbsolutePath();
-        }
     }
 }
