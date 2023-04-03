@@ -23,14 +23,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Site;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.wagon.repository.Repository;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+
 /**
  * Utility class for the jxr report.
  *
