@@ -332,7 +332,7 @@ public abstract class AbstractJxrReport
      */
     private void copyRequiredResources( String dir )
     {
-        if ( StringUtils.isNotEmpty( stylesheet ) )
+        if ( stylesheet != null && !stylesheet.isEmpty() )
         {
             File stylesheetFile = new File( stylesheet );
             File destStylesheetFile = new File( dir, "stylesheet.css" );
@@ -493,7 +493,7 @@ public abstract class AbstractJxrReport
     private String getTemplateDir()
     {
         // Check if overridden
-        if ( StringUtils.isEmpty( templateDir ) )
+        if ( templateDir == null || templateDir.isEmpty() )
         {
             if ( javadocTemplatesVersion.isAtLeast( "1.8" ) )
             {
@@ -524,7 +524,7 @@ public abstract class AbstractJxrReport
     {
         JavaVersion javaVersion = JavaVersion.JAVA_SPECIFICATION_VERSION;
 
-        if ( StringUtils.isNotEmpty( javadocVersion ) )
+        if ( javadocVersion != null && !javadocVersion.isEmpty() )
         {
             javadocTemplatesVersion = JavaVersion.parse( javadocVersion );
         }
@@ -592,7 +592,7 @@ public abstract class AbstractJxrReport
                 // Special case: using the site:stage goal
                 String stagingDirectory = System.getProperty( "stagingDirectory" );
 
-                if ( StringUtils.isNotEmpty( stagingDirectory ) )
+                if ( stagingDirectory != null && !stagingDirectory.isEmpty() )
                 {
                     String javadocDestDir = getJavadocDir().getName();
                     boolean javadocAggregate = JxrReportUtil.isJavadocAggregated( project );

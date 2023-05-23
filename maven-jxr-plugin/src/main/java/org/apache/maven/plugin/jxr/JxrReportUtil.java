@@ -134,7 +134,7 @@ public class JxrReportUtil
             }
 
             String attribute = pluginConf.getAttribute( optionName );
-            if ( StringUtils.isNotEmpty( attribute ) )
+            if ( attribute != null && !attribute.isEmpty() )
             {
                 return attribute;
             }
