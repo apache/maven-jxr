@@ -1,5 +1,3 @@
-package org.apache.maven.plugin.jxr.stubs;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,30 +16,25 @@ package org.apache.maven.plugin.jxr.stubs;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugin.jxr.stubs;
 
 import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
-public class DefaultArtifactHandlerStub
-    extends DefaultArtifactHandler
-{
+public class DefaultArtifactHandlerStub extends DefaultArtifactHandler {
     private String language;
 
-    public String getLanguage()
-    {
-        if ( language == null )
-        {
+    public String getLanguage() {
+        if (language == null) {
             language = "java";
         }
 
         return language;
     }
 
-    public void setLanguage( String language )
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
-
 }

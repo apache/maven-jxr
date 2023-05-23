@@ -1,5 +1,3 @@
-package org.apache.maven.plugin.jxr.stubs;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,37 +16,34 @@ package org.apache.maven.plugin.jxr.stubs;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
+package org.apache.maven.plugin.jxr.stubs;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
+
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
-public class AggregateSubmodule1MavenProjectStub
-    extends MavenProjectStub
-{
+public class AggregateSubmodule1MavenProjectStub extends MavenProjectStub {
 
-    public AggregateSubmodule1MavenProjectStub()
-    {
-        setArtifactId( "aggregate-test-submodule1" );
-        setGroupId( "aggregate.test" );
-        setVersion( "1.0-SNAPSHOT" );
-        setPackaging( "jar" );
-        setInceptionYear( "2006" );
+    public AggregateSubmodule1MavenProjectStub() {
+        setArtifactId("aggregate-test-submodule1");
+        setGroupId("aggregate.test");
+        setVersion("1.0-SNAPSHOT");
+        setPackaging("jar");
+        setInceptionYear("2006");
 
         String basedir = getBasedir().getAbsolutePath();
         List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add(
-            basedir + "/src/test/resources/unit/aggregate-test/submodule1/aggregate/test/submodule1" );
-        setCompileSourceRoots( compileSourceRoots );
+                basedir + "/src/test/resources/unit/aggregate-test/submodule1/aggregate/test/submodule1");
+        setCompileSourceRoots(compileSourceRoots);
 
-        Artifact artifact = new JxrPluginArtifactStub( getGroupId(), getArtifactId(), getVersion(), getPackaging() );
-        artifact.setArtifactHandler( new DefaultArtifactHandlerStub() );
-        setArtifact( artifact );
+        Artifact artifact = new JxrPluginArtifactStub(getGroupId(), getArtifactId(), getVersion(), getPackaging());
+        artifact.setArtifactHandler(new DefaultArtifactHandlerStub());
+        setArtifact(artifact);
     }
-
 }

@@ -1,5 +1,3 @@
-package org.apache.maven.jxr;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.jxr;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.jxr;
 
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -27,28 +26,23 @@ import org.apache.maven.jxr.pacman.PackageManager;
 import org.junit.Before;
 import org.junit.Test;
 
-public class JxrBeanTest
-{
+public class JxrBeanTest {
     private JXR jxrBean;
 
     @Before
-    public void setUp()
-    {   FileManager fileManager = new FileManager();
-        PackageManager packageManager = new PackageManager( fileManager );
-        JavaCodeTransform codeTransform = new JavaCodeTransform( packageManager, fileManager );
-        jxrBean = new JXR( packageManager, codeTransform );
-        jxrBean.setDest( Paths.get( "target" ) );
-        jxrBean.setInputEncoding( "ISO-8859-1" );
-        jxrBean.setOutputEncoding( "ISO-8859-1" );
-        jxrBean.setJavadocLinkDir( Paths.get( "." ) );
+    public void setUp() {
+        FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager(fileManager);
+        JavaCodeTransform codeTransform = new JavaCodeTransform(packageManager, fileManager);
+        jxrBean = new JXR(packageManager, codeTransform);
+        jxrBean.setDest(Paths.get("target"));
+        jxrBean.setInputEncoding("ISO-8859-1");
+        jxrBean.setOutputEncoding("ISO-8859-1");
+        jxrBean.setJavadocLinkDir(Paths.get("."));
     }
 
     @Test
-    public void testXref()
-        throws Exception
-    {
-        jxrBean.xref( Collections.singletonList( "src/test/java" ), "templates/jdk4",
-                      "title", "title", "copyright" );
+    public void testXref() throws Exception {
+        jxrBean.xref(Collections.singletonList("src/test/java"), "templates/jdk4", "title", "title", "copyright");
     }
-
 }

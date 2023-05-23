@@ -1,5 +1,3 @@
-package org.apache.maven.plugin.jxr.stubs;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,47 +16,44 @@ package org.apache.maven.plugin.jxr.stubs;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugin.jxr.stubs;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
-public class AggregateSubmodule2MavenProjectStub
-    extends MavenProjectStub
-{
+public class AggregateSubmodule2MavenProjectStub extends MavenProjectStub {
     private List<ReportPlugin> reportPlugins = new ArrayList<>();
 
-    public AggregateSubmodule2MavenProjectStub()
-    {
-        setArtifactId( "aggregate-test-submodule2" );
-        setGroupId( "aggregate.test" );
-        setVersion( "1.0-SNAPSHOT" );
-        setPackaging( "jar" );
-        setInceptionYear( "2006" );
+    public AggregateSubmodule2MavenProjectStub() {
+        setArtifactId("aggregate-test-submodule2");
+        setGroupId("aggregate.test");
+        setVersion("1.0-SNAPSHOT");
+        setPackaging("jar");
+        setInceptionYear("2006");
 
         String basedir = getBasedir().getAbsolutePath();
         List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add(
-            basedir + "/src/test/resources/unit/aggregate-test/submodule2/aggregate/test/submodule2" );
-        setCompileSourceRoots( compileSourceRoots );
+                basedir + "/src/test/resources/unit/aggregate-test/submodule2/aggregate/test/submodule2");
+        setCompileSourceRoots(compileSourceRoots);
 
-        //set the report plugins
+        // set the report plugins
         reportPlugins = new ArrayList<>();
 
-        Artifact artifact = new JxrPluginArtifactStub( getGroupId(), getArtifactId(), getVersion(), getPackaging() );
-        artifact.setArtifactHandler( new DefaultArtifactHandlerStub() );
-        setArtifact( artifact );
+        Artifact artifact = new JxrPluginArtifactStub(getGroupId(), getArtifactId(), getVersion(), getPackaging());
+        artifact.setArtifactHandler(new DefaultArtifactHandlerStub());
+        setArtifact(artifact);
     }
 
     @Override
-    public List<ReportPlugin> getReportPlugins()
-    {
+    public List<ReportPlugin> getReportPlugins() {
         return reportPlugins;
     }
 }

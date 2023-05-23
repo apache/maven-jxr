@@ -1,5 +1,3 @@
-package org.apache.maven.jxr.pacman;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,53 +16,56 @@ package org.apache.maven.jxr.pacman;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import org.junit.Test;
+package org.apache.maven.jxr.pacman;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 public class JavaFileImplTest {
     @Test
-    public void testJXR_135_lotsOfNested() throws IOException
-    {
-        JavaFileImpl javaFile = new JavaFileImpl( Paths.get(
-                "src/test/resources/jxr135/org/apache/maven/jxr/pacman/ClassWithNested.java" ),
-                "UTF-8" );
+    public void testJXR_135_lotsOfNested() throws IOException {
+        JavaFileImpl javaFile = new JavaFileImpl(
+                Paths.get("src/test/resources/jxr135/org/apache/maven/jxr/pacman/ClassWithNested.java"), "UTF-8");
         final Iterator<ClassType> classTypes = javaFile.getClassTypes().iterator();
-        assertEquals( "ClassWithNested", classTypes.next().getName() );
-        assertEquals( "ClassWithNested.NestedInterface", classTypes.next().getName() );
-        assertEquals( "ClassWithNested.NestedClassWithEnum", classTypes.next().getName() );
-        assertEquals( "ClassWithNested.NestedClassWithEnum.NestedEnum", classTypes.next().getName() );
-        assertEquals( "ClassWithNested.NestedClassWithEnum.NestedClass2", classTypes.next().getName() );
-        assertEquals( "ClassWithNested.NestedClassWithEnum2", classTypes.next().getName() );
-        assertEquals( "ClassWithNested.NestedClassWithEnum2.NestedEnum", classTypes.next().getName() );
-        assertEquals( "ClassWithNested.NestedClassWithEnum2.NestedClass2", classTypes.next().getName() );
-        assertEquals( "NotNested", classTypes.next().getName() );
+        assertEquals("ClassWithNested", classTypes.next().getName());
+        assertEquals("ClassWithNested.NestedInterface", classTypes.next().getName());
+        assertEquals("ClassWithNested.NestedClassWithEnum", classTypes.next().getName());
+        assertEquals(
+                "ClassWithNested.NestedClassWithEnum.NestedEnum",
+                classTypes.next().getName());
+        assertEquals(
+                "ClassWithNested.NestedClassWithEnum.NestedClass2",
+                classTypes.next().getName());
+        assertEquals("ClassWithNested.NestedClassWithEnum2", classTypes.next().getName());
+        assertEquals(
+                "ClassWithNested.NestedClassWithEnum2.NestedEnum",
+                classTypes.next().getName());
+        assertEquals(
+                "ClassWithNested.NestedClassWithEnum2.NestedClass2",
+                classTypes.next().getName());
+        assertEquals("NotNested", classTypes.next().getName());
     }
 
     @Test
-    public void testJXR_170_multiLineString() throws IOException
-    {
-        JavaFileImpl javaFile = new JavaFileImpl( Paths.get(
-                "src/test/resources/jxr170/org/apache/maven/jxr/pacman/ClassWithMultiLineString.java" ),
-                "UTF-8" );
-        assertEquals( 1, javaFile.getClassTypes().size() );
-        assertEquals( "ClassWithMultiLineString", javaFile.getClassTypes().get(0).getName() );
-        assertEquals( "[ImportType[name=java.lang.*]]", javaFile.getImportTypes().toString() );
+    public void testJXR_170_multiLineString() throws IOException {
+        JavaFileImpl javaFile = new JavaFileImpl(
+                Paths.get("src/test/resources/jxr170/org/apache/maven/jxr/pacman/ClassWithMultiLineString.java"),
+                "UTF-8");
+        assertEquals(1, javaFile.getClassTypes().size());
+        assertEquals("ClassWithMultiLineString", javaFile.getClassTypes().get(0).getName());
+        assertEquals("[ImportType[name=java.lang.*]]", javaFile.getImportTypes().toString());
     }
 
     @Test
-    public void testJXR_175_java14Record() throws IOException
-    {
-        JavaFileImpl javaFile = new JavaFileImpl( Paths.get(
-                "src/test/resources/jxr175/org/apache/maven/jxr/pacman/Java14Record.java" ),
-                "UTF-8" );
-        assertEquals( 1, javaFile.getClassTypes().size() );
-        assertEquals( "Java14Record", javaFile.getClassTypes().get(0).getName() );
+    public void testJXR_175_java14Record() throws IOException {
+        JavaFileImpl javaFile = new JavaFileImpl(
+                Paths.get("src/test/resources/jxr175/org/apache/maven/jxr/pacman/Java14Record.java"), "UTF-8");
+        assertEquals(1, javaFile.getClassTypes().size());
+        assertEquals("Java14Record", javaFile.getClassTypes().get(0).getName());
     }
-
 }

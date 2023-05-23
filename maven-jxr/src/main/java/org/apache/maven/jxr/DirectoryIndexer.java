@@ -1,5 +1,3 @@
-package org.apache.maven.jxr;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.jxr;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.jxr;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -58,8 +57,7 @@ import org.apache.velocity.app.VelocityEngine;
  * @author <a href="mailto:bellingard@gmail.com">Fabrice Bellingard </a>
  * @author <a href="mailto:brian@brainslug.org">Brian Leonard</a>
  */
-public class DirectoryIndexer
-{
+public class DirectoryIndexer {
     /*
      * JavaCodeTransform uses this to cross-reference package references
      * with that package's main summary page.
@@ -95,8 +93,7 @@ public class DirectoryIndexer
      * @param packageManager PackageManager for this project
      * @param root Path of the root output directory
      */
-    public DirectoryIndexer( PackageManager packageManager, String root )
-    {
+    public DirectoryIndexer(PackageManager packageManager, String root) {
         this.packageManager = packageManager;
         this.root = root;
     }
@@ -106,8 +103,7 @@ public class DirectoryIndexer
      *
      * @param outputEncoding output encoding
      */
-    public void setOutputEncoding( String outputEncoding )
-    {
+    public void setOutputEncoding(String outputEncoding) {
         this.outputEncoding = outputEncoding;
     }
 
@@ -115,8 +111,7 @@ public class DirectoryIndexer
      * Gets the output encoding.
      * @return output encoding
      */
-    public String getOutputEncoding()
-    {
+    public String getOutputEncoding() {
         return outputEncoding;
     }
 
@@ -126,8 +121,7 @@ public class DirectoryIndexer
      *
      * @param templateDir location of the template directory
      */
-    public void setTemplateDir( String templateDir )
-    {
+    public void setTemplateDir(String templateDir) {
         this.templateDir = templateDir;
     }
 
@@ -136,8 +130,7 @@ public class DirectoryIndexer
      *
      * @return location of the template directory
      */
-    public String getTemplateDir()
-    {
+    public String getTemplateDir() {
         return templateDir;
     }
 
@@ -147,8 +140,7 @@ public class DirectoryIndexer
      *
      * @param windowTitle the &lt;title&gt; attribute
      */
-    public void setWindowTitle( String windowTitle )
-    {
+    public void setWindowTitle(String windowTitle) {
         this.windowTitle = windowTitle;
     }
 
@@ -157,8 +149,7 @@ public class DirectoryIndexer
      *
      * @return window title
      */
-    public String getWindowTitle()
-    {
+    public String getWindowTitle() {
         return windowTitle;
     }
 
@@ -168,8 +159,7 @@ public class DirectoryIndexer
      *
      * @param docTitle major page heading
      */
-    public void setDocTitle( String docTitle )
-    {
+    public void setDocTitle(String docTitle) {
         this.docTitle = docTitle;
     }
 
@@ -178,8 +168,7 @@ public class DirectoryIndexer
      *
      * @return major page heading
      */
-    public String getDocTitle()
-    {
+    public String getDocTitle() {
         return docTitle;
     }
 
@@ -189,8 +178,7 @@ public class DirectoryIndexer
      *
      * @param bottom page footer
      */
-    public void setBottom( String bottom )
-    {
+    public void setBottom(String bottom) {
         this.bottom = bottom;
     }
 
@@ -199,8 +187,7 @@ public class DirectoryIndexer
      *
      * @return bottom page footer
      */
-    public String getBottom()
-    {
+    public String getBottom() {
         return bottom;
     }
 
@@ -209,104 +196,90 @@ public class DirectoryIndexer
      *
      * @throws JxrException If something went wrong
      */
-    public void process()
-        throws JxrException
-    {
+    public void process() throws JxrException {
         ProjectInfo info = getProjectInfo();
 
         VelocityEngine engine = new VelocityEngine();
-        setProperties( engine );
-        try
-        {
+        setProperties(engine);
+        try {
             engine.init();
-        }
-        catch ( Exception e )
-        {
-            throw new JxrException( "Error initializing Velocity", e );
+        } catch (Exception e) {
+            throw new JxrException("Error initializing Velocity", e);
         }
 
         VelocityContext context = new VelocityContext();
-        context.put( "outputEncoding", getOutputEncoding() );
-        context.put( "windowTitle", getWindowTitle() );
-        context.put( "docTitle", getDocTitle() );
-        context.put( "bottom", getBottom() );
-        context.put( "info", info );
+        context.put("outputEncoding", getOutputEncoding());
+        context.put("windowTitle", getWindowTitle());
+        context.put("docTitle", getDocTitle());
+        context.put("bottom", getBottom());
+        context.put("info", info);
 
-        doVelocity( "index", root, context, engine );
-        doVelocity( "overview-frame", root, context, engine );
-        doVelocity( "allclasses-frame", root, context, engine );
-        doVelocity( "overview-summary", root, context, engine );
+        doVelocity("index", root, context, engine);
+        doVelocity("overview-frame", root, context, engine);
+        doVelocity("allclasses-frame", root, context, engine);
+        doVelocity("overview-summary", root, context, engine);
 
-        for ( PackageInfo pkgInfo : info.getAllPackages().values() )
-        {
-            VelocityContext subContext = new VelocityContext( context );
-            subContext.put( "pkgInfo", pkgInfo );
+        for (PackageInfo pkgInfo : info.getAllPackages().values()) {
+            VelocityContext subContext = new VelocityContext(context);
+            subContext.put("pkgInfo", pkgInfo);
 
             String outDir = root + '/' + pkgInfo.getDir();
-            doVelocity( "package-summary", outDir, subContext, engine );
-            doVelocity( "package-frame", outDir, subContext, engine );
+            doVelocity("package-summary", outDir, subContext, engine);
+            doVelocity("package-frame", outDir, subContext, engine);
         }
     }
 
     /*
      * Sets Velocity properties to find templates.
      */
-    private void setProperties( VelocityEngine engine )
-    {
-        Path templateDirFile = Paths.get( getTemplateDir() );
-        if ( templateDirFile.isAbsolute() )
-        {
+    private void setProperties(VelocityEngine engine) {
+        Path templateDirFile = Paths.get(getTemplateDir());
+        if (templateDirFile.isAbsolute()) {
             // the property has been overridden: need to use a FileResourceLoader
-            engine.setProperty( "resource.loader", "file" );
-            engine.setProperty( "file.resource.loader.class",
-                                "org.apache.velocity.runtime.resource.loader.FileResourceLoader" );
-            engine.setProperty( "file.resource.loader.path", templateDirFile.toString() );
-        }
-        else
-        {
+            engine.setProperty("resource.loader", "file");
+            engine.setProperty(
+                    "file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
+            engine.setProperty("file.resource.loader.path", templateDirFile.toString());
+        } else {
             // use of the default templates
-            engine.setProperty( "resource.loader", "classpath" );
-            engine.setProperty( "classpath.resource.loader.class",
-                                "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
+            engine.setProperty("resource.loader", "classpath");
+            engine.setProperty(
+                    "classpath.resource.loader.class",
+                    "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         }
         // avoid "unable to find resource 'VM_global_library.vm' in any resource loader."
-        engine.setProperty( "velocimacro.library", "" );
-//        engine.setProperty( Log.class.getName(), log );
-//        engine.setProperty( "runtime.log.logsystem.class", VelocityLogger.class.getName() );
+        engine.setProperty("velocimacro.library", "");
+        //        engine.setProperty( Log.class.getName(), log );
+        //        engine.setProperty( "runtime.log.logsystem.class", VelocityLogger.class.getName() );
     }
 
     /*
      * Generate the HTML file according to the Velocity template
      */
-    private void doVelocity( String templateName, String outDir, VelocityContext context, VelocityEngine engine )
-        throws JxrException
-    {
+    private void doVelocity(String templateName, String outDir, VelocityContext context, VelocityEngine engine)
+            throws JxrException {
         // output file
-        File file = new File( outDir, templateName + ".html" );
+        File file = new File(outDir, templateName + ".html");
         file.getParentFile().mkdirs();
 
-        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( file ), getOutputEncoding() ) )
-        {
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), getOutputEncoding())) {
             // template file
             StringBuilder templateFile = new StringBuilder();
-            File templateDirFile = new File( getTemplateDir() );
-            if ( !templateDirFile.isAbsolute() )
-            {
+            File templateDirFile = new File(getTemplateDir());
+            if (!templateDirFile.isAbsolute()) {
                 // default templates
-                templateFile.append( getTemplateDir() );
-                templateFile.append( '/' );
+                templateFile.append(getTemplateDir());
+                templateFile.append('/');
             }
-            templateFile.append( templateName );
-            templateFile.append( ".vm" );
-            Template template = engine.getTemplate( templateFile.toString() );
+            templateFile.append(templateName);
+            templateFile.append(".vm");
+            Template template = engine.getTemplate(templateFile.toString());
 
             // do the merge
-            template.merge( context, writer );
+            template.merge(context, writer);
             writer.flush();
-        }
-        catch ( Exception e )
-        {
-            throw new JxrException( "Error merging velocity template", e );
+        } catch (Exception e) {
+            throw new JxrException("Error merging velocity template", e);
         }
     }
 
@@ -325,50 +298,46 @@ public class DirectoryIndexer
      * allClasses collection of Maps with class info, format as above
      *
      */
-    ProjectInfo getProjectInfo()
-    {
+    ProjectInfo getProjectInfo() {
         Map<String, PackageInfo> allPackages = new TreeMap<>();
         Map<String, ClassInfo> allClasses = new TreeMap<>();
 
-        for ( PackageType pkg : packageManager.getPackageTypes() )
-        {
+        for (PackageType pkg : packageManager.getPackageTypes()) {
             String pkgName = pkg.getName();
-            String pkgDir = pkgName.replace( '.', '/' );
-            String rootRef = pkgName.replaceAll( "[^\\.]+(\\.|$)", "../" );
+            String pkgDir = pkgName.replace('.', '/');
+            String rootRef = pkgName.replaceAll("[^\\.]+(\\.|$)", "../");
 
             // special case for the default package
             // javadoc doesn't deal with it, but it's easy for us
-            if ( pkgName.length() == 0 )
-            {
+            if (pkgName.length() == 0) {
                 pkgName = "(default package)";
                 pkgDir = ".";
                 rootRef = "./";
             }
 
             Map<String, ClassInfo> pkgClasses = new TreeMap<>();
-            for ( ClassType clazz : pkg.getClassTypes() )
-            {
+            for (ClassType clazz : pkg.getClassTypes()) {
                 String className = clazz.getName();
 
-                ClassInfo classInfo = new ClassInfo( className, pkgDir );
+                ClassInfo classInfo = new ClassInfo(className, pkgDir);
 
-                classInfo.setFilename( clazz.getFilename() );
+                classInfo.setFilename(clazz.getFilename());
 
-                pkgClasses.put( className, classInfo );
+                pkgClasses.put(className, classInfo);
 
                 // Adding package name to key in order to ensure classes with identical names in different packages are
                 // all included.
-                allClasses.put( className + "#" + pkgName, classInfo );
+                allClasses.put(className + "#" + pkgName, classInfo);
             }
 
-            PackageInfo pkgInfo = new PackageInfo( pkgName, pkgDir );
-            pkgInfo.setClasses( pkgClasses );
-            pkgInfo.setRootRef( rootRef );
+            PackageInfo pkgInfo = new PackageInfo(pkgName, pkgDir);
+            pkgInfo.setClasses(pkgClasses);
+            pkgInfo.setRootRef(rootRef);
 
-            allPackages.put( pkgName, pkgInfo );
+            allPackages.put(pkgName, pkgInfo);
         }
 
-        return new ProjectInfo( allPackages, allClasses );
+        return new ProjectInfo(allPackages, allClasses);
     }
 
     /**
@@ -376,25 +345,21 @@ public class DirectoryIndexer
      * @author Robert Scholte
      * @since 3.2.0
      */
-    public static class ProjectInfo
-    {
+    public static class ProjectInfo {
         private final Map<String, PackageInfo> allPackages;
 
         private final Map<String, ClassInfo> allClasses;
 
-        public ProjectInfo( Map<String, PackageInfo> allPackages, Map<String, ClassInfo> allClasses )
-        {
+        public ProjectInfo(Map<String, PackageInfo> allPackages, Map<String, ClassInfo> allClasses) {
             this.allPackages = allPackages;
             this.allClasses = allClasses;
         }
 
-        public Map<String, PackageInfo> getAllPackages()
-        {
+        public Map<String, PackageInfo> getAllPackages() {
             return allPackages;
         }
 
-        public Map<String, ClassInfo> getAllClasses()
-        {
+        public Map<String, ClassInfo> getAllClasses() {
             return allClasses;
         }
     }
@@ -404,8 +369,7 @@ public class DirectoryIndexer
      * @author Robert Scholte
      * @since 3.2.0
      */
-    public static class PackageInfo
-    {
+    public static class PackageInfo {
         private final String name;
 
         private final String dir;
@@ -414,39 +378,32 @@ public class DirectoryIndexer
 
         private String rootRef;
 
-        public PackageInfo( String name, String dir )
-        {
+        public PackageInfo(String name, String dir) {
             this.name = name;
             this.dir = dir;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public String getDir()
-        {
+        public String getDir() {
             return dir;
         }
 
-        public void setClasses( Map<String, ClassInfo> classes )
-        {
+        public void setClasses(Map<String, ClassInfo> classes) {
             this.classes = classes;
         }
 
-        public Map<String, ClassInfo> getClasses()
-        {
+        public Map<String, ClassInfo> getClasses() {
             return classes;
         }
 
-        public void setRootRef( String rootRef )
-        {
+        public void setRootRef(String rootRef) {
             this.rootRef = rootRef;
         }
 
-        public String getRootRef()
-        {
+        public String getRootRef() {
             return rootRef;
         }
     }
@@ -457,38 +414,32 @@ public class DirectoryIndexer
      * @author Robert Scholte
      * @since 3.2.0
      */
-    public static class ClassInfo
-    {
+    public static class ClassInfo {
         private final String name;
 
         private final String dir;
 
         private String filename;
 
-        public ClassInfo( String name, String dir )
-        {
+        public ClassInfo(String name, String dir) {
             super();
             this.name = name;
             this.dir = dir;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public String getDir()
-        {
+        public String getDir() {
             return dir;
         }
 
-        public void setFilename( String filename )
-        {
+        public void setFilename(String filename) {
             this.filename = filename;
         }
 
-        public String getFilename()
-        {
+        public String getFilename() {
             return filename;
         }
     }

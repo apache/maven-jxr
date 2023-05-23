@@ -1,5 +1,3 @@
-package org.apache.maven.jxr.pacman;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.jxr.pacman;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.jxr.pacman;
 
 import java.util.Objects;
 
@@ -26,8 +25,7 @@ import java.util.Objects;
  *
  * @author jvanzyl
  */
-public abstract class BaseType
-{
+public abstract class BaseType {
     private final String name;
 
     /**
@@ -35,9 +33,8 @@ public abstract class BaseType
      *
      * @param name type name
      */
-    public BaseType( String name )
-    {
-        this.name = Objects.requireNonNull( name );
+    public BaseType(String name) {
+        this.name = Objects.requireNonNull(name);
     }
 
     /**
@@ -45,16 +42,12 @@ public abstract class BaseType
      *
      * @return The name value
      */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return getClass().getSimpleName() + "[name=" + name + "]";
     }
-
 }
-

@@ -1,5 +1,3 @@
-package org.apache.maven.jxr;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,11 +16,7 @@ package org.apache.maven.jxr;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import org.apache.maven.jxr.ant.DirectoryScanner;
-import org.apache.maven.jxr.pacman.PackageManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.maven.jxr;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -30,14 +24,18 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.maven.jxr.ant.DirectoryScanner;
+import org.apache.maven.jxr.pacman.PackageManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Main entry point into Maven used to kick off the XReference code building.
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  */
-public class JXR
-{
-    private static final Logger LOGGER = LoggerFactory.getLogger( JXR.class );
+public class JXR {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JXR.class);
 
     private final PackageManager pkgmgr;
 
@@ -50,7 +48,7 @@ public class JXR
     /**
      * The default list of include patterns to use.
      */
-    private static final String[] DEFAULT_INCLUDES = { "**/*.java" };
+    private static final String[] DEFAULT_INCLUDES = {"**/*.java"};
 
     /**
      * Path to destination.
@@ -68,7 +66,6 @@ public class JXR
      */
     private Path javadocLinkDir;
 
-
     /**
      * The revision of the module currently being processed.
      */
@@ -84,8 +81,7 @@ public class JXR
      */
     private String[] includes = DEFAULT_INCLUDES;
 
-    public JXR( PackageManager pkgmgr, JavaCodeTransform transformer )
-    {
+    public JXR(PackageManager pkgmgr, JavaCodeTransform transformer) {
         this.pkgmgr = pkgmgr;
         this.transformer = transformer;
     }
@@ -98,32 +94,28 @@ public class JXR
      * @param bottom bottom text
      * @throws IOException on transformation error
      */
-    public void processPath( PackageManager packageManager, Path sourceDir, String bottom )
-        throws IOException
-    {
+    public void processPath(PackageManager packageManager, Path sourceDir, String bottom) throws IOException {
         DirectoryScanner ds = new DirectoryScanner();
         // I'm not sure why we don't use the directoryScanner in packageManager,
         // but since we don't we need to set includes/excludes here as well
-        ds.setExcludes( excludes );
-        ds.setIncludes( includes );
+        ds.setExcludes(excludes);
+        ds.setIncludes(includes);
         ds.addDefaultExcludes();
 
-        ds.setBasedir( sourceDir.toString() );
+        ds.setBasedir(sourceDir.toString());
         ds.scan();
 
-        //now get the list of included files
+        // now get the list of included files
 
         String[] files = ds.getIncludedFiles();
 
-        for ( String file : files )
-        {
-            Path sourceFile = sourceDir.resolve( file );
+        for (String file : files) {
+            Path sourceFile = sourceDir.resolve(file);
 
-            if ( isJavaFile( sourceFile.toString() ) )
-            {
-                String newFileName = file.replaceFirst( ".java$", ".html" );
+            if (isJavaFile(sourceFile.toString())) {
+                String newFileName = file.replaceFirst(".java$", ".html");
 
-                transform( sourceFile, this.destDir.resolve( newFileName ), bottom );
+                transform(sourceFile, this.destDir.resolve(newFileName), bottom);
             }
         }
     }
@@ -134,9 +126,8 @@ public class JXR
      * @param filename The name of the file to check
      * @return {@code true} if the file is a Java file
      */
-    public static boolean isJavaFile( String filename )
-    {
-        return filename.endsWith( ".java" );
+    public static boolean isJavaFile(String filename) {
+        return filename.endsWith(".java");
     }
 
     /**
@@ -145,9 +136,8 @@ public class JXR
      * @param filename The name of the file to check
      * @return {@code true} if the file is an HTML file
      */
-    public static boolean isHtmlFile( String filename )
-    {
-        return filename.endsWith( ".html" );
+    public static boolean isHtmlFile(String filename) {
+        return filename.endsWith(".html");
     }
 
     /**
@@ -155,8 +145,7 @@ public class JXR
      *
      * @param dest destination
      */
-    public void setDest( Path dest )
-    {
+    public void setDest(Path dest) {
         this.destDir = dest;
     }
 
@@ -165,8 +154,7 @@ public class JXR
      *
      * @param locale locale
      */
-    public void setLocale( Locale locale )
-    {
+    public void setLocale(Locale locale) {
         this.locale = locale;
     }
 
@@ -175,8 +163,7 @@ public class JXR
      *
      * @param inputEncoding input encoding
      */
-    public void setInputEncoding( String inputEncoding )
-    {
+    public void setInputEncoding(String inputEncoding) {
         this.inputEncoding = inputEncoding;
     }
 
@@ -185,8 +172,7 @@ public class JXR
      *
      * @param outputEncoding output encoding
      */
-    public void setOutputEncoding( String outputEncoding )
-    {
+    public void setOutputEncoding(String outputEncoding) {
         this.outputEncoding = outputEncoding;
     }
 
@@ -194,8 +180,7 @@ public class JXR
      * Sets the relative path to javadocs.
      * @param javadocLinkDir path to javadocs
      */
-    public void setJavadocLinkDir( Path javadocLinkDir )
-    {
+    public void setJavadocLinkDir(Path javadocLinkDir) {
         // get a relative link to the javadocs
         this.javadocLinkDir = javadocLinkDir;
     }
@@ -205,8 +190,7 @@ public class JXR
      *
      * @param revision revision
      */
-    public void setRevision( String revision )
-    {
+    public void setRevision(String revision) {
         this.revision = revision;
     }
 
@@ -221,29 +205,27 @@ public class JXR
      * @throws IOException on I/O error
      * @throws JxrException on Velocity error
      */
-    public void xref( List<String> sourceDirs, String templateDir, String windowTitle, String docTitle, String bottom )
-            throws IOException, JxrException
-    {
-        pkgmgr.setExcludes( excludes );
-        pkgmgr.setIncludes( includes );
+    public void xref(List<String> sourceDirs, String templateDir, String windowTitle, String docTitle, String bottom)
+            throws IOException, JxrException {
+        pkgmgr.setExcludes(excludes);
+        pkgmgr.setIncludes(includes);
 
         // go through each source directory and xref the java files
-        for ( String dir : sourceDirs )
-        {
-            Path path = Paths.get( dir ).toRealPath();
+        for (String dir : sourceDirs) {
+            Path path = Paths.get(dir).toRealPath();
 
-            pkgmgr.process( path );
+            pkgmgr.process(path);
 
-            processPath( pkgmgr, path, bottom );
+            processPath(pkgmgr, path, bottom);
         }
 
         // once we have all the source files xref'd, create the index pages
-        DirectoryIndexer indexer = new DirectoryIndexer( pkgmgr, destDir.toString() );
-        indexer.setOutputEncoding( outputEncoding );
-        indexer.setTemplateDir( templateDir );
-        indexer.setWindowTitle( windowTitle );
-        indexer.setDocTitle( docTitle );
-        indexer.setBottom( bottom );
+        DirectoryIndexer indexer = new DirectoryIndexer(pkgmgr, destDir.toString());
+        indexer.setOutputEncoding(outputEncoding);
+        indexer.setTemplateDir(templateDir);
+        indexer.setWindowTitle(windowTitle);
+        indexer.setDocTitle(docTitle);
+        indexer.setBottom(bottom);
         indexer.process();
     }
 
@@ -259,15 +241,13 @@ public class JXR
      * @param bottom The bottom footer text just as in the package pages
      * @throws IOException if the transform can't happen for some reason
      */
-    private void transform( Path sourceFile, Path destFile, String bottom )
-        throws IOException
-    {
-        LOGGER.debug( sourceFile + " -> " + destFile );
+    private void transform(Path sourceFile, Path destFile, String bottom) throws IOException {
+        LOGGER.debug(sourceFile + " -> " + destFile);
 
         // get a relative link to the javadocs
-        Path javadoc = javadocLinkDir != null ? getRelativeLink( destFile.getParent(), javadocLinkDir ) : null;
-        transformer.transform( sourceFile, destFile, locale, inputEncoding, outputEncoding, javadoc,
-            this.revision, bottom );
+        Path javadoc = javadocLinkDir != null ? getRelativeLink(destFile.getParent(), javadocLinkDir) : null;
+        transformer.transform(
+                sourceFile, destFile, locale, inputEncoding, outputEncoding, javadoc, this.revision, bottom);
     }
 
     /**
@@ -283,26 +263,19 @@ public class JXR
      * @param toDir The directory into which the link points.
      * @return a String of format {@code "../../schmoo/"}
      */
-    private static Path getRelativeLink( Path fromDir, Path toDir )
-    {
-        return fromDir.relativize( toDir );
+    private static Path getRelativeLink(Path fromDir, Path toDir) {
+        return fromDir.relativize(toDir);
     }
 
-    public void setExcludes( String[] excludes )
-    {
+    public void setExcludes(String[] excludes) {
         this.excludes = excludes;
     }
 
-
-    public void setIncludes( String[] includes )
-    {
-        if ( includes == null )
-        {
+    public void setIncludes(String[] includes) {
+        if (includes == null) {
             // We should not include non-java files, so we use a sensible default pattern
             this.includes = DEFAULT_INCLUDES;
-        }
-        else
-        {
+        } else {
             this.includes = includes;
         }
     }

@@ -1,5 +1,3 @@
-package org.apache.maven.plugin.jxr;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugin.jxr;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugin.jxr;
 
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -30,9 +29,6 @@ import org.apache.maven.plugins.annotations.Mojo;
  *
  * @since 3.1.0
  */
-@Mojo( name = "test-jxr-no-fork" )
-@Execute( phase = LifecyclePhase.NONE )
-public class JxrTestNoForkReport
-    extends JxrTestReport
-{
-}
+@Mojo(name = "test-jxr-no-fork")
+@Execute(phase = LifecyclePhase.NONE)
+public class JxrTestNoForkReport extends JxrTestReport {}

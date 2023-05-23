@@ -1,5 +1,3 @@
-package org.apache.maven.plugin.jxr.stubs;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,11 @@ package org.apache.maven.plugin.jxr.stubs;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugin.jxr.stubs;
+
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Model;
@@ -25,59 +28,48 @@ import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
-public class NoJavadocLinkConfigurationMavenProjectStub
-    extends MavenProjectStub
-{
+public class NoJavadocLinkConfigurationMavenProjectStub extends MavenProjectStub {
     List<ReportPlugin> reportPlugins;
 
-    public NoJavadocLinkConfigurationMavenProjectStub()
-    {
+    public NoJavadocLinkConfigurationMavenProjectStub() {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
         Model model = null;
 
-        try
-        {
-            model = pomReader.read( new FileReader( getBasedir() +
-                "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml" ) );
-            setModel( model );
-        }
-        catch ( Exception ignored )
-        {
+        try {
+            model = pomReader.read(
+                    new FileReader(
+                            getBasedir()
+                                    + "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml"));
+            setModel(model);
+        } catch (Exception ignored) {
 
         }
 
-        setArtifactId( model.getArtifactId() );
-        setGroupId( model.getGroupId() );
-        setVersion( model.getVersion() );
-        setPackaging( model.getPackaging() );
-        setInceptionYear( model.getInceptionYear() );
+        setArtifactId(model.getArtifactId());
+        setGroupId(model.getGroupId());
+        setVersion(model.getVersion());
+        setPackaging(model.getPackaging());
+        setInceptionYear(model.getInceptionYear());
 
         String basedir = getBasedir().getAbsolutePath();
         List<String> compileSourceRoots = new ArrayList<>();
         compileSourceRoots.add(
-            basedir + "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink/configuration" );
-        setCompileSourceRoots( compileSourceRoots );
+                basedir + "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink/configuration");
+        setCompileSourceRoots(compileSourceRoots);
 
-        //set the report plugins
-        reportPlugins = new ArrayList<>( model.getReporting().getPlugins() );
+        // set the report plugins
+        reportPlugins = new ArrayList<>(model.getReporting().getPlugins());
 
-        Artifact artifact = new JxrPluginArtifactStub( getGroupId(), getArtifactId(), getVersion(), getPackaging() );
-        artifact.setArtifactHandler( new DefaultArtifactHandlerStub() );
-        setArtifact( artifact );
-
+        Artifact artifact = new JxrPluginArtifactStub(getGroupId(), getArtifactId(), getVersion(), getPackaging());
+        artifact.setArtifactHandler(new DefaultArtifactHandlerStub());
+        setArtifact(artifact);
     }
 
     @Override
-    public List<ReportPlugin> getReportPlugins()
-    {
+    public List<ReportPlugin> getReportPlugins() {
         return reportPlugins;
     }
 }

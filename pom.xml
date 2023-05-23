@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -18,14 +17,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>37</version>
+    <version>39</version>
     <relativePath />
   </parent>
 
@@ -36,15 +34,29 @@ under the License.
 
   <name>Maven JXR Parent</name>
 
+  <description>Source cross reference library</description>
+
   <url>https://maven.apache.org/jxr/</url>
 
-  <description>Source cross reference library</description>
+  <contributors>
+    <contributor>
+      <name>Alina Vasiljeva</name>
+    </contributor>
+    <contributor>
+      <name>Jesper Udby</name>
+    </contributor>
+  </contributors>
+
+  <modules>
+    <module>maven-jxr</module>
+    <module>maven-jxr-plugin</module>
+  </modules>
 
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-jxr.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-jxr.git</developerConnection>
-    <url>https://github.com/apache/maven-jxr/tree/${project.scm.tag}</url>
     <tag>HEAD</tag>
+    <url>https://github.com/apache/maven-jxr/tree/${project.scm.tag}</url>
   </scm>
 
   <issueManagement>
@@ -71,20 +83,6 @@ under the License.
     <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2022-08-16T10:28:45Z</project.build.outputTimestamp>
   </properties>
-
-  <modules>
-    <module>maven-jxr</module>
-    <module>maven-jxr-plugin</module>
-  </modules>
-
-  <contributors>
-    <contributor>
-      <name>Alina Vasiljeva</name>
-    </contributor>
-    <contributor>
-      <name>Jesper Udby</name>
-    </contributor>
-  </contributors>
 
   <dependencyManagement>
     <dependencies>
@@ -180,9 +178,9 @@ under the License.
                 <reports>
                   <report>aggregate</report>
                 </reports>
-             </reportSet>
+              </reportSet>
             </reportSets>
-         </plugin>
+          </plugin>
         </plugins>
       </reporting>
     </profile>

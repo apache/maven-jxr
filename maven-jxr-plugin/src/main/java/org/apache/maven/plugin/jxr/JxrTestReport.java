@@ -1,5 +1,3 @@
-package org.apache.maven.plugin.jxr;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugin.jxr;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugin.jxr;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,44 +36,38 @@ import org.apache.maven.project.MavenProject;
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
-@Mojo( name = "test-jxr" )
-@Execute( phase = LifecyclePhase.GENERATE_TEST_SOURCES )
-public class JxrTestReport
-    extends AbstractJxrReport
-{
+@Mojo(name = "test-jxr")
+@Execute(phase = LifecyclePhase.GENERATE_TEST_SOURCES)
+public class JxrTestReport extends AbstractJxrReport {
     /**
      * Test directories of the project.
      */
-    @Parameter( defaultValue = "${project.testCompileSourceRoots}", required = true, readonly = true )
+    @Parameter(defaultValue = "${project.testCompileSourceRoots}", required = true, readonly = true)
     private List<String> sourceDirs;
 
     /**
      * Folder where the Xref files will be copied to.
      */
-    @Parameter( defaultValue = "${project.reporting.outputDirectory}/xref-test" )
+    @Parameter(defaultValue = "${project.reporting.outputDirectory}/xref-test")
     private String destDir;
 
     /**
      * Folder where Test Javadoc is generated for this project.
      */
-    @Parameter( defaultValue = "${project.reporting.outputDirectory}/testapidocs" )
+    @Parameter(defaultValue = "${project.reporting.outputDirectory}/testapidocs")
     private File testJavadocDir;
 
     @Override
-    protected List<String> getSourceRoots()
-    {
+    protected List<String> getSourceRoots() {
         List<String> l = new ArrayList<>();
 
-        if ( !"pom".equals( getProject().getPackaging().toLowerCase( Locale.US ) ) )
-        {
-            l.addAll( sourceDirs );
+        if (!"pom".equals(getProject().getPackaging().toLowerCase(Locale.US))) {
+            l.addAll(sourceDirs);
         }
 
-        if ( getProject().getExecutionProject() != null )
-        {
-            if ( !"pom".equals( getProject().getExecutionProject().getPackaging().toLowerCase( Locale.US ) ) )
-            {
-                l.addAll( getProject().getExecutionProject().getTestCompileSourceRoots() );
+        if (getProject().getExecutionProject() != null) {
+            if (!"pom".equals(getProject().getExecutionProject().getPackaging().toLowerCase(Locale.US))) {
+                l.addAll(getProject().getExecutionProject().getTestCompileSourceRoots());
             }
         }
 
@@ -82,15 +75,12 @@ public class JxrTestReport
     }
 
     @Override
-    protected List<String> getSourceRoots( MavenProject project )
-    {
+    protected List<String> getSourceRoots(MavenProject project) {
         List<String> l = new ArrayList<>();
 
-        if ( project.getExecutionProject() != null )
-        {
-            if ( !"pom".equals( project.getExecutionProject().getPackaging().toLowerCase( Locale.US ) ) )
-            {
-                l.addAll( project.getExecutionProject().getTestCompileSourceRoots() );
+        if (project.getExecutionProject() != null) {
+            if (!"pom".equals(project.getExecutionProject().getPackaging().toLowerCase(Locale.US))) {
+                l.addAll(project.getExecutionProject().getTestCompileSourceRoots());
             }
         }
 
@@ -98,44 +88,36 @@ public class JxrTestReport
     }
 
     @Override
-    protected String getDestinationDirectory()
-    {
+    protected String getDestinationDirectory() {
         return destDir;
     }
 
     @Override
-    public String getDescription( Locale locale )
-    {
-        return getBundle( locale ).getString( "report.xref.test.description" );
+    public String getDescription(Locale locale) {
+        return getBundle(locale).getString("report.xref.test.description");
     }
 
     @Override
-    public String getName( Locale locale )
-    {
-        return getBundle( locale ).getString( "report.xref.test.name" );
+    public String getName(Locale locale) {
+        return getBundle(locale).getString("report.xref.test.name");
     }
 
     @Override
-    public String getOutputName()
-    {
+    public String getOutputName() {
         return "xref-test/index";
     }
 
     @Override
-    protected File getJavadocDir()
-    {
+    protected File getJavadocDir() {
         return testJavadocDir;
     }
 
     @Override
-    public void setReportOutputDirectory( File reportOutputDirectory )
-    {
-        if ( ( reportOutputDirectory != null ) && ( !reportOutputDirectory.getAbsolutePath().endsWith( "xref-test" ) ) )
-        {
-            this.destDir = new File( reportOutputDirectory, "xref-test" ).getAbsolutePath();
-        }
-        else
-        {
+    public void setReportOutputDirectory(File reportOutputDirectory) {
+        if ((reportOutputDirectory != null)
+                && (!reportOutputDirectory.getAbsolutePath().endsWith("xref-test"))) {
+            this.destDir = new File(reportOutputDirectory, "xref-test").getAbsolutePath();
+        } else {
             this.destDir = reportOutputDirectory.getAbsolutePath();
         }
     }

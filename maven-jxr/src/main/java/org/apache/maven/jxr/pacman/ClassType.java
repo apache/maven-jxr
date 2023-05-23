@@ -1,5 +1,3 @@
-package org.apache.maven.jxr.pacman;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,13 +16,12 @@ package org.apache.maven.jxr.pacman;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.jxr.pacman;
 
 /**
  * Represents a Java class, interface, enum or record.
  */
-public class ClassType
-    extends BaseType
-{
+public class ClassType extends BaseType {
     /**
      * The name of the file that this class resides in, without path or
      * extension. It might be different from the name of the class when dealing
@@ -39,9 +36,8 @@ public class ClassType
      * @param name name
      */
     @Deprecated
-    public ClassType( String name )
-    {
-        this( name, null );
+    public ClassType(String name) {
+        this(name, null);
     }
 
     /**
@@ -50,21 +46,18 @@ public class ClassType
      * @param name name
      * @param filename file name
      */
-    public ClassType( String name, String filename )
-    {
-        super( name );
+    public ClassType(String name, String filename) {
+        super(name);
 
-        this.setFilename( filename );
+        this.setFilename(filename);
     }
-
 
     /**
      * Returns the file name.
      *
      * @return file name
      */
-    public String getFilename()
-    {
+    public String getFilename() {
         return filename;
     }
 
@@ -73,8 +66,7 @@ public class ClassType
      *
      * @param filename file name
      */
-    public void setFilename( String filename )
-    {
+    public void setFilename(String filename) {
         this.filename = filename;
     }
 }

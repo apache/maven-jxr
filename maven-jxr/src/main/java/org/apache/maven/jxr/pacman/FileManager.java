@@ -1,5 +1,3 @@
-package org.apache.maven.jxr.pacman;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.jxr.pacman;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.jxr.pacman;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,8 +34,7 @@ import java.util.Map;
  * Note. This assumes that the file will not be modified on disk while
  * Alexandria is running. </p>
  */
-public class FileManager
-{
+public class FileManager {
     private Map<Path, JavaFile> files = new HashMap<>();
 
     private String encoding = null;
@@ -49,16 +47,13 @@ public class FileManager
      * @return the {@link JavaFile} meta object for the specified file
      * @throws IOException on parsing failure
      */
-    public JavaFile getFile( Path path )
-        throws IOException
-    {
+    public JavaFile getFile(Path path) throws IOException {
 
-        JavaFile real = this.files.get( path );
+        JavaFile real = this.files.get(path);
 
-        if ( real == null )
-        {
-            real = new JavaFileImpl( path, this.getEncoding() );
-            this.addFile( real );
+        if (real == null) {
+            real = new JavaFileImpl(path, this.getEncoding());
+            this.addFile(real);
         }
 
         return real;
@@ -68,9 +63,8 @@ public class FileManager
      * Add a file to this file manager.
      * @param file file to add
      */
-    public void addFile( JavaFile file )
-    {
-        this.files.put( file.getPath(), file );
+    public void addFile(JavaFile file) {
+        this.files.put(file.getPath(), file);
     }
 
     /**
@@ -78,8 +72,7 @@ public class FileManager
      *
      * @param encoding encoding of source files
      */
-    public void setEncoding( String encoding )
-    {
+    public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
 
@@ -88,8 +81,7 @@ public class FileManager
      *
      * @return encoding
      */
-    public String getEncoding()
-    {
+    public String getEncoding() {
         return encoding;
     }
 }

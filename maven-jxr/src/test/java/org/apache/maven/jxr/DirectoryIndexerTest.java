@@ -1,5 +1,3 @@
-package org.apache.maven.jxr;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,9 +16,7 @@ package org.apache.maven.jxr;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+package org.apache.maven.jxr;
 
 import java.nio.file.Paths;
 import java.util.Iterator;
@@ -34,55 +30,54 @@ import org.apache.maven.jxr.pacman.PackageManager;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DirectoryIndexerTest
-{
-    private DirectoryIndexer directoryIndexer;
-    
-    @Before
-    public void setUp() 
-    {
-        FileManager fileManager = new FileManager();
-        PackageManager packageManager = new PackageManager( fileManager );
-        packageManager.process( Paths.get( "src/test/resources/jxr68" ) );
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-        directoryIndexer = new DirectoryIndexer( packageManager, "" );
+public class DirectoryIndexerTest {
+    private DirectoryIndexer directoryIndexer;
+
+    @Before
+    public void setUp() {
+        FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager(fileManager);
+        packageManager.process(Paths.get("src/test/resources/jxr68"));
+
+        directoryIndexer = new DirectoryIndexer(packageManager, "");
     }
-    
+
     /**
      * Parse the files in test/resources/jxr68 packages, ensure all are present in the allClasses Map,
      * in the correct order.
      */
     @Test
-    public void testJXR_68()
-    {
+    public void testJXR_68() {
 
         ProjectInfo packageInfo = directoryIndexer.getProjectInfo();
         final Map<String, PackageInfo> allPackages = packageInfo.getAllPackages();
         assertEquals(3, allPackages.size());
-        assertTrue( allPackages.containsKey( "(default package)" ) );
-        assertTrue( allPackages.containsKey( "pkga" ) );
-        assertTrue( allPackages.containsKey( "pkgb" ) );
+        assertTrue(allPackages.containsKey("(default package)"));
+        assertTrue(allPackages.containsKey("pkga"));
+        assertTrue(allPackages.containsKey("pkgb"));
         final Map<String, ClassInfo> allClasses = packageInfo.getAllClasses();
-        assertEquals( 6, allClasses.size() );
+        assertEquals(6, allClasses.size());
         final Iterator<ClassInfo> iterator = allClasses.values().iterator();
         // #1: AClass
-        assertEquals( "AClass", iterator.next().getName() );
+        assertEquals("AClass", iterator.next().getName());
         // #2: BClass
-        assertEquals( "BClass", iterator.next().getName() );
+        assertEquals("BClass", iterator.next().getName());
         // #3: CClass
-        assertEquals( "CClass", iterator.next().getName() );
+        assertEquals("CClass", iterator.next().getName());
         // #4: SomeClass in default package
         ClassInfo classInfo = iterator.next();
-        assertEquals( "SomeClass", classInfo.getName() );
-        assertEquals( ".", classInfo.getDir() );
+        assertEquals("SomeClass", classInfo.getName());
+        assertEquals(".", classInfo.getDir());
         // #5: SomeClass in "pkga"
         classInfo = iterator.next();
-        assertEquals( "SomeClass", classInfo.getName() );
-        assertEquals( "pkga", classInfo.getDir() );
+        assertEquals("SomeClass", classInfo.getName());
+        assertEquals("pkga", classInfo.getDir());
         // #6: SomeClass in "pkgb"
         classInfo = iterator.next();
-        assertEquals( "SomeClass", classInfo.getName() );
-        assertEquals( "pkgb", classInfo.getDir() );
+        assertEquals("SomeClass", classInfo.getName());
+        assertEquals("pkgb", classInfo.getDir());
     }
-
 }

@@ -1,5 +1,3 @@
-package org.apache.maven.jxr.pacman;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.jxr.pacman;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.jxr.pacman;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,9 +25,7 @@ import java.util.Map;
 /**
  * Represents a Java package and its subclasses.
  */
-public class PackageType
-    extends BaseType
-{
+public class PackageType extends BaseType {
 
     private Map<String, ClassType> classes = new HashMap<>();
 
@@ -37,17 +34,15 @@ public class PackageType
      *
      * @param name name of package
      */
-    public PackageType( String name )
-    {
-        super( name );
+    public PackageType(String name) {
+        super(name);
     }
 
     /**
      * Creates a Java package with no name IE the default Java package.
      */
-    public PackageType()
-    {
-        super( "" );
+    public PackageType() {
+        super("");
     }
 
     /**
@@ -55,8 +50,7 @@ public class PackageType
      *
      * @return collection of class types
      */
-    public Collection<ClassType> getClassTypes()
-    {
+    public Collection<ClassType> getClassTypes() {
         return classes.values();
     }
 
@@ -65,11 +59,9 @@ public class PackageType
      *
      * @param classType class type to add
      */
-    public void addClassType( ClassType classType )
-    {
+    public void addClassType(ClassType classType) {
 
-        this.classes.put( classType.getName(), classType );
-
+        this.classes.put(classType.getName(), classType);
     }
 
     /**
@@ -79,10 +71,8 @@ public class PackageType
      * @param classType class type String
      * @return class type object
      */
-    public ClassType getClassType( String classType )
-    {
+    public ClassType getClassType(String classType) {
 
-        return this.classes.get( classType );
+        return this.classes.get(classType);
     }
-
 }

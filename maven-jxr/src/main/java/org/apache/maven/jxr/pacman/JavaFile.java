@@ -1,5 +1,3 @@
-package org.apache.maven.jxr.pacman;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.jxr.pacman;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.jxr.pacman;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -31,8 +30,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  */
-public abstract class JavaFile
-{
+public abstract class JavaFile {
     private Set<ImportType> imports = new HashSet<>();
 
     private List<ClassType> classTypes = new ArrayList<>();
@@ -45,11 +43,10 @@ public abstract class JavaFile
 
     private final String encoding;
 
-    protected JavaFile(  Path path, String encoding )
-    {
+    protected JavaFile(Path path, String encoding) {
         this.path = path;
         this.encoding = encoding;
-        this.filename = getFilenameWithoutPathOrExtension( path );
+        this.filename = getFilenameWithoutPathOrExtension(path);
     }
 
     /**
@@ -57,25 +54,20 @@ public abstract class JavaFile
      *
      * @return import types
      */
-    public Set<ImportType> getImportTypes()
-    {
-        return Collections.unmodifiableSet( imports );
+    public Set<ImportType> getImportTypes() {
+        return Collections.unmodifiableSet(imports);
     }
 
     /**
      * Gets the name of this class.
      * @return class type
      */
-    public ClassType getClassType()
-    {
-        if ( classTypes.isEmpty() )
-        {
+    public ClassType getClassType() {
+        if (classTypes.isEmpty()) {
             return null;
-        }
-        else
-        {
+        } else {
             // to retain backward compatibility, return the first class
-            return this.classTypes.get( 0 );
+            return this.classTypes.get(0);
         }
     }
 
@@ -84,8 +76,7 @@ public abstract class JavaFile
      *
      * @return list of class types
      */
-    public List<ClassType> getClassTypes()
-    {
+    public List<ClassType> getClassTypes() {
         return this.classTypes;
     }
 
@@ -94,20 +85,17 @@ public abstract class JavaFile
      *
      * @return package type
      */
-    public PackageType getPackageType()
-    {
+    public PackageType getPackageType() {
         return this.packageType;
     }
-
 
     /**
      * Add a class type to the current list of class types.
      *
      * @param classType class type
      */
-    public void addClassType( ClassType classType )
-    {
-        this.classTypes.add( classType );
+    public void addClassType(ClassType classType) {
+        this.classTypes.add(classType);
     }
 
     /**
@@ -115,9 +103,8 @@ public abstract class JavaFile
      *
      * @param importType import type
      */
-    public void addImportType( ImportType importType )
-    {
-        this.imports.add( importType );
+    public void addImportType(ImportType importType) {
+        this.imports.add(importType);
     }
 
     /**
@@ -125,11 +112,10 @@ public abstract class JavaFile
      *
      * @param classType class type
      */
-    public void setClassType( ClassType classType )
-    {
+    public void setClassType(ClassType classType) {
         // to retain backward compatibility, make sure the list contains only the supplied classType
         this.classTypes.clear();
-        this.classTypes.add( classType );
+        this.classTypes.add(classType);
     }
 
     /**
@@ -137,8 +123,7 @@ public abstract class JavaFile
      *
      * @param packageType package type
      */
-    public void setPackageType( PackageType packageType )
-    {
+    public void setPackageType(PackageType packageType) {
         this.packageType = packageType;
     }
 
@@ -147,8 +132,7 @@ public abstract class JavaFile
      *
      * @return path
      */
-    public Path getPath()
-    {
+    public Path getPath() {
         return this.path;
     }
 
@@ -157,8 +141,7 @@ public abstract class JavaFile
      *
      * @return file name
      */
-    public String getFilename()
-    {
+    public String getFilename() {
         return filename;
     }
 
@@ -167,8 +150,7 @@ public abstract class JavaFile
      *
      * @return encoding
      */
-    public String getEncoding()
-    {
+    public String getEncoding() {
         return this.encoding;
     }
 
@@ -178,16 +160,13 @@ public abstract class JavaFile
      * @param path path to modify
      * @return modified path
      */
-    protected static String getFilenameWithoutPathOrExtension( Path path )
-    {
+    protected static String getFilenameWithoutPathOrExtension(Path path) {
         String newFilename = path.getFileName().toString();
         // Remove the ".java" extension from the filename, if it exists
-        int extensionIndex = newFilename.lastIndexOf( ".java" );
-        if ( extensionIndex >= 0 )
-        {
-            newFilename = newFilename.substring( 0, extensionIndex );
+        int extensionIndex = newFilename.lastIndexOf(".java");
+        if (extensionIndex >= 0) {
+            newFilename = newFilename.substring(0, extensionIndex);
         }
         return newFilename;
     }
-
 }

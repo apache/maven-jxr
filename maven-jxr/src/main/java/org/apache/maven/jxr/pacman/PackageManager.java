@@ -1,5 +1,3 @@
-package org.apache.maven.jxr.pacman;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,10 +16,7 @@ package org.apache.maven.jxr.pacman;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import org.codehaus.plexus.util.DirectoryScanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.maven.jxr.pacman;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -31,13 +26,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.codehaus.plexus.util.DirectoryScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Given a list of directories, parse them out and store them as rendered
  * packages, classes, imports, etc.
  */
-public class PackageManager
-{
-    private static final Logger LOGGER = LoggerFactory.getLogger( PackageManager.class );
+public class PackageManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PackageManager.class);
 
     private final FileManager fileManager;
 
@@ -53,7 +51,6 @@ public class PackageManager
      */
     private PackageType defaultPackage = new PackageType();
 
-
     /**
      * The list of exclude patterns to use.
      */
@@ -62,10 +59,9 @@ public class PackageManager
     /**
      * The list of include patterns to use.
      */
-    private String[] includes = { "**/*.java" };
+    private String[] includes = {"**/*.java"};
 
-    public PackageManager( FileManager fileManager )
-    {
+    public PackageManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
 
@@ -76,15 +72,13 @@ public class PackageManager
      * @param name name of package
      * @return package type if found or default package type
      */
-    public PackageType getPackageType( String name )
-    {
-        //return the default package if the name is null.
-        if ( name == null )
-        {
+    public PackageType getPackageType(String name) {
+        // return the default package if the name is null.
+        if (name == null) {
             return defaultPackage;
         }
 
-        return this.packages.get( name );
+        return this.packages.get(name);
     }
 
     /**
@@ -92,9 +86,8 @@ public class PackageManager
      *
      * @param packageType package type to add
      */
-    public void addPackageType( PackageType packageType )
-    {
-        this.packages.put( packageType.getName(), packageType );
+    public void addPackageType(PackageType packageType) {
+        this.packages.put(packageType.getName(), packageType);
     }
 
     /**
@@ -102,101 +95,81 @@ public class PackageManager
      *
      * @return package types
      */
-    public Collection<PackageType> getPackageTypes()
-    {
+    public Collection<PackageType> getPackageTypes() {
         return packages.values();
     }
 
     /**
      * Parse out all the directories on which this depends.
      */
-    private void parse( Path baseDir )
-    {
+    private void parse(Path baseDir) {
         // Go through each directory and get the java source
         // files for this dir.
-        LOGGER.debug( "Scanning " + baseDir );
+        LOGGER.debug("Scanning " + baseDir);
         DirectoryScanner directoryScanner = new DirectoryScanner();
-        directoryScanner.setBasedir( baseDir.toFile() );
-        directoryScanner.setExcludes( excludes );
-        directoryScanner.setIncludes( includes );
+        directoryScanner.setBasedir(baseDir.toFile());
+        directoryScanner.setExcludes(excludes);
+        directoryScanner.setIncludes(includes);
         directoryScanner.scan();
 
-        for ( String file : directoryScanner.getIncludedFiles() )
-        {
-            LOGGER.debug( "parsing... " + file );
+        for (String file : directoryScanner.getIncludedFiles()) {
+            LOGGER.debug("parsing... " + file);
 
-            //now parse out this file to get the packages/classname/etc
-            try
-            {
-                Path fileName = baseDir.resolve( file );
-                JavaFile jfi = fileManager.getFile( fileName );
+            // now parse out this file to get the packages/classname/etc
+            try {
+                Path fileName = baseDir.resolve(file);
+                JavaFile jfi = fileManager.getFile(fileName);
 
                 // now that we have this parsed out blend its information
                 // with the current package structure
-                PackageType jp = this.getPackageType( jfi.getPackageType().getName() );
+                PackageType jp = this.getPackageType(jfi.getPackageType().getName());
 
-                if ( jp == null )
-                {
-                    this.addPackageType( jfi.getPackageType() );
+                if (jp == null) {
+                    this.addPackageType(jfi.getPackageType());
                     jp = jfi.getPackageType();
                 }
 
                 // Add the current file's class(es) to this global package.
-                if ( jfi.getClassTypes() != null && !jfi.getClassTypes().isEmpty() )
-                {
-                    for ( ClassType ct : jfi.getClassTypes() )
-                    {
-                        jp.addClassType( ct );
+                if (jfi.getClassTypes() != null && !jfi.getClassTypes().isEmpty()) {
+                    for (ClassType ct : jfi.getClassTypes()) {
+                        jp.addClassType(ct);
                     }
                 }
 
-            }
-            catch ( IOException e )
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
-    public void process( Path directory )
-    {
-        if ( this.directories.add( directory ) )
-        {
-            this.parse( directory );
+    public void process(Path directory) {
+        if (this.directories.add(directory)) {
+            this.parse(directory);
         }
     }
 
     /**
      * Dump the package information to STDOUT. FOR DEBUG ONLY
      */
-    public void dump()
-    {
+    public void dump() {
 
-        LOGGER.debug( "Dumping out PackageManager structure" );
+        LOGGER.debug("Dumping out PackageManager structure");
 
-        for ( PackageType current  : getPackageTypes() )
-        {
-            LOGGER.debug( current.getName() );
+        for (PackageType current : getPackageTypes()) {
+            LOGGER.debug(current.getName());
 
-            //get the classes under the package and print those too.
-            for ( ClassType currentClass  : current.getClassTypes() )
-            {
-                LOGGER.debug( '\t' + currentClass.getName() );
+            // get the classes under the package and print those too.
+            for (ClassType currentClass : current.getClassTypes()) {
+                LOGGER.debug('\t' + currentClass.getName());
             }
         }
     }
 
-    public void setExcludes( String[] excludes )
-    {
+    public void setExcludes(String[] excludes) {
         this.excludes = excludes;
     }
 
-
-    public void setIncludes( String[] includes )
-    {
+    public void setIncludes(String[] includes) {
         this.includes = includes;
     }
 }
-

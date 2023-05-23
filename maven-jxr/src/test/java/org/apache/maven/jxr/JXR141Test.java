@@ -1,5 +1,3 @@
-package org.apache.maven.jxr;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,9 +16,7 @@ package org.apache.maven.jxr;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+package org.apache.maven.jxr;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -33,51 +29,54 @@ import org.apache.maven.jxr.pacman.PackageManager;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Simple unit-testtest that illustrates a line with more
  * than one "token" to replace
  */
-public class JXR141Test 
-{
+public class JXR141Test {
     private JXR jxr;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         FileManager fileManager = new FileManager();
-        PackageManager packageManager = new PackageManager( fileManager );
-        JavaCodeTransform codeTransform = new JavaCodeTransform( packageManager, fileManager );
-        
-        jxr = new JXR( packageManager, codeTransform );    
-    }
-    
-    @Test
-    public void testProcessPath() throws Exception
-    {
-        jxr.setDest( Paths.get("target/jxr-141" ) );
-        jxr.setOutputEncoding( "UTF-8" );
-        jxr.xref( Collections.singletonList( "src/test/resources/jxr141" ),"templates/jdk4",
-                "title", "title", "copyright" );
+        PackageManager packageManager = new PackageManager(fileManager);
+        JavaCodeTransform codeTransform = new JavaCodeTransform(packageManager, fileManager);
 
-        List<String> lines = Files.readAllLines( Paths.get( "target/jxr-141/Test141.html" ),
-                StandardCharsets.UTF_8 );
+        jxr = new JXR(packageManager, codeTransform);
+    }
+
+    @Test
+    public void testProcessPath() throws Exception {
+        jxr.setDest(Paths.get("target/jxr-141"));
+        jxr.setOutputEncoding("UTF-8");
+        jxr.xref(
+                Collections.singletonList("src/test/resources/jxr141"),
+                "templates/jdk4",
+                "title",
+                "title",
+                "copyright");
+
+        List<String> lines = Files.readAllLines(Paths.get("target/jxr-141/Test141.html"), StandardCharsets.UTF_8);
 
         // Find line #27...
         String line27 = null;
-        for ( String line : lines )
-        {
-            if ( line.contains( "#L27" ) )
-            {
+        for (String line : lines) {
+            if (line.contains("#L27")) {
                 line27 = line;
                 break;
             }
         }
-        
-        assertNotNull( "Line #27 not found - has source of Test141.java changed?", line27 );
-        assertEquals( "<a class=\"jxr_linenumber\" name=\"L27\" href=\"#L27\">27</a>      " +
-                "<strong class=\"jxr_keyword\">public</strong> <strong class=\"jxr_keyword\">static</strong> " +
-                "<strong class=\"jxr_keyword\">final</strong> " +
-                "<a name=\"Test141\" href=\"..//Test141.html#Test141\">Test141</a> instance = <strong class=\"jxr_keyword\">new</strong> " +
-                "<a name=\"Test141\" href=\"..//Test141.html#Test141\">Test141</a>();" , line27 );
+
+        assertNotNull("Line #27 not found - has source of Test141.java changed?", line27);
+        assertEquals(
+                "<a class=\"jxr_linenumber\" name=\"L27\" href=\"#L27\">27</a>      "
+                        + "<strong class=\"jxr_keyword\">public</strong> <strong class=\"jxr_keyword\">static</strong> "
+                        + "<strong class=\"jxr_keyword\">final</strong> "
+                        + "<a name=\"Test141\" href=\"..//Test141.html#Test141\">Test141</a> instance = <strong class=\"jxr_keyword\">new</strong> "
+                        + "<a name=\"Test141\" href=\"..//Test141.html#Test141\">Test141</a>();",
+                line27);
     }
 }

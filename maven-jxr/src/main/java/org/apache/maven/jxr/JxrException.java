@@ -1,5 +1,3 @@
-package org.apache.maven.jxr;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,17 +16,15 @@ package org.apache.maven.jxr;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.jxr;
 
 /**
  * Exception occurring in JXR.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
-public class JxrException
-    extends Exception
-{
-    public JxrException( String message, Exception e )
-    {
-        super( message, e );
+public class JxrException extends Exception {
+    public JxrException(String message, Exception e) {
+        super(message, e);
     }
 }

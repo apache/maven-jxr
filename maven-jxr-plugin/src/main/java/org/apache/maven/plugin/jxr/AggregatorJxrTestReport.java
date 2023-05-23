@@ -1,5 +1,3 @@
-package org.apache.maven.plugin.jxr;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugin.jxr;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugin.jxr;
 
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -28,15 +27,11 @@ import org.apache.maven.plugins.annotations.Mojo;
  *
  * @since 2.3
  */
-@Mojo( name = "test-aggregate", aggregator = true )
-@Execute( phase = LifecyclePhase.TEST_COMPILE )
-public class AggregatorJxrTestReport
-    extends JxrTestReport
-{
+@Mojo(name = "test-aggregate", aggregator = true)
+@Execute(phase = LifecyclePhase.TEST_COMPILE)
+public class AggregatorJxrTestReport extends JxrTestReport {
     @Override
-    protected boolean isAggregate()
-    {
+    protected boolean isAggregate() {
         return true;
     }
-
 }
