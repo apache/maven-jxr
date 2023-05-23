@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -18,7 +17,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -35,14 +33,14 @@ under the License.
   <name>Maven JXR Plugin</name>
   <inceptionYear>2005</inceptionYear>
 
+  <prerequisites>
+    <maven>${mavenVersion}</maven>
+  </prerequisites>
+
   <properties>
     <mavenVersion>3.2.5</mavenVersion>
     <aetherVersion>1.0.0.v20140518</aetherVersion>
   </properties>
-
-  <prerequisites>
-    <maven>${mavenVersion}</maven>
-  </prerequisites>
 
   <dependencies>
     <dependency>
@@ -84,7 +82,8 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-provider-api</artifactId>
-      <version>2.8</version><!-- like Maven 3.2.5 -->
+      <version>2.8</version>
+      <!-- like Maven 3.2.5 -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
@@ -121,8 +120,8 @@ under the License.
       <scope>test</scope>
       <exclusions>
         <exclusion>
-          <artifactId>plexus-container-default</artifactId>
           <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-container-default</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.jxr.pacman;
 
 /*
@@ -35,8 +53,7 @@ import java.util.Map;
  * Note. This assumes that the file will not be modified on disk while
  * Alexandria is running. </p>
  */
-public class FileManager
-{
+public class FileManager {
     private Map<Path, JavaFile> files = new HashMap<>();
 
     private String encoding = null;
@@ -49,16 +66,13 @@ public class FileManager
      * @return the {@link JavaFile} meta object for the specified file
      * @throws IOException on parsing failure
      */
-    public JavaFile getFile( Path path )
-        throws IOException
-    {
+    public JavaFile getFile(Path path) throws IOException {
 
-        JavaFile real = this.files.get( path );
+        JavaFile real = this.files.get(path);
 
-        if ( real == null )
-        {
-            real = new JavaFileImpl( path, this.getEncoding() );
-            this.addFile( real );
+        if (real == null) {
+            real = new JavaFileImpl(path, this.getEncoding());
+            this.addFile(real);
         }
 
         return real;
@@ -68,9 +82,8 @@ public class FileManager
      * Add a file to this file manager.
      * @param file file to add
      */
-    public void addFile( JavaFile file )
-    {
-        this.files.put( file.getPath(), file );
+    public void addFile(JavaFile file) {
+        this.files.put(file.getPath(), file);
     }
 
     /**
@@ -78,8 +91,7 @@ public class FileManager
      *
      * @param encoding encoding of source files
      */
-    public void setEncoding( String encoding )
-    {
+    public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
 
@@ -88,8 +100,7 @@ public class FileManager
      *
      * @return encoding
      */
-    public String getEncoding()
-    {
+    public String getEncoding() {
         return encoding;
     }
 }

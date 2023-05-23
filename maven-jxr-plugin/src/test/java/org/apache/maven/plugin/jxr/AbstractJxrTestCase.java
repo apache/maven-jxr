@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.plugin.jxr;
 
 /*
@@ -31,16 +49,14 @@ import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.ProjectBuilder;
 import org.apache.maven.project.ProjectBuildingRequest;
-import org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory;
 import org.eclipse.aether.DefaultRepositorySystemSession;
+import org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory;
 import org.eclipse.aether.repository.LocalRepository;
 
 /**
  * Abstract class to test reports generation.
  */
-public abstract class AbstractJxrTestCase
-    extends AbstractMojoTestCase
-{
+public abstract class AbstractJxrTestCase extends AbstractMojoTestCase {
     private ArtifactStubFactory artifactStubFactory;
 
     /**
@@ -49,20 +65,16 @@ public abstract class AbstractJxrTestCase
     private MavenProject testMavenProject;
 
     @Override
-    protected void setUp()
-        throws Exception
-    {
+    protected void setUp() throws Exception {
         // required for mojo lookups to work
         super.setUp();
 
-        artifactStubFactory = new DependencyArtifactStubFactory( getTestFile( "target" ), true, false );
+        artifactStubFactory = new DependencyArtifactStubFactory(getTestFile("target"), true, false);
         artifactStubFactory.getWorkingDir().mkdirs();
     }
 
     @Override
-    protected void tearDown()
-        throws Exception
-    {
+    protected void tearDown() throws Exception {
         super.tearDown();
     }
 
@@ -71,8 +83,7 @@ public abstract class AbstractJxrTestCase
      *
      * @return the maven project
      */
-    protected MavenProject getTestMavenProject()
-    {
+    protected MavenProject getTestMavenProject() {
         return testMavenProject;
     }
 
@@ -83,15 +94,13 @@ public abstract class AbstractJxrTestCase
      * @return the generated report as file
      * @throws IOException if the return file doesnt exist
      */
-    protected File getGeneratedReport( String name )
-        throws IOException
-    {
-        String outputDirectory = getBasedir() + "/target/test/unit/" + getTestMavenProject().getArtifactId();
+    protected File getGeneratedReport(String name) throws IOException {
+        String outputDirectory =
+                getBasedir() + "/target/test/unit/" + getTestMavenProject().getArtifactId();
 
-        File report = new File( outputDirectory, name );
-        if ( !report.exists() )
-        {
-            throw new IOException( "File not found. Attempted: " + report );
+        File report = new File(outputDirectory, name);
+        if (!report.exists()) {
+            throw new IOException("File not found. Attempted: " + report);
         }
 
         return report;
@@ -105,55 +114,48 @@ public abstract class AbstractJxrTestCase
      * @return the generated HTML file
      * @throws Exception if any
      */
-    protected File generateReport( String goal, String pluginXml )
-        throws Exception
-    {
-        File pluginXmlFile = new File( getBasedir(), "src/test/resources/unit/" + pluginXml );
-        AbstractJxrReport mojo  = createReportMojo( goal, pluginXmlFile );
-        return generateReport( mojo, pluginXmlFile );
+    protected File generateReport(String goal, String pluginXml) throws Exception {
+        File pluginXmlFile = new File(getBasedir(), "src/test/resources/unit/" + pluginXml);
+        AbstractJxrReport mojo = createReportMojo(goal, pluginXmlFile);
+        return generateReport(mojo, pluginXmlFile);
     }
 
-    protected AbstractJxrReport createReportMojo( String goal, File pluginXmlFile )
-        throws Exception
-    {
-        AbstractJxrReport mojo = (AbstractJxrReport) lookupMojo( goal, pluginXmlFile );
-        assertNotNull( "Mojo not found.", mojo );
+    protected AbstractJxrReport createReportMojo(String goal, File pluginXmlFile) throws Exception {
+        AbstractJxrReport mojo = (AbstractJxrReport) lookupMojo(goal, pluginXmlFile);
+        assertNotNull("Mojo not found.", mojo);
 
-        LegacySupport legacySupport = lookup( LegacySupport.class );
-        legacySupport.setSession( newMavenSession( new MavenProjectStub() ) );
+        LegacySupport legacySupport = lookup(LegacySupport.class);
+        legacySupport.setSession(newMavenSession(new MavenProjectStub()));
         DefaultRepositorySystemSession repoSession =
-            (DefaultRepositorySystemSession) legacySupport.getRepositorySession();
-        repoSession.setLocalRepositoryManager( new SimpleLocalRepositoryManagerFactory().newInstance( repoSession, new LocalRepository( artifactStubFactory.getWorkingDir() ) ) );
+                (DefaultRepositorySystemSession) legacySupport.getRepositorySession();
+        repoSession.setLocalRepositoryManager(new SimpleLocalRepositoryManagerFactory()
+                .newInstance(repoSession, new LocalRepository(artifactStubFactory.getWorkingDir())));
 
-        setVariableValueToObject( mojo, "session", legacySupport.getSession() );
-        setVariableValueToObject( mojo, "remoteRepositories", mojo.getProject().getRemoteArtifactRepositories() );
+        setVariableValueToObject(mojo, "session", legacySupport.getSession());
+        setVariableValueToObject(mojo, "remoteRepositories", mojo.getProject().getRemoteArtifactRepositories());
         return mojo;
     }
 
-    protected File generateReport( AbstractJxrReport mojo, File pluginXmlFile )
-        throws Exception
-    {
+    protected File generateReport(AbstractJxrReport mojo, File pluginXmlFile) throws Exception {
         mojo.execute();
 
-        ProjectBuilder builder = lookup( ProjectBuilder.class );
+        ProjectBuilder builder = lookup(ProjectBuilder.class);
 
         ProjectBuildingRequest buildingRequest = new DefaultProjectBuildingRequest();
-        buildingRequest.setRepositorySession( lookup( LegacySupport.class ).getRepositorySession() );
+        buildingRequest.setRepositorySession(lookup(LegacySupport.class).getRepositorySession());
 
-        testMavenProject = builder.build( pluginXmlFile, buildingRequest ).getProject();
+        testMavenProject = builder.build(pluginXmlFile, buildingRequest).getProject();
 
         File outputDir = mojo.getReportOutputDirectory();
         String filename = mojo.getOutputName() + ".html";
 
-        return new File( outputDir, filename );
+        return new File(outputDir, filename);
     }
 
     /**
      * Read the contents of the specified file object into a string
      */
-    protected String readFile( File xrefTestDir, String fileName ) throws IOException
-    {
-        return new String( Files.readAllBytes( xrefTestDir.toPath().resolve( fileName ) ) );
+    protected String readFile(File xrefTestDir, String fileName) throws IOException {
+        return new String(Files.readAllBytes(xrefTestDir.toPath().resolve(fileName)));
     }
-
 }

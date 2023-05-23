@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.jxr.pacman;
 
 /*
@@ -22,9 +40,7 @@ package org.apache.maven.jxr.pacman;
 /**
  * Represents an entry in a java "import" statement
  */
-public class ImportType
-    extends BaseType
-{
+public class ImportType extends BaseType {
 
     private boolean isclass = false;
 
@@ -37,22 +53,19 @@ public class ImportType
      *
      * @param name name
      */
-    public ImportType( String name )
-    {
-        super( name );
+    public ImportType(String name) {
+        super(name);
 
-        //compute member variables
+        // compute member variables
 
-        this.isclass = this.getName().indexOf( '*' ) == -1;
+        this.isclass = this.getName().indexOf('*') == -1;
 
-        this.ispackage = this.getName().indexOf( '*' ) != -1;
+        this.ispackage = this.getName().indexOf('*') != -1;
 
-        int end = this.getName().lastIndexOf( '.' );
-        if ( end != -1 )
-        {
-            this.packagename = this.getName().substring( 0, end );
+        int end = this.getName().lastIndexOf('.');
+        if (end != -1) {
+            this.packagename = this.getName().substring(0, end);
         }
-
     }
 
     /**
@@ -60,8 +73,7 @@ public class ImportType
      *
      * @return true if class import, false otherwise
      */
-    public boolean isClass()
-    {
+    public boolean isClass() {
         return this.isclass;
     }
 
@@ -70,8 +82,7 @@ public class ImportType
      *
      * @return true if package, false otherwise
      */
-    public boolean isPackage()
-    {
+    public boolean isPackage() {
         return this.ispackage;
     }
 
@@ -81,9 +92,7 @@ public class ImportType
      *
      * @return package
      */
-    public String getPackage()
-    {
+    public String getPackage() {
         return this.packagename;
     }
-
 }
