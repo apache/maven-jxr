@@ -46,13 +46,13 @@ public class JxrTestReport extends AbstractJxrReport {
     private List<String> sourceDirs;
 
     /**
-     * Folder where the Xref files will be copied to.
+     * Directory where the Xref files will be copied to.
      */
     @Parameter(defaultValue = "${project.reporting.outputDirectory}/xref-test")
     private String destDir;
 
     /**
-     * Folder where Test Javadoc is generated for this project.
+     * Directory where Test Javadoc is generated for this project.
      */
     @Parameter(defaultValue = "${project.reporting.outputDirectory}/testapidocs")
     private File testJavadocDir;

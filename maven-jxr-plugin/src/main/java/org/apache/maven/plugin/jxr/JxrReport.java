@@ -53,13 +53,13 @@ public class JxrReport extends AbstractJxrReport {
     private String sourcePath;
 
     /**
-     * Folder where the Xref files will be copied to.
+     * Directory where the Xref files will be copied to.
      */
     @Parameter(defaultValue = "${project.reporting.outputDirectory}/xref")
     private String destDir;
 
     /**
-     * Folder where Javadoc is generated for this project.
+     * Directory where Javadoc is generated for this project.
      */
     @Parameter(defaultValue = "${project.reporting.outputDirectory}/apidocs")
     private File javadocDir;

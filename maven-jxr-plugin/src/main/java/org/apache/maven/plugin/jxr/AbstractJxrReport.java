@@ -181,7 +181,7 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
      * Checks whether the given directory contains Java files.
      *
      * @param dir the source directory
-     * @return true if the folder or one of its subfolders contains at least 1 Java file
+     * @return true if the directory or one of its subdirectories contains at least 1 Java file
      */
     private boolean hasSources(File dir) {
         if (dir.exists() && dir.isDirectory()) {
@@ -206,7 +206,7 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
      * directory.
      *
      * @param locale The user locale to use for the Xref generation
-     * @param destinationDirectory The output folder
+     * @param destinationDirectory The output directory
      * @param sourceDirs The source directories
      * @throws java.io.IOException
      * @throws org.apache.maven.jxr.JxrException
@@ -339,13 +339,13 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
      * Copy styles and related resources to the given directory
      *
      * @param dir the directory to copy the resources to
-     * @param sourceFolder resources subfolder to copy from
+     * @param sourceDirectory resources subdirectory to copy from
      * @param files names of files to copy
      */
-    private void copyResources(String dir, String sourceFolder, String... files) {
+    private void copyResources(String dir, String sourceDirectory, String... files) {
         try {
             for (String file : files) {
-                URL resourceUrl = this.getClass().getClassLoader().getResource(sourceFolder + file);
+                URL resourceUrl = this.getClass().getClassLoader().getResource(sourceDirectory + file);
                 File destResourceFile = new File(dir, file);
                 FileUtils.copyURLToFile(resourceUrl, destResourceFile);
             }
