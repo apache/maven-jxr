@@ -210,6 +210,17 @@ under the License.
 
   <profiles>
     <profile>
+      <id>reporting</id>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-plugin-report-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
+    <profile>
       <id>run-its</id>
       <build>
         <plugins>
