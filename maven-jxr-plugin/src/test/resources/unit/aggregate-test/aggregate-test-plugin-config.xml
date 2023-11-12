@@ -41,7 +41,7 @@ under the License.
             <value>${basedir}/src/test/resources/unit/aggregate-test/submodule1</value>
             <value>${basedir}/src/test/resources/unit/aggregate-test/submodule2</value>
           </sourceDirs>
-          <javadocDir>${basedir}/target/test/unit/aggregate-test/target/site/apidocs</javadocDir>
+          <javadocLocation>${basedir}/target/test/unit/aggregate-test/target/site/apidocs</javadocLocation>
           <linkJavadoc>false</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
           <javadocVersion>1.4</javadocVersion>
