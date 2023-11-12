@@ -54,9 +54,11 @@ public class JxrReport extends AbstractJxrReport {
 
     /**
      * Directory where Javadoc is generated for this project.
+     * <br>
+     * <strong>Default</strong>: {@link #getReportOutputDirectory()} + {@code /apidocs}
      */
-    @Parameter(defaultValue = "${project.reporting.outputDirectory}/apidocs")
-    private File javadocDir;
+    @Parameter
+    private File javadocLocation;
 
     @Override
     protected File getPluginReportOutputDirectory() {
@@ -120,7 +122,7 @@ public class JxrReport extends AbstractJxrReport {
     }
 
     @Override
-    protected File getJavadocDir() {
-        return javadocDir;
+    protected File getJavadocLocation() {
+        return javadocLocation != null ? javadocLocation : new File(getReportOutputDirectory(), "apidocs");
     }
 }
