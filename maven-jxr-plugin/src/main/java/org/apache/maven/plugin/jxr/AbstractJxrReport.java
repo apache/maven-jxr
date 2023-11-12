@@ -377,40 +377,18 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
         return ResourceBundle.getBundle("jxr-report", locale, this.getClass().getClassLoader());
     }
 
-    /**
-     * Checks whether the report can be generated.
-     *
-     * @param sourceDirs list of source directories
-     * @return true if the report could be generated
-     */
-    protected boolean canGenerateReport(List<String> sourceDirs) {
-        boolean canGenerate = !sourceDirs.isEmpty();
-
-        if (isAggregate() && !project.isExecutionRoot()) {
-            canGenerate = false;
-        }
-        return canGenerate;
-    }
-
     @Override
     protected void executeReport(Locale locale) throws MavenReportException {
-        if (skip) {
-            getLog().info("Skipping JXR.");
-            return;
-        }
-        List<String> sourceDirs = constructSourceDirs();
-        if (canGenerateReport(sourceDirs)) {
-            // init some attributes -- TODO (javadoc)
-            init();
+        // init some attributes -- TODO (javadoc)
+        init();
 
-            // determine version of templates to use
-            setJavadocTemplatesVersion();
+        // determine version of templates to use
+        setJavadocTemplatesVersion();
 
-            try {
-                createXref(locale, getDestinationDirectory(), sourceDirs);
-            } catch (JxrException | IOException e) {
-                throw new MavenReportException("Error while generating the HTML source code of the project.", e);
-            }
+        try {
+            createXref(locale, getDestinationDirectory(), constructSourceDirs());
+        } catch (JxrException | IOException e) {
+            throw new MavenReportException("Error while generating the HTML source code of the project.", e);
         }
     }
 
@@ -471,7 +449,20 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
 
     @Override
     public boolean canGenerateReport() {
-        return canGenerateReport(constructSourceDirs());
+        if (skip) {
+            getLog().info("Skipping JXR.");
+            return false;
+        }
+
+        if (constructSourceDirs().isEmpty()) {
+            return false;
+        }
+
+        if (isAggregate() && !project.isExecutionRoot()) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
