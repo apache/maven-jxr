@@ -47,9 +47,11 @@ public class JxrTestReport extends AbstractJxrReport {
 
     /**
      * Directory where Test Javadoc is generated for this project.
+     * <br>
+     * <strong>Default</strong>: {@link #getReportOutputDirectory()} + {@code /testapidocs}
      */
-    @Parameter(defaultValue = "${project.reporting.outputDirectory}/testapidocs")
-    private File testJavadocDir;
+    @Parameter
+    private File testJavadocLocation;
 
     @Override
     protected List<String> getSourceRoots() {
@@ -102,7 +104,7 @@ public class JxrTestReport extends AbstractJxrReport {
     }
 
     @Override
-    protected File getJavadocDir() {
-        return testJavadocDir;
+    protected File getJavadocLocation() {
+        return testJavadocLocation != null ? testJavadocLocation : new File(getReportOutputDirectory(), "testapidocs");
     }
 }

@@ -40,7 +40,7 @@ under the License.
           <sourceDirs>
             <value>${basedir}/src/test/resources/unit/default-configuration</value>
           </sourceDirs>
-          <javadocDir>${basedir}/target/test/unit/default-configuration/target/site/apidocs</javadocDir>
+          <javadocLocation>${basedir}/target/test/unit/default-configuration/target/site/apidocs</javadocLocation>
           <linkJavadoc>true</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
           <templateDir>temp</templateDir>
