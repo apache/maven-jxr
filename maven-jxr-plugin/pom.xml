@@ -38,7 +38,7 @@ under the License.
   </prerequisites>
 
   <properties>
-    <mavenVersion>3.2.5</mavenVersion>
+    <mavenVersion>3.8.1</mavenVersion>
     <aetherVersion>1.0.0.v20140518</aetherVersion>
   </properties>
 
