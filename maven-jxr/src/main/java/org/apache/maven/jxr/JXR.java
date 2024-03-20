@@ -40,7 +40,7 @@ public class JXR {
     private final PackageManager pkgmgr;
 
     /**
-     * Handles taking .java files and changing them into html. "More than meets
+     * Handles taking .java files and changing them into HTML. "More than meets
      * the eye!" :)
      */
     private final JavaCodeTransform transformer;

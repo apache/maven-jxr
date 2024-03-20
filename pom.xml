@@ -29,7 +29,7 @@ under the License.
 
   <groupId>org.apache.maven.jxr</groupId>
   <artifactId>jxr</artifactId>
-  <version>3.3.3-SNAPSHOT</version>
+  <version>4.0.0-M1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Maven JXR Parent</name>
@@ -76,12 +76,12 @@ under the License.
 
   <properties>
     <javaVersion>8</javaVersion>
-    <sitePluginVersion>3.12.1</sitePluginVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
+    <sitePluginVersion>4.0.0-M13</sitePluginVersion>
     <javadocPluginVersion>3.6.3</javadocPluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
-    <project.build.outputTimestamp>2023-12-26T19:03:53Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2023-12-26T21:06:44Z</project.build.outputTimestamp>
   </properties>
 
   <dependencyManagement>
@@ -111,39 +111,8 @@ under the License.
         <artifactId>junit</artifactId>
         <version>4.13.2</version>
       </dependency>
-
-      <!-- override transitive dependency with security issues -->
-      <dependency>
-        <groupId>commons-beanutils</groupId>
-        <artifactId>commons-beanutils</artifactId>
-        <version>1.9.4</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>2.15.1</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <build>
-    <pluginManagement>
-      <!-- use the same plugin version in project and in IT tests -->
-      <!-- additionally versions upgrade will be tracked -->
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${javadocPluginVersion}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${sitePluginVersion}</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
 
   <profiles>
     <profile>
