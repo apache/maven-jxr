@@ -83,14 +83,14 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
 
     /**
      * Directory where Velocity templates can be found to generate overviews, frames and summaries. Should not be used.
-     * If used, should be an absolute path, like {@code "${basedir}/myTemplates"}.
+     * If used, should be an absolute path, like <code>{@literal "${basedir}/myTemplates"}</code>.
      */
     @Parameter
     private String templateDir;
 
     /**
      * Style sheet used for the Xref HTML files. Should not be used. If used, should be an absolute path, like
-     * {@code "${basedir}/myStyles.css"}.
+     * <code>{@literal "${basedir}/myStyles.css"}</code>.
      */
     @Parameter
     private String stylesheet;
