@@ -54,6 +54,7 @@ public class JxrReport extends AbstractJxrReport {
 
     /**
      * Directory where the Xref files will be copied to.
+     * This must end with '{@code xref}', otherwise it will be ignored.
      */
     @Parameter(defaultValue = "${project.reporting.outputDirectory}/xref")
     private String destDir;
