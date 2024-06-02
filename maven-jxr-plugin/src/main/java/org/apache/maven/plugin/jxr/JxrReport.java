@@ -31,7 +31,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Creates an html-based, cross referenced version of Java source code
+ * Creates an HTML-based, cross referenced version of Java source code
  * for a project.
  *
  * @author <a href="mailto:bellingard.NO-SPAM@gmail.com">Fabrice Bellingard</a>
@@ -53,20 +53,16 @@ public class JxrReport extends AbstractJxrReport {
     private String sourcePath;
 
     /**
-     * Directory where the Xref files will be copied to.
-     */
-    @Parameter(defaultValue = "${project.reporting.outputDirectory}/xref")
-    private String destDir;
-
-    /**
      * Directory where Javadoc is generated for this project.
+     * <br>
+     * <strong>Default</strong>: {@link #getReportOutputDirectory()} + {@code /apidocs}
      */
-    @Parameter(defaultValue = "${project.reporting.outputDirectory}/apidocs")
-    private File javadocDir;
+    @Parameter
+    private File javadocLocation;
 
     @Override
-    protected String getDestinationDirectory() {
-        return destDir;
+    protected File getPluginReportOutputDirectory() {
+        return new File(getReportOutputDirectory(), "xref");
     }
 
     @Override
@@ -80,12 +76,12 @@ public class JxrReport extends AbstractJxrReport {
 
         List<String> l = new ArrayList<>();
 
-        if (!"pom".equals(getProject().getPackaging().toLowerCase(Locale.US))) {
+        if (!"pom".equals(getProject().getPackaging().toLowerCase(Locale.ENGLISH))) {
             l.addAll(sourceDirs);
         }
 
         if (getProject().getExecutionProject() != null) {
-            if (!"pom".equals(getProject().getExecutionProject().getPackaging().toLowerCase(Locale.US))) {
+            if (!"pom".equals(getProject().getExecutionProject().getPackaging().toLowerCase(Locale.ENGLISH))) {
                 l.addAll(getProject().getExecutionProject().getCompileSourceRoots());
             }
         }
@@ -97,12 +93,12 @@ public class JxrReport extends AbstractJxrReport {
     protected List<String> getSourceRoots(MavenProject project) {
         List<String> l = new ArrayList<>();
 
-        if (!"pom".equals(project.getPackaging().toLowerCase(Locale.US))) {
+        if (!"pom".equals(project.getPackaging().toLowerCase(Locale.ENGLISH))) {
             l.addAll(project.getCompileSourceRoots());
         }
 
         if (project.getExecutionProject() != null) {
-            if (!"pom".equals(project.getExecutionProject().getPackaging().toLowerCase(Locale.US))) {
+            if (!"pom".equals(project.getExecutionProject().getPackaging().toLowerCase(Locale.ENGLISH))) {
                 l.addAll(project.getExecutionProject().getCompileSourceRoots());
             }
         }
@@ -126,17 +122,7 @@ public class JxrReport extends AbstractJxrReport {
     }
 
     @Override
-    protected File getJavadocDir() {
-        return javadocDir;
-    }
-
-    @Override
-    public void setReportOutputDirectory(File reportOutputDirectory) {
-        if ((reportOutputDirectory != null)
-                && (!reportOutputDirectory.getAbsolutePath().endsWith("xref"))) {
-            this.destDir = new File(reportOutputDirectory, "xref").getAbsolutePath();
-        } else {
-            this.destDir = reportOutputDirectory.getAbsolutePath();
-        }
+    protected File getJavadocLocation() {
+        return javadocLocation != null ? javadocLocation : new File(getReportOutputDirectory(), "apidocs");
     }
 }

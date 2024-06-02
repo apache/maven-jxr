@@ -18,7 +18,9 @@
  */
 package org.apache.maven.plugin.jxr.stubs;
 
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,26 +28,21 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
-public class NoJavadocLinkConfigurationMavenProjectStub extends MavenProjectStub {
+public class NoJavadocLinkConfigurationMavenProjectStub extends JxrProjectStub {
     List<ReportPlugin> reportPlugins;
 
     public NoJavadocLinkConfigurationMavenProjectStub() {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
         Model model = null;
 
-        try {
-            model = pomReader.read(
-                    new FileReader(
-                            getBasedir()
-                                    + "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml"));
+        try (InputStream is = new FileInputStream(new File(getBasedir() + "/" + getPOM()))) {
+            model = pomReader.read(is);
             setModel(model);
         } catch (Exception ignored) {
-
         }
 
         setArtifactId(model.getArtifactId());
@@ -56,8 +53,7 @@ public class NoJavadocLinkConfigurationMavenProjectStub extends MavenProjectStub
 
         String basedir = getBasedir().getAbsolutePath();
         List<String> compileSourceRoots = new ArrayList<>();
-        compileSourceRoots.add(
-                basedir + "/src/test/resources/unit/nojavadoclink-configuration/nojavadoclink/configuration");
+        compileSourceRoots.add(basedir + "/nojavadoclink/configuration");
         setCompileSourceRoots(compileSourceRoots);
 
         // set the report plugins
@@ -71,5 +67,15 @@ public class NoJavadocLinkConfigurationMavenProjectStub extends MavenProjectStub
     @Override
     public List<ReportPlugin> getReportPlugins() {
         return reportPlugins;
+    }
+
+    @Override
+    public File getBasedir() {
+        return new File(super.getBasedir() + "/nojavadoclink-configuration");
+    }
+
+    @Override
+    protected String getPOM() {
+        return "nojavadoclink-configuration-plugin-config.xml";
     }
 }
