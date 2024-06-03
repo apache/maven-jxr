@@ -39,7 +39,7 @@ under the License.
 
   <properties>
     <mavenVersion>3.6.3</mavenVersion>
-    <resolverVersion>1.4.1</resolverVersion>
+    <resolverVersion>1.9.20</resolverVersion>
     <!-- like Maven 3.6.3 -->
     <wagonVersion>3.5.3</wagonVersion>
   </properties>
