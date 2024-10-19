@@ -78,7 +78,7 @@ under the License.
     <javaVersion>8</javaVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <sitePluginVersion>3.20.0</sitePluginVersion>
-    <javadocPluginVersion>3.8.0</javadocPluginVersion>
+    <javadocPluginVersion>3.10.1</javadocPluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2024-08-19T15:30:38Z</project.build.outputTimestamp>
