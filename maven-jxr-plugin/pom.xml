@@ -149,6 +149,12 @@ under the License.
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.apache.maven.resolver</groupId>
+      <artifactId>maven-resolver-transport-wagon</artifactId>
+      <version>${resolverVersion}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -197,7 +203,7 @@ under the License.
             </goals>
             <configuration>
               <failOnWarning>true</failOnWarning>
-              <ignoredDependencies>junit:junit:*,org.apache.maven:maven-compat:*,org.apache.maven.resolver:maven-resolver-connector-basic:*</ignoredDependencies>
+              <ignoredDependencies>junit:junit:*,org.apache.maven:maven-compat:*,org.apache.maven.resolver:maven-resolver-connector-basic:*,org.apache.maven.resolver:maven-resolver-transport-wagon:*</ignoredDependencies>
             </configuration>
           </execution>
         </executions>
