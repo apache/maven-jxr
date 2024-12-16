@@ -77,7 +77,7 @@ public abstract class AbstractJxrTestCase extends AbstractMojoTestCase {
     /**
      * Gets the generated report as file in the test maven project.
      *
-     * @param name the name of the report.
+     * @param name the name of the report
      * @return the generated report as file
      * @throws IOException if the return file doesnt exist
      */
@@ -96,8 +96,8 @@ public abstract class AbstractJxrTestCase extends AbstractMojoTestCase {
     /**
      * Generate the report and return the generated file
      *
-     * @param goal the mojo goal.
-     * @param pluginXml the name of the xml file in "src/test/resources/plugin-configs/".
+     * @param goal the mojo goal
+     * @param pluginXml the name of the XML file in "src/test/resources/plugin-configs/".
      * @return the generated HTML file
      * @throws Exception if any
      */
@@ -143,13 +143,13 @@ public abstract class AbstractJxrTestCase extends AbstractMojoTestCase {
         testMavenProject = builder.build(pluginXmlFile, buildingRequest).getProject();
 
         File outputDir = mojo.getReportOutputDirectory();
-        String filename = mojo.getOutputName() + ".html";
+        String filename = mojo.getOutputPath() + ".html";
 
         return new File(outputDir, filename);
     }
 
     /**
-     * Read the contents of the specified file object into a string
+     * Read the contents of the specified file object into a string.
      */
     protected String readFile(File xrefTestDir, String fileName) throws IOException {
         return new String(Files.readAllBytes(xrefTestDir.toPath().resolve(fileName)));
