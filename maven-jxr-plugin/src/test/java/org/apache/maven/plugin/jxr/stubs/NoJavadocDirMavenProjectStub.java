@@ -19,8 +19,8 @@
 package org.apache.maven.plugin.jxr.stubs;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +33,13 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
 public class NoJavadocDirMavenProjectStub extends JxrProjectStub {
-    private List<ReportPlugin> reportPlugins;
+    private final List<ReportPlugin> reportPlugins;
 
     public NoJavadocDirMavenProjectStub() {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
         Model model = null;
 
-        try (InputStream is = new FileInputStream(new File(getBasedir() + "/" + getPOM()))) {
+        try (InputStream is = Files.newInputStream(new File(getBasedir() + "/" + getPOM()).toPath())) {
             model = pomReader.read(is);
             setModel(model);
         } catch (Exception ignored) {

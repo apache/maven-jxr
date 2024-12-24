@@ -161,8 +161,19 @@ under the License.
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -209,7 +220,7 @@ under the License.
             </goals>
             <configuration>
               <failOnWarning>true</failOnWarning>
-              <ignoredDependencies>junit:junit:*,org.apache.maven:maven-compat:*,org.apache.maven.resolver:maven-resolver-connector-basic:*,org.apache.maven.resolver:maven-resolver-transport-wagon:*,org.apache.maven.wagon:wagon-http-lightweight:*</ignoredDependencies>
+              <ignoredDependencies>org.apache.maven:maven-compat:*,org.apache.maven.resolver:maven-resolver-connector-basic:*,org.apache.maven.resolver:maven-resolver-transport-wagon:*,org.apache.maven.wagon:wagon-http-lightweight:*,org.junit.vintage:*,org.slf4j:slf4j-simple</ignoredDependencies>
             </configuration>
           </execution>
         </executions>

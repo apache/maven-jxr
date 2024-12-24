@@ -20,16 +20,20 @@ package org.apache.maven.plugin.jxr;
 
 import java.io.File;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
-public class JxrTestReportTest extends AbstractJxrTestCase {
+class JxrTestReportTest extends AbstractJxrTestCase {
     /**
      * Method to test when the source dir is the test source dir
-     *
-     * @throws Exception
      */
-    public void testSourceDir() throws Exception {
+    @Test
+    void sourceDir() throws Exception {
         generateReport(getGoal(), "testsourcedir-test/testsourcedir-test-plugin-config.xml");
 
         File xrefTestDir = new File(getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test");

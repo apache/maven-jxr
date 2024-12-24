@@ -39,6 +39,10 @@ import org.apache.maven.project.ProjectBuildingRequest;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory;
 import org.eclipse.aether.repository.LocalRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Abstract class to test reports generation.
@@ -51,8 +55,8 @@ public abstract class AbstractJxrTestCase extends AbstractMojoTestCase {
      */
     private MavenProject testMavenProject;
 
-    @Override
-    protected void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() throws Exception {
         // required for mojo lookups to work
         super.setUp();
 
@@ -60,8 +64,8 @@ public abstract class AbstractJxrTestCase extends AbstractMojoTestCase {
         artifactStubFactory.getWorkingDir().mkdirs();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 

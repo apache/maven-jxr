@@ -23,14 +23,14 @@ import java.util.Collections;
 
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class JxrBeanTest {
+class JxrBeanTest {
     private JXR jxrBean;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager(fileManager);
         JavaCodeTransform codeTransform = new JavaCodeTransform(packageManager, fileManager);
@@ -42,7 +42,7 @@ public class JxrBeanTest {
     }
 
     @Test
-    public void testXref() throws Exception {
+    void xref() throws Exception {
         jxrBean.xref(Collections.singletonList("src/test/java"), "templates/jdk4", "title", "title", "copyright");
     }
 }
