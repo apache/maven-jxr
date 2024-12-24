@@ -27,17 +27,17 @@ import org.apache.maven.jxr.DirectoryIndexer.PackageInfo;
 import org.apache.maven.jxr.DirectoryIndexer.ProjectInfo;
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DirectoryIndexerTest {
+class DirectoryIndexerTest {
     private DirectoryIndexer directoryIndexer;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager(fileManager);
         packageManager.process(Paths.get("src/test/resources/jxr68"));
@@ -50,7 +50,7 @@ public class DirectoryIndexerTest {
      * in the correct order.
      */
     @Test
-    public void testJXR_68() {
+    void jxr68() {
 
         ProjectInfo packageInfo = directoryIndexer.getProjectInfo();
         final Map<String, PackageInfo> allPackages = packageInfo.getAllPackages();

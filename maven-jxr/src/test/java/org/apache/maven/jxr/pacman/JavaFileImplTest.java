@@ -22,13 +22,13 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JavaFileImplTest {
+class JavaFileImplTest {
     @Test
-    public void testJXR_135_lotsOfNested() throws IOException {
+    void jxr_135LotsOfNested() throws IOException {
         JavaFileImpl javaFile = new JavaFileImpl(
                 Paths.get("src/test/resources/jxr135/org/apache/maven/jxr/pacman/ClassWithNested.java"), "UTF-8");
         final Iterator<ClassType> classTypes = javaFile.getClassTypes().iterator();
@@ -52,7 +52,7 @@ public class JavaFileImplTest {
     }
 
     @Test
-    public void testJXR_170_multiLineString() throws IOException {
+    void jxr_170MultiLineString() throws IOException {
         JavaFileImpl javaFile = new JavaFileImpl(
                 Paths.get("src/test/resources/jxr170/org/apache/maven/jxr/pacman/ClassWithMultiLineString.java"),
                 "UTF-8");
@@ -62,7 +62,7 @@ public class JavaFileImplTest {
     }
 
     @Test
-    public void testJXR_175_java14Record() throws IOException {
+    void jxr_175Java14Record() throws IOException {
         JavaFileImpl javaFile = new JavaFileImpl(
                 Paths.get("src/test/resources/jxr175/org/apache/maven/jxr/pacman/Java14Record.java"), "UTF-8");
         assertEquals(1, javaFile.getClassTypes().size());

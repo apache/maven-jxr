@@ -24,18 +24,23 @@ import java.nio.file.Path;
 import java.util.Locale;
 
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  * @author <a href="mailto:dennisl@apache.org">Dennis Lundberg</a>
  */
-public class JxrReportTest extends AbstractJxrTestCase {
+class JxrReportTest extends AbstractJxrTestCase {
     /**
      * Test the plugin with original configuration
-     *
-     * @throws Exception
      */
-    public void testDefaultConfiguration() throws Exception {
+    @Test
+    void defaultConfiguration() throws Exception {
         File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
 
         File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site");
@@ -69,10 +74,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Test the plugin with jdk-4 configuration
-     *
-     * @throws Exception
      */
-    public void testJdk4Configuration() throws Exception {
+    @Test
+    void jdk4Configuration() throws Exception {
         File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
 
         File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site/4");
@@ -106,10 +110,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Test the plugin with jdk-6 configuration
-     *
-     * @throws Exception
      */
-    public void testJdk6Configuration() throws Exception {
+    @Test
+    void jdk6Configuration() throws Exception {
         File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
 
         File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site/6");
@@ -143,10 +146,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Test the plugin with jdk-7 configuration
-     *
-     * @throws Exception
      */
-    public void testJdk7Configuration() throws Exception {
+    @Test
+    void jdk7Configuration() throws Exception {
         File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
 
         File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site/7");
@@ -184,10 +186,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Test the plugin with jdk-8 configuration
-     *
-     * @throws Exception
      */
-    public void testJdk8Configuration() throws Exception {
+    @Test
+    void jdk8Configuration() throws Exception {
         File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
 
         File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site/8");
@@ -221,10 +222,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Test when javadocLink is disabled in the configuration
-     *
-     * @throws Exception
      */
-    public void testNoJavadocLink() throws Exception {
+    @Test
+    void noJavadocLink() throws Exception {
         generateReport(getGoal(), "nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml");
 
         File xrefDir = new File(getBasedir(), "target/test/unit/nojavadoclink-configuration/target/site/xref");
@@ -246,13 +246,13 @@ public class JxrReportTest extends AbstractJxrTestCase {
         // check if there's a link to the javadoc files
         String str = readFile(xrefDir, "nojavadoclink/configuration/AppSample.html");
         assertEquals(
-                str.toLowerCase(Locale.ENGLISH).indexOf("/apidocs/nojavadoclink/configuration/appsample.html\""), -1);
+                -1, str.toLowerCase(Locale.ENGLISH).indexOf("/apidocs/nojavadoclink/configuration/appsample.html\""));
 
         str = readFile(xrefDir, "nojavadoclink/configuration/App.html");
-        assertEquals(str.toLowerCase(Locale.ENGLISH).indexOf("/apidocs/nojavadoclink/configuration/app.html\""), -1);
+        assertEquals(-1, str.toLowerCase(Locale.ENGLISH).indexOf("/apidocs/nojavadoclink/configuration/app.html\""));
 
         str = readFile(xrefDir, "nojavadoclink/configuration/sample/Sample.html");
-        assertEquals(str.toLowerCase().indexOf("/apidocs/nojavadoclink/configuration/sample/sample.html\""), -1);
+        assertEquals(-1, str.toLowerCase().indexOf("/apidocs/nojavadoclink/configuration/sample/sample.html\""));
 
         // check if encoding is ISO-8859-1, like specified in the plugin configuration
         assertTrue(str.contains("text/html; charset=ISO-8859-1"));
@@ -260,10 +260,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Method for testing plugin when aggregate parameter is set to true
-     *
-     * @throws Exception
      */
-    public void testAggregate() throws Exception {
+    @Test
+    void aggregate() throws Exception {
         generateReport(getGoal(), "aggregate-test/aggregate-test-plugin-config.xml");
 
         File xrefDir = new File(getBasedir(), "target/test/unit/aggregate-test/target/site/xref");
@@ -283,10 +282,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Method for testing plugin when the specified javadocDir does not exist
-     *
-     * @throws Exception
      */
-    public void testNoJavadocDir() throws Exception {
+    @Test
+    void noJavadocDir() throws Exception {
         generateReport(getGoal(), "nojavadocdir-test/nojavadocdir-test-plugin-config.xml");
 
         File xrefDir = new File(getBasedir(), "target/test/unit/nojavadocdir-test/target/site/xref");
@@ -301,10 +299,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Test the plugin with an exclude configuration.
-     *
-     * @throws Exception
      */
-    public void testExclude() throws Exception {
+    @Test
+    void exclude() throws Exception {
         generateReport(getGoal(), "exclude-configuration/exclude-configuration-plugin-config.xml");
 
         Path xrefDir = new File(getBasedir(), "target/test/unit/exclude-configuration/target/site/xref").toPath();
@@ -318,10 +315,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Test the plugin with an include configuration.
-     *
-     * @throws Exception
      */
-    public void testInclude() throws Exception {
+    @Test
+    void include() throws Exception {
         generateReport(getGoal(), "include-configuration/include-configuration-plugin-config.xml");
 
         Path xrefDir = new File(getBasedir(), "target/test/unit/include-configuration/target/site/xref").toPath();
@@ -333,7 +329,8 @@ public class JxrReportTest extends AbstractJxrTestCase {
         assertFalse(Files.exists(xrefDir.resolve("include/configuration/AppSample.html")));
     }
 
-    public void testExceptions() {
+    @Test
+    void exceptions() {
         try {
             generateReport(getGoal(), "default-configuration/exception-test-plugin-config.xml");
 
@@ -345,10 +342,9 @@ public class JxrReportTest extends AbstractJxrTestCase {
 
     /**
      * Test the jxr for a POM project.
-     *
-     * @throws Exception
      */
-    public void testPom() throws Exception {
+    @Test
+    void pom() throws Exception {
         generateReport(getGoal(), "pom-test/pom-test-plugin-config.xml");
 
         assertFalse(new File(getBasedir(), "target/test/unit/pom-test").exists());

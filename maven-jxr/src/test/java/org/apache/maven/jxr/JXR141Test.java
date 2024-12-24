@@ -26,21 +26,21 @@ import java.util.List;
 
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Simple unit-testtest that illustrates a line with more
  * than one "token" to replace
  */
-public class JXR141Test {
+class JXR141Test {
     private JXR jxr;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         FileManager fileManager = new FileManager();
         PackageManager packageManager = new PackageManager(fileManager);
         JavaCodeTransform codeTransform = new JavaCodeTransform(packageManager, fileManager);
@@ -49,7 +49,7 @@ public class JXR141Test {
     }
 
     @Test
-    public void testProcessPath() throws Exception {
+    void processPath() throws Exception {
         jxr.setDest(Paths.get("target/jxr-141"));
         jxr.setOutputEncoding("UTF-8");
         jxr.xref(
@@ -70,7 +70,7 @@ public class JXR141Test {
             }
         }
 
-        assertNotNull("Line #27 not found - has source of Test141.java changed?", line27);
+        assertNotNull(line27, "Line #27 not found - has source of Test141.java changed?");
         assertEquals(
                 "<a class=\"jxr_linenumber\" name=\"L27\" href=\"#L27\">27</a>      "
                         + "<strong class=\"jxr_keyword\">public</strong> <strong class=\"jxr_keyword\">static</strong> "

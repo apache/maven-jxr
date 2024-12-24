@@ -20,13 +20,13 @@ package org.apache.maven.jxr.util;
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SimpleWordTokenizerTest {
+class SimpleWordTokenizerTest {
     @Test
-    public void testCompact() {
+    void compact() {
         List<StringEntry> entries = SimpleWordTokenizer.tokenize("public void withApp1(App app)");
         assertEquals(5, entries.size());
 
@@ -47,7 +47,7 @@ public class SimpleWordTokenizerTest {
     }
 
     @Test
-    public void testSpacesAroundParenOpen() {
+    void spacesAroundParenOpen() {
         List<StringEntry> entries = SimpleWordTokenizer.tokenize("public void withApp2 ( App app)");
         assertEquals(5, entries.size());
 
@@ -68,7 +68,7 @@ public class SimpleWordTokenizerTest {
     }
 
     @Test
-    public void testSpaceBeforeParenOpen() {
+    void spaceBeforeParenOpen() {
         List<StringEntry> entries = SimpleWordTokenizer.tokenize("public void withApp3 (App app)");
         assertEquals(5, entries.size());
 
@@ -89,7 +89,7 @@ public class SimpleWordTokenizerTest {
     }
 
     @Test
-    public void testSpaceAfterParenOpen() {
+    void spaceAfterParenOpen() {
         List<StringEntry> entries = SimpleWordTokenizer.tokenize("public void withApp4( App app)");
         assertEquals(5, entries.size());
 
@@ -110,7 +110,7 @@ public class SimpleWordTokenizerTest {
     }
 
     @Test
-    public void testWithIndent() {
+    void withIndent() {
         List<StringEntry> entries = SimpleWordTokenizer.tokenize("    public void withApp3 (App app)", "App");
         assertEquals(1, entries.size());
 

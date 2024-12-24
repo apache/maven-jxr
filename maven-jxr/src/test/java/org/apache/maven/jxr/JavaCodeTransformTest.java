@@ -26,20 +26,20 @@ import java.util.Locale;
 
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * JUnit test for {@link JavaCodeTransform}.
  */
-public class JavaCodeTransformTest {
+class JavaCodeTransformTest {
     /** JavaCodeTransform object under test */
     private JavaCodeTransform codeTransform;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         FileManager fileManager = new FileManager();
         codeTransform = new JavaCodeTransform(new PackageManager(fileManager), fileManager);
     }
@@ -48,7 +48,7 @@ public class JavaCodeTransformTest {
      * Test basic transformation of a java source file.
      */
     @Test
-    public void testTransform()
+    void transform()
             // test transforms its own sourcefile, so add some comments
             throws Exception // single line despite /*
             {
@@ -60,8 +60,7 @@ public class JavaCodeTransformTest {
         */
         codeTransform.transform(
                 sourceFile,
-                Paths.get("target/JavaCodeTransformTest.html") // additional comment
-                ,
+                Paths.get("target/JavaCodeTransformTest.html"),
                 Locale.ENGLISH,
                 "ISO-8859-1",
                 "ISO-8859-1",
@@ -81,7 +80,7 @@ public class JavaCodeTransformTest {
      * Test what happens with an empty sourcefile.
      */
     @Test
-    public void testTransformWithEmptyClassFile() throws Exception {
+    void transformWithEmptyClassFile() throws Exception {
         Path sourceFile = Paths.get("src/test/resources/EmptyClass.java");
         assertTrue(Files.exists(sourceFile));
 
@@ -106,7 +105,7 @@ public class JavaCodeTransformTest {
      * Test proper handling of link
      */
     @Test
-    public void testLinkHandling() throws Exception {
+    void linkHandling() throws Exception {
         Path sourceFile = Paths.get("src/test/resources/ClassWithLink.java");
         assertTrue(Files.exists(sourceFile));
 
@@ -135,7 +134,7 @@ public class JavaCodeTransformTest {
      * Test what happens with unknown java type.
      */
     @Test
-    public void testTransformWithUnknownJavaType() throws Exception {
+    void transformWithUnknownJavaType() throws Exception {
         Path sourceFile = Paths.get("src/test/resources/UnknownType.java");
         assertTrue(Files.exists(sourceFile));
 
