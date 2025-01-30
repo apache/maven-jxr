@@ -50,9 +50,9 @@ under the License.
           <tbody>
             <tr>
               <td>${project.name} ${project.version} (Source zip)</td>
-              <td><a href="https://dlcdn.apache.org/maven/jxr/${project.artifactId}-${project.version}-source-release.zip">maven/jxr/${project.artifactId}-${project.version}-source-release.zip</a></td>
-              <td><a href="https://downloads.apache.org/maven/jxr/${project.artifactId}-${project.version}-source-release.zip.sha512">maven/jxr/${project.artifactId}-${project.version}-source-release.zip.sha512</a></td>
-              <td><a href="https://downloads.apache.org/maven/jxr/${project.artifactId}-${project.version}-source-release.zip.asc">maven/jxr/${project.artifactId}-${project.version}-source-release.zip.asc</a></td>
+              <td><a href="https://dlcdn.apache.org/maven/jxr/${project.artifactId}-${project.version}-source-release.zip">${project.artifactId}-${project.version}-source-release.zip</a></td>
+              <td><a href="https://downloads.apache.org/maven/jxr/${project.artifactId}-${project.version}-source-release.zip.sha512">${project.artifactId}-${project.version}-source-release.zip.sha512</a></td>
+              <td><a href="https://downloads.apache.org/maven/jxr/${project.artifactId}-${project.version}-source-release.zip.asc">${project.artifactId}-${project.version}-source-release.zip.asc</a></td>
             </tr>
           </tbody>
         </table>
