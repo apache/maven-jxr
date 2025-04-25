@@ -60,8 +60,8 @@ under the License.
   </scm>
 
   <issueManagement>
-    <system>jira</system>
-    <url>https://issues.apache.org/jira/browse/JXR</url>
+    <system>GitHub Issues</system>
+    <url>https://github.com/apache/maven-jxr/issues</url>
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
