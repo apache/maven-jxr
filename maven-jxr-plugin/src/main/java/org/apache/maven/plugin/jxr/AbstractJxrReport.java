@@ -246,20 +246,20 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
 
         String inceptionYear = project.getInceptionYear();
 
-        String theBottom = StringUtils.replace(this.bottom, "{currentYear}", year);
+        String theBottom = this.bottom == null || this.bottom.isEmpty() || year == null ? this.bottom : this.bottom.replace("{currentYear}", year);
 
         if (inceptionYear != null) {
             if (inceptionYear.equals(year)) {
-                theBottom = StringUtils.replace(theBottom, "{inceptionYear}\u2013", "");
+                theBottom = theBottom == null || theBottom.isEmpty() ? theBottom : theBottom.replace("{inceptionYear}\u2013", "");
             } else {
-                theBottom = StringUtils.replace(theBottom, "{inceptionYear}", inceptionYear);
+                theBottom = theBottom == null || theBottom.isEmpty() || inceptionYear == null ? theBottom : theBottom.replace("{inceptionYear}", inceptionYear);
             }
         } else {
-            theBottom = StringUtils.replace(theBottom, "{inceptionYear}\u2013", "");
+            theBottom = theBottom == null || theBottom.isEmpty() ? theBottom : theBottom.replace("{inceptionYear}\u2013", "");
         }
 
         if (project.getOrganization() == null) {
-            theBottom = StringUtils.replace(theBottom, " {organizationName}", "");
+            theBottom = theBottom == null || theBottom.isEmpty() ? theBottom : theBottom.replace(" {organizationName}", "");
         } else {
             if (StringUtils.isNotEmpty(project.getOrganization().getName())) {
                 if (StringUtils.isNotEmpty(project.getOrganization().getUrl())) {
@@ -277,7 +277,7 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
                             project.getOrganization().getName());
                 }
             } else {
-                theBottom = StringUtils.replace(theBottom, " {organizationName}", "");
+                theBottom = theBottom == null || theBottom.isEmpty() ? theBottom : theBottom.replace(" {organizationName}", "");
             }
         }
 
