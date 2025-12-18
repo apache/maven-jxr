@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>43</version>
+    <version>45</version>
     <relativePath />
   </parent>
 
@@ -77,11 +77,11 @@ under the License.
   <properties>
     <javaVersion>8</javaVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
-    <sitePluginVersion>3.20.0</sitePluginVersion>
-    <javadocPluginVersion>3.10.1</javadocPluginVersion>
+    <sitePluginVersion>${version.maven-site-plugin}</sitePluginVersion>
+    <javadocPluginVersion>${version.maven-javadoc-plugin}</javadocPluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
-    <checkstyle.violation.ignore>None</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2024-10-22T14:57:49Z</project.build.outputTimestamp>
+    <version.palantirJavaFormat>2.81.0</version.palantirJavaFormat>
   </properties>
 
   <dependencyManagement>
@@ -117,7 +117,6 @@ under the License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jxr-plugin</artifactId>
-            <version>${project.version}</version>
             <reportSets>
               <reportSet>
                 <reports>
