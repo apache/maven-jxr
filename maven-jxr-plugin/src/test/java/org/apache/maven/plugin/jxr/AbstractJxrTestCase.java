@@ -113,7 +113,7 @@ public abstract class AbstractJxrTestCase extends AbstractMojoTestCase {
 
     protected AbstractJxrReport createReportMojo(String goal, File pluginXmlFile) throws Exception {
         AbstractJxrReport mojo = (AbstractJxrReport) lookupMojo(goal, pluginXmlFile);
-        assertNotNull("Mojo not found.", mojo);
+        assertNotNull(mojo, "Mojo not found.");
 
         LegacySupport legacySupport = lookup(LegacySupport.class);
         legacySupport.setSession(newMavenSession(new MavenProjectStub()));

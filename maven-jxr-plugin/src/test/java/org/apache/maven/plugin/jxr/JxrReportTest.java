@@ -336,7 +336,6 @@ class JxrReportTest extends AbstractJxrTestCase {
 
             fail("Must throw exception");
         } catch (Exception e) {
-            assertTrue(true);
         }
     }
 
