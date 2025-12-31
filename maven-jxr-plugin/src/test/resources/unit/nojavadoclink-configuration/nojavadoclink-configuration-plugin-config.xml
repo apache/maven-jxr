@@ -32,15 +32,14 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
         <configuration>
-          <project implementation="org.apache.maven.plugin.jxr.stubs.NoJavadocLinkConfigurationMavenProjectStub"/>
-          <outputDirectory>${basedir}/target/test/unit/nojavadoclink-configuration/target/site</outputDirectory>
+          <outputDirectory>${basedir}/target/site</outputDirectory>
           <docTitle>Maven Jxr Plugin No Javadoc Link Configuration Test 1.0-SNAPSHOT Reference</docTitle>
           <inputEncoding>ISO-8859-1</inputEncoding>
           <outputEncoding>ISO-8859-1</outputEncoding>
           <sourceDirs>
-            <value>${basedir}/src/test/resources/unit/nojavadoclink-configuration</value>
+            <value>${basedir}</value>
           </sourceDirs>
-          <javadocLocation>${basedir}/target/test/unit/nojavadoclink-configuration/target/site/apidocs</javadocLocation>
+          <javadocLocation>${basedir}/target/site/apidocs</javadocLocation>
           <linkJavadoc>false</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
           <javadocVersion>1.4</javadocVersion>

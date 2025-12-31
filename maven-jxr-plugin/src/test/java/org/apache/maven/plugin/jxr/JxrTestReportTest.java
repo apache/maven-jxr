@@ -20,23 +20,30 @@ package org.apache.maven.plugin.jxr;
 
 import java.io.File;
 
+import org.apache.maven.api.plugin.testing.Basedir;
+import org.apache.maven.api.plugin.testing.InjectMojo;
+import org.apache.maven.api.plugin.testing.MojoTest;
 import org.junit.jupiter.api.Test;
 
+import static org.apache.maven.api.plugin.testing.MojoExtension.getTestFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
+@MojoTest(realRepositorySession = true)
 class JxrTestReportTest extends AbstractJxrTestCase {
     /**
      * Method to test when the source dir is the test source dir
      */
     @Test
-    void sourceDir() throws Exception {
-        generateReport(getGoal(), "testsourcedir-test/testsourcedir-test-plugin-config.xml");
+    @Basedir("/unit/testsourcedir-test")
+    @InjectMojo(goal = "test-jxr", pom = "testsourcedir-test-plugin-config.xml")
+    void sourceDir(JxrTestReport mojo) throws Exception {
+        mojo.execute();
 
-        File xrefTestDir = new File(getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test");
+        File xrefTestDir = getTestFile("target/site/xref-test");
 
         // check if the jxr docs were generated
         assertTrue(new File(xrefTestDir, "testsourcedir/test/AppSampleTest.html").exists());
@@ -55,10 +62,5 @@ class JxrTestReportTest extends AbstractJxrTestCase {
 
         str = readFile(xrefTestDir, "testsourcedir/test/AppTest.html");
         assertFalse(str.toLowerCase().contains("/apidocs/testsourcedir/test/App.html\"".toLowerCase()));
-    }
-
-    @Override
-    protected String getGoal() {
-        return "test-jxr";
     }
 }
