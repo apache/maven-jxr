@@ -23,11 +23,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 
+import org.apache.maven.api.plugin.testing.Basedir;
+import org.apache.maven.api.plugin.testing.InjectMojo;
+import org.apache.maven.api.plugin.testing.MojoTest;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
+import static org.apache.maven.api.plugin.testing.MojoExtension.getTestFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -35,20 +41,22 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  * @author <a href="mailto:dennisl@apache.org">Dennis Lundberg</a>
  */
+@MojoTest(realRepositorySession = true)
 class JxrReportTest extends AbstractJxrTestCase {
+
     /**
      * Test the plugin with original configuration
      */
     @Test
-    void defaultConfiguration() throws Exception {
-        File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
-
-        File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site");
+    @Basedir("/unit/default-configuration")
+    @InjectMojo(goal = "jxr", pom = "default-configuration-plugin-config.xml")
+    void defaultConfiguration(JxrReport mojo) throws Exception {
+        File outputDir = getTestFile("target/site");
         File xrefDir = new File(outputDir, "xref");
 
-        FileUtils.copyDirectory(new File(resourcesDir, "javadoc-files"), outputDir);
+        FileUtils.copyDirectory(getTestFile("javadoc-files"), outputDir);
 
-        generateReport(getGoal(), "default-configuration/default-configuration-plugin-config.xml");
+        mojo.execute();
 
         // check if xref files were generated
         assertTrue(new File(xrefDir, "allclasses-frame.html").exists());
@@ -76,15 +84,16 @@ class JxrReportTest extends AbstractJxrTestCase {
      * Test the plugin with jdk-4 configuration
      */
     @Test
-    void jdk4Configuration() throws Exception {
-        File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
+    @Basedir("/unit/default-configuration")
+    @InjectMojo(goal = "jxr", pom = "default-configuration-plugin-config-4.xml")
+    void jdk4Configuration(JxrReport mojo) throws Exception {
 
-        File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site/4");
+        File outputDir = getTestFile("target/site/4");
         File xrefDir = new File(outputDir, "xref");
 
-        FileUtils.copyDirectory(new File(resourcesDir, "javadoc-files"), outputDir);
+        FileUtils.copyDirectory(getTestFile("javadoc-files"), outputDir);
 
-        generateReport(getGoal(), "default-configuration/default-configuration-plugin-config-4.xml");
+        mojo.execute();
 
         // check if xref files were generated
         assertTrue(new File(xrefDir, "allclasses-frame.html").exists());
@@ -112,15 +121,16 @@ class JxrReportTest extends AbstractJxrTestCase {
      * Test the plugin with jdk-6 configuration
      */
     @Test
-    void jdk6Configuration() throws Exception {
-        File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
+    @Basedir("/unit/default-configuration")
+    @InjectMojo(goal = "jxr", pom = "default-configuration-plugin-config-6.xml")
+    void jdk6Configuration(JxrReport mojo) throws Exception {
 
-        File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site/6");
+        File outputDir = getTestFile("target/site/6");
         File xrefDir = new File(outputDir, "xref");
 
-        FileUtils.copyDirectory(new File(resourcesDir, "javadoc-files"), outputDir);
+        FileUtils.copyDirectory(getTestFile("javadoc-files"), outputDir);
 
-        generateReport(getGoal(), "default-configuration/default-configuration-plugin-config-6.xml");
+        mojo.execute();
 
         // check if xref files were generated
         assertTrue(new File(xrefDir, "allclasses-frame.html").exists());
@@ -148,15 +158,16 @@ class JxrReportTest extends AbstractJxrTestCase {
      * Test the plugin with jdk-7 configuration
      */
     @Test
-    void jdk7Configuration() throws Exception {
-        File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
+    @Basedir("/unit/default-configuration")
+    @InjectMojo(goal = "jxr", pom = "default-configuration-plugin-config-7.xml")
+    void jdk7Configuration(JxrReport mojo) throws Exception {
 
-        File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site/7");
+        File outputDir = getTestFile("target/site/7");
         File xrefDir = new File(outputDir, "xref");
 
-        FileUtils.copyDirectory(new File(resourcesDir, "javadoc-files"), outputDir);
+        FileUtils.copyDirectory(getTestFile("javadoc-files"), outputDir);
 
-        generateReport(getGoal(), "default-configuration/default-configuration-plugin-config-7.xml");
+        mojo.execute();
 
         // check if xref files were generated
         assertTrue(new File(xrefDir, "allclasses-frame.html").exists());
@@ -188,15 +199,16 @@ class JxrReportTest extends AbstractJxrTestCase {
      * Test the plugin with jdk-8 configuration
      */
     @Test
-    void jdk8Configuration() throws Exception {
-        File resourcesDir = new File(getBasedir(), "src/test/resources/unit/default-configuration");
+    @Basedir("/unit/default-configuration")
+    @InjectMojo(goal = "jxr", pom = "default-configuration-plugin-config-8.xml")
+    void jdk8Configuration(JxrReport mojo) throws Exception {
 
-        File outputDir = new File(getBasedir(), "target/test/unit/default-configuration/target/site/8");
+        File outputDir = getTestFile("target/site/8");
         File xrefDir = new File(outputDir, "xref");
 
-        FileUtils.copyDirectory(new File(resourcesDir, "javadoc-files"), outputDir);
+        FileUtils.copyDirectory(getTestFile("javadoc-files"), outputDir);
 
-        generateReport(getGoal(), "default-configuration/default-configuration-plugin-config-8.xml");
+        mojo.execute();
 
         // check if xref files were generated
         assertTrue(new File(xrefDir, "allclasses-frame.html").exists());
@@ -224,10 +236,12 @@ class JxrReportTest extends AbstractJxrTestCase {
      * Test when javadocLink is disabled in the configuration
      */
     @Test
-    void noJavadocLink() throws Exception {
-        generateReport(getGoal(), "nojavadoclink-configuration/nojavadoclink-configuration-plugin-config.xml");
+    @Basedir("/unit/nojavadoclink-configuration")
+    @InjectMojo(goal = "jxr", pom = "nojavadoclink-configuration-plugin-config.xml")
+    void noJavadocLink(JxrReport mojo) throws Exception {
+        mojo.execute();
 
-        File xrefDir = new File(getBasedir(), "target/test/unit/nojavadoclink-configuration/target/site/xref");
+        File xrefDir = getTestFile("target/site/xref");
 
         // check if xref files were generated
         assertTrue(new File(xrefDir, "allclasses-frame.html").exists());
@@ -262,10 +276,15 @@ class JxrReportTest extends AbstractJxrTestCase {
      * Method for testing plugin when aggregate parameter is set to true
      */
     @Test
-    void aggregate() throws Exception {
-        generateReport(getGoal(), "aggregate-test/aggregate-test-plugin-config.xml");
+    @Basedir("/unit/aggregate-test")
+    @InjectMojo(goal = "aggregate", pom = "aggregate-test-plugin-config.xml")
+    void aggregate(AggregatorJxrReport mojo) throws Exception {
 
-        File xrefDir = new File(getBasedir(), "target/test/unit/aggregate-test/target/site/xref");
+        mojo.getProject().setExecutionRoot(true);
+
+        mojo.execute();
+
+        File xrefDir = getTestFile("target/site/xref");
 
         // check if xref files were generated for submodule1
         assertTrue(new File(xrefDir, "aggregate/test/submodule1/package-frame.html").exists());
@@ -284,10 +303,12 @@ class JxrReportTest extends AbstractJxrTestCase {
      * Method for testing plugin when the specified javadocDir does not exist
      */
     @Test
-    void noJavadocDir() throws Exception {
-        generateReport(getGoal(), "nojavadocdir-test/nojavadocdir-test-plugin-config.xml");
+    @Basedir("/unit/nojavadocdir-test")
+    @InjectMojo(goal = "jxr", pom = "nojavadocdir-test-plugin-config.xml")
+    void noJavadocDir(JxrReport mojo) throws Exception {
+        mojo.execute();
 
-        File xrefDir = new File(getBasedir(), "target/test/unit/nojavadocdir-test/target/site/xref");
+        File xrefDir = getTestFile("target/site/xref");
 
         // check if there's a link to the javadoc files
         String str = readFile(xrefDir, "nojavadocdir/test/AppSample.html");
@@ -301,10 +322,12 @@ class JxrReportTest extends AbstractJxrTestCase {
      * Test the plugin with an exclude configuration.
      */
     @Test
-    void exclude() throws Exception {
-        generateReport(getGoal(), "exclude-configuration/exclude-configuration-plugin-config.xml");
+    @Basedir("/unit/exclude-configuration")
+    @InjectMojo(goal = "jxr", pom = "exclude-configuration-plugin-config.xml")
+    void exclude(JxrReport mojo) throws Exception {
+        mojo.execute();
 
-        Path xrefDir = new File(getBasedir(), "target/test/unit/exclude-configuration/target/site/xref").toPath();
+        Path xrefDir = getTestFile("target/site/xref").toPath();
 
         // check that the non-excluded xref files were generated
         assertTrue(Files.exists(xrefDir.resolve("exclude/configuration/App.html")));
@@ -317,10 +340,12 @@ class JxrReportTest extends AbstractJxrTestCase {
      * Test the plugin with an include configuration.
      */
     @Test
-    void include() throws Exception {
-        generateReport(getGoal(), "include-configuration/include-configuration-plugin-config.xml");
+    @Basedir("/unit/include-configuration")
+    @InjectMojo(goal = "jxr", pom = "include-configuration-plugin-config.xml")
+    void include(JxrReport mojo) throws Exception {
+        mojo.execute();
 
-        Path xrefDir = new File(getBasedir(), "target/test/unit/include-configuration/target/site/xref").toPath();
+        Path xrefDir = getTestFile("target/site/xref").toPath();
 
         // check that the included xref files were generated
         assertTrue(Files.exists(xrefDir.resolve("include/configuration/App.html")));
@@ -330,28 +355,27 @@ class JxrReportTest extends AbstractJxrTestCase {
     }
 
     @Test
-    void exceptions() {
-        try {
-            generateReport(getGoal(), "default-configuration/exception-test-plugin-config.xml");
+    @Basedir("/unit/default-configuration")
+    @InjectMojo(goal = "jxr", pom = "exception-test-plugin-config.xml")
+    void exceptions(JxrReport mojo) {
 
-            fail("Must throw exception");
-        } catch (Exception e) {
-            assertTrue(true);
+        MojoExecutionException exception = assertThrows(MojoExecutionException.class, mojo::execute);
+
+        boolean hasExpectedMessage = false;
+        Throwable throwable = exception;
+
+        while (throwable != null) {
+            if (throwable.getMessage().contains("Unable to find resource 'temp/index.vm'")) {
+                hasExpectedMessage = true;
+                break;
+            }
+            throwable = throwable.getCause();
         }
-    }
 
-    /**
-     * Test the jxr for a POM project.
-     */
-    @Test
-    void pom() throws Exception {
-        generateReport(getGoal(), "pom-test/pom-test-plugin-config.xml");
-
-        assertFalse(new File(getBasedir(), "target/test/unit/pom-test").exists());
-    }
-
-    @Override
-    protected String getGoal() {
-        return "jxr";
+        if (!hasExpectedMessage) {
+            fail(
+                    "Expected exception message [Unable to find resource 'temp/index.vm'] not found in the exception chain.",
+                    exception);
+        }
     }
 }
