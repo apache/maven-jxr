@@ -18,25 +18,54 @@
  */
 package org.apache.maven.plugin.jxr;
 
-import java.io.File;
+import javax.inject.Inject;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.apache.maven.api.plugin.testing.Basedir;
+import org.apache.maven.api.plugin.testing.InjectMojo;
+import org.apache.maven.api.plugin.testing.MojoTest;
+import org.apache.maven.execution.MavenSession;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.apache.maven.api.plugin.testing.MojoExtension.getBasedir;
+import static org.apache.maven.api.plugin.testing.MojoExtension.getTestFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:oching@apache.org">Maria Odea Ching</a>
  */
-class JxrTestReportTest extends AbstractJxrTestCase {
+@MojoTest(realRepositorySession = true)
+class JxrTestReportTest {
+
+    @Inject
+    private MavenSession session;
+
+    @BeforeEach
+    void setUp() {
+        // Set a local repository path to common location for all tests
+        session.getRequest()
+                .setLocalRepositoryPath(Paths.get(getBasedir())
+                        .getParent()
+                        .resolve("local-repo-unit")
+                        .toString());
+    }
+
     /**
      * Method to test when the source dir is the test source dir
      */
     @Test
-    void sourceDir() throws Exception {
-        generateReport(getGoal(), "testsourcedir-test/testsourcedir-test-plugin-config.xml");
+    @Basedir("/unit/testsourcedir-test")
+    @InjectMojo(goal = "test-jxr", pom = "testsourcedir-test-plugin-config.xml")
+    void sourceDir(JxrTestReport mojo) throws Exception {
+        mojo.execute();
 
-        File xrefTestDir = new File(getBasedir(), "target/test/unit/testsourcedir-test/target/site/xref-test");
+        File xrefTestDir = getTestFile("target/site/xref-test");
 
         // check if the jxr docs were generated
         assertTrue(new File(xrefTestDir, "testsourcedir/test/AppSampleTest.html").exists());
@@ -57,8 +86,10 @@ class JxrTestReportTest extends AbstractJxrTestCase {
         assertFalse(str.toLowerCase().contains("/apidocs/testsourcedir/test/App.html\"".toLowerCase()));
     }
 
-    @Override
-    protected String getGoal() {
-        return "test-jxr";
+    /**
+     * Read the contents of the specified file object into a string.
+     */
+    private String readFile(File xrefTestDir, String fileName) throws IOException {
+        return new String(Files.readAllBytes(xrefTestDir.toPath().resolve(fileName)));
     }
 }

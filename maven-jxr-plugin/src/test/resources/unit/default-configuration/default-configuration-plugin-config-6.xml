@@ -32,14 +32,13 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
         <configuration>
-          <project implementation="org.apache.maven.plugin.jxr.stubs.DefaultConfigurationMavenProjectStub"/>
-          <outputDirectory>${basedir}/target/test/unit/default-configuration/target/site/6</outputDirectory>
+          <outputDirectory>${basedir}/target/site/6</outputDirectory>
           <docTitle>Maven Jxr Plugin Default Configuration Test 1.0-SNAPSHOT Reference</docTitle>
           <inputEncoding>ISO-8859-1</inputEncoding>
           <sourceDirs>
-            <value>${basedir}/src/test/resources/unit/default-configuration</value>
+            <value>${basedir}</value>
           </sourceDirs>
-          <javadocLocation>${basedir}/target/test/unit/default-configuration/target/site/6/apidocs</javadocLocation>
+          <javadocLocation>${basedir}/target/site/6/apidocs</javadocLocation>
           <linkJavadoc>true</linkJavadoc>
           <bottom>Copyright 2006 Apache Foundation</bottom>
           <javadocVersion>1.6</javadocVersion>
