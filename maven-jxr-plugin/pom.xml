@@ -216,15 +216,6 @@ under the License.
     </plugins>
   </build>
 
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugin-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </reporting>
-
   <profiles>
     <profile>
       <id>reporting</id>
@@ -244,7 +235,6 @@ under the License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-invoker-plugin</artifactId>
-            <version>3.9.1</version>
             <configuration>
               <writeJunitReport>true</writeJunitReport>
               <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
@@ -258,10 +248,6 @@ under the License.
                 <goal>site</goal>
               </goals>
               <settingsFile>src/it/settings.xml</settingsFile>
-              <properties>
-                <maven.compiler.source>${maven.compiler.source}</maven.compiler.source>
-                <maven.compiler.target>${maven.compiler.target}</maven.compiler.target>
-              </properties>
             </configuration>
             <executions>
               <execution>
