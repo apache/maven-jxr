@@ -81,7 +81,6 @@ under the License.
     <javadocPluginVersion>${version.maven-javadoc-plugin}</javadocPluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
     <project.build.outputTimestamp>2024-10-22T14:57:49Z</project.build.outputTimestamp>
-    <version.palantirJavaFormat>2.81.0</version.palantirJavaFormat>
   </properties>
 
   <dependencyManagement>
