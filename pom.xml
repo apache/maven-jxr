@@ -76,7 +76,7 @@ under the License.
 
   <properties>
     <javaVersion>8</javaVersion>
-    <slf4jVersion>1.7.36</slf4jVersion>
+    <slf4jVersion>2.0.0</slf4jVersion>
     <sitePluginVersion>${version.maven-site-plugin}</sitePluginVersion>
     <javadocPluginVersion>${version.maven-javadoc-plugin}</javadocPluginVersion>
     <maven.site.path>jxr-archives/jxr-LATEST</maven.site.path>
