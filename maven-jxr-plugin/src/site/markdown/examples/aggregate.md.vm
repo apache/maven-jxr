@@ -1,38 +1,29 @@
- ------
- Aggregating JXR Reports for Multi-module Projects
- ------
- Maria Odea Ching
- ------
- 2010-01-20
- ------
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
 
- ~~ Licensed to the Apache Software Foundation (ASF) under one
- ~~ or more contributor license agreements.  See the NOTICE file
- ~~ distributed with this work for additional information
- ~~ regarding copyright ownership.  The ASF licenses this file
- ~~ to you under the Apache License, Version 2.0 (the
- ~~ "License"); you may not use this file except in compliance
- ~~ with the License.  You may obtain a copy of the License at
- ~~
- ~~   http://www.apache.org/licenses/LICENSE-2.0
- ~~
- ~~ Unless required by applicable law or agreed to in writing,
- ~~ software distributed under the License is distributed on an
- ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~~ KIND, either express or implied.  See the License for the
- ~~ specific language governing permissions and limitations
- ~~ under the License.
+http://www.apache.org/licenses/LICENSE-2.0
 
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 
-Aggregating JXR Reports for Multi-module Projects
+# Aggregating JXR Reports for Multi-module Projects
 
- The <<<aggregate>>> parameter of the JXR Plugin can be used to generate JXR files for multi-module projects. Using this parameter,
- you can opt to generate one compiled set of JXR files for the whole project (all modules) or generate one set of JXR files for
- each module.
+The `aggregate` parameter of the JXR Plugin can be used to generate JXR files for multi-module projects. Using this parameter, you can opt to generate one compiled set of JXR files for the whole project (all modules) or generate one set of JXR files for each module.
 
- For example, you have the following directory structure:
+For example, you have the following directory structure:
 
-+-----+
+```unknown
 Project
 |-- pom.xml
 |-- Module1
@@ -62,11 +53,11 @@ Project
     |                   `-- app
     |                       `-- Module3App.java
     `-- pom.xml
-+-----+
+```
 
- And you have the following configuration in your <<<pom.xml>>>:
+And you have the following configuration in your `pom.xml`:
 
-+-----+
+```xml
 <project>
   ...
   <reporting>
@@ -90,9 +81,6 @@ Project
   </reporting>
   ...
 </project>
-+-----+
+```
 
- When you execute <<<mvn site>>> from the parent directory, which is <Project>, a set of JXR files will be created
- in the target directory of <Project> where all of the JXR files of the project's submodules are included. 
- Otherwise a set of JXR files for <Module1> will be generated in the target directory of
- <Module1>, another set of JXR files for <Module2> will be generated in the target directory of <Module2>, and so on.
+When you execute `mvn site` from the parent directory, which is _Project_, a set of JXR files will be created in the target directory of _Project_ where all of the JXR files of the project's submodules are included. Otherwise a set of JXR files for _Module1_ will be generated in the target directory of _Module1_, another set of JXR files for _Module2_ will be generated in the target directory of _Module2_, and so on.
