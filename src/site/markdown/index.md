@@ -1,59 +1,40 @@
- ------
- Introduction
- ------
- Jason van Zyl
- Vincent Siveton
- ------
- 2010-01-20
- ------
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
 
- ~~ Licensed to the Apache Software Foundation (ASF) under one
- ~~ or more contributor license agreements.  See the NOTICE file
- ~~ distributed with this work for additional information
- ~~ regarding copyright ownership.  The ASF licenses this file
- ~~ to you under the Apache License, Version 2.0 (the
- ~~ "License"); you may not use this file except in compliance
- ~~ with the License.  You may obtain a copy of the License at
- ~~
- ~~   http://www.apache.org/licenses/LICENSE-2.0
- ~~
- ~~ Unless required by applicable law or agreed to in writing,
- ~~ software distributed under the License is distributed on an
- ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~~ KIND, either express or implied.  See the License for the
- ~~ specific language governing permissions and limitations
- ~~ under the License.
+http://www.apache.org/licenses/LICENSE-2.0
 
- ~~ NOTE: For help with the syntax of this file, see:
- ~~ http://maven.apache.org/doxia/references/apt-format.html
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 
+# Maven JXR
 
-Maven JXR
+Maven JXR project (formally Java Cross Reference) is a library to analyze a set of Java source files and produce documentation in HTML format _à la Javadoc_.
 
- Maven JXR project (formally Java Cross Reference) is a library to analyze a set of Java
- source files and produce documentation in HTML format <à la Javadoc>.
+Take a look at this [JXR report](./xref/index.html) to see an example.
 
- Take a look at this {{{./xref/index.html}JXR report}} to see an example.
+## Main Features
 
-* Main Features
+- Supports JDK 1.4+
+- Complementary tool for Javadoc
+- Easy configuration for color, style or template
+- Fully integrated with [Maven](./maven-jxr-plugin/)
+## Brief History
 
- * Supports JDK 1.4+
+The original JXR code was merged in 2004 with the Javasrc project from the defunct [Jakarta Alexandria](http://jakarta.apache.org/alexandria) project. The code was first maintained within the Maven 1 JXR plugin. In September 2005, it was voted to fork the base and create a separate library.
 
- * Complementary tool for Javadoc
+## Examples
 
- * Easy configuration for color, style or template
+The following example shows how to use Maven JXR in more advanced use cases:
 
- * Fully integrated with {{{./maven-jxr-plugin/}Maven}}
-
-* Brief History
-
- The original JXR code was merged in 2004 with the Javasrc project from the defunct
- {{{http://jakarta.apache.org/alexandria}Jakarta Alexandria}} project.
- The code was first maintained within the Maven 1 JXR plugin. In September 2005, it
- was voted to fork the base and create a separate library.
-
-* Examples
-
-   The following example shows how to use Maven JXR in more advanced use cases:
-
-   * {{{./examples/java.html}Using Maven JXR in Java}}
+- [Using Maven JXR in Java](./examples/java.html)
