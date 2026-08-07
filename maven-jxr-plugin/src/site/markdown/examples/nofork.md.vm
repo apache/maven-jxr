@@ -1,3 +1,10 @@
+---
+title: Generate JXR without duplicate execution of phase generate-sources.
+author: 
+  - Matt Nelson
+date: 2019-01-18
+---
+
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
