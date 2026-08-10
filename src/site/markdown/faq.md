@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+---
+title: Frequently Asked Questions
+---
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -19,26 +21,21 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<faqs xmlns="http://maven.apache.org/FML/1.0.1"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
-      id="FAQ" title="Frequently Asked Questions">
-  <part id="General">
-    <faq id="Is it possible to convert other source files than Java to HTML">
-      <question>Is it possible to convert other source files than Java to HTML?</question>
-      <answer>
-        <p>
-          Not yet but it is on the roadmap.
-        </p>
-      </answer>
-    </faq>
-    <faq id="Is an Ant task available">
-      <question>Is an Ant task available?</question>
-      <answer>
-        <p>
-          Not yet. Patches are always welcome!
-        </p>
-      </answer>
-    </faq>
-  </part>
-</faqs>
+<a id="top"></a>
+
+# Frequently Asked Questions
+
+1. [Is it possible to convert other source files than Java to HTML?](#Is_it_possible_to_convert_other_source_files_than_Java_to_HTML)
+2. [Is an Ant task available?](#Is_an_Ant_task_available)
+
+<a id="Is_it_possible_to_convert_other_source_files_than_Java_to_HTML"></a>
+
+### Is it possible to convert other source files than Java to HTML?
+
+Not yet but it is on the roadmap.
+
+<a id="Is_an_Ant_task_available"></a>
+
+### Is an Ant task available?
+
+Not yet. Patches are always welcome!

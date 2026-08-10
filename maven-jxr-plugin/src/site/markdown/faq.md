@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+---
+title: Frequently Asked Questions
+---
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -19,20 +21,13 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+<a id="top"></a>
 
-<faqs xmlns="http://maven.apache.org/FML/1.0.1"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
-  id="FAQ" title="Frequently Asked Questions">
-  <part id="General">
-    <faq id="Is there a way to run JXR with an Ant build?">
-      <question>Is there a way to run JXR with an Ant build?</question>
-      <answer>
-        <p>
-        There isn't currently an Ant task, but it is a separate library so it
-        wouldn't be hard to write one if someone was willing to contribute it.
-        </p>
-      </answer>
-    </faq>
-  </part>
-</faqs>
+# Frequently Asked Questions
+
+1. [Is there a way to run JXR with an Ant build?](#Is_there_a_way_to_run_JXR_with_an_Ant_build.3F)
+
+### Is there a way to run JXR with an Ant build?
+
+There isn't currently an Ant task, but it is a separate library so it
+wouldn't be hard to write one if someone was willing to contribute it.
