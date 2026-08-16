@@ -41,7 +41,6 @@ under the License.
     <mavenVersion>3.9.12</mavenVersion>
     <!-- like Maven -->
     <resolverVersion>1.9.27</resolverVersion>
-    <wagonVersion>3.5.3</wagonVersion>
   </properties>
 
   <dependencies>
@@ -81,11 +80,6 @@ under the License.
       <artifactId>maven-model</artifactId>
       <version>${mavenVersion}</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.wagon</groupId>
-      <artifactId>wagon-provider-api</artifactId>
-      <version>${wagonVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>

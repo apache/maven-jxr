@@ -19,6 +19,8 @@
 package org.apache.maven.plugin.jxr;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,6 @@ import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Site;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.wagon.repository.Repository;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
@@ -218,15 +219,43 @@ public class JxrReportUtil {
             return null;
         }
 
-        Repository repository = new Repository(site.getId(), site.getUrl());
-        if (StringUtils.isEmpty(repository.getBasedir())) {
-            return repository.getHost();
+        return siteStructure(site.getUrl());
+    }
+
+    /**
+     * Turns a distributionManagement site URL into the host followed by its path.
+     * <p>
+     * A site URL is not always a plain hierarchical URI: the ASF convention wraps it in an SCM prefix
+     * ({@code scm:svn:https://...}), and a WebDAV target is conventionally written {@code dav:https://...}. Such a
+     * prefix leaves an opaque URI, so peel one off at a time until a URI that carries a path is left.
+     *
+     * @param siteUrl the {@code <distributionManagement><site><url>} value, not null nor empty
+     * @return the structure relative path
+     * @throws IOException if the URL cannot be parsed
+     */
+    private static String siteStructure(String siteUrl) throws IOException {
+        URI uri;
+        String remaining = siteUrl;
+        while (true) {
+            try {
+                uri = new URI(remaining);
+            } catch (URISyntaxException e) {
+                throw new IOException("The URL in the site is not a valid URI: '" + siteUrl + "'.", e);
+            }
+            if (!uri.isOpaque()) {
+                break;
+            }
+            remaining = uri.getSchemeSpecificPart();
         }
 
-        if (repository.getBasedir().startsWith("/")) {
-            return repository.getHost() + repository.getBasedir();
+        // a file: URL carries no authority; Wagon reported those as localhost and the staging paths depend on it
+        String host = uri.getHost() == null ? "localhost" : uri.getHost();
+
+        String path = uri.getPath();
+        if (path == null || path.isEmpty()) {
+            path = "/";
         }
 
-        return repository.getHost() + '/' + repository.getBasedir();
+        return path.startsWith("/") ? host + path : host + '/' + path;
     }
 }
