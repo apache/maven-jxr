@@ -116,8 +116,20 @@ public class JxrReport extends AbstractJxrReport {
         return getBundle(locale).getString("report.xref.main.name");
     }
 
+    /**
+     * @deprecated use {@link #getOutputPath()} instead
+     */
     @Override
+    @Deprecated
     public String getOutputName() {
+        return getOutputPath();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getOutputPath() {
         return "xref/index";
     }
 
