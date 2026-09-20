@@ -38,7 +38,7 @@ under the License.
   </prerequisites>
 
   <properties>
-    <mavenVersion>3.9.12</mavenVersion>
+    <mavenVersion>3.9.16</mavenVersion>
     <!-- like Maven -->
     <resolverVersion>1.9.27</resolverVersion>
   </properties>
