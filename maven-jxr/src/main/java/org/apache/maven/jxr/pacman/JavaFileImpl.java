@@ -84,7 +84,7 @@ public class JavaFileImpl extends JavaFile {
                 if (stok.ttype == '{') {
                     openBracesCount++;
                 } else if (stok.ttype == '}') {
-                    if (--openBracesCount == 0) {
+                    if (--openBracesCount == 0 && !nestedPrefix.isEmpty()) {
                         // break out of recursive
                         return;
                     }

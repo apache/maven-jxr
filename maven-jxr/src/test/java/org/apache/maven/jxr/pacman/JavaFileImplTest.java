@@ -68,4 +68,15 @@ class JavaFileImplTest {
         assertEquals(1, javaFile.getClassTypes().size());
         assertEquals("Java14Record", javaFile.getClassTypes().get(0).getName());
     }
+
+    @Test
+    void classAfterAnnotationWithArray() throws IOException {
+        JavaFileImpl javaFile =
+                new JavaFileImpl(Paths.get("src/test/resources/jxr179/ClassesWithAnnotationBraces.java"), "UTF-8");
+
+        assertEquals(2, javaFile.getClassTypes().size());
+        assertEquals(
+                "ClassesWithAnnotationBraces", javaFile.getClassTypes().get(0).getName());
+        assertEquals("SecondClass", javaFile.getClassTypes().get(1).getName());
+    }
 }
