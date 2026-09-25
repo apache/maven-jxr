@@ -62,6 +62,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -71,6 +72,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.maven.jxr.pacman.ClassType;
 import org.apache.maven.jxr.pacman.FileManager;
@@ -109,6 +112,8 @@ import org.apache.maven.jxr.util.StringEntry;
  * </pre>
  */
 public class JavaCodeTransform implements Serializable {
+    private static final Pattern MODULE_DECLARATION = Pattern.compile("\\bmodule\\s+([\\w.]+)\\s*\\{");
+
     // ----------------------------------------------------------------------
     // public fields
     // ----------------------------------------------------------------------
@@ -916,8 +921,13 @@ public class JavaCodeTransform implements Serializable {
             try {
                 JavaFile jf = fileManager.getFile(this.getCurrentFilename());
 
-                javadocURI =
-                        javadocLinkDir.resolve(jf.getPackageType().getName().replace('.', '/'));
+                String moduleName = findModuleName(this.getCurrentFilename());
+                if (moduleName != null) {
+                    javadocURI = javadocLinkDir.resolve(moduleName);
+                } else {
+                    javadocURI = javadocLinkDir;
+                }
+                javadocURI = javadocURI.resolve(jf.getPackageType().getName().replace('.', '/'));
                 // Use the name of the file instead of the class to handle inner classes properly
                 String fileName;
                 if (jf.getClassType() != null && jf.getClassType().getFilename() != null) {
@@ -939,6 +949,22 @@ public class JavaCodeTransform implements Serializable {
         }
 
         return overview.toString();
+    }
+
+    private static String findModuleName(Path sourceFile) throws IOException {
+        for (Path directory = sourceFile.getParent(); directory != null; directory = directory.getParent()) {
+            Path moduleInfo = directory.resolve("module-info.java");
+            if (Files.isRegularFile(moduleInfo)) {
+                for (String line : Files.readAllLines(moduleInfo, StandardCharsets.UTF_8)) {
+                    Matcher matcher = MODULE_DECLARATION.matcher(line);
+                    if (matcher.find()) {
+                        return matcher.group(1);
+                    }
+                }
+                return null;
+            }
+        }
+        return null;
     }
 
     /**
