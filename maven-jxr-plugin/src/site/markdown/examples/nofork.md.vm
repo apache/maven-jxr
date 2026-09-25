@@ -30,7 +30,7 @@ under the License.
 - In a CI environment you now might execute something like `mvn clean deploy site site-deploy`.
 - During `site` build the standard reports will trigger `generate-sources` or `generate-test-sources` again, depending on your build this may take some time, because stuff like `enforcer` or generating stubs from a WDSL will be invoked again, which may lead to longer build times.
 - See [JXR-143](https://issues.apache.org/jira/browse/JXR-143) as well.
-- As of version 3.1 two new reports are defined, `jxr-no-fork` and `test-jxr-no-fork` which will not trigger above phases a second time.
+- As of version 3.1 two reports are defined, `jxr-no-fork` and `test-jxr-no-fork`, which will not trigger the phases above a second time. For multi-module reports, use `aggregate-no-fork` and `test-aggregate-no-fork` for the same behavior across all modules.
 - Configure this in your `reporting` section as follows:
 
     ```xml
@@ -56,5 +56,3 @@ under the License.
       ...
     </project>
     ```
-
-    **Note**: These reports may not be used for aggregate reports.
