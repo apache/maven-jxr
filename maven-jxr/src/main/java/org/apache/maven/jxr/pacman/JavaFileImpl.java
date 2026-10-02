@@ -77,13 +77,25 @@ public class JavaFileImpl extends JavaFile {
 
         char prevttype = Character.MIN_VALUE; // previous token type
         boolean inTripleQuote = false; // used to toggle between inside/outside triple-quoted multi-line strings
+        boolean inAnnotation = false;
+        int annotationParenthesisDepth = 0;
 
         while (stok.nextToken() != StreamTokenizer.TT_EOF) {
 
             if (stok.sval == null) {
-                if (stok.ttype == '{') {
+                prevttype = (char) stok.ttype;
+                if (stok.ttype == '@') {
+                    inAnnotation = true;
+                } else if (stok.ttype == '(' && inAnnotation) {
+                    annotationParenthesisDepth++;
+                } else if (stok.ttype == ')' && inAnnotation) {
+                    annotationParenthesisDepth--;
+                    if (annotationParenthesisDepth == 0) {
+                        inAnnotation = false;
+                    }
+                } else if (stok.ttype == '{' && !(inAnnotation && annotationParenthesisDepth > 0)) {
                     openBracesCount++;
-                } else if (stok.ttype == '}') {
+                } else if (stok.ttype == '}' && !(inAnnotation && annotationParenthesisDepth > 0)) {
                     if (--openBracesCount == 0) {
                         // break out of recursive
                         return;
