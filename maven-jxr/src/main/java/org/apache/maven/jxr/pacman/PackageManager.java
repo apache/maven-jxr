@@ -20,6 +20,7 @@ package org.apache.maven.jxr.pacman;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -114,6 +115,13 @@ public class PackageManager {
 
         for (String file : directoryScanner.getIncludedFiles()) {
             LOGGER.debug("parsing... " + file);
+
+            // A module descriptor does not belong to the default package. It is
+            // metadata for the source tree, rather than a source file that can be
+            // indexed as a Java package.
+            if ("module-info.java".equals(Paths.get(file).getFileName().toString())) {
+                continue;
+            }
 
             // now parse out this file to get the packages/classname/etc
             try {
