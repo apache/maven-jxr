@@ -80,4 +80,19 @@ class DirectoryIndexerTest {
         assertEquals("SomeClass", classInfo.getName());
         assertEquals("pkgb", classInfo.getDir());
     }
+
+    @Test
+    void jxr317() {
+        FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager(fileManager);
+        packageManager.process(Paths.get("src/test/resources/jxr317"));
+
+        assertEquals(1, packageManager.getPackageType("jxr317").getClassTypes().size());
+        assertEquals(
+                "SuppressedClass",
+                packageManager
+                        .getPackageType("jxr317")
+                        .getClassType("SuppressedClass")
+                        .getName());
+    }
 }
