@@ -18,6 +18,8 @@
  */
 package org.apache.maven.plugin.jxr;
 
+import org.apache.maven.plugins.annotations.Execute;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 
 /**
@@ -26,6 +28,7 @@ import org.apache.maven.plugins.annotations.Mojo;
  * @since 3.7
  */
 @Mojo(name = "test-aggregate-no-fork", aggregator = true)
+@Execute(phase = LifecyclePhase.NONE)
 public class AggregatorJxrTestNoForkReport extends JxrTestReport {
     @Override
     protected boolean isAggregate() {
