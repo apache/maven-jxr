@@ -955,16 +955,82 @@ public class JavaCodeTransform implements Serializable {
         for (Path directory = sourceFile.getParent(); directory != null; directory = directory.getParent()) {
             Path moduleInfo = directory.resolve("module-info.java");
             if (Files.isRegularFile(moduleInfo)) {
-                for (String line : Files.readAllLines(moduleInfo, StandardCharsets.UTF_8)) {
-                    Matcher matcher = MODULE_DECLARATION.matcher(line);
-                    if (matcher.find()) {
-                        return matcher.group(1);
-                    }
-                }
-                return null;
+                String source = new String(Files.readAllBytes(moduleInfo), StandardCharsets.UTF_8);
+                Matcher matcher = MODULE_DECLARATION.matcher(stripCommentsAndLiterals(source));
+                return matcher.find() ? matcher.group(1) : null;
             }
         }
         return null;
+    }
+
+    private static String stripCommentsAndLiterals(String source) {
+        StringBuilder result = new StringBuilder(source.length());
+        int state = 0;
+        for (int i = 0; i < source.length(); i++) {
+            char c = source.charAt(i);
+            char next = i + 1 < source.length() ? source.charAt(i + 1) : '\0';
+            char afterNext = i + 2 < source.length() ? source.charAt(i + 2) : '\0';
+
+            if (state == 1) {
+                if (c == '\n' || c == '\r') {
+                    state = 0;
+                    result.append(c);
+                } else {
+                    result.append(' ');
+                }
+            } else if (state == 2) {
+                if (c == '*' && next == '/') {
+                    result.append("  ");
+                    i++;
+                    state = 0;
+                } else {
+                    result.append((c == '\n' || c == '\r') ? c : ' ');
+                }
+            } else if (state == 3 || state == 4) {
+                char closingQuote = state == 3 ? '"' : '\'';
+                if (c == '\\' && i + 1 < source.length()) {
+                    result.append("  ");
+                    i++;
+                } else if (c == closingQuote) {
+                    result.append(' ');
+                    state = 0;
+                } else {
+                    result.append((c == '\n' || c == '\r') ? c : ' ');
+                }
+            } else if (state == 5) {
+                if (c == '\\' && i + 1 < source.length()) {
+                    result.append("  ");
+                    i++;
+                } else if (c == '"' && next == '"' && afterNext == '"') {
+                    result.append("   ");
+                    i += 2;
+                    state = 0;
+                } else {
+                    result.append((c == '\n' || c == '\r') ? c : ' ');
+                }
+            } else if (c == '/' && next == '/') {
+                result.append("  ");
+                i++;
+                state = 1;
+            } else if (c == '/' && next == '*') {
+                result.append("  ");
+                i++;
+                state = 2;
+            } else if (c == '"' && next == '"' && afterNext == '"') {
+                result.append("   ");
+                i += 2;
+                state = 5;
+            } else if (c == '"') {
+                result.append(' ');
+                state = 3;
+            } else if (c == '\'') {
+                result.append(' ');
+                state = 4;
+            } else {
+                result.append(c);
+            }
+        }
+        return result.toString();
     }
 
     /**

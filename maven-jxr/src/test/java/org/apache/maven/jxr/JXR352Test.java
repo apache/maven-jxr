@@ -27,6 +27,7 @@ import java.util.Collections;
 import org.apache.maven.jxr.pacman.FileManager;
 import org.apache.maven.jxr.pacman.PackageManager;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -51,5 +52,41 @@ class JXR352Test {
                 StandardCharsets.UTF_8);
         assertTrue(moduleClass.contains(
                 "org.apache.maven.jxr.testmodule/org/apache/maven/jxr/testmodule/ModuleClass.html"));
+    }
+
+    @Test
+    void indexesOpenModuleWhenCommentsContainModuleLikeText(@TempDir Path tempDir) throws Exception {
+        Path sourceDirectory = tempDir.resolve("module-info.java/source/main/java");
+        Path packageDirectory = sourceDirectory.resolve("org/apache/maven/jxr/testmodule");
+        Files.createDirectories(packageDirectory);
+        Files.write(
+                sourceDirectory.resolve("module-info.java"),
+                ("/* module misleading.comment.module { */\n"
+                                + "@Deprecated\n"
+                                + "open module org.apache.maven.jxr.openmodule {\n"
+                                + "    exports org.apache.maven.jxr.testmodule;\n"
+                                + "}\n")
+                        .getBytes(StandardCharsets.UTF_8));
+        Files.write(
+                packageDirectory.resolve("ModuleClass.java"),
+                "package org.apache.maven.jxr.testmodule;\npublic class ModuleClass {}\n"
+                        .getBytes(StandardCharsets.UTF_8));
+
+        Path outputDirectory = tempDir.resolve("xref");
+        FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager(fileManager);
+        JXR jxr = new JXR(packageManager, new JavaCodeTransform(packageManager, fileManager));
+        jxr.setDest(outputDirectory);
+        jxr.setOutputEncoding("UTF-8");
+        jxr.setJavadocLinkDir(tempDir.resolve("apidocs"));
+        jxr.xref(Collections.singletonList(sourceDirectory.toString()), "templates/jdk4", "title", "title", "");
+
+        assertFalse(Files.exists(outputDirectory.resolve("package-summary.html")));
+        assertFalse(Files.exists(outputDirectory.resolve("module-info.html")));
+        String moduleClass = new String(
+                Files.readAllBytes(outputDirectory.resolve("org/apache/maven/jxr/testmodule/ModuleClass.html")),
+                StandardCharsets.UTF_8);
+        assertTrue(moduleClass.contains(
+                "org.apache.maven.jxr.openmodule/org/apache/maven/jxr/testmodule/ModuleClass.html"));
     }
 }
