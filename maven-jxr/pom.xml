@@ -78,18 +78,18 @@ under the License.
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
           <configuration>
-            <excludes combine.children="append">
+            <inputExcludes combine.children="append">
               <!--
                 This file has been copied and is under another license which
                 allows redistribution and use in source and binary forms, under
                 certain circumstances.
               -->
-              <exclude>src/main/java/org/apache/maven/jxr/JavaCodeTransform.java</exclude>
+              <inputExclude>src/main/java/org/apache/maven/jxr/JavaCodeTransform.java</inputExclude>
               <!--
                 A test resource that must be empty.
               -->
-              <exclude>src/test/resources/EmptyClass.java</exclude>
-            </excludes>
+              <inputExclude>src/test/resources/EmptyClass.java</inputExclude>
+            </inputExcludes>
           </configuration>
         </plugin>
       </plugins>
