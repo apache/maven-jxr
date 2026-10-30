@@ -75,7 +75,6 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <javaVersion>8</javaVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <sitePluginVersion>${version.maven-site-plugin}</sitePluginVersion>
     <javadocPluginVersion>${version.maven-javadoc-plugin}</javadocPluginVersion>
