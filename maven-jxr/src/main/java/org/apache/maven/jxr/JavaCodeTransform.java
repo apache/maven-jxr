@@ -62,6 +62,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -71,6 +72,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.maven.jxr.pacman.ClassType;
 import org.apache.maven.jxr.pacman.FileManager;
@@ -109,6 +112,8 @@ import org.apache.maven.jxr.util.StringEntry;
  * </pre>
  */
 public class JavaCodeTransform implements Serializable {
+    private static final Pattern MODULE_DECLARATION = Pattern.compile("\\bmodule\\s+([\\w.]+)\\s*\\{");
+
     // ----------------------------------------------------------------------
     // public fields
     // ----------------------------------------------------------------------
@@ -916,8 +921,13 @@ public class JavaCodeTransform implements Serializable {
             try {
                 JavaFile jf = fileManager.getFile(this.getCurrentFilename());
 
-                javadocURI =
-                        javadocLinkDir.resolve(jf.getPackageType().getName().replace('.', '/'));
+                String moduleName = findModuleName(this.getCurrentFilename());
+                if (moduleName != null) {
+                    javadocURI = javadocLinkDir.resolve(moduleName);
+                } else {
+                    javadocURI = javadocLinkDir;
+                }
+                javadocURI = javadocURI.resolve(jf.getPackageType().getName().replace('.', '/'));
                 // Use the name of the file instead of the class to handle inner classes properly
                 String fileName;
                 if (jf.getClassType() != null && jf.getClassType().getFilename() != null) {
@@ -939,6 +949,88 @@ public class JavaCodeTransform implements Serializable {
         }
 
         return overview.toString();
+    }
+
+    private static String findModuleName(Path sourceFile) throws IOException {
+        for (Path directory = sourceFile.getParent(); directory != null; directory = directory.getParent()) {
+            Path moduleInfo = directory.resolve("module-info.java");
+            if (Files.isRegularFile(moduleInfo)) {
+                String source = new String(Files.readAllBytes(moduleInfo), StandardCharsets.UTF_8);
+                Matcher matcher = MODULE_DECLARATION.matcher(stripCommentsAndLiterals(source));
+                return matcher.find() ? matcher.group(1) : null;
+            }
+        }
+        return null;
+    }
+
+    private static String stripCommentsAndLiterals(String source) {
+        StringBuilder result = new StringBuilder(source.length());
+        int state = 0;
+        for (int i = 0; i < source.length(); i++) {
+            char c = source.charAt(i);
+            char next = i + 1 < source.length() ? source.charAt(i + 1) : '\0';
+            char afterNext = i + 2 < source.length() ? source.charAt(i + 2) : '\0';
+
+            if (state == 1) {
+                if (c == '\n' || c == '\r') {
+                    state = 0;
+                    result.append(c);
+                } else {
+                    result.append(' ');
+                }
+            } else if (state == 2) {
+                if (c == '*' && next == '/') {
+                    result.append("  ");
+                    i++;
+                    state = 0;
+                } else {
+                    result.append((c == '\n' || c == '\r') ? c : ' ');
+                }
+            } else if (state == 3 || state == 4) {
+                char closingQuote = state == 3 ? '"' : '\'';
+                if (c == '\\' && i + 1 < source.length()) {
+                    result.append("  ");
+                    i++;
+                } else if (c == closingQuote) {
+                    result.append(' ');
+                    state = 0;
+                } else {
+                    result.append((c == '\n' || c == '\r') ? c : ' ');
+                }
+            } else if (state == 5) {
+                if (c == '\\' && i + 1 < source.length()) {
+                    result.append("  ");
+                    i++;
+                } else if (c == '"' && next == '"' && afterNext == '"') {
+                    result.append("   ");
+                    i += 2;
+                    state = 0;
+                } else {
+                    result.append((c == '\n' || c == '\r') ? c : ' ');
+                }
+            } else if (c == '/' && next == '/') {
+                result.append("  ");
+                i++;
+                state = 1;
+            } else if (c == '/' && next == '*') {
+                result.append("  ");
+                i++;
+                state = 2;
+            } else if (c == '"' && next == '"' && afterNext == '"') {
+                result.append("   ");
+                i += 2;
+                state = 5;
+            } else if (c == '"') {
+                result.append(' ');
+                state = 3;
+            } else if (c == '\'') {
+                result.append(' ');
+                state = 4;
+            } else {
+                result.append(c);
+            }
+        }
+        return result.toString();
     }
 
     /**
