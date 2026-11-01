@@ -30,7 +30,7 @@ The `aggregate` parameter of the JXR Plugin can be used to generate JXR files fo
 
 For example, you have the following directory structure:
 
-```unknown
+```text
 Project
 |-- pom.xml
 |-- Module1

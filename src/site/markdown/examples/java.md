@@ -32,7 +32,7 @@ The cross-referencing API is pretty basic. You can generate xref for a given Jav
 
 JXR handles several options like an input/output encoding. See the [API](../apidocs/org/apache/maven/jxr/JXR.html) for more information.
 
-```unknown
+```java
 JXR jxr = new JXR();
 jxr.setDest( "/target/jxr" );
 jxr.setLog( new DummyLog() );
@@ -58,7 +58,7 @@ The generated JXR structure should be like the following:
 
 You can transform a single Java source file with the following:
 
-```unknown
+```java
 File sourceFile = new File( "/src/main/java/Test.java" );
 
 PackageManager packageManager = new PackageManager( new DummyLog(),
