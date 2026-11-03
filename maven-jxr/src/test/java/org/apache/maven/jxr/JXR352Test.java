@@ -89,4 +89,43 @@ class JXR352Test {
         assertTrue(moduleClass.contains(
                 "org.apache.maven.jxr.openmodule/org/apache/maven/jxr/testmodule/ModuleClass.html"));
     }
+
+    @Test
+    void linksModuleNameContainingDollarSign(@TempDir Path tempDir) throws Exception {
+        assertModuleJavadocLink(tempDir, "module example.$module {}", "example.$module");
+    }
+
+    @Test
+    void linksModuleNameContainingUnicodeIdentifiers(@TempDir Path tempDir) throws Exception {
+        assertModuleJavadocLink(tempDir, "module example.módulo {}", "example.módulo");
+    }
+
+    @Test
+    void linksModuleNameWithWhitespaceAndCommentsAroundDots(@TempDir Path tempDir) throws Exception {
+        assertModuleJavadocLink(tempDir, "module example /* separator */ . module {}", "example.module");
+    }
+
+    private void assertModuleJavadocLink(Path tempDir, String declaration, String moduleName) throws Exception {
+        Path sourceDirectory = tempDir.resolve("sources");
+        Path packageDirectory = sourceDirectory.resolve("example");
+        Files.createDirectories(packageDirectory);
+        Files.write(sourceDirectory.resolve("module-info.java"), declaration.getBytes(StandardCharsets.UTF_8));
+        Files.write(
+                packageDirectory.resolve("Example.java"),
+                "package example; public class Example {}".getBytes(StandardCharsets.UTF_8));
+
+        Path outputDirectory = tempDir.resolve("xref");
+        FileManager fileManager = new FileManager();
+        PackageManager packageManager = new PackageManager(fileManager);
+        JXR jxr = new JXR(packageManager, new JavaCodeTransform(packageManager, fileManager));
+        jxr.setDest(outputDirectory);
+        jxr.setOutputEncoding("UTF-8");
+        jxr.setJavadocLinkDir(tempDir.resolve("apidocs"));
+        jxr.xref(Collections.singletonList(sourceDirectory.toString()), "templates/jdk4", "title", "title", "");
+
+        String output =
+                new String(Files.readAllBytes(outputDirectory.resolve("example/Example.html")), StandardCharsets.UTF_8);
+        assertTrue(output.contains(moduleName + "/example/Example.html"), output);
+        assertFalse(Files.exists(outputDirectory.resolve("module-info.html")));
+    }
 }

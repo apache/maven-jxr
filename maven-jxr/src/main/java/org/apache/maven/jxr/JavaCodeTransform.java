@@ -112,7 +112,9 @@ import org.apache.maven.jxr.util.StringEntry;
  * </pre>
  */
 public class JavaCodeTransform implements Serializable {
-    private static final Pattern MODULE_DECLARATION = Pattern.compile("\\bmodule\\s+([\\w.]+)\\s*\\{");
+    private static final Pattern MODULE_DECLARATION =
+            Pattern.compile("\\bmodule\\s+(\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*"
+                    + "(?:\\s*\\.\\s*\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*)\\s*\\{");
 
     // ----------------------------------------------------------------------
     // public fields
@@ -957,7 +959,7 @@ public class JavaCodeTransform implements Serializable {
             if (Files.isRegularFile(moduleInfo)) {
                 String source = new String(Files.readAllBytes(moduleInfo), StandardCharsets.UTF_8);
                 Matcher matcher = MODULE_DECLARATION.matcher(stripCommentsAndLiterals(source));
-                return matcher.find() ? matcher.group(1) : null;
+                return matcher.find() ? matcher.group(1).replaceAll("\\s*\\.\\s*", ".") : null;
             }
         }
         return null;
