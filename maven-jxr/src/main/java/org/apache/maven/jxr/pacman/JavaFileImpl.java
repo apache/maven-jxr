@@ -127,13 +127,7 @@ public class JavaFileImpl extends JavaFile {
 
                 String name = stok.sval;
 
-                /*
-                WARNING: this is a bug/non-feature in the current
-                StreamTokenizer.  We needed to set the comment char as "*"
-                and packages that are imported with this (ex "test.*") will be
-                stripped( and become "test." ).  Here we need to test for this
-                and if necessary re-add the char.
-                */
+                // The wildcard token is separate from the package name. Preserve it in wildcard imports.
                 if (name != null) {
                     if (name.charAt(name.length() - 1) == '.') {
                         name = name + '*';
@@ -161,7 +155,6 @@ public class JavaFileImpl extends JavaFile {
     private StreamTokenizer getTokenizer(Reader reader) {
         StreamTokenizer stok = new StreamTokenizer(reader);
 
-        stok.commentChar('*');
         stok.wordChars('_', '_');
 
         // set tokenizer to skip comments

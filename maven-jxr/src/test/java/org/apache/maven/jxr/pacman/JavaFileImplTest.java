@@ -19,10 +19,16 @@
 package org.apache.maven.jxr.pacman;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -67,5 +73,35 @@ class JavaFileImplTest {
                 Paths.get("src/test/resources/jxr175/org/apache/maven/jxr/pacman/Java14Record.java"), "UTF-8");
         assertEquals(1, javaFile.getClassTypes().size());
         assertEquals("Java14Record", javaFile.getClassTypes().get(0).getName());
+    }
+
+    @Test
+    void multiplicationInAnnotationPreservesTypeNesting(@TempDir Path directory) throws IOException {
+        Path source = directory.resolve("Multiplication.java");
+        Files.write(
+                source,
+                Arrays.asList(
+                        "import java.util.*;",
+                        "import java.io.*;",
+                        "class Outer {",
+                        "    /* class NotAType {} */",
+                        "    @Product(1 * (2 * 3)) // class NotATypeEither {}",
+                        "    class Inner {}",
+                        "}",
+                        "class After {}",
+                        "@interface Product { int value(); }"),
+                StandardCharsets.UTF_8);
+
+        JavaFileImpl javaFile = new JavaFileImpl(source, "UTF-8");
+
+        assertEquals(
+                Arrays.asList("Outer", "Outer.Inner", "After", "Product"),
+                javaFile.getClassTypes().stream().map(ClassType::getName).collect(Collectors.toList()));
+        assertEquals(
+                Arrays.asList("java.io.*", "java.lang.*", "java.util.*"),
+                javaFile.getImportTypes().stream()
+                        .map(ImportType::getName)
+                        .sorted()
+                        .collect(Collectors.toList()));
     }
 }
