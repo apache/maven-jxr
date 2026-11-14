@@ -333,6 +333,7 @@ class JxrReportTest {
                     null,
                     artifactHandlerManager.getArtifactHandler("jar")));
             stub1.addCompileSourceRoot(getTestPath("submodule1"));
+            stub1.addTestCompileSourceRoot(getTestPath("submodule1"));
 
             MavenProject stub2 = new MavenProject();
             stub2.setArtifact(new DefaultArtifact(
@@ -344,6 +345,7 @@ class JxrReportTest {
                     null,
                     artifactHandlerManager.getArtifactHandler("jar")));
             stub2.addCompileSourceRoot(getTestPath("submodule2"));
+            stub2.addTestCompileSourceRoot(getTestPath("submodule2"));
 
             when(session.getProjects()).thenReturn(Arrays.asList(project, stub1, stub2));
         }
@@ -371,6 +373,30 @@ class JxrReportTest {
             assertTrue(new File(xrefDir, "aggregate/test/submodule2/package-summary.html").exists());
             assertTrue(new File(xrefDir, "aggregate/test/submodule2/Submodule2App.html").exists());
             assertTrue(new File(xrefDir, "aggregate/test/submodule2/Submodule2AppSample.html").exists());
+        }
+
+        @Test
+        @Basedir("/unit/aggregate-test")
+        @InjectMojo(goal = "aggregate-no-fork", pom = "aggregate-test-plugin-config.xml")
+        void aggregateNoFork(AggregatorJxrNoForkReport mojo) throws Exception {
+            mojo.execute();
+
+            File xrefDir = getTestFile("target/site/xref");
+
+            assertTrue(new File(xrefDir, "aggregate/test/submodule1/Submodule1App.html").exists());
+            assertTrue(new File(xrefDir, "aggregate/test/submodule2/Submodule2App.html").exists());
+        }
+
+        @Test
+        @Basedir("/unit/aggregate-test")
+        @InjectMojo(goal = "test-aggregate-no-fork", pom = "aggregate-test-plugin-config.xml")
+        void testAggregateNoFork(AggregatorJxrTestNoForkReport mojo) throws Exception {
+            mojo.execute();
+
+            File xrefDir = getTestFile("target/site/xref-test");
+
+            assertTrue(new File(xrefDir, "aggregate/test/submodule1/Submodule1App.html").exists());
+            assertTrue(new File(xrefDir, "aggregate/test/submodule2/Submodule2App.html").exists());
         }
     }
     /**

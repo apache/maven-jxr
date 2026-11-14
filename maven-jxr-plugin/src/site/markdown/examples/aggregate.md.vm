@@ -90,4 +90,8 @@ And you have the following configuration in your `pom.xml`:
 </project>
 ```
 
+The no-fork variants, `aggregate-no-fork` and `test-aggregate-no-fork`, are
+available when the source and test source phases have already run. They avoid
+executing those phases again while still collecting sources from all modules.
+
 When you execute `mvn site` from the parent directory, which is _Project_, a set of JXR files will be created in the target directory of _Project_ where all of the JXR files of the project's submodules are included. Otherwise a set of JXR files for _Module1_ will be generated in the target directory of _Module1_, another set of JXR files for _Module2_ will be generated in the target directory of _Module2_, and so on.
