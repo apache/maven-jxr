@@ -112,7 +112,8 @@ public class JXR {
         for (String file : files) {
             Path sourceFile = sourceDir.resolve(file);
 
-            if (isJavaFile(sourceFile.toString())) {
+            if (isJavaFile(sourceFile.toString())
+                    && !"module-info.java".equals(sourceFile.getFileName().toString())) {
                 String newFileName = file.replaceFirst(".java$", ".html");
 
                 transform(sourceFile, this.destDir.resolve(newFileName), bottom);
