@@ -218,6 +218,16 @@ public class JavaCodeTransform implements Serializable {
     private Path javadocLinkDir;
 
     /**
+     * Whether the pages are displayed in a frame. If not, they bring their own navigation bar.
+     */
+    private boolean frames = true;
+
+    /**
+     * Title of the report, which is shown in the navigation bar.
+     */
+    private String docTitle;
+
+    /**
      * Package Manager for this project.
      */
     private final PackageManager packageManager;
@@ -351,12 +361,70 @@ public class JavaCodeTransform implements Serializable {
         out.print(STYLESHEET_FILENAME);
         out.println("\" />");
 
+        // the search box of the navigation bar
+        if (!frames) {
+            out.print("<script type=\"text/javascript\" src=\"");
+            out.print(this.getPackageRoot());
+            out.print(DirectoryIndexer.SEARCH_SCRIPT);
+            out.println("\"></script>");
+        }
+
         out.println("</head>");
         out.println("<body>");
+        if (!frames) {
+            appendNavigation(out);
+        }
         out.print(this.getFileOverview());
 
         // start code section
         out.println("<pre>");
+    }
+
+    /**
+     * Appends the navigation bar that a page needs when there are no frames around it. It is the bar of the
+     * package pages, the search script puts its box into the element with the id.
+     *
+     * @param out the writer where the navigation bar is appended to
+     */
+    private void appendNavigation(PrintWriter out) {
+        String root = this.getPackageRoot();
+
+        out.println("<div class=\"topNav\">");
+        out.println("<ul class=\"navList\" title=\"Navigation\">");
+        out.println("<li><a href=\"" + root + "index.html\">Overview</a></li>");
+        out.println("<li><a href=\"" + DirectoryIndexer.INDEX + "\">Package</a></li>");
+        out.println("<li class=\"navBarCell1Rev\">Class</li>");
+        out.println("</ul>");
+        if (docTitle != null) {
+            out.println("<div class=\"aboutLanguage\"><em><strong>" + docTitle + "</strong></em></div>");
+        }
+        out.println("</div>");
+        out.println("<div class=\"subNav\">");
+        out.println("<ul class=\"navList\">");
+        out.println("<li><a href=\"" + root + "allclasses-index.html\">All Classes</a></li>");
+        out.println("</ul>");
+        out.println("<span id=\"jxr_search\"></span>");
+        out.println("</div>");
+        out.println("<div class=\"clear\"></div>");
+    }
+
+    /**
+     * Sets whether the pages are displayed in a frame, which is the default. Without frames each page gets a
+     * navigation bar with a search box.
+     *
+     * @param frames {@code false} to write pages that are not displayed in a frame
+     */
+    void setFrames(boolean frames) {
+        this.frames = frames;
+    }
+
+    /**
+     * Sets the title of the report, for the navigation bar of pages that are not displayed in a frame.
+     *
+     * @param docTitle the title, or {@code null} for a navigation bar without one
+     */
+    void setDocTitle(String docTitle) {
+        this.docTitle = docTitle;
     }
 
     /**

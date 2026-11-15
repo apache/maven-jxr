@@ -29,6 +29,7 @@ import org.apache.maven.jxr.pacman.PackageManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -152,6 +153,43 @@ class JavaCodeTransformTest {
         byte[] bytes = Files.readAllBytes(Paths.get("target/UnknownType.html"));
         String content = new String(bytes, StandardCharsets.ISO_8859_1);
         assertTrue(content.contains("<title>UnknownType xref</title>"));
+        assertTrue(content.contains("<a href=\"javadocs/example/UnknownType.html\">View Javadoc</a>"));
+
+        // in a frame the page has no navigation of its own
+        assertFalse(content.contains("search.js"));
+        assertFalse(content.contains("jxr_search"));
+    }
+
+    /**
+     * Test the navigation bar of a page that is not displayed in a frame.
+     */
+    @Test
+    void transformWithoutFrames() throws Exception {
+        Path sourceFile = Paths.get("src/test/resources/UnknownType.java");
+        assertTrue(Files.exists(sourceFile));
+
+        codeTransform.setFrames(false);
+        codeTransform.setDocTitle("title");
+        codeTransform.transform(
+                sourceFile,
+                Paths.get("target/UnknownTypeWithoutFrames.html"),
+                Locale.ENGLISH,
+                "ISO-8859-1",
+                "ISO-8859-1",
+                Paths.get("javadocs"),
+                "",
+                "");
+        assertTrue(Files.exists(Paths.get("target/UnknownTypeWithoutFrames.html")));
+
+        byte[] bytes = Files.readAllBytes(Paths.get("target/UnknownTypeWithoutFrames.html"));
+        String content = new String(bytes, StandardCharsets.ISO_8859_1);
+        // the class is in the package "example", one directory below the script and the overview
+        assertTrue(content.contains("<script type=\"text/javascript\" src=\"../search.js\"></script>"));
+        assertTrue(content.contains("<li><a href=\"../index.html\">Overview</a></li>"));
+        assertTrue(content.contains("<li><a href=\"package-summary.html\">Package</a></li>"));
+        assertTrue(content.contains("<li><a href=\"../allclasses-index.html\">All Classes</a></li>"));
+        assertTrue(content.contains("<div class=\"aboutLanguage\"><em><strong>title</strong></em></div>"));
+        assertTrue(content.contains("<span id=\"jxr_search\"></span>"));
         assertTrue(content.contains("<a href=\"javadocs/example/UnknownType.html\">View Javadoc</a>"));
     }
 }

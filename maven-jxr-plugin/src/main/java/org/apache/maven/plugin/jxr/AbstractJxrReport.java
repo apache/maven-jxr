@@ -82,6 +82,7 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
     /**
      * Directory where Velocity templates can be found to generate overviews, frames and summaries. Should not be used.
      * If used, should be an absolute path, like <code>{@literal "${basedir}/myTemplates"}</code>.
+     * Such templates are expected to use frames, whatever the <code>javadocVersion</code> is.
      */
     @Parameter
     private String templateDir;
@@ -89,6 +90,8 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
     /**
      * Style sheet used for the Xref HTML files. Should not be used. If used, should be an absolute path, like
      * <code>{@literal "${basedir}/myStyles.css"}</code>.
+     * It should have rules for the navigation bar and the search box that the pages without frames have, see
+     * <code>javadocVersion</code>. The default style sheet ends with the ones for the search box.
      */
     @Parameter
     private String stylesheet;
@@ -128,6 +131,9 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
      * Version of the Javadoc templates to use.
      * The value should reflect `java.specification.version`, "1.4", "1.8", "9", "10",
      * by default this system property is used.
+     * <br>
+     * Like Javadoc itself, the templates for "13" and later have no frames: every page comes with a navigation bar
+     * and a search box for packages and classes instead. Set a lower version, e.g. "1.8", to keep the frames.
      */
     @Parameter(property = "javadocVersion")
     private String javadocVersion;
@@ -215,6 +221,7 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
         jxr.setLocale(locale);
         jxr.setOutputEncoding(getOutputEncoding());
         jxr.setRevision("HEAD");
+        jxr.setFrames(useFrames());
         jxr.setJavadocLinkDir(constructJavadocLocation());
         // Set include/exclude patterns on the jxr instance
         if (excludes != null && !excludes.isEmpty()) {
@@ -396,7 +403,9 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
     private String getTemplateDir() {
         // Check if overridden
         if (templateDir == null || templateDir.isEmpty()) {
-            if (javadocTemplatesVersion.isAtLeast("1.8")) {
+            if (javadocTemplatesVersion.isAtLeast("13")) {
+                return "templates/jdk13";
+            } else if (javadocTemplatesVersion.isAtLeast("1.8")) {
                 return "templates/jdk8";
             } else if (javadocTemplatesVersion.isAtLeast("1.7")) {
                 return "templates/jdk7";
@@ -409,6 +418,17 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
         }
         // use value specified by user
         return templateDir;
+    }
+
+    /**
+     * Determine whether the pages use frames. Javadoc removed them in Java 13, and so do the templates for that
+     * version. The templates of a user are taken to have frames, as all templates had so far.
+     *
+     * @return {@code false} if the templates in use have no frames
+     */
+    private boolean useFrames() {
+        boolean overridden = templateDir != null && !templateDir.isEmpty();
+        return overridden || !javadocTemplatesVersion.isAtLeast("13");
     }
 
     /**

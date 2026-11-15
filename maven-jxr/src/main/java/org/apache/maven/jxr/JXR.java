@@ -72,6 +72,11 @@ public class JXR {
     private String revision;
 
     /**
+     * Whether the generated pages use frames.
+     */
+    private boolean frames = true;
+
+    /**
      * The list of exclude patterns to use.
      */
     private String[] excludes = null;
@@ -195,6 +200,21 @@ public class JXR {
     }
 
     /**
+     * Sets whether the pages are generated with frames, which is the default. Without frames every page gets a
+     * navigation bar with a search box instead, like the pages of Javadoc since Java 13. The template directory
+     * passed to {@link #xref(List, String, String, String, String)} has to match: {@code templates/jdk13} is the
+     * set without frames, the older sets all use frames. The style sheet is up to the caller as before, and
+     * should have rules for the search box then, like the style sheet for Java 8 of the JXR Plugin has.
+     *
+     * @param frames {@code false} to generate pages without frames
+     * @since 3.7.0
+     */
+    public void setFrames(boolean frames) {
+        this.frames = frames;
+        this.transformer.setFrames(frames);
+    }
+
+    /**
      * Performs the cross-referencing.
      *
      * @param sourceDirs source directories
@@ -209,6 +229,7 @@ public class JXR {
             throws IOException, JxrException {
         pkgmgr.setExcludes(excludes);
         pkgmgr.setIncludes(includes);
+        transformer.setDocTitle(docTitle);
 
         // go through each source directory and xref the java files
         for (String dir : sourceDirs) {
@@ -226,6 +247,7 @@ public class JXR {
         indexer.setWindowTitle(windowTitle);
         indexer.setDocTitle(docTitle);
         indexer.setBottom(bottom);
+        indexer.setFrames(frames);
         indexer.process();
     }
 

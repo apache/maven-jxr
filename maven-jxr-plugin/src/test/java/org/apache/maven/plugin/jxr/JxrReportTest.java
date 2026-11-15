@@ -30,6 +30,7 @@ import java.util.Locale;
 
 import org.apache.maven.api.plugin.testing.Basedir;
 import org.apache.maven.api.plugin.testing.InjectMojo;
+import org.apache.maven.api.plugin.testing.MojoParameter;
 import org.apache.maven.api.plugin.testing.MojoTest;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
@@ -257,6 +258,111 @@ class JxrReportTest {
 
         // check if encoding is UTF-8, the default value
         assertTrue(str.contains("text/html; charset=UTF-8"));
+    }
+
+    /**
+     * Test the plugin with jdk-13 configuration, which has a search box in place of the frames
+     */
+    @Test
+    @Basedir("/unit/default-configuration")
+    @InjectMojo(goal = "jxr", pom = "default-configuration-plugin-config-13.xml")
+    void jdk13Configuration(JxrReport mojo) throws Exception {
+
+        File outputDir = getTestFile("target/site/13");
+        File xrefDir = new File(outputDir, "xref");
+
+        // some files are expected not to be generated, so there must be none of an earlier build
+        FileUtils.deleteDirectory(xrefDir);
+        FileUtils.copyDirectory(getTestFile("javadoc-files"), outputDir);
+
+        mojo.execute();
+
+        // check if xref files were generated
+        assertTrue(new File(xrefDir, "index.html").exists());
+        assertTrue(new File(xrefDir, "overview-summary.html").exists());
+        assertTrue(new File(xrefDir, "allclasses-index.html").exists());
+        assertTrue(new File(xrefDir, "stylesheet.css").exists());
+        assertTrue(new File(xrefDir, "search.js").exists());
+        assertTrue(new File(xrefDir, "search-index.js").exists());
+        assertTrue(new File(xrefDir, "def/configuration/App.html").exists());
+        assertTrue(new File(xrefDir, "def/configuration/AppSample.html").exists());
+        assertTrue(new File(xrefDir, "def/configuration/package-summary.html").exists());
+
+        // check that there are no frames
+        assertFalse(new File(xrefDir, "allclasses-frame.html").exists());
+        assertFalse(new File(xrefDir, "overview-frame.html").exists());
+        assertFalse(new File(xrefDir, "def/configuration/package-frame.html").exists());
+        assertFalse(readFile(xrefDir, "index.html").contains("<frameset"));
+
+        // check if the classes can be searched for, with a search box that is styled
+        String str = readFile(xrefDir, "search-index.js");
+        assertTrue(
+                str.contains("{\"p\":\"def.configuration\",\"l\":\"App\",\"u\":\"def/configuration/App.html#App\"}"));
+        assertTrue(readFile(xrefDir, "stylesheet.css").contains("#jxr_search"));
+
+        // check if there's a link to the javadoc files
+        str = readFile(xrefDir, "def/configuration/AppSample.html");
+        assertTrue(str.toLowerCase(Locale.ENGLISH).contains("/apidocs/def/configuration/appsample.html\""));
+
+        str = readFile(xrefDir, "def/configuration/App.html");
+        assertTrue(str.toLowerCase(Locale.ENGLISH).contains("/apidocs/def/configuration/app.html\""));
+
+        // check if there's the search box
+        assertTrue(str.contains("<script type=\"text/javascript\" src=\"../../search.js\"></script>"));
+        assertTrue(str.contains("<span id=\"jxr_search\"></span>"));
+
+        // check if encoding is UTF-8, the default value
+        assertTrue(str.contains("text/html; charset=UTF-8"));
+    }
+
+    /**
+     * Test that the last version before jdk-13 still gets the frames, with the templates of jdk-8
+     */
+    @Test
+    @Basedir("/unit/default-configuration")
+    @InjectMojo(goal = "jxr", pom = "default-configuration-plugin-config-13.xml")
+    @MojoParameter(name = "outputDirectory", value = "${basedir}/target/site/12")
+    @MojoParameter(name = "javadocVersion", value = "12")
+    void jdk12Configuration(JxrReport mojo) throws Exception {
+        File xrefDir = getTestFile("target/site/12/xref");
+        FileUtils.deleteDirectory(xrefDir);
+
+        mojo.execute();
+
+        assertFramesWithoutSearch(xrefDir);
+    }
+
+    /**
+     * Test that own templates keep the frames they were written for, with jdk-13 configuration as well
+     */
+    @Test
+    @Basedir("/unit/default-configuration")
+    @InjectMojo(goal = "jxr", pom = "default-configuration-plugin-config-13.xml")
+    @MojoParameter(name = "outputDirectory", value = "${basedir}/target/site/13-templates")
+    @MojoParameter(name = "templateDir", value = "templates/jdk8")
+    void jdk13ConfigurationWithTemplateDir(JxrReport mojo) throws Exception {
+        File xrefDir = getTestFile("target/site/13-templates/xref");
+        FileUtils.deleteDirectory(xrefDir);
+
+        mojo.execute();
+
+        assertFramesWithoutSearch(xrefDir);
+    }
+
+    private void assertFramesWithoutSearch(File xrefDir) throws IOException {
+        // check if the frames of jdk-8 were generated
+        assertTrue(readFile(xrefDir, "index.html").contains("<!-- this is a JXR report set (jdk8) -->"));
+        assertTrue(new File(xrefDir, "allclasses-frame.html").exists());
+        assertTrue(new File(xrefDir, "overview-frame.html").exists());
+        assertTrue(new File(xrefDir, "overview-summary.html").exists());
+        assertTrue(new File(xrefDir, "def/configuration/package-frame.html").exists());
+        assertTrue(new File(xrefDir, "def/configuration/package-summary.html").exists());
+
+        // check that there's nothing of the search box
+        assertFalse(new File(xrefDir, "allclasses-index.html").exists());
+        assertFalse(new File(xrefDir, "search.js").exists());
+        assertFalse(new File(xrefDir, "search-index.js").exists());
+        assertFalse(readFile(xrefDir, "def/configuration/App.html").contains("jxr_search"));
     }
 
     /**
