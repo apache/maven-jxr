@@ -40,7 +40,7 @@ class JxrReportUtilTest {
      * the {@code dav:} one, see {@link #davUrlKeepsItsHost()}.
      */
     @Test
-    void structureFollowsTheSiteUrl() throws IOException {
+    void structureFollowsTheSiteUrl() throws Exception {
         assertStructure(
                 "maven.apache.org/plugins/maven-jxr-plugin/", "https://maven.apache.org/plugins/maven-jxr-plugin/");
         assertStructure(
@@ -61,7 +61,7 @@ class JxrReportUtilTest {
      * {@code .apache.org/plugins/x}. The {@code dav:} prefix is now peeled off like the SCM one.
      */
     @Test
-    void davUrlKeepsItsHost() throws IOException {
+    void davUrlKeepsItsHost() throws Exception {
         assertEquals(
                 "maven.apache.org/plugins/x",
                 JxrReportUtil.getStructure(projectWithSiteUrl("dav:https://maven.apache.org/plugins/x"), false));
@@ -75,7 +75,7 @@ class JxrReportUtilTest {
     }
 
     @Test
-    void missingSiteUrlIsIgnoredWhenAsked() throws IOException {
+    void missingSiteUrlIsIgnoredWhenAsked() throws Exception {
         assertNull(JxrReportUtil.getStructure(projectWithSiteUrl(""), true));
     }
 
@@ -88,7 +88,7 @@ class JxrReportUtilTest {
      * Without distributionManagement the structure falls back to the project name hierarchy.
      */
     @Test
-    void structureFallsBackToTheProjectHierarchy() throws IOException {
+    void structureFallsBackToTheProjectHierarchy() throws Exception {
         Model model = new Model();
         model.setName("Child");
         MavenProject project = new MavenProject(model);
