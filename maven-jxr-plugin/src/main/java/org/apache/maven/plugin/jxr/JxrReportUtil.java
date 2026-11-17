@@ -29,7 +29,6 @@ import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Site;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 /**
@@ -211,7 +210,7 @@ public class JxrReportUtil {
             return null;
         }
 
-        if (StringUtils.isEmpty(site.getUrl())) {
+        if (site.getUrl() == null || site.getUrl().isEmpty()) {
             if (!ignoreMissingSiteUrl) {
                 throw new IOException("The URL in the site is missing in the project descriptor.");
             }
