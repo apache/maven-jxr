@@ -246,29 +246,20 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
 
         String inceptionYear = project.getInceptionYear();
 
-        String theBottom = this.bottom == null || this.bottom.isEmpty() || year == null
-                ? this.bottom
-                : this.bottom.replace("{currentYear}", year);
+        String theBottom = StringUtils.replace(this.bottom, "{currentYear}", year);
 
         if (inceptionYear != null) {
             if (inceptionYear.equals(year)) {
-                theBottom = theBottom == null || theBottom.isEmpty()
-                        ? theBottom
-                        : theBottom.replace("{inceptionYear}\u2013", "");
+                theBottom = StringUtils.replace(theBottom, "{inceptionYear}\u2013", "");
             } else {
-                theBottom = theBottom == null || theBottom.isEmpty() || inceptionYear == null
-                        ? theBottom
-                        : theBottom.replace("{inceptionYear}", inceptionYear);
+                theBottom = StringUtils.replace(theBottom, "{inceptionYear}", inceptionYear);
             }
         } else {
-            theBottom = theBottom == null || theBottom.isEmpty()
-                    ? theBottom
-                    : theBottom.replace("{inceptionYear}\u2013", "");
+            theBottom = StringUtils.replace(theBottom, "{inceptionYear}\u2013", "");
         }
 
         if (project.getOrganization() == null) {
-            theBottom =
-                    theBottom == null || theBottom.isEmpty() ? theBottom : theBottom.replace(" {organizationName}", "");
+            theBottom = StringUtils.replace(theBottom, " {organizationName}", "");
         } else {
             if (StringUtils.isNotEmpty(project.getOrganization().getName())) {
                 if (StringUtils.isNotEmpty(project.getOrganization().getUrl())) {
@@ -286,9 +277,7 @@ public abstract class AbstractJxrReport extends AbstractMavenReport {
                             project.getOrganization().getName());
                 }
             } else {
-                theBottom = theBottom == null || theBottom.isEmpty()
-                        ? theBottom
-                        : theBottom.replace(" {organizationName}", "");
+                theBottom = StringUtils.replace(theBottom, " {organizationName}", "");
             }
         }
 
