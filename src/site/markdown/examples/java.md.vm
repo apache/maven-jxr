@@ -1,0 +1,111 @@
+---
+title: Using Maven JXR in Java
+author: 
+  - Vincent Siveton
+date: 2010-01-20
+---
+
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+# Using Maven JXR in Java
+
+The cross-referencing API is small. You can generate a cross-reference for whole source trees, or turn a single Java
+source file into one HTML page. Every generated page has an anchor per line number.
+
+Add the library to your project:
+
+```xml
+<dependency>
+  <groupId>org.apache.maven</groupId>
+  <artifactId>maven-jxr</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+
+The library logs through SLF4J, so add an SLF4J binding if you want to see its debug output.
+
+${esc.h}${esc.h} Transforming Java Packages
+
+[`JXR`](../apidocs/org/apache/maven/jxr/JXR.html) walks one or more source directories, writes one page per source
+file and then renders the package and class index pages. It also takes the input and output encodings, the locale,
+include and exclude patterns, and the Javadoc directory to link to.
+
+```java
+FileManager fileManager = new FileManager();
+PackageManager packageManager = new PackageManager(fileManager);
+JavaCodeTransform codeTransform = new JavaCodeTransform(packageManager, fileManager);
+
+JXR jxr = new JXR(packageManager, codeTransform);
+jxr.setDest(Paths.get("target/jxr"));
+jxr.setLocale(Locale.ENGLISH);
+jxr.setInputEncoding("UTF-8");
+jxr.setOutputEncoding("UTF-8");
+
+jxr.xref(
+        Collections.singletonList("src/main/java"),
+        "templates/jdk8",
+        "My Project Reference",
+        "My Project Reference",
+        "Copyright 2026 My Company");
+```
+
+The second argument of `xref` names the [Velocity](https://velocity.apache.org/) templates for the index pages. A
+relative path such as `templates/jdk8` loads the
+[templates bundled with the library](https://github.com/apache/maven-jxr/tree/master/maven-jxr/src/main/resources/templates)
+from the class path; `templates/jdk4`, `templates/jdk7` and `templates/jdk8` mimic the Javadoc page layout of that
+JDK. An absolute path loads your own templates from that directory.
+
+Set the output encoding: the index pages are written with it, and there is no default.
+
+The output for a project with one class, `com.example.app.Greeter`, looks like this:
+
+```
+target/jxr
+ |- allclasses-frame.html
+ |- com/example/app/Greeter.html
+ |- com/example/app/package-frame.html
+ |- com/example/app/package-summary.html
+ |- index.html
+ |- overview-frame.html
+ |- overview-summary.html
+```
+
+The pages refer to a `stylesheet.css` in the output directory, which the library does not write. The Maven JXR
+Plugin copies one there; when you call the library yourself, supply your own.
+
+${esc.h}${esc.h} Transforming a Single Java Source File
+
+You can transform a single Java source file with the following:
+
+```java
+FileManager fileManager = new FileManager();
+PackageManager packageManager = new PackageManager(fileManager);
+JavaCodeTransform codeTransform = new JavaCodeTransform(packageManager, fileManager);
+
+codeTransform.transform(
+        Paths.get("src/main/java/com/example/app/Greeter.java"),
+        Paths.get("target/jxr-single/Greeter.html"),
+        Locale.ENGLISH,
+        "UTF-8", // input encoding
+        "UTF-8", // output encoding
+        null, // relative path to the Javadoc, or null for no "View Javadoc" link
+        "", // revision
+        ""); // bottom text
+```

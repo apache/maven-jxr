@@ -27,22 +27,39 @@ under the License.
 
 # Maven JXR
 
-Maven JXR project (formally Java Cross Reference) is a library to analyze a set of Java source files and produce documentation in HTML format _à la Javadoc_.
+Maven JXR (Java Cross Reference) turns a tree of Java source files into a set of linked HTML pages, much like
+Javadoc does for API documentation. Every class, package and line number gets its own anchor, and type names in the
+code link to the page of the type they refer to, so you can browse a code base or point someone at a single line.
 
-Take a look at this [JXR report](./xref/index.html) to see an example.
+To see the result, open the [JXR report of this project](./xref/index.html).
+
+JXR comes in two parts:
+
+- The [Maven JXR Plugin](./maven-jxr-plugin/) (`org.apache.maven.plugins:maven-jxr-plugin`) adds the cross-reference
+  to a Maven site, or writes it on its own with `mvn jxr:jxr`. Most users need only the plugin.
+- The Maven JXR library (`org.apache.maven:maven-jxr`) does the parsing and the HTML rendering. Call it directly
+  from Java code; see [Using Maven JXR in Java](./examples/java.html).
 
 ## Main Features
 
-- Supports JDK 1.4+
-- Complementary tool for Javadoc
-- Easy configuration for color, style or template
-- Fully integrated with [Maven](./maven-jxr-plugin/)
+- Requires Java 8 or later.
+- One HTML page per source file, with line-number anchors (for example `Greeter.html#L42`) and keyword and comment
+  highlighting.
+- Links from a type name to the page that defines it, and from each page to the matching Javadoc page.
+- Package and class index pages in the style of Javadoc, rendered from [Velocity](https://velocity.apache.org/)
+  templates that you can replace.
+- Other report plugins, such as the [PMD Plugin](https://maven.apache.org/plugins/maven-pmd-plugin/) and the
+  [Checkstyle Plugin](https://maven.apache.org/plugins/maven-checkstyle-plugin/), link their findings to the
+  matching JXR line.
+
 ## Brief History
 
-The original JXR code was merged in 2004 with the Javasrc project from the defunct [Jakarta Alexandria](http://jakarta.apache.org/alexandria) project. The code was first maintained within the Maven 1 JXR plugin. In September 2005, it was voted to fork the base and create a separate library.
+The original JXR code was merged in 2004 with the Javasrc project from the retired
+[Jakarta Alexandria](https://jakarta.apache.org/alexandria/) project. The code was first maintained within the Maven 1
+JXR plugin. In September 2005, it was voted to fork the base and create a separate library.
 
 ## Examples
 
-The following example shows how to use Maven JXR in more advanced use cases:
+The following example shows how to use the Maven JXR library directly:
 
 - [Using Maven JXR in Java](./examples/java.html)
