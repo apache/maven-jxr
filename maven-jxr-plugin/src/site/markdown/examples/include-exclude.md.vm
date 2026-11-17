@@ -47,7 +47,7 @@ The default is to include all java files. The pattern `**/*.java` is used to ach
           ...
           <includes>
             <include>**/include/*.java</include>
-          <includes>
+          </includes>
           ...
         </configuration>
       </plugin>
