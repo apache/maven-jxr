@@ -33,7 +33,7 @@ This repository holds two modules:
 | `maven-jxr` | `org.apache.maven:maven-jxr` | The library that parses the sources and writes the HTML |
 | `maven-jxr-plugin` | `org.apache.maven.plugins:maven-jxr-plugin` | The report plugin (`jxr:jxr`, `jxr:aggregate` and others) for the Maven site |
 
-Both need Java 8 or later; the plugin needs Maven 3.6.3 or later.
+Both need Java 8 or later; the plugin needs Maven 3.9.0 or later.
 
 - Documentation: <https://maven.apache.org/jxr/> (library) and
   <https://maven.apache.org/jxr/maven-jxr-plugin/> (plugin)
