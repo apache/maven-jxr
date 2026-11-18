@@ -33,7 +33,7 @@ point at a specific line. Report plugins such as the
 [Checkstyle Plugin](https://maven.apache.org/plugins/maven-checkstyle-plugin/) link each finding to its line in
 the cross-reference when one is present.
 
-The plugin requires Maven 3.6.3 or later and Java 8 or later. It is built on the
+The plugin requires Maven 3.9.0 or later and Java 8 or later. It is built on the
 [Maven JXR library](../index.html).
 
 ## Common Tasks
