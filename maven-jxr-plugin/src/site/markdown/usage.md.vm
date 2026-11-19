@@ -74,3 +74,33 @@ To generate JXR files for the project's test sources, execute this command:
 ```shell
 mvn jxr:test-jxr
 ```
+
+Navigate with Frames or with a Search Box
+-----------------------------------------
+
+The pages of the report are modelled on those of Javadoc. Which Javadoc that is depends on the `javadocVersion` parameter, and by default it is the one of the Java version that runs the build.
+
+Javadoc removed frames in Java 13. As of version 3.7.0 the JXR report does the same from that Java version on: every page has a navigation bar, with a search box in it that finds the packages and classes of the project by their name. To get the frames back, ask for the templates of an older Javadoc in the configuration of the plugin:
+
+```xml
+<project>
+  ...
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          <javadocVersion>1.8</javadocVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+  ...
+</project>
+```
+
+The `<reporting>` section counts when the report is generated with the site (`mvn site`). If you run `mvn jxr:jxr` directly, put the same `<configuration>` into `<build><pluginManagement>` instead.
+
+**Note**: Prefer the configuration in the POM over `-DjavadocVersion=1.8` on the command line when the Javadoc Plugin runs in the same build. It has a parameter with the same user property, where it stands for the version of the Javadoc tool.
