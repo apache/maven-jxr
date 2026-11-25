@@ -16,30 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-assert new File( basedir, 'target/site' ).exists()
+assert new File(basedir, 'target/site').exists()
 
-content = new File( basedir, 'target/site/project-reports.html' ).text
+content = new File(basedir, 'target/site/project-reports.html').text
 
-assert content.contains( 'xref/index.html' )
-assert content.contains( 'xref-test/index.html' )
+assert content.contains('xref/index.html')
+assert content.contains('xref-test/index.html')
 
-assert new File( basedir, 'target/site/xref' ).exists()
-assert new File( basedir, 'target/site/xref/index.html' ).exists()
-assert new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html' ).exists()
+assert new File(basedir, 'target/site/xref').exists()
+assert new File(basedir, 'target/site/xref/index.html').exists()
+assert new File(basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html').exists()
 
-assert new File( basedir, 'target/site/xref-test' ).exists()
-assert new File( basedir, 'target/site/xref-test/index.html' ).exists()
-assert new File( basedir, 'target/site/xref-test/org/apache/maven/jxr/it/AppTest.html' ).exists()
+assert new File(basedir, 'target/site/xref-test').exists()
+assert new File(basedir, 'target/site/xref-test/index.html').exists()
+assert new File(basedir, 'target/site/xref-test/org/apache/maven/jxr/it/AppTest.html').exists()
 
-content = new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html' ).text
-assert content.contains( 'App2.html' )
+content = new File(basedir, 'target/site/xref/org/apache/maven/jxr/it/App.html').text
+assert content.contains('App2.html')
 
-xrefPackageSummary = new File( basedir, 'target/site/xref/org/apache/maven/jxr/it/package-summary.html' ).text
-assert xrefPackageSummary.contains( 'App.html' )
-assert xrefPackageSummary.contains( 'App2.html' )
-assert !xrefPackageSummary.contains( 'AppTest.html' )
+xrefPackageSummary = new File(basedir, 'target/site/xref/org/apache/maven/jxr/it/package-summary.html').text
+assert xrefPackageSummary.contains('App.html')
+assert xrefPackageSummary.contains('App2.html')
+assert !xrefPackageSummary.contains('AppTest.html')
 
-testXrefPackageSummary = new File( basedir, 'target/site/xref-test/org/apache/maven/jxr/it/package-summary.html' ).text
-assert !testXrefPackageSummary.contains( 'App.html' )
-assert !testXrefPackageSummary.contains( 'App2.html' )
-assert testXrefPackageSummary.contains( 'AppTest.html' )
+testXrefPackageSummary = new File(basedir, 'target/site/xref-test/org/apache/maven/jxr/it/package-summary.html').text
+assert !testXrefPackageSummary.contains('App.html')
+assert !testXrefPackageSummary.contains('App2.html')
+assert testXrefPackageSummary.contains('AppTest.html')
