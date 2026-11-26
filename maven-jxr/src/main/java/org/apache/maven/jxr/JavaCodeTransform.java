@@ -558,7 +558,7 @@ public class JavaCodeTransform implements Serializable {
                 // in the current buffer
 
                 if (end != -1) {
-                    String uri = (end + 1 == line.length()) ? line.substring(start) : line.substring(start, end);
+                    String uri = end + 1 == line.length() ? line.substring(start) : line.substring(start, end);
 
                     line = line.replace(uri, "<a href=\"" + uri + "\" target=\"alexandria_uri\">" + uri + "</a>");
                 }
@@ -746,7 +746,7 @@ public class JavaCodeTransform implements Serializable {
         // check to see if a multi-line comment starts on this line:
         if ((index > -1) && !isInsideString(line, index)) {
             String fromIndex = line.substring(index);
-            if (fromIndex.startsWith("/**") && !(fromIndex.startsWith("/**/"))) {
+            if (fromIndex.startsWith("/**") && !fromIndex.startsWith("/**/")) {
                 inJavadocComment = true;
             } else {
                 inMultiLineComment = true;
@@ -844,7 +844,7 @@ public class JavaCodeTransform implements Serializable {
                         + tempString
                         + RESERVED_WORD_END
                         + line.substring(i);
-                i += (RESERVED_WORD_START.length() + RESERVED_WORD_END.length());
+                i += RESERVED_WORD_START.length() + RESERVED_WORD_END.length();
             } else {
                 i++;
             }
@@ -879,7 +879,7 @@ public class JavaCodeTransform implements Serializable {
             rightCount++;
             right = right.substring(index + 1);
         }
-        return (rightCount % 2 != 0 && leftCount % 2 != 0);
+        return rightCount % 2 != 0 && leftCount % 2 != 0;
     }
 
     /**

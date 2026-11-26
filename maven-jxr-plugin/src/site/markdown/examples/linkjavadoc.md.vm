@@ -26,7 +26,13 @@ under the License.
 
 # Linking JXR Files to Javadocs
 
-To link the generated JXR files to the Javadocs, you need to set the following JXR Plugin configuration in your `pom.xml`:
+Each generated JXR page has a "View Javadoc" link to the Javadoc page of the same class. The link is on by default
+and points to the `apidocs` directory of the site (`testapidocs` for the test sources), where the
+[Javadoc Plugin](https://maven.apache.org/plugins/maven-javadoc-plugin/) writes its reports. Add the Javadoc Plugin to
+the `<reporting>` section next to the JXR Plugin and the links resolve without further configuration.
+
+If the Javadoc lives somewhere else, set `javadocLocation` (for `jxr:jxr` and `jxr:aggregate`) or
+`testJavadocLocation` (for `jxr:test-jxr` and `jxr:test-aggregate`):
 
 ```xml
 <project>
@@ -40,8 +46,7 @@ To link the generated JXR files to the Javadocs, you need to set the following J
         <version>${project.version}</version>
         <configuration>
           ...
-          <linkJavadoc>true</linkJavadoc>
-          <javadocDir>/path/to/javadocs</javadocDir>
+          <javadocLocation>/path/to/javadocs</javadocLocation>
           ...
         </configuration>
       </plugin>
@@ -52,4 +57,11 @@ To link the generated JXR files to the Javadocs, you need to set the following J
 </project>
 ```
 
-The generated JXR pages will have a link named "View Javadoc" that will display the Javadoc of the class. In case there were no existing Javadocs in the specified Javadoc directory and no Javadocs will be generated (meaning no Javadoc Plugin configuration in the reporting section of the POM), the link will not be displayed even if the `linkJavadoc` parameter is set to `true`.
+The plugin writes the link whether or not the Javadoc exists. If the site has no Javadoc, turn the link off so the
+pages do not point to missing files:
+
+```xml
+<configuration>
+  <linkJavadoc>false</linkJavadoc>
+</configuration>
+```

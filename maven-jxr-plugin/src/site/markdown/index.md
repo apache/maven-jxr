@@ -26,30 +26,78 @@ under the License.
 
 # Maven JXR Plugin
 
-The JXR Plugin produces a cross-reference of the project's sources. The generated reports make it easier for the user to reference or find specific lines of code. It is also handy when used with the PMD Plugin for referencing errors found in the code.
+The JXR Plugin produces a cross-reference of the project's sources: one HTML page per Java source file, with an
+anchor on every line and links between types. The pages make it easy to browse the code from the project site or to
+point at a specific line. Report plugins such as the
+[PMD Plugin](https://maven.apache.org/plugins/maven-pmd-plugin/) and the
+[Checkstyle Plugin](https://maven.apache.org/plugins/maven-checkstyle-plugin/) link each finding to its line in
+the cross-reference when one is present.
+
+The plugin requires Maven 3.9.0 or later and Java 8 or later. It is built on the
+[Maven JXR library](../index.html).
+
+## Common Tasks
+
+Add the cross-reference to the project site by declaring the plugin in the `<reporting>` section of your `pom.xml`,
+as shown on the [usage page](./usage.html), and then run:
+
+```shell
+mvn site
+```
+
+The site gets two reports, `xref/index.html` for the main sources and `xref-test/index.html` for the test sources.
+
+Generate the cross-reference of the main sources without building the site:
+
+```shell
+mvn jxr:jxr
+```
+
+The pages go to `target/reports/xref`. Run `mvn jxr:test-jxr` for the test sources, which go to
+`target/reports/xref-test`.
+
+In a multi-module project, build one cross-reference for all modules from the parent project, as shown in
+[Aggregating JXR Reports for Multi-module Projects](./examples/aggregate.html).
 
 ## Goals Overview
 
-The JXR Plugin has 6 goals:
+The JXR Plugin has 7 goals:
 
-- [jxr:jxr](./jxr-mojo.html) is used to generate a cross-reference page of the project's main sources. The generated JXR files can be linked to the javadocs of the project.
-- [jxr:jxr-no-fork](./jxr-no-fork-mojo.html) is used to generate a cross-reference page of the project's main sources without forking the `generate-sources` phase again. Note that this goal does require generation of main sources before site generation, e.g. by invoking `mvn clean deploy site`.
-- [jxr:aggregate](./aggregate-mojo.html) is used to generate an aggregated cross-reference page of the project's main sources. The generated JXR files can be linked to the javadocs of the project.
-- [jxr:test-jxr](./test-jxr-mojo.html) on the other hand, is used to generate a cross-reference page of the project's test sources.
-- [jxr:test-jxr-no-fork](./test-jxr-no-fork-mojo.html) on the other hand, is used to generate a cross-reference page of the project's test sources. without forking the `generate-test-sources` phase again. Note that this goal does require generation of test sources before site generation, e.g. by invoking `mvn clean deploy site`.
-- [jxr:test-aggregate](./test-aggregate-mojo.html) on the other hand, is used to generate an aggregated cross-reference page of the project's test sources.
+- [jxr:jxr](./jxr-mojo.html) generates a cross-reference of the project's main sources. It runs the lifecycle up to
+  `generate-sources` first, so generated sources are included. The pages can link to the project's Javadoc.
+- [jxr:test-jxr](./test-jxr-mojo.html) generates a cross-reference of the project's test sources, after running the
+  lifecycle up to `generate-test-sources`.
+- [jxr:jxr-no-fork](./jxr-no-fork-mojo.html) does the same as `jxr:jxr` without running `generate-sources` again.
+  Generate the sources before the site in the same build, for example with `mvn clean deploy site`.
+- [jxr:test-jxr-no-fork](./test-jxr-no-fork-mojo.html) does the same as `jxr:test-jxr` without running
+  `generate-test-sources` again. Generate the test sources before the site in the same build.
+- [jxr:aggregate](./aggregate-mojo.html) generates one cross-reference of the main sources of all modules in a
+  multi-module build. It runs the lifecycle up to `compile` first.
+- [jxr:test-aggregate](./test-aggregate-mojo.html) generates one cross-reference of the test sources of all modules
+  in a multi-module build. It runs the lifecycle up to `test-compile` first.
+- [jxr:help](./help-mojo.html) displays help information on the plugin. Run
+  `mvn jxr:help -Ddetail=true -Dgoal=<goal-name>` to see the parameters of a goal.
+
 ## Usage
 
-General instructions on how to use the JXR Plugin can be found on the [usage page](./usage.html). Some more specific use cases are described in the examples given below. Last but not least, users occasionally contribute additional examples, tips or errata to the [plugin's wiki page](http://docs.codehaus.org/display/MAVENUSER/JXR+Plugin).
+General instructions on how to use the JXR Plugin can be found on the [usage page](./usage.html). Some more specific
+use cases are described in the examples given below.
 
-In case you still have questions regarding the plugin's usage, please have a look at the [FAQ](./faq.html) and feel free to contact the [user mailing list](./mailing-lists.html). The posts to the mailing list are archived and could already contain the answer to your question as part of an older thread. Hence, it is also worth browsing/searching the [mail archive](./mailing-lists.html).
+If you still have questions, have a look at the [FAQ](./faq.html) and ask on the
+[user mailing list](./mailing-lists.html). The posts to the mailing list are archived and could already contain the
+answer to your question.
 
-If you feel like the plugin is missing a feature or has a defect, you can fill a feature request or bug report in our [issue tracker](./issue-management.html). When creating a new issue, please provide a comprehensive description of your concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason, entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated. Of course, patches are welcome, too. Contributors can check out the project from our [source repository](./scm.html) and will find supplementary information in the [guide to helping with Maven](http://maven.apache.org/guides/development/guide-helping.html).
+If the plugin is missing a feature or has a defect, open an issue in the [issue tracker](./issue-management.html).
+For a bug, include the plugin and Maven versions, the relevant part of your POM and, if you can, a small project that
+reproduces the problem. Contributors can check out the project from the [source repository](./scm.html); see the
+[guide to helping with Maven](https://maven.apache.org/guides/development/guide-helping.html).
 
 ## Examples
 
-To provide you with better understanding on some usages of the JXR Plugin, you can take a look into the following examples:
+To provide you with better understanding on some usages of the JXR Plugin, you can take a look into the following
+examples:
 
-- [Aggregating JXR Reports for Multi-Projects](./examples/aggregate.html)
+- [Aggregating JXR Reports for Multi-module Projects](./examples/aggregate.html)
+- [Including/Excluding Source Files](./examples/include-exclude.html)
 - [Linking JXR Files to Javadocs](./examples/linkjavadoc.html)
 - [Generate JXR without duplicate execution of phase generate-sources](./examples/nofork.html)

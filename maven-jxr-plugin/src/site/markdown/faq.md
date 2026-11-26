@@ -25,9 +25,10 @@ under the License.
 
 # Frequently Asked Questions
 
-1. [Is there a way to run JXR with an Ant build?](#Is_there_a_way_to_run_JXR_with_an_Ant_build.3F)
+1. [Is there a way to run JXR with an Ant build?](#Is_there_a_way_to_run_JXR_with_an_Ant_build)
+
+<a id="Is_there_a_way_to_run_JXR_with_an_Ant_build"></a>
 
 ### Is there a way to run JXR with an Ant build?
 
-There isn't currently an Ant task, but it is a separate library so it
-wouldn't be hard to write one if someone was willing to contribute it.
+There is no Ant task. Outside Maven, call the [Maven JXR library](../examples/java.html) from Java code.

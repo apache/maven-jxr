@@ -32,10 +32,12 @@ under the License.
 
 ### Is it possible to convert other source files than Java to HTML?
 
-Not yet but it is on the roadmap.
+No. JXR reads only files whose names end in `.java`. The plugin's `includes` parameter narrows that set further; it
+cannot add other file types.
 
 <a id="Is_an_Ant_task_available"></a>
 
 ### Is an Ant task available?
 
-Not yet. Patches are always welcome!
+No. Call the library from Java code, as shown in [Using Maven JXR in Java](./examples/java.html), or use the
+[Maven JXR Plugin](./maven-jxr-plugin/) in a Maven build.

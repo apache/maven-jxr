@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JavaFileImplTest {
     @Test
-    void jxr135LotsOfNested() throws IOException {
+    void jxr135LotsOfNested() throws Exception {
         JavaFileImpl javaFile = new JavaFileImpl(
                 Paths.get("src/test/resources/jxr135/org/apache/maven/jxr/pacman/ClassWithNested.java"), "UTF-8");
         final Iterator<ClassType> classTypes = javaFile.getClassTypes().iterator();
@@ -58,7 +58,7 @@ class JavaFileImplTest {
     }
 
     @Test
-    void jxr170MultiLineString() throws IOException {
+    void jxr170MultiLineString() throws Exception {
         JavaFileImpl javaFile = new JavaFileImpl(
                 Paths.get("src/test/resources/jxr170/org/apache/maven/jxr/pacman/ClassWithMultiLineString.java"),
                 "UTF-8");
@@ -68,7 +68,7 @@ class JavaFileImplTest {
     }
 
     @Test
-    void jxr175Java14Record() throws IOException {
+    void jxr175Java14Record() throws Exception {
         JavaFileImpl javaFile = new JavaFileImpl(
                 Paths.get("src/test/resources/jxr175/org/apache/maven/jxr/pacman/Java14Record.java"), "UTF-8");
         assertEquals(1, javaFile.getClassTypes().size());

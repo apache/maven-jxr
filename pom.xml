@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>49</version>
+    <version>50</version>
     <relativePath />
   </parent>
 
@@ -64,8 +64,8 @@ under the License.
     <url>https://github.com/apache/maven-jxr/issues</url>
   </issueManagement>
   <ciManagement>
-    <system>Jenkins</system>
-    <url>https://ci-maven.apache.org/job/Maven/job/maven-box/job/maven-jxr/</url>
+    <system>GitHub</system>
+    <url>https://github.com/apache/maven-jxr/actions</url>
   </ciManagement>
   <distributionManagement>
     <site>
@@ -75,7 +75,6 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <javaVersion>8</javaVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <sitePluginVersion>${version.maven-site-plugin}</sitePluginVersion>
     <javadocPluginVersion>${version.maven-javadoc-plugin}</javadocPluginVersion>
@@ -88,12 +87,12 @@ under the License.
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
-        <version>3.20.0</version>
+        <version>3.22.0</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-java</artifactId>
-        <version>1.6.0</version>
+        <version>1.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -107,6 +106,21 @@ under the License.
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.tooling</groupId>
+          <artifactId>atr-maven-plugin</artifactId>
+          <configuration>
+            <!-- override - the default is project.artifactId -->
+            <project>maven-jxr</project>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
   <profiles>
     <profile>
