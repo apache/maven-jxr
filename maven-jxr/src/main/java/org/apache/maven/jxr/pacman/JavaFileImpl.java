@@ -77,13 +77,25 @@ public class JavaFileImpl extends JavaFile {
 
         char prevttype = Character.MIN_VALUE; // previous token type
         boolean inTripleQuote = false; // used to toggle between inside/outside triple-quoted multi-line strings
+        boolean inAnnotation = false;
+        int annotationParenthesisDepth = 0;
 
         while (stok.nextToken() != StreamTokenizer.TT_EOF) {
 
             if (stok.sval == null) {
-                if (stok.ttype == '{') {
+                prevttype = (char) stok.ttype;
+                if (stok.ttype == '@') {
+                    inAnnotation = true;
+                } else if (stok.ttype == '(' && inAnnotation) {
+                    annotationParenthesisDepth++;
+                } else if (stok.ttype == ')' && inAnnotation) {
+                    annotationParenthesisDepth--;
+                    if (annotationParenthesisDepth == 0) {
+                        inAnnotation = false;
+                    }
+                } else if (stok.ttype == '{' && !(inAnnotation && annotationParenthesisDepth > 0)) {
                     openBracesCount++;
-                } else if (stok.ttype == '}') {
+                } else if (stok.ttype == '}' && !(inAnnotation && annotationParenthesisDepth > 0)) {
                     if (--openBracesCount == 0) {
                         // break out of recursive
                         return;
@@ -115,13 +127,7 @@ public class JavaFileImpl extends JavaFile {
 
                 String name = stok.sval;
 
-                /*
-                WARNING: this is a bug/non-feature in the current
-                StreamTokenizer.  We needed to set the comment char as "*"
-                and packages that are imported with this (ex "test.*") will be
-                stripped( and become "test." ).  Here we need to test for this
-                and if necessary re-add the char.
-                */
+                // The wildcard token is separate from the package name. Preserve it in wildcard imports.
                 if (name != null) {
                     if (name.charAt(name.length() - 1) == '.') {
                         name = name + '*';
@@ -149,7 +155,6 @@ public class JavaFileImpl extends JavaFile {
     private StreamTokenizer getTokenizer(Reader reader) {
         StreamTokenizer stok = new StreamTokenizer(reader);
 
-        stok.commentChar('*');
         stok.wordChars('_', '_');
 
         // set tokenizer to skip comments
