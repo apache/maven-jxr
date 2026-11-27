@@ -20,10 +20,15 @@ package org.apache.maven.jxr;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -54,6 +59,18 @@ import org.apache.velocity.app.VelocityEngine;
  * </li>
  * </ul>
  *
+ * Without frames, which javadoc gave up in Java 13, it creates these files instead. This is switched on with
+ * {@link JXR#setFrames(boolean)}.
+ * <ul>
+ * <li>{@code index.html}            top-level listing of the project's packages</li>
+ * <li>{@code overview-summary.html} redirect to {@code index.html}, so that links to the overview of a report
+ * with frames still work</li>
+ * <li>{@code allclasses-index.html} list of all classes in the project</li>
+ * <li>{@code package-summary.html}  listing of all classes in a package, for each package</li>
+ * <li>{@code search.js}             script of the search box in the navigation bar of every page</li>
+ * <li>{@code search-index.js}       the packages and classes that the search box finds</li>
+ * </ul>
+ *
  * @author <a href="mailto:bellingard@gmail.com">Fabrice Bellingard </a>
  * @author <a href="mailto:brian@brainslug.org">Brian Leonard</a>
  */
@@ -63,6 +80,16 @@ public class DirectoryIndexer {
      * with that package's main summary page.
      */
     static final String INDEX = "package-summary.html";
+
+    /*
+     * The script of the search box. JavaCodeTransform refers to it from the pages it writes without frames.
+     */
+    static final String SEARCH_SCRIPT = "search.js";
+
+    /*
+     * The packages and classes of the project, in the form that the search script reads.
+     */
+    static final String SEARCH_INDEX = "search-index.js";
 
     /*
      * Path to the root output directory.
@@ -86,6 +113,8 @@ public class DirectoryIndexer {
     private String docTitle;
 
     private String bottom;
+
+    private boolean frames = true;
 
     /**
      * Constructor for the DirectoryIndexer object
@@ -192,6 +221,16 @@ public class DirectoryIndexer {
     }
 
     /**
+     * Sets whether the navigational pages use frames. Without frames the pages offer a search box instead, and
+     * {@code templateDir} has to be a set of templates without frames, like {@code templates/jdk13}.
+     *
+     * @param frames {@code false} to create pages without frames
+     */
+    void setFrames(boolean frames) {
+        this.frames = frames;
+    }
+
+    /**
      * Does the actual indexing.
      *
      * @throws JxrException If something went wrong
@@ -215,8 +254,12 @@ public class DirectoryIndexer {
         context.put("info", info);
 
         doVelocity("index", root, context, engine);
-        doVelocity("overview-frame", root, context, engine);
-        doVelocity("allclasses-frame", root, context, engine);
+        if (frames) {
+            doVelocity("overview-frame", root, context, engine);
+            doVelocity("allclasses-frame", root, context, engine);
+        } else {
+            doVelocity("allclasses-index", root, context, engine);
+        }
         doVelocity("overview-summary", root, context, engine);
 
         for (PackageInfo pkgInfo : info.getAllPackages().values()) {
@@ -225,7 +268,13 @@ public class DirectoryIndexer {
 
             String outDir = root + '/' + pkgInfo.getDir();
             doVelocity("package-summary", outDir, subContext, engine);
-            doVelocity("package-frame", outDir, subContext, engine);
+            if (frames) {
+                doVelocity("package-frame", outDir, subContext, engine);
+            }
+        }
+
+        if (!frames) {
+            writeSearchFiles(info);
         }
     }
 
@@ -318,6 +367,7 @@ public class DirectoryIndexer {
                 ClassInfo classInfo = new ClassInfo(className, pkgDir);
 
                 classInfo.setFilename(clazz.getFilename());
+                classInfo.setPackageName(pkgName);
 
                 pkgClasses.put(className, classInfo);
 
@@ -334,6 +384,76 @@ public class DirectoryIndexer {
         }
 
         return new ProjectInfo(allPackages, allClasses);
+    }
+
+    /*
+     * Puts the search script and the index it searches in next to the navigational pages.
+     */
+    private void writeSearchFiles(ProjectInfo info) throws JxrException {
+        try (InputStream script = DirectoryIndexer.class.getResourceAsStream(SEARCH_SCRIPT)) {
+            if (script == null) {
+                throw new IOException("Resource " + SEARCH_SCRIPT + " not found on the class path");
+            }
+            Files.copy(script, Paths.get(root, SEARCH_SCRIPT), StandardCopyOption.REPLACE_EXISTING);
+            Files.write(Paths.get(root, SEARCH_INDEX), getSearchIndex(info).getBytes(StandardCharsets.US_ASCII));
+        } catch (IOException e) {
+            throw new JxrException("Error writing the search files", e);
+        }
+    }
+
+    /*
+     * Lists the packages and classes of the project as a JavaScript statement for the search script. Each entry
+     * has a label {l}, which is the name, and a link {u} relative to the root output dir, the same link that the
+     * "All Classes" page has. A class has its package {p} in addition. The statement is plain ASCII, whatever
+     * the names are, so that it reads the same in a page of any output encoding.
+     */
+    static String getSearchIndex(ProjectInfo info) {
+        StringBuilder index = new StringBuilder("var jxrSearchIndex = {\"packages\":[");
+
+        String separator = "\n";
+        for (PackageInfo pkgInfo : info.getAllPackages().values()) {
+            index.append(separator).append("{\"l\":");
+            appendString(index, pkgInfo.getName());
+            index.append(",\"u\":");
+            appendString(index, pkgInfo.getDir() + '/' + INDEX);
+            index.append('}');
+            separator = ",\n";
+        }
+
+        index.append("\n],\"types\":[");
+
+        separator = "\n";
+        for (ClassInfo classInfo : info.getAllClasses().values()) {
+            index.append(separator).append("{\"p\":");
+            appendString(index, classInfo.getPackageName());
+            index.append(",\"l\":");
+            appendString(index, classInfo.getName());
+            index.append(",\"u\":");
+            appendString(index, classInfo.getDir() + '/' + classInfo.getFilename() + ".html#" + classInfo.getName());
+            index.append('}');
+            separator = ",\n";
+        }
+
+        return index.append("\n]};\n").toString();
+    }
+
+    /*
+     * Appends a JavaScript string. The names come out of a lenient parser and from the file system, so anything
+     * but harmless ASCII is escaped.
+     */
+    private static void appendString(StringBuilder script, String value) {
+        script.append('"');
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if (c == '"' || c == '\\') {
+                script.append('\\').append(c);
+            } else if (c < ' ' || c > '~' || c == '<' || c == '>' || c == '&') {
+                script.append(String.format("\\u%04x", (int) c));
+            } else {
+                script.append(c);
+            }
+        }
+        script.append('"');
     }
 
     /**
@@ -417,6 +537,8 @@ public class DirectoryIndexer {
 
         private String filename;
 
+        private String packageName;
+
         public ClassInfo(String name, String dir) {
             super();
             this.name = name;
@@ -437,6 +559,14 @@ public class DirectoryIndexer {
 
         public String getFilename() {
             return filename;
+        }
+
+        public void setPackageName(String packageName) {
+            this.packageName = packageName;
+        }
+
+        public String getPackageName() {
+            return packageName;
         }
     }
 }

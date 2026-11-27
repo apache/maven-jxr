@@ -624,3 +624,62 @@ hr {
     color: #000;
 }
 
+/* JXR search box, which the pages without frames have in their navigation bar */
+#jxr_search {
+    float: right;
+    padding: 3px 10px;
+}
+
+#jxr_search label {
+    padding-right: 5px;
+    text-transform: uppercase;
+}
+
+#jxr_search_input {
+    width: 16em;
+    font-size: 12px;
+}
+
+#jxr_search_results {
+    width: 32em;
+    max-width: 90%;
+    max-height: 24em;
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #4D7A97;
+    background-color: #fff;
+    color: #353833;
+    font-size: 13px;
+    list-style: none;
+}
+
+#jxr_search_results li, #jxr_search_results a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#jxr_search_results li.jxr_search_category, #jxr_search_results li.jxr_search_note {
+    padding: 4px 6px;
+}
+
+#jxr_search_results li.jxr_search_category {
+    background-color: #dee3e9;
+    font-weight: bold;
+}
+
+#jxr_search_results a {
+    display: block;
+    padding: 3px 6px 3px 14px;
+}
+
+#jxr_search_results a span {
+    color: #4E4E4E;
+}
+
+#jxr_search_results a:hover, #jxr_search_results li.jxr_search_selected a {
+    background-color: #F8981D;
+    color: #253441;
+}
+
