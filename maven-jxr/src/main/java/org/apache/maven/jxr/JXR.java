@@ -21,6 +21,7 @@ package org.apache.maven.jxr;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -99,9 +100,12 @@ public class JXR {
         DirectoryScanner ds = new DirectoryScanner();
         // I'm not sure why we don't use the directoryScanner in packageManager,
         // but since we don't we need to set includes/excludes here as well
-        String[] scanExcludes = excludes == null ? new String[1] : Arrays.copyOf(excludes, excludes.length + 1);
-        scanExcludes[scanExcludes.length - 1] = "**/package-info.java";
-        ds.setExcludes(scanExcludes);
+        List<String> scanExcludes = new ArrayList<>();
+        if (excludes != null) {
+            scanExcludes.addAll(Arrays.asList(excludes));
+        }
+        scanExcludes.add("**/package-info.java");
+        ds.setExcludes(scanExcludes.toArray(new String[0]));
         ds.setIncludes(includes);
         ds.addDefaultExcludes();
 
