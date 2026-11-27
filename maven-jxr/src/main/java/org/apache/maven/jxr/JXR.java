@@ -21,11 +21,13 @@ package org.apache.maven.jxr;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.maven.jxr.ant.DirectoryScanner;
 import org.apache.maven.jxr.pacman.PackageManager;
+import org.codehaus.plexus.util.DirectoryScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,7 +100,12 @@ public class JXR {
         DirectoryScanner ds = new DirectoryScanner();
         // I'm not sure why we don't use the directoryScanner in packageManager,
         // but since we don't we need to set includes/excludes here as well
-        ds.setExcludes(excludes);
+        List<String> scanExcludes = new ArrayList<>();
+        if (excludes != null) {
+            scanExcludes.addAll(Arrays.asList(excludes));
+        }
+        scanExcludes.add("**/package-info.java");
+        ds.setExcludes(scanExcludes.toArray(new String[0]));
         ds.setIncludes(includes);
         ds.addDefaultExcludes();
 

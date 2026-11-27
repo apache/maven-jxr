@@ -16,23 +16,4 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.jxr.ant;
-
-import java.io.File;
-import java.util.Arrays;
-
-/**
- * Workaround to ignore package-info.java files.
- *
- * @author Carlos Sanchez
- */
-public class DirectoryScanner extends org.codehaus.plexus.util.DirectoryScanner {
-
-    @Override
-    public void addDefaultExcludes() {
-        super.addDefaultExcludes();
-        int excludesLength = excludes == null ? 0 : excludes.length;
-        excludes = Arrays.copyOf(excludes, excludesLength + 1);
-        excludes[excludesLength] = "**" + File.separatorChar + "package-info.java";
-    }
-}
+package include;

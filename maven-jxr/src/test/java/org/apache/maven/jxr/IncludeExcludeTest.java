@@ -60,4 +60,13 @@ class IncludeExcludeTest {
         assertTrue(Files.exists(Paths.get("target/include/IncludedClass.html")));
         assertFalse(Files.exists(Paths.get("target/include/NotIncludedClass.html")));
     }
+
+    @Test
+    void packageInfoIsExcluded() throws Exception {
+        jxr.setDest(Paths.get("target/package-info-excluded"));
+        jxr.setIncludes(new String[] {"**/include/*.java"});
+        jxr.xref(Collections.singletonList("src/test/resources"), "templates/jdk4", "title", "title", "copyright");
+        assertTrue(Files.exists(Paths.get("target/package-info-excluded/include/IncludedClass.html")));
+        assertFalse(Files.exists(Paths.get("target/package-info-excluded/include/package-info.html")));
+    }
 }
